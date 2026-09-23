@@ -420,7 +420,13 @@ namespace TelegramWebDAV.Server
                 if (tgMessageIds.Count > 0)
                 {
                     AppLogger.Info("WebDAV", $"Перманентное удаление: сначала пакетно удаляем {tgMessageIds.Count} сообщений из Telegram...");
-                    await telegramService.DeleteFilesFromTelegramAsync(tgMessageIds);
+                    bool tgSuccess = await telegramService.DeleteFilesFromTelegramAsync(tgMessageIds);
+                    if (!tgSuccess)
+                    {
+                        AppLogger.Error("WebDAV", "Сбой при удалении файлов из Telegram. Отменяем удаление из базы данных, чтобы избежать расхождений.");
+                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                        return;
+                    }
                 }
 
                 repository.PermanentDeleteNodes(dbNodeIds);

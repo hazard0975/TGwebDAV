@@ -204,14 +204,72 @@ namespace TelegramWebDAV.Database
         /// </summary>
         public void MoveNode(int nodeId, int newParentId, string newName)
         {
+            bool isTrash = IsTrashFolder(newParentId);
+            int isDeletedVal = isTrash ? 1 : 0;
+
             using (var connection = _dbManager.GetConnection())
-            using (var command = connection.CreateCommand())
+            using (var transaction = connection.BeginTransaction())
             {
-                command.CommandText = "UPDATE nodes SET parent_id = @newParentId, name = @newName, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
-                command.Parameters.AddWithValue("@newParentId", newParentId);
-                command.Parameters.AddWithValue("@newName", newName);
-                command.Parameters.AddWithValue("@nodeId", nodeId);
-                command.ExecuteNonQuery();
+                try
+                {
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.Transaction = transaction;
+                        command.CommandText = "UPDATE nodes SET parent_id = @newParentId, name = @newName, is_deleted = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
+                        command.Parameters.AddWithValue("@newParentId", newParentId);
+                        command.Parameters.AddWithValue("@newName", newName);
+                        command.Parameters.AddWithValue("@isDeleted", isDeletedVal);
+                        command.Parameters.AddWithValue("@nodeId", nodeId);
+                        command.ExecuteNonQuery();
+                    }
+
+                    // Если перемещаемый узел - папка, рекурсивно обновляем флаг is_deleted для всех её потомков
+                    UpdateChildrenDeletedStateRecursive(connection, transaction, nodeId, isDeletedVal);
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        private void UpdateChildrenDeletedStateRecursive(SqliteConnection connection, SqliteTransaction transaction, int parentId, int isDeletedVal)
+        {
+            var childIds = new List<(int Id, bool IsDir)>();
+            using (var selectCmd = connection.CreateCommand())
+            {
+                selectCmd.Transaction = transaction;
+                selectCmd.CommandText = "SELECT id, is_dir FROM nodes WHERE parent_id = @parentId;";
+                selectCmd.Parameters.AddWithValue("@parentId", parentId);
+                using (var reader = selectCmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        childIds.Add((reader.GetInt32(0), reader.GetInt32(1) == 1));
+                    }
+                }
+            }
+
+            if (childIds.Count == 0) return;
+
+            using (var updateCmd = connection.CreateCommand())
+            {
+                updateCmd.Transaction = transaction;
+                updateCmd.CommandText = "UPDATE nodes SET is_deleted = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @parentId;";
+                updateCmd.Parameters.AddWithValue("@isDeleted", isDeletedVal);
+                updateCmd.Parameters.AddWithValue("@parentId", parentId);
+                updateCmd.ExecuteNonQuery();
+            }
+
+            foreach (var child in childIds)
+            {
+                if (child.IsDir)
+                {
+                    UpdateChildrenDeletedStateRecursive(connection, transaction, child.Id, isDeletedVal);
+                }
             }
         }
 
@@ -233,6 +291,37 @@ namespace TelegramWebDAV.Database
 
                 if (existingNode != null)
                 {
+                    // Проверяем: если это пустой файл-заглушка от Проводника (size == 0 и tg_message_id == null),
+                    // то это не предыдущая версия для корзины, а наполнение только что созданного узла!
+                    if (existingNode.Size == 0 && existingNode.TgMessageId == null)
+                    {
+                        using (var updateCmd = connection.CreateCommand())
+                        {
+                            updateCmd.CommandText = @"
+                                UPDATE nodes SET
+                                    size = @size,
+                                    tg_message_id = @tgMessageId,
+                                    artist = @artist,
+                                    title = @title,
+                                    album = @album,
+                                    year = @year,
+                                    genre = @genre,
+                                    track_number = @trackNumber,
+                                    duration_seconds = @duration,
+                                    bitrate = @bitrate,
+                                    header_cache_bytes = @headerCache,
+                                    album_cover_bytes = @albumCover,
+                                    updated_at = CURRENT_TIMESTAMP
+                                WHERE id = @nodeId;";
+                            updateCmd.Parameters.AddWithValue("@size", size);
+                            updateCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
+                            updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
+                            AddMetadataParameters(updateCmd, metadata);
+                            updateCmd.ExecuteNonQuery();
+                        }
+                        return;
+                    }
+
                     // Версионирование: Отправляем старый в корзину, создаем новый с версией + 1
                     var trashFolder = EnsureTrashFolder();
                     

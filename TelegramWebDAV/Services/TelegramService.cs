@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TelegramWebDAV.Config;
@@ -645,6 +647,10 @@ namespace TelegramWebDAV.Services
         {
             if (messageIds == null || messageIds.Count == 0) return true;
 
+            // Фильтруем только валидные положительные ID, исключая дубликаты
+            var validIds = messageIds.Where(id => id > 0).Distinct().ToList();
+            if (validIds.Count == 0) return true;
+
             await EnsureFloodWaitDelayAsync();
 
             if (_client == null || !IsAuthorized)
@@ -655,40 +661,73 @@ namespace TelegramWebDAV.Services
                 var peer = await GetStoragePeerAsync();
                 bool isChannel = peer is TL.InputPeerChannel;
 
-                // Разбиваем список по 100 элементов (лимит Telegram на пакетное удаление)
+                // Разбиваем список по 100 элементов (максимальный размер пакета Telegram)
                 const int batchSize = 100;
-                for (int i = 0; i < messageIds.Count; i += batchSize)
+                for (int i = 0; i < validIds.Count; i += batchSize)
                 {
-                    var count = Math.Min(batchSize, messageIds.Count - i);
-                    var batch = messageIds.GetRange(i, count).ToArray();
+                    var count = Math.Min(batchSize, validIds.Count - i);
+                    var batch = validIds.GetRange(i, count).ToArray();
 
-                    if (isChannel && peer is TL.InputPeerChannel pc)
-                    {
-                        var channel = new TL.InputChannel(pc.channel_id, pc.access_hash);
-                        var deleteReq = new TL.Methods.Channels_DeleteMessages
-                        {
-                            channel = channel,
-                            id = batch
-                        };
-                        await _client.Invoke(deleteReq);
-                    }
-                    else
-                    {
-                        var deleteReq = new TL.Methods.Messages_DeleteMessages
-                        {
-                            id = batch
-                        };
-                        await _client.Invoke(deleteReq);
-                    }
-
-                    AppLogger.Info("TelegramService", $"Пакет из {batch.Length} сообщений успешно удален из Telegram.");
+                    await DeleteBatchWithBisectAsync(peer, isChannel, batch);
                 }
                 return true;
             }
             catch (Exception ex)
             {
-                AppLogger.Error("TelegramService", $"Ошибка при пакетном удалении сообщений из Telegram: {ex.Message}", ex);
+                AppLogger.Error("TelegramService", $"Критическая ошибка при удалении сообщений из Telegram: {ex.Message}", ex);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Отказоустойчивое удаление пакета сообщений с применением алгоритма бинарного деления (Биссекции).
+        /// При возникновении ошибки (например, MESSAGE_ID_INVALID из-за уже удаленного сообщения)
+        /// пакет делится пополам, позволяя успешно удалить все валидные сообщения за минимальное число запросов.
+        /// </summary>
+        private async Task DeleteBatchWithBisectAsync(TL.InputPeer peer, bool isChannel, int[] ids)
+        {
+            if (ids == null || ids.Length == 0 || _client == null) return;
+
+            try
+            {
+                if (isChannel && peer is TL.InputPeerChannel pc)
+                {
+                    var channel = new TL.InputChannel(pc.channel_id, pc.access_hash);
+                    var deleteReq = new TL.Methods.Channels_DeleteMessages
+                    {
+                        channel = channel,
+                        id = ids
+                    };
+                    await _client.Invoke(deleteReq);
+                }
+                else
+                {
+                    var deleteReq = new TL.Methods.Messages_DeleteMessages
+                    {
+                        id = ids
+                    };
+                    await _client.Invoke(deleteReq);
+                }
+
+                AppLogger.Info("TelegramService", $"Пакет из {ids.Length} сообщений успешно удален из Telegram.");
+            }
+            catch (Exception ex)
+            {
+                // Если остался всего 1 элемент и он упал (например, MESSAGE_ID_INVALID или уже удален в TG вручную)
+                if (ids.Length == 1)
+                {
+                    AppLogger.Warn("TelegramService", $"Пропущено невалидное или уже удаленное сообщение ID {ids[0]}: {ex.Message}");
+                    return;
+                }
+
+                // Иначе делим группу пополам (биссекция)
+                int mid = ids.Length / 2;
+                var left = ids.Take(mid).ToArray();
+                var right = ids.Skip(mid).ToArray();
+
+                AppLogger.Warn("TelegramService", $"Сбой при пакетном удалении группы из {ids.Length} сообщений ({ex.Message}). Разделяем пополам на {left.Length} и {right.Length}...");
+                await DeleteBatchWithBisectAsync(peer, isChannel, left);
+                await DeleteBatchWithBisectAsync(peer, isChannel, right);
             }
         }
 
