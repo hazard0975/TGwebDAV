@@ -18,10 +18,10 @@ namespace TelegramWebDAV.Services
     public class TelegramUserInfo
     {
         public long Id { get; set; }
-        public string Username { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Phone { get; set; }
+        public string? Username { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Phone { get; set; }
         public bool IsPremium { get; set; }
         public int FloodWaitSecondsRemaining { get; set; }
     }
@@ -39,8 +39,8 @@ namespace TelegramWebDAV.Services
 
         public bool IsAuthorized { get; private set; }
         public AuthStep CurrentStep { get; private set; } = AuthStep.NeedsPhone;
-        public TelegramUserInfo CurrentUser { get; private set; }
-        public string LastError { get; private set; }
+        public TelegramUserInfo? CurrentUser { get; private set; }
+        public string? LastError { get; private set; }
 
         public TelegramService(ConfigManager configManager)
         {
@@ -96,7 +96,7 @@ namespace TelegramWebDAV.Services
         /// 2. Передаем код подтверждения ("12345") -> возвращает "password" (если включен 2FA) или null (успех)
         /// 3. Передаем 2FA пароль -> возвращает null (успех)
         /// </summary>
-        public async Task<string> LoginStepAsync(string input)
+        public async Task<string?> LoginStepAsync(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Входные данные не могут быть пустыми", nameof(input));

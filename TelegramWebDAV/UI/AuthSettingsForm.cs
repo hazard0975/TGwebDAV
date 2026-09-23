@@ -17,29 +17,29 @@ namespace TelegramWebDAV.UI
         private AppSettings _settings;
 
         // UI Controls
-        private TabControl _tabControl;
-        private TabPage _tabGeneral;
-        private TabPage _tabTelegram;
-        private TabPage _tabRegistry;
+        private TabControl _tabControl = null!;
+        private TabPage _tabGeneral = null!;
+        private TabPage _tabTelegram = null!;
+        private TabPage _tabRegistry = null!;
 
         // General Tab
-        private CheckBox _chkWebDavEnabled;
-        private NumericUpDown _numPort;
-        private CheckBox _chkMountDrive;
-        private ComboBox _cmbDriveLetter;
-        private TextBox _txtVolumeName;
-        private CheckBox _chkAutoStart;
+        private CheckBox _chkWebDavEnabled = null!;
+        private NumericUpDown _numPort = null!;
+        private CheckBox _chkMountDrive = null!;
+        private ComboBox _cmbDriveLetter = null!;
+        private TextBox _txtVolumeName = null!;
+        private CheckBox _chkAutoStart = null!;
 
         // Telegram Tab
-        private Label _lblStatus;
-        private TextBox _txtInput;
-        private Button _btnAction;
-        private Button _btnLogout;
-        private Label _lblInstruction;
+        private Label _lblStatus = null!;
+        private TextBox _txtInput = null!;
+        private Button _btnAction = null!;
+        private Button _btnLogout = null!;
+        private Label _lblInstruction = null!;
 
         // Registry Tab
-        private Label _lblRegStatus;
-        private Button _btnApplyRegFix;
+        private Label _lblRegStatus = null!;
+        private Button _btnApplyRegFix = null!;
 
         public AuthSettingsForm(ConfigManager configManager, TelegramService telegramService)
         {
@@ -256,7 +256,7 @@ namespace TelegramWebDAV.UI
             _btnAction.Enabled = false;
             try
             {
-                string nextRequirement = await _telegramService.LoginStepAsync(input);
+                string? nextRequirement = await _telegramService.LoginStepAsync(input);
                 _txtInput.Clear();
                 UpdateUiState();
 

@@ -19,7 +19,7 @@ namespace TelegramWebDAV.Utils
         {
             try
             {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(WebClientParamsKey))
+                using (RegistryKey? key = Registry.LocalMachine.OpenSubKey(WebClientParamsKey))
                 {
                     if (key != null)
                     {
@@ -47,7 +47,7 @@ namespace TelegramWebDAV.Utils
         {
             try
             {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(WebClientParamsKey))
+                using (RegistryKey? key = Registry.LocalMachine.OpenSubKey(WebClientParamsKey))
                 {
                     if (key != null)
                     {
@@ -76,7 +76,7 @@ namespace TelegramWebDAV.Utils
         {
             try
             {
-                using (RegistryKey key = Registry.LocalMachine.OpenSubKey(WebClientParamsKey, writable: true))
+                using (RegistryKey? key = Registry.LocalMachine.OpenSubKey(WebClientParamsKey, writable: true))
                 {
                     if (key != null)
                     {

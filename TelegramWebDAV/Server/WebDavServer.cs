@@ -99,7 +99,8 @@ namespace TelegramWebDAV.Server
             var request = context.Request;
             var response = context.Response;
 
-            Console.WriteLine($"[{request.HttpMethod}] {request.Url.LocalPath}");
+            string localPath = request.Url?.LocalPath ?? "/";
+            Console.WriteLine($"[{request.HttpMethod}] {localPath}");
 
             try
             {

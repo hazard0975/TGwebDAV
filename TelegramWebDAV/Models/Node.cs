@@ -6,7 +6,7 @@ namespace TelegramWebDAV.Models
     {
         public int Id { get; set; }
         public int? ParentId { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public bool IsDir { get; set; }
         public long Size { get; set; }
         public DateTime CreatedAt { get; set; }
@@ -21,17 +21,17 @@ namespace TelegramWebDAV.Models
         public int? OriginalNodeId { get; set; }
 
         // Audio Metadata
-        public string Artist { get; set; }
-        public string Title { get; set; }
-        public string Album { get; set; }
+        public string? Artist { get; set; }
+        public string? Title { get; set; }
+        public string? Album { get; set; }
         public int? Year { get; set; }
-        public string Genre { get; set; }
+        public string? Genre { get; set; }
         public int? TrackNumber { get; set; }
         public int? DurationSeconds { get; set; }
         public int? Bitrate { get; set; }
 
         // Cache
-        public byte[] HeaderCacheBytes { get; set; }
-        public byte[] AlbumCoverBytes { get; set; }
+        public byte[]? HeaderCacheBytes { get; set; }
+        public byte[]? AlbumCoverBytes { get; set; }
     }
 }

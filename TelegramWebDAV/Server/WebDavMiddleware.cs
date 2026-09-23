@@ -24,11 +24,12 @@ namespace TelegramWebDAV.Server
         public static async Task HandlePropfindAsync(HttpListenerContext context, NodeRepository repository)
         {
             // Извлекаем путь (убирая параметры запроса)
-            string path = Uri.UnescapeDataString(context.Request.Url.LocalPath);
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
             
             // WebDAV обычно запрашивает Depth=1 (папка + прямые дети) или Depth=0 (только сам элемент)
             int depth = 1; 
-            string depthHeader = context.Request.Headers["Depth"];
+            string? depthHeader = context.Request.Headers["Depth"];
             if (depthHeader == "0") depth = 0;
             else if (depthHeader == "1") depth = 1;
 
@@ -107,8 +108,11 @@ namespace TelegramWebDAV.Server
                 new XElement(d + "status", "HTTP/1.1 200 OK")
             );
 
+            // Безопасное экранирование сегментов URL
+            string escapedHref = string.Join("/", Array.ConvertAll(path.Split('/'), Uri.EscapeDataString));
+
             return new XElement(d + "response",
-                new XElement(d + "href", Uri.EscapeUriString(path)),
+                new XElement(d + "href", escapedHref),
                 propstat
             );
         }
@@ -132,7 +136,8 @@ namespace TelegramWebDAV.Server
 
         public static async Task HandleGetAsync(HttpListenerContext context, NodeRepository repository, TelegramService telegramService)
         {
-            string path = Uri.UnescapeDataString(context.Request.Url.LocalPath);
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
             var node = repository.GetNodeByPath(path);
             if (node == null || node.IsDir)
             {
@@ -145,7 +150,7 @@ namespace TelegramWebDAV.Server
             long end = totalSize - 1;
             bool isRange = false;
 
-            string rangeHeader = context.Request.Headers["Range"];
+            string? rangeHeader = context.Request.Headers["Range"];
             if (!string.IsNullOrEmpty(rangeHeader) && rangeHeader.StartsWith("bytes="))
             {
                 isRange = true;
@@ -198,7 +203,8 @@ namespace TelegramWebDAV.Server
 
         public static async Task HandlePutAsync(HttpListenerContext context, NodeRepository repository, TelegramService telegramService)
         {
-            string path = Uri.UnescapeDataString(context.Request.Url.LocalPath);
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
             if (!GetParentPathAndName(path, out string parentPath, out string name))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Conflict;
@@ -213,7 +219,7 @@ namespace TelegramWebDAV.Server
             }
 
             long contentLength = context.Request.ContentLength64;
-            string contentRangeHeader = context.Request.Headers["Content-Range"];
+            string? contentRangeHeader = context.Request.Headers["Content-Range"];
             long offset = 0;
             long totalSize = contentLength;
             bool isResumableChunk = false;
@@ -275,7 +281,7 @@ namespace TelegramWebDAV.Server
                 else
                 {
                     // Проверяем, является ли загружаемый файл аудио
-                    AudioMetadataResult audioMeta = null;
+                    AudioMetadataResult? audioMeta = null;
                     if (AudioMetadataExtractor.IsAudioFile(name))
                     {
                         audioMeta = AudioMetadataExtractor.ExtractFromStream(context.Request.InputStream, name);
@@ -304,7 +310,8 @@ namespace TelegramWebDAV.Server
 
         public static Task HandleMkColAsync(HttpListenerContext context, NodeRepository repository)
         {
-            string path = Uri.UnescapeDataString(context.Request.Url.LocalPath);
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
             if (!GetParentPathAndName(path, out string parentPath, out string name))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Conflict; // Нельзя создать корень
@@ -325,7 +332,8 @@ namespace TelegramWebDAV.Server
 
         public static Task HandleDeleteAsync(HttpListenerContext context, NodeRepository repository)
         {
-            string path = Uri.UnescapeDataString(context.Request.Url.LocalPath);
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
             var node = repository.GetNodeByPath(path);
 
             if (node == null)
@@ -342,7 +350,8 @@ namespace TelegramWebDAV.Server
 
         public static Task HandleMoveAsync(HttpListenerContext context, NodeRepository repository)
         {
-            string path = Uri.UnescapeDataString(context.Request.Url.LocalPath);
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
             var sourceNode = repository.GetNodeByPath(path);
 
             if (sourceNode == null)
@@ -351,7 +360,7 @@ namespace TelegramWebDAV.Server
                 return Task.CompletedTask;
             }
 
-            string destinationHeader = context.Request.Headers["Destination"];
+            string? destinationHeader = context.Request.Headers["Destination"];
             if (string.IsNullOrEmpty(destinationHeader))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.BadRequest;

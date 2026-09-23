@@ -18,7 +18,7 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Возвращает корневую директорию (диск).
         /// </summary>
-        public Node GetRootNode()
+        public Node? GetRootNode()
         {
             using (var connection = _dbManager.GetConnection())
             using (var command = connection.CreateCommand())
@@ -31,13 +31,13 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Выполняет поиск узла по пути, например "/Music/Track.mp3"
         /// </summary>
-        public Node GetNodeByPath(string path)
+        public Node? GetNodeByPath(string path)
         {
             if (string.IsNullOrEmpty(path) || path == "/")
                 return GetRootNode();
 
             string[] parts = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
-            Node currentNode = GetRootNode();
+            Node? currentNode = GetRootNode();
 
             foreach (var part in parts)
             {
@@ -93,7 +93,7 @@ namespace TelegramWebDAV.Database
                 command.CommandText = "SELECT COUNT(*) FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0;";
                 command.Parameters.AddWithValue("@parentId", parentId);
                 command.Parameters.AddWithValue("@name", name);
-                long count = (long)command.ExecuteScalar();
+                long count = Convert.ToInt64(command.ExecuteScalar() ?? 0);
                 if (count > 0) return false; // Уже существует
 
                 command.CommandText = "INSERT INTO nodes (parent_id, name, is_dir) VALUES (@parentId, @name, 1);";
@@ -137,11 +137,11 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Создание или перезапись файла с поддержкой версионирования и метаданных
         /// </summary>
-        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult metadata = null)
+        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
-                Node existingNode = null;
+                Node? existingNode = null;
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
@@ -187,7 +187,7 @@ namespace TelegramWebDAV.Database
                             insertCmd.Parameters.AddWithValue("@size", size);
                             insertCmd.Parameters.AddWithValue("@version", existingNode.Version + 1);
                             insertCmd.Parameters.AddWithValue("@originalId", existingNode.Id);
-                            insertCmd.Parameters.AddWithValue("@tgMessageId", (object)tgMessageId ?? DBNull.Value);
+                            insertCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             
                             AddMetadataParameters(insertCmd, metadata);
                             insertCmd.ExecuteNonQuery();
@@ -223,7 +223,7 @@ namespace TelegramWebDAV.Database
                         command.Parameters.AddWithValue("@parentId", parentId);
                         command.Parameters.AddWithValue("@name", name);
                         command.Parameters.AddWithValue("@size", size);
-                        command.Parameters.AddWithValue("@tgMessageId", (object)tgMessageId ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                         
                         AddMetadataParameters(command, metadata);
                         command.ExecuteNonQuery();
@@ -232,18 +232,18 @@ namespace TelegramWebDAV.Database
             }
         }
 
-        private void AddMetadataParameters(SqliteCommand command, AudioMetadataResult metadata)
+        private void AddMetadataParameters(SqliteCommand command, AudioMetadataResult? metadata)
         {
-            command.Parameters.AddWithValue("@artist", (object)metadata?.Artist ?? DBNull.Value);
-            command.Parameters.AddWithValue("@title", (object)metadata?.Title ?? DBNull.Value);
-            command.Parameters.AddWithValue("@album", (object)metadata?.Album ?? DBNull.Value);
-            command.Parameters.AddWithValue("@year", (object)metadata?.Year ?? DBNull.Value);
-            command.Parameters.AddWithValue("@genre", (object)metadata?.Genre ?? DBNull.Value);
-            command.Parameters.AddWithValue("@trackNumber", (object)metadata?.TrackNumber ?? DBNull.Value);
-            command.Parameters.AddWithValue("@duration", (object)metadata?.DurationSeconds ?? DBNull.Value);
-            command.Parameters.AddWithValue("@bitrate", (object)metadata?.Bitrate ?? DBNull.Value);
-            command.Parameters.AddWithValue("@headerCache", (object)metadata?.HeaderCache ?? DBNull.Value);
-            command.Parameters.AddWithValue("@albumCover", (object)metadata?.AlbumCover ?? DBNull.Value);
+            command.Parameters.AddWithValue("@artist", (object?)metadata?.Artist ?? DBNull.Value);
+            command.Parameters.AddWithValue("@title", (object?)metadata?.Title ?? DBNull.Value);
+            command.Parameters.AddWithValue("@album", (object?)metadata?.Album ?? DBNull.Value);
+            command.Parameters.AddWithValue("@year", (object?)metadata?.Year ?? DBNull.Value);
+            command.Parameters.AddWithValue("@genre", (object?)metadata?.Genre ?? DBNull.Value);
+            command.Parameters.AddWithValue("@trackNumber", (object?)metadata?.TrackNumber ?? DBNull.Value);
+            command.Parameters.AddWithValue("@duration", (object?)metadata?.DurationSeconds ?? DBNull.Value);
+            command.Parameters.AddWithValue("@bitrate", (object?)metadata?.Bitrate ?? DBNull.Value);
+            command.Parameters.AddWithValue("@headerCache", (object?)metadata?.HeaderCache ?? DBNull.Value);
+            command.Parameters.AddWithValue("@albumCover", (object?)metadata?.AlbumCover ?? DBNull.Value);
         }
 
         /// <summary>
@@ -277,7 +277,7 @@ namespace TelegramWebDAV.Database
         {
             using (var connection = _dbManager.GetConnection())
             {
-                Node node = null;
+                Node? node = null;
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
@@ -315,7 +315,7 @@ namespace TelegramWebDAV.Database
                     command.Parameters.AddWithValue("@nodeId", node.Id);
                     command.Parameters.AddWithValue("@chunkPosition", chunkPosition);
                     command.Parameters.AddWithValue("@totalSize", totalSize);
-                    command.Parameters.AddWithValue("@tgMessageId", (object)tgMessageId ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                     command.ExecuteNonQuery();
                 }
             }
@@ -339,7 +339,7 @@ namespace TelegramWebDAV.Database
 
         private Node EnsureTrashFolder()
         {
-            var root = GetRootNode();
+            var root = GetRootNode() ?? throw new InvalidOperationException("Root node not found in database.");
             using (var connection = _dbManager.GetConnection())
             {
                 using (var command = connection.CreateCommand())
@@ -361,12 +361,12 @@ namespace TelegramWebDAV.Database
                 {
                     getCmd.CommandText = "SELECT * FROM nodes WHERE parent_id = @rootId AND name = '.Trash' LIMIT 1;";
                     getCmd.Parameters.AddWithValue("@rootId", root.Id);
-                    return ReadNode(getCmd);
+                    return ReadNode(getCmd) ?? throw new InvalidOperationException("Failed to retrieve created .Trash folder.");
                 }
             }
         }
 
-        private Node ReadNode(SqliteCommand command)
+        private Node? ReadNode(SqliteCommand command)
         {
             using (var reader = command.ExecuteReader())
             {
@@ -384,7 +384,7 @@ namespace TelegramWebDAV.Database
             {
                 Id = Convert.ToInt32(reader["id"]),
                 ParentId = reader["parent_id"] != DBNull.Value ? Convert.ToInt32(reader["parent_id"]) : (int?)null,
-                Name = Convert.ToString(reader["name"]),
+                Name = Convert.ToString(reader["name"]) ?? string.Empty,
                 IsDir = Convert.ToInt32(reader["is_dir"]) == 1,
                 Size = Convert.ToInt64(reader["size"]),
                 CreatedAt = Convert.ToDateTime(reader["created_at"]),
