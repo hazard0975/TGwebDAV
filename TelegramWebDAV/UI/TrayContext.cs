@@ -43,6 +43,7 @@ namespace TelegramWebDAV.UI
                 Text = "Telegram WebDAV & Network Drive",
                 Visible = true
             };
+            _notifyIcon.DoubleClick += (s, e) => ShowSettingsDialog();
 
             BuildContextMenu();
             CheckDriveMounting();
@@ -86,7 +87,6 @@ namespace TelegramWebDAV.UI
             menu.Items.Add(itemExit);
 
             _notifyIcon.ContextMenuStrip = menu;
-            _notifyIcon.DoubleClick += (s, e) => ShowSettingsDialog();
         }
 
         private void ShowSettingsDialog()
