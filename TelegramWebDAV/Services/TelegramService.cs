@@ -494,10 +494,10 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                // Предотвращаем отправку файлов размером 0 байт в Telegram (защита от FILE_PART_0_MISSING)
-                if (uploadStream.Length == 0)
+                // Предотвращаем отправку файлов размером <= 1 байт в Telegram (защита от FILE_PART_0_MISSING и probe-запросов Total Commander / Проводника)
+                if (uploadStream.Length <= 1)
                 {
-                    AppLogger.Info("TelegramService", $"Файл '{fileName}' пустой (0 байт). Регистрация в БД без загрузки в Telegram.");
+                    AppLogger.Info("TelegramService", $"Файл '{fileName}' пустой или является probe-запросом клиента ({uploadStream.Length} байт). Регистрация в БД без загрузки в Telegram.");
                     return null;
                 }
 

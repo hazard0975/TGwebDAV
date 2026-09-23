@@ -190,6 +190,15 @@ namespace TelegramWebDAV.Server
             {
                 await telegramService.DownloadFileAsync(node.TgMessageId.Value, context.Response.OutputStream, start, length);
             }
+            else if (node.HeaderCacheBytes != null && node.HeaderCacheBytes.Length > 0)
+            {
+                int offset = (int)start;
+                int count = (int)Math.Min(length, node.HeaderCacheBytes.Length - offset);
+                if (count > 0 && offset < node.HeaderCacheBytes.Length)
+                {
+                    await context.Response.OutputStream.WriteAsync(node.HeaderCacheBytes, offset, count);
+                }
+            }
             
             context.Response.OutputStream.Close();
         }
@@ -344,13 +353,33 @@ namespace TelegramWebDAV.Server
 
                     try
                     {
-                        // Стандартный монолитный PUT от обычного Проводника Windows.
-                        // Если это НЕ аудиофайл, то внутри UploadFileAsync сработает его собственная
-                        // надежная гибридная буферизация (RAM для мелких, диск для крупных).
-                        int? tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
+                        byte[]? inlineBytes = null;
+                        int? tgMessageId = null;
+
+                        // Если размер файла <= 1 байт (пустой плейсхолдер Проводника или probe Total Commander)
+                        if (uploadLength <= 1)
+                        {
+                            if (uploadLength == 1)
+                            {
+                                using (var ms = new MemoryStream())
+                                {
+                                    await uploadStream.CopyToAsync(ms);
+                                    inlineBytes = ms.ToArray();
+                                }
+                            }
+                            // Не отправляем в Telegram, оставляем tgMessageId = null
+                            AppLogger.Info("WebDAV", $"Запрос PUT для '{name}' размера {uploadLength} байт зарегистрирован локально без загрузки в Telegram.");
+                        }
+                        else
+                        {
+                            // Стандартный монолитный PUT от обычного Проводника Windows или Total Commander.
+                            // Если это НЕ аудиофайл, то внутри UploadFileAsync сработает его собственная
+                            // надежная гибридная буферизация (RAM для мелких, диск для крупных).
+                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
+                        }
                         
-                        // Записываем инфу в базу с метаданными
-                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta);
+                        // Записываем инфу в базу с метаданными и встроенными байтами при необходимости
+                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes);
 
                         context.Response.StatusCode = (int)HttpStatusCode.Created;
                     }

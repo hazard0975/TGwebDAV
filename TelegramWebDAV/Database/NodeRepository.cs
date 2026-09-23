@@ -506,7 +506,7 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Создание или перезапись файла с поддержкой версионирования и метаданных
         /// </summary>
-        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null)
+        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
@@ -521,9 +521,9 @@ namespace TelegramWebDAV.Database
 
                 if (existingNode != null)
                 {
-                    // Проверяем: если это пустой файл-заглушка от Проводника (size == 0 и tg_message_id == null),
+                    // Проверяем: если это пустой файл-заглушка от Проводника (size == 0) или probe от Total Commander (size <= 1) без tg_message_id,
                     // то это не предыдущая версия для корзины, а наполнение только что созданного узла!
-                    if (existingNode.Size == 0 && existingNode.TgMessageId == null)
+                    if (existingNode.Size <= 1 && existingNode.TgMessageId == null)
                     {
                         using (var updateCmd = connection.CreateCommand())
                         {
@@ -546,7 +546,7 @@ namespace TelegramWebDAV.Database
                             updateCmd.Parameters.AddWithValue("@size", size);
                             updateCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
-                            AddMetadataParameters(updateCmd, metadata);
+                            AddMetadataParameters(updateCmd, metadata, inlineBytes);
                             updateCmd.ExecuteNonQuery();
                         }
                         return;
@@ -599,7 +599,7 @@ namespace TelegramWebDAV.Database
                             insertCmd.Parameters.AddWithValue("@originalId", existingNode.Id);
                             insertCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             
-                            AddMetadataParameters(insertCmd, metadata);
+                            AddMetadataParameters(insertCmd, metadata, inlineBytes);
                             insertCmd.ExecuteNonQuery();
                         }
 
@@ -635,14 +635,14 @@ namespace TelegramWebDAV.Database
                         command.Parameters.AddWithValue("@size", size);
                         command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                         
-                        AddMetadataParameters(command, metadata);
+                        AddMetadataParameters(command, metadata, inlineBytes);
                         command.ExecuteNonQuery();
                     }
                 }
             }
         }
 
-        private void AddMetadataParameters(SqliteCommand command, AudioMetadataResult? metadata)
+        private void AddMetadataParameters(SqliteCommand command, AudioMetadataResult? metadata, byte[]? inlineBytes = null)
         {
             command.Parameters.AddWithValue("@artist", (object?)metadata?.Artist ?? DBNull.Value);
             command.Parameters.AddWithValue("@title", (object?)metadata?.Title ?? DBNull.Value);
@@ -652,7 +652,9 @@ namespace TelegramWebDAV.Database
             command.Parameters.AddWithValue("@trackNumber", (object?)metadata?.TrackNumber ?? DBNull.Value);
             command.Parameters.AddWithValue("@duration", (object?)metadata?.DurationSeconds ?? DBNull.Value);
             command.Parameters.AddWithValue("@bitrate", (object?)metadata?.Bitrate ?? DBNull.Value);
-            command.Parameters.AddWithValue("@headerCache", (object?)metadata?.HeaderCache ?? DBNull.Value);
+
+            byte[]? headerCache = metadata?.HeaderCache ?? inlineBytes;
+            command.Parameters.AddWithValue("@headerCache", (object?)headerCache ?? DBNull.Value);
             command.Parameters.AddWithValue("@albumCover", (object?)metadata?.AlbumCover ?? DBNull.Value);
         }
 
