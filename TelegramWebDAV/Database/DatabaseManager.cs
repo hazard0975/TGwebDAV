@@ -16,7 +16,7 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Инициализация БД при запуске (разворачивание схемы при отсутствии таблиц)
+        /// Инициализация БД при запуске (разворачивание схемы при отсутствии таблиц или миграция полей)
         /// </summary>
         public void InitializeDatabase()
         {
@@ -34,6 +34,9 @@ namespace TelegramWebDAV.Database
                     SeedRootFolder(connection);
                     Console.WriteLine("База данных успешно инициализирована.");
                 }
+
+                // Гарантируем наличие всех необходимых столбцов (миграция старых БД)
+                EnsureColumnsExist(connection);
             }
         }
 
@@ -68,47 +71,96 @@ PRAGMA journal_mode=WAL;
 
 CREATE TABLE IF NOT EXISTS nodes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    parent_id INTEGER NULL,
+    parent_id INTEGER,
     name TEXT NOT NULL,
-    is_dir INTEGER NOT NULL,
-    tg_message_id INTEGER NULL,
-    size INTEGER DEFAULT 0,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NULL,
-    artist TEXT NULL,
-    album TEXT NULL,
-    duration INTEGER DEFAULT 0,
-    cover_mime TEXT NULL,
-    header_cache_bytes BLOB NULL,
-    version_count INTEGER DEFAULT 1,
-    FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS versions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    node_id INTEGER NOT NULL,
-    version_num INTEGER NOT NULL,
-    tg_message_id INTEGER NOT NULL,
-    size INTEGER DEFAULT 0,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    header_cache_bytes BLOB NULL,
-    FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+    is_dir INTEGER NOT NULL DEFAULT 0,
+    size INTEGER NOT NULL DEFAULT 0,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    
+    tg_message_id INTEGER,
+    
+    version INTEGER NOT NULL DEFAULT 1,
+    is_deleted INTEGER NOT NULL DEFAULT 0,
+    original_node_id INTEGER,
+    
+    artist TEXT,
+    title TEXT,
+    album TEXT,
+    year INTEGER,
+    genre TEXT,
+    track_number INTEGER,
+    duration_seconds INTEGER,
+    bitrate INTEGER,
+    
+    header_cache_bytes BLOB,
+    album_cover_bytes BLOB,
+    
+    FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE,
+    FOREIGN KEY (original_node_id) REFERENCES nodes(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS upload_progress (
-    node_id INTEGER PRIMARY KEY,
-    bytes_uploaded INTEGER DEFAULT 0,
-    total_size INTEGER DEFAULT 0,
-    temp_tg_location TEXT NULL,
-    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    node_id INTEGER NOT NULL,
+    chunk_position INTEGER NOT NULL DEFAULT 0,
+    file_hash TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    
     FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
 );
 
 CREATE INDEX IF NOT EXISTS idx_nodes_parent_id ON nodes(parent_id);
 CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
-CREATE INDEX IF NOT EXISTS idx_versions_node_id ON versions(node_id);
+CREATE INDEX IF NOT EXISTS idx_nodes_is_deleted ON nodes(is_deleted);
+CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_id);
 ";
+
+        private void EnsureColumnsExist(SqliteConnection connection)
+        {
+            var existingColumns = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "PRAGMA table_info(nodes);";
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        if (reader["name"] != DBNull.Value)
+                        {
+                            existingColumns.Add(reader["name"].ToString()!);
+                        }
+                    }
+                }
+            }
+
+            void AddColumnIfMissing(string columnName, string columnDefinition)
+            {
+                if (!existingColumns.Contains(columnName))
+                {
+                    using (var alterCmd = connection.CreateCommand())
+                    {
+                        alterCmd.CommandText = $"ALTER TABLE nodes ADD COLUMN {columnName} {columnDefinition};";
+                        alterCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+
+            AddColumnIfMissing("version", "INTEGER NOT NULL DEFAULT 1");
+            AddColumnIfMissing("is_deleted", "INTEGER NOT NULL DEFAULT 0");
+            AddColumnIfMissing("original_node_id", "INTEGER");
+            AddColumnIfMissing("artist", "TEXT");
+            AddColumnIfMissing("title", "TEXT");
+            AddColumnIfMissing("album", "TEXT");
+            AddColumnIfMissing("year", "INTEGER");
+            AddColumnIfMissing("genre", "TEXT");
+            AddColumnIfMissing("track_number", "INTEGER");
+            AddColumnIfMissing("duration_seconds", "INTEGER");
+            AddColumnIfMissing("bitrate", "INTEGER");
+            AddColumnIfMissing("header_cache_bytes", "BLOB");
+            AddColumnIfMissing("album_cover_bytes", "BLOB");
+        }
 
         private void ApplySchema(SqliteConnection connection)
         {
