@@ -439,5 +439,115 @@ namespace TelegramWebDAV.Server
             context.Response.StatusCode = (int)HttpStatusCode.Created;
             return Task.CompletedTask;
         }
+
+        public static async Task HandleLockAsync(HttpListenerContext context)
+        {
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
+            
+            // Генерируем уникальный токен блокировки
+            string lockToken = "opaquelocktoken:" + Guid.NewGuid().ToString();
+            
+            // Windows требует возврата заголовка Lock-Token
+            context.Response.AddHeader("Lock-Token", $"<{lockToken}>");
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            context.Response.ContentType = "text/xml; charset=\"utf-8\"";
+
+            XNamespace d = "DAV:";
+            var activeLock = new XElement(d + "activelock",
+                new XElement(d + "locktype", new XElement(d + "write")),
+                new XElement(d + "lockscope", new XElement(d + "exclusive")),
+                new XElement(d + "depth", "Infinity"),
+                new XElement(d + "timeout", "Second-3600"),
+                new XElement(d + "locktoken", new XElement(d + "href", lockToken)),
+                new XElement(d + "lockroot", new XElement(d + "href", string.Join("/", Array.ConvertAll(path.Split('/'), Uri.EscapeDataString))))
+            );
+
+            var prop = new XElement(d + "prop",
+                new XElement(d + "lockdiscovery", activeLock)
+            );
+
+            var doc = new XDocument(new XDeclaration("1.0", "utf-8", null), prop);
+            using (var ms = new MemoryStream())
+            {
+                doc.Save(ms);
+                byte[] buffer = ms.ToArray();
+                context.Response.ContentLength64 = buffer.Length;
+                await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+        }
+
+        public static Task HandleUnlockAsync(HttpListenerContext context)
+        {
+            // UNLOCK возвращает статус 204 No Content в случае успеха
+            context.Response.StatusCode = (int)HttpStatusCode.NoContent;
+            return Task.CompletedTask;
+        }
+
+        public static async Task HandleProppatchAsync(HttpListenerContext context)
+        {
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
+
+            string requestBody = "";
+            try
+            {
+                using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding))
+                {
+                    requestBody = await reader.ReadToEndAsync();
+                }
+            }
+            catch { }
+
+            context.Response.StatusCode = 207; // Multi-Status
+            context.Response.ContentType = "text/xml; charset=\"utf-8\"";
+
+            XNamespace d = "DAV:";
+            var propElements = new List<XElement>();
+            try
+            {
+                if (!string.IsNullOrEmpty(requestBody))
+                {
+                    var xdoc = XDocument.Parse(requestBody);
+                    var setProps = xdoc.Descendants(d + "prop").Descendants();
+                    foreach (var prop in setProps)
+                    {
+                        propElements.Add(new XElement(prop.Name));
+                    }
+                }
+            }
+            catch { }
+
+            if (propElements.Count == 0)
+            {
+                propElements.Add(new XElement(d + "getlastmodified"));
+            }
+
+            var propstat = new XElement(d + "propstat",
+                new XElement(d + "prop", propElements),
+                new XElement(d + "status", "HTTP/1.1 200 OK")
+            );
+
+            string escapedHref = string.Join("/", Array.ConvertAll(path.Split('/'), Uri.EscapeDataString));
+
+            var responseElement = new XElement(d + "response",
+                new XElement(d + "href", escapedHref),
+                propstat
+            );
+
+            var multistatus = new XElement(d + "multistatus",
+                new XAttribute(XNamespace.Xmlns + "D", d.NamespaceName),
+                responseElement
+            );
+
+            var doc = new XDocument(new XDeclaration("1.0", "utf-8", null), multistatus);
+            using (var ms = new MemoryStream())
+            {
+                doc.Save(ms);
+                byte[] buffer = ms.ToArray();
+                context.Response.ContentLength64 = buffer.Length;
+                await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+            }
+        }
     }
 }

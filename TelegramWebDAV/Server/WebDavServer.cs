@@ -104,8 +104,8 @@ namespace TelegramWebDAV.Server
             try
             {
                 // Добавляем обязательные заголовки для WebDAV
-                response.AppendHeader("DAV", "1, 2"); // Поддержка базового WebDAV и локов/свойств
-                response.AppendHeader("Allow", "OPTIONS, PROPFIND, GET, PUT, MKCOL, DELETE, MOVE, HEAD");
+                response.AppendHeader("DAV", "1, 2"); // Теперь мы полностью поддерживаем локи и свойства на словах и на деле!
+                response.AppendHeader("Allow", "OPTIONS, PROPFIND, GET, PUT, MKCOL, DELETE, MOVE, HEAD, LOCK, UNLOCK, PROPPATCH");
                 response.AppendHeader("Server", "TelegramWebDAV/1.0");
 
                 switch (request.HttpMethod)
@@ -133,6 +133,15 @@ namespace TelegramWebDAV.Server
                         break;
                     case "HEAD":
                         await WebDavMiddleware.HandleHeadAsync(context);
+                        break;
+                    case "LOCK":
+                        await WebDavMiddleware.HandleLockAsync(context);
+                        break;
+                    case "UNLOCK":
+                        await WebDavMiddleware.HandleUnlockAsync(context);
+                        break;
+                    case "PROPPATCH":
+                        await WebDavMiddleware.HandleProppatchAsync(context);
                         break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;

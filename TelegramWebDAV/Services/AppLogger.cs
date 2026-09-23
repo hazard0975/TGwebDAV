@@ -167,7 +167,7 @@ namespace TelegramWebDAV.Services
             {
                 RotateIfNeeded();
                 fileStream = new FileStream(CurrentLogFilePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
-                writer = new StreamWriter(fileStream, Encoding.UTF8);
+                writer = new StreamWriter(fileStream, Encoding.UTF8) { AutoFlush = true };
                 return;
             }
 
@@ -182,7 +182,7 @@ namespace TelegramWebDAV.Services
                 RotateIfNeeded();
 
                 fileStream = new FileStream(CurrentLogFilePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite);
-                writer = new StreamWriter(fileStream, Encoding.UTF8);
+                writer = new StreamWriter(fileStream, Encoding.UTF8) { AutoFlush = true };
             }
         }
 
