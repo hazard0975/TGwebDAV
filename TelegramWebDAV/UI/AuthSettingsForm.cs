@@ -35,6 +35,7 @@ namespace TelegramWebDAV.UI
         private Label _lblInstruction = null!;
         private TextBox _txtApiId = null!;
         private TextBox _txtApiHash = null!;
+        private TextBox _txtChannelTitle = null!;
         private Button _btnSaveApi = null!;
         private TextBox _txtInput = null!;
         private Button _btnAction = null!;
@@ -167,9 +168,18 @@ namespace TelegramWebDAV.UI
             };
             pnlApiHash.Controls.Add(_txtApiHash);
 
+            var pnlChannel = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 8) };
+            pnlChannel.Controls.Add(new Label { Text = "Имя канала:", AutoSize = true, Margin = new Padding(0, 5, 2, 0) });
+            _txtChannelTitle = new TextBox
+            {
+                Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle,
+                Width = 220
+            };
+            pnlChannel.Controls.Add(_txtChannelTitle);
+
             _btnSaveApi = new Button
             {
-                Text = "Сохранить API ключи",
+                Text = "Сохранить настройки Telegram",
                 AutoSize = true,
                 Padding = new Padding(8, 4, 8, 4),
                 Margin = new Padding(0, 0, 0, 15)
@@ -211,7 +221,7 @@ namespace TelegramWebDAV.UI
             pnlTgButtons.Controls.AddRange(new Control[] { _btnAction, _btnLogout });
 
             pnlTg.Controls.AddRange(new Control[] {
-                lblApiTitle, pnlApiId, pnlApiHash, _btnSaveApi, lblSeparator, _lblStatus, _lblInstruction, _txtInput, pnlTgButtons
+                lblApiTitle, pnlApiId, pnlApiHash, pnlChannel, _btnSaveApi, lblSeparator, _lblStatus, _lblInstruction, _txtInput, pnlTgButtons
             });
             _tabTelegram.Controls.Add(pnlTg);
 
@@ -275,14 +285,23 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
+            string channelTitle = _txtChannelTitle.Text.Trim();
+            if (string.IsNullOrEmpty(channelTitle))
+            {
+                channelTitle = "Telegram WebDAV Drive";
+                _txtChannelTitle.Text = channelTitle;
+            }
+
             _settings.Telegram.ApiId = apiId;
             _settings.Telegram.ApiHash = apiHash;
+            _settings.Telegram.StorageChannelTitle = channelTitle;
             _configManager.Save(_settings);
 
             _telegramService.UpdateApiCredentials(apiId, apiHash);
+            _telegramService.UpdateStorageChannelTitle(channelTitle);
             UpdateUiState();
 
-            MessageBox.Show("API ID и API Hash успешно сохранены!", "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Настройки Telegram (API ID, Hash и имя канала) успешно сохранены!", "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void UpdateUiState()

@@ -48,6 +48,7 @@ jobs:
         shell: pwsh
         run: |
           Compress-Archive -Path ./publish/* -DestinationPath "TelegramWebDAV-${{ env.TAG_NAME }}-win-x64.zip"
+          Copy-Item -Path ./publish/TelegramWebDAV.exe -Destination "TelegramWebDAV-${{ env.TAG_NAME }}.exe"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -59,6 +60,6 @@ jobs:
             
           files: |
             TelegramWebDAV-${{ env.TAG_NAME }}-win-x64.zip
-            ./publish/TelegramWebDAV-${{ env.TAG_NAME }}.exe
+            TelegramWebDAV-${{ env.TAG_NAME }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

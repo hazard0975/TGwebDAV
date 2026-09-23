@@ -49,13 +49,101 @@ namespace TelegramWebDAV.Services
             _currentSettings = _configManager.Load();
         }
 
+        private TL.InputPeer? _storagePeer;
+        private readonly SemaphoreSlim _storageLock = new SemaphoreSlim(1, 1);
+
         public void UpdateApiCredentials(int apiId, string apiHash)
         {
             _currentSettings.Telegram.ApiId = apiId;
             _currentSettings.Telegram.ApiHash = apiHash;
+            _storagePeer = null;
             _client?.Dispose();
             _client = null;
             _ = ConnectAsync();
+        }
+
+        public void UpdateStorageChannelTitle(string title)
+        {
+            if (string.IsNullOrWhiteSpace(title)) return;
+            if (_currentSettings.Telegram.StorageChannelTitle != title)
+            {
+                _currentSettings.Telegram.StorageChannelTitle = title.Trim();
+                _currentSettings.Telegram.StorageChannelId = 0; // Сбрасываем ID для поиска или создания с новым именем
+                _storagePeer = null;
+                _configManager.Save(_currentSettings);
+            }
+        }
+
+        /// <summary>
+        /// Получает или создает приватный канал-хранилище в Telegram для WebDAV файлов.
+        /// </summary>
+        public async Task<TL.InputPeer> GetStoragePeerAsync()
+        {
+            if (_storagePeer != null)
+                return _storagePeer;
+
+            await _storageLock.WaitAsync();
+            try
+            {
+                if (_storagePeer != null)
+                    return _storagePeer;
+
+                if (_client == null || !IsAuthorized)
+                    throw new InvalidOperationException("Клиент Telegram не авторизован.");
+
+                string targetTitle = string.IsNullOrWhiteSpace(_currentSettings.Telegram.StorageChannelTitle)
+                    ? "Telegram WebDAV Drive"
+                    : _currentSettings.Telegram.StorageChannelTitle.Trim();
+
+                // 1. Если StorageChannelId уже сохранен в настройках, используем его
+                if (_currentSettings.Telegram.StorageChannelId != 0)
+                {
+                    var chats = await _client.Messages_GetAllChats();
+                    if (chats.chats.TryGetValue(_currentSettings.Telegram.StorageChannelId, out var savedChat) &&
+                        savedChat is TL.Channel sc)
+                    {
+                        _storagePeer = sc.ToInputPeer();
+                        Console.WriteLine($"[TelegramService] Подключен существующий приватный канал-хранилище: {sc.Title} (ID: {sc.ID})");
+                        return _storagePeer;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[TelegramService] Канал с сохраненным ID {_currentSettings.Telegram.StorageChannelId} не найден в диалогах пользователя. Создаем новый.");
+                    }
+                }
+
+                // 2. Если ID канала нет в конфиге (StorageChannelId == 0), создаем новый приватный канал
+                Console.WriteLine($"[TelegramService] ID канала-хранилища не задан. Создание нового приватного канала '{targetTitle}'...");
+                var createReq = new TL.Methods.Channels_CreateChannel
+                {
+                    flags = TL.Methods.Channels_CreateChannel.Flags.broadcast,
+                    title = targetTitle,
+                    about = "Приватное облачное хранилище файлов для Telegram WebDAV Drive"
+                };
+
+                var createdUpdates = await _client.Invoke(createReq);
+
+                if (createdUpdates is TL.Updates updates)
+                {
+                    foreach (var chat in updates.chats.Values)
+                    {
+                        if (chat is TL.Channel newCh)
+                        {
+                            _storagePeer = newCh.ToInputPeer();
+                            _currentSettings.Telegram.StorageChannelId = newCh.ID;
+                            _configManager.Save(_currentSettings);
+                            Console.WriteLine($"[TelegramService] Создан новый приватный канал '{newCh.Title}' (ID: {newCh.ID}). ID сохранен в конфиг.");
+                            return _storagePeer;
+                        }
+                    }
+                }
+
+                throw new InvalidOperationException($"Не удалось создать приватный канал '{targetTitle}' в Telegram для хранения файлов.");
+            }
+            finally
+            {
+                _storageLock.Release();
+            }
         }
 
         /// <summary>
@@ -248,20 +336,29 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Надежная загрузка чанка с поддержкой докачки и защитой от FloodWait.
+        /// Надежная загрузка чанка с поддержкой докачки и отправкой собранного файла в канал Telegram по завершении.
         /// </summary>
         public async Task<int?> UploadFileChunkAsync(Stream source, string fileName, long offset, long totalSize)
         {
             await EnsureFloodWaitDelayAsync();
 
+            string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Uploads");
+            Directory.CreateDirectory(tempDir);
+            string tempFilePath = Path.Combine(tempDir, $"{fileName}.part");
+
             byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072); // 128 KB
             long uploadedBytes = 0;
             try
             {
-                int bytesRead;
-                while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                using (var fileStream = new FileStream(tempFilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
                 {
-                    uploadedBytes += bytesRead;
+                    fileStream.Seek(offset, SeekOrigin.Begin);
+                    int bytesRead;
+                    while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                    {
+                        await fileStream.WriteAsync(buffer, 0, bytesRead);
+                        uploadedBytes += bytesRead;
+                    }
                 }
             }
             finally
@@ -269,39 +366,54 @@ namespace TelegramWebDAV.Services
                 System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
             }
 
+            // Если чанк был последним и файл полностью собран на диске
             if (offset + uploadedBytes >= totalSize)
             {
-                Random rnd = new Random();
-                int messageId = rnd.Next(100000, 999999);
-                return messageId;
+                Console.WriteLine($"[TelegramService] Все чанки файла '{fileName}' получены. Загрузка в канал Telegram...");
+                try
+                {
+                    using (var completeStream = File.OpenRead(tempFilePath))
+                    {
+                        int messageId = await UploadFileAsync(completeStream, fileName);
+                        return messageId;
+                    }
+                }
+                finally
+                {
+                    try { File.Delete(tempFilePath); } catch { }
+                }
             }
 
             return null;
         }
 
         /// <summary>
-        /// Потоковая загрузка файла в Saved Messages.
+        /// Потоковая загрузка файла в приватный канал-хранилище через WTelegramClient.
+        /// Возвращает реальный ID сообщения из Telegram.
         /// </summary>
         public async Task<int> UploadFileAsync(Stream source, string fileName)
         {
             await EnsureFloodWaitDelayAsync();
 
-            byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
-            try
+            if (_client == null || !IsAuthorized)
+                throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
+
+            var peer = await GetStoragePeerAsync();
+
+            Console.WriteLine($"[TelegramService] Загрузка файла '{fileName}' в Telegram...");
+            var inputFile = await _client.UploadFileAsync(source, fileName);
+
+            Console.WriteLine($"[TelegramService] Файл '{fileName}' загружен в MTProto, отправка медиа в канал...");
+            var message = await _client.SendMediaAsync(peer, fileName, inputFile);
+
+            if (message != null)
             {
-                int bytesRead;
-                while ((bytesRead = await source.ReadAsync(buffer, 0, buffer.Length)) > 0)
-                {
-                    // Стриминг чанков
-                }
-            }
-            finally
-            {
-                System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                Console.WriteLine($"[TelegramService] Файл успешно отправлен в канал. Message ID: {message.ID}");
+                return message.ID;
             }
 
-            Random rnd = new Random();
-            return rnd.Next(100000, 999999);
+            Console.WriteLine("[TelegramService] Сообщение отправлено, но ID не определен, возвращаем 1.");
+            return 1;
         }
 
         /// <summary>

@@ -23,6 +23,8 @@ namespace TelegramWebDAV.Config
         public int ApiId { get; set; } = 0;
         public string ApiHash { get; set; } = "";
         public string SessionPath { get; set; } = "user.session";
+        public string StorageChannelTitle { get; set; } = "Telegram WebDAV Drive";
+        public long StorageChannelId { get; set; } = 0;
     }
 
     public class ServerSettings
