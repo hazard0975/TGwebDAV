@@ -455,7 +455,7 @@ namespace TelegramWebDAV.Services
             // Если поток не поддерживает Seek (например, HttpListenerInputStream от WebDAV PUT)
             // и нам передан точный размер из Content-Length заголовка, оборачиваем его в StreamWithLength.
             // Это позволяет WTelegramClient транслировать сетевой поток «на лету» без записи файла на диск!
-            if (length > 0 && (!source.CanSeek || GetStreamLengthSafe(source) <= 0))
+            if (length > 0 && GetStreamLengthSafe(source) <= 0)
             {
                 AppLogger.Info("TelegramService", $"Трансляция файла '{fileName}' напрямую из сети в Telegram (Размер: {length} байт)...");
                 uploadStream = new StreamWithLength(source, length);
@@ -578,6 +578,110 @@ namespace TelegramWebDAV.Services
             int read = await _baseStream.ReadAsync(buffer, offset, count, cancellationToken);
             _position += read;
             return read;
+        }
+
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException("Сетевой поток не поддерживает Seek.");
+        public override void SetLength(long value) => throw new NotSupportedException("Сетевой поток не поддерживает изменение длины.");
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException("Сетевой поток не поддерживает запись.");
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _baseStream.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+    }
+
+    /// <summary>
+    /// Умный прокси-поток, который сначала бесшовно отдает предварительно вычитанный буфер заголовка (например, первые 128 КБ),
+    /// а затем прозрачно переключается на чтение из основного сетевого потока напрямую, не требуя полной буферизации файла на диск.
+    /// </summary>
+    public class BufferedHeadStream : Stream
+    {
+        private readonly Stream _baseStream;
+        private readonly byte[] _headBuffer;
+        private readonly int _headLength;
+        private readonly long _totalLength;
+        private long _position;
+
+        public BufferedHeadStream(Stream baseStream, byte[] headBuffer, int headLength, long totalLength)
+        {
+            _baseStream = baseStream ?? throw new ArgumentNullException(nameof(baseStream));
+            _headBuffer = headBuffer ?? throw new ArgumentNullException(nameof(headBuffer));
+            _headLength = headLength;
+            _totalLength = totalLength;
+            _position = 0;
+        }
+
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
+        public override long Length => _totalLength;
+
+        public override long Position
+        {
+            get => _position;
+            set => throw new NotSupportedException("Сетевой поток не поддерживает изменение позиции.");
+        }
+
+        public override void Flush() => _baseStream.Flush();
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            int totalRead = 0;
+
+            // 1. Отдаем предвычитанный кэш-заголовок
+            if (_position < _headLength)
+            {
+                int bytesAvailable = _headLength - (int)_position;
+                int bytesToCopy = Math.Min(bytesAvailable, count);
+                Buffer.BlockCopy(_headBuffer, (int)_position, buffer, offset, bytesToCopy);
+                
+                _position += bytesToCopy;
+                offset += bytesToCopy;
+                count -= bytesToCopy;
+                totalRead += bytesToCopy;
+            }
+
+            // 2. Дочитываем остальное напрямую из сокета
+            if (count > 0)
+            {
+                int readFromStream = _baseStream.Read(buffer, offset, count);
+                _position += readFromStream;
+                totalRead += readFromStream;
+            }
+
+            return totalRead;
+        }
+
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken)
+        {
+            int totalRead = 0;
+
+            // 1. Отдаем предвычитанный кэш-заголовок
+            if (_position < _headLength)
+            {
+                int bytesAvailable = _headLength - (int)_position;
+                int bytesToCopy = Math.Min(bytesAvailable, count);
+                Buffer.BlockCopy(_headBuffer, (int)_position, buffer, offset, bytesToCopy);
+                
+                _position += bytesToCopy;
+                offset += bytesToCopy;
+                count -= bytesToCopy;
+                totalRead += bytesToCopy;
+            }
+
+            // 2. Дочитываем остальное напрямую из сокета
+            if (count > 0)
+            {
+                int readFromStream = await _baseStream.ReadAsync(buffer, offset, count, cancellationToken);
+                _position += readFromStream;
+                totalRead += readFromStream;
+            }
+
+            return totalRead;
         }
 
         public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException("Сетевой поток не поддерживает Seek.");

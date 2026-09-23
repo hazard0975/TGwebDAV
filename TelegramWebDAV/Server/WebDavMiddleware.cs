@@ -285,19 +285,33 @@ namespace TelegramWebDAV.Server
                     Stream uploadStream = context.Request.InputStream;
                     long uploadLength = contentLength;
 
-                    // Для безопасного чтения тегов без порчи сетевого потока,
-                    // аудиофайлы (они маленькие) предварительно буферизуем в MemoryStream.
+                    // Для безопасного чтения тегов без полной буферизации файла на диск или в ОЗУ,
+                    // мы вычитываем только первые 128 КБ (этого гарантированно хватает для тегов),
+                    // парсим их, а затем отправляем через BufferedHeadStream напрямую «на лету»!
                     if (AudioMetadataExtractor.IsAudioFile(name))
                     {
-                        var ms = new MemoryStream();
-                        await context.Request.InputStream.CopyToAsync(ms);
-                        ms.Position = 0;
+                        byte[] headBuffer = new byte[AudioMetadataExtractor.HeaderCacheSize];
+                        int bytesRead = 0;
+                        try
+                        {
+                            bytesRead = await context.Request.InputStream.ReadAsync(headBuffer, 0, headBuffer.Length);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Error("WebDAV", $"Ошибка предварительного чтения заголовка '{name}': {ex.Message}");
+                        }
 
-                        audioMeta = AudioMetadataExtractor.ExtractFromStream(ms, name);
-                        ms.Position = 0; // Перематываем на начало перед загрузкой в Telegram
+                        if (bytesRead > 0)
+                        {
+                            // Скармливаем предвычитанные байты в парсер метаданных
+                            using (var headMs = new MemoryStream(headBuffer, 0, bytesRead))
+                            {
+                                audioMeta = AudioMetadataExtractor.ExtractFromStream(headMs, name);
+                            }
 
-                        uploadStream = ms;
-                        uploadLength = ms.Length;
+                            // Создаем бесшовный прокси-поток
+                            uploadStream = new BufferedHeadStream(context.Request.InputStream, headBuffer, bytesRead, contentLength);
+                        }
                     }
 
                     // Стандартный монолитный PUT от обычного Проводника Windows.
