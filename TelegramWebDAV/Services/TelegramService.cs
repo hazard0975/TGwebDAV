@@ -528,28 +528,99 @@ namespace TelegramWebDAV.Services
             }
         }
 
+        private async Task<TL.Document?> GetDocumentFromMessageAsync(int messageId)
+        {
+            if (_client == null) return null;
+            var peer = await GetStoragePeerAsync();
+            var messagesBase = await _client.GetMessages(peer, new TL.InputMessage[] { new TL.InputMessageID { id = messageId } });
+            
+            if (messagesBase is TL.Messages_Messages messages && messages.messages.Length > 0)
+            {
+                var msg = messages.messages[0] as TL.Message;
+                if (msg?.media is TL.MessageMediaDocument mediaDoc && mediaDoc.document is TL.Document document)
+                {
+                    return document;
+                }
+            }
+            else if (messagesBase is TL.Messages_ChannelMessages channelMessages && channelMessages.messages.Length > 0)
+            {
+                var msg = channelMessages.messages[0] as TL.Message;
+                if (msg?.media is TL.MessageMediaDocument mediaDoc && mediaDoc.document is TL.Document document)
+                {
+                    return document;
+                }
+            }
+            return null;
+        }
+
         /// <summary>
-        /// Потоковое скачивание части файла (HTTP 206) с пулом буферов.
+        /// Потоковое скачивание части файла (HTTP 206) из Telegram с использованием локального дискового кэша.
         /// </summary>
         public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length)
         {
             await EnsureFloodWaitDelayAsync();
 
-            byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
-            try
+            if (_client == null || !IsAuthorized)
+                throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
+
+            // Путь к папке кэша
+            string cacheDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_ReadCache");
+            Directory.CreateDirectory(cacheDir);
+            string cacheFilePath = Path.Combine(cacheDir, $"{messageId}.bin");
+
+            // Если файла нет в кэше, скачиваем его целиком один раз из Telegram
+            if (!File.Exists(cacheFilePath))
             {
-                long remaining = length;
-                while (remaining > 0)
+                AppLogger.Info("TelegramService", $"Файл для сообщения ID {messageId} отсутствует в кэше. Скачивание из Telegram...");
+
+                var document = await GetDocumentFromMessageAsync(messageId);
+                if (document == null)
                 {
-                    int toWrite = (int)Math.Min(buffer.Length, remaining);
-                    // Заполняем тестовыми или реальными данными
-                    await destination.WriteAsync(buffer, 0, toWrite);
-                    remaining -= toWrite;
+                    throw new FileNotFoundException($"Не удалось найти медиа-документ для сообщения ID {messageId} в Telegram.");
+                }
+
+                // Скачиваем во временный файл, а затем переименовываем, чтобы избежать повреждения кэша при обрыве
+                string tempFilePath = cacheFilePath + ".tmp";
+                try
+                {
+                    using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        await _client.DownloadFileAsync(document, fs);
+                    }
+                    if (File.Exists(cacheFilePath)) File.Delete(cacheFilePath);
+                    File.Move(tempFilePath, cacheFilePath);
+                    AppLogger.Info("TelegramService", $"Файл для сообщения ID {messageId} успешно сохранен в локальный кэш.");
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Error("TelegramService", $"Ошибка при скачивании файла из Telegram: {ex.Message}", ex);
+                    try { File.Delete(tempFilePath); } catch { }
+                    throw;
                 }
             }
-            finally
+
+            // Отдаем запрошенную часть файла Проводнику напрямую из быстрого локального кэша
+            using (var fs = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
-                System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                fs.Seek(offset, SeekOrigin.Begin);
+                byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
+                try
+                {
+                    long remaining = length;
+                    while (remaining > 0)
+                    {
+                        int toRead = (int)Math.Min(buffer.Length, remaining);
+                        int read = await fs.ReadAsync(buffer, 0, toRead);
+                        if (read <= 0) break;
+
+                        await destination.WriteAsync(buffer, 0, read);
+                        remaining -= read;
+                    }
+                }
+                finally
+                {
+                    System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                }
             }
         }
 
