@@ -242,7 +242,17 @@ namespace TelegramWebDAV.Database
                         {
                             updateCmd.Transaction = transaction;
                             // Имя в корзине делаем с пометкой версии, чтобы избежать коллизий
-                            string trashName = $"{existingNode.Name}_v{existingNode.Version}";
+                            string trashName;
+                            if (existingNode.IsDir)
+                            {
+                                trashName = $"{existingNode.Name}_v{existingNode.Version}";
+                            }
+                            else
+                            {
+                                string ext = System.IO.Path.GetExtension(existingNode.Name);
+                                string nameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(existingNode.Name);
+                                trashName = $"{nameWithoutExt}_v{existingNode.Version}{ext}";
+                            }
                             updateCmd.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashId, name = @trashName WHERE id = @nodeId;";
                             updateCmd.Parameters.AddWithValue("@trashId", trashFolder.Id);
                             updateCmd.Parameters.AddWithValue("@trashName", trashName);
