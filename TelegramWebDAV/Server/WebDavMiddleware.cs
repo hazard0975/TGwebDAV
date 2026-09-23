@@ -282,18 +282,37 @@ namespace TelegramWebDAV.Server
                 {
                     // Проверяем, является ли загружаемый файл аудио
                     AudioMetadataResult? audioMeta = null;
+                    Stream uploadStream = context.Request.InputStream;
+                    long uploadLength = contentLength;
+
+                    // Для безопасного чтения тегов без порчи сетевого потока,
+                    // аудиофайлы (они маленькие) предварительно буферизуем в MemoryStream.
                     if (AudioMetadataExtractor.IsAudioFile(name))
                     {
-                        audioMeta = AudioMetadataExtractor.ExtractFromStream(context.Request.InputStream, name);
+                        var ms = new MemoryStream();
+                        await context.Request.InputStream.CopyToAsync(ms);
+                        ms.Position = 0;
+
+                        audioMeta = AudioMetadataExtractor.ExtractFromStream(ms, name);
+                        ms.Position = 0; // Перематываем на начало перед загрузкой в Telegram
+
+                        uploadStream = ms;
+                        uploadLength = ms.Length;
                     }
 
-                    // Стандартный монолитный PUT от обычного Проводника Windows
-                    int tgMessageId = await telegramService.UploadFileAsync(context.Request.InputStream, name);
+                    // Стандартный монолитный PUT от обычного Проводника Windows.
+                    // Если это большой файл, он транслируется в Telegram напрямую из сети без кэширования на жесткий диск!
+                    int tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
                     
                     // Записываем инфу в базу с метаданными
                     repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta);
 
                     context.Response.StatusCode = (int)HttpStatusCode.Created;
+
+                    if (uploadStream != context.Request.InputStream)
+                    {
+                        try { uploadStream.Dispose(); } catch { }
+                    }
                 }
             }
             catch (Exception ex)

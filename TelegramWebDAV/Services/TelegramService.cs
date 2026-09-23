@@ -441,7 +441,7 @@ namespace TelegramWebDAV.Services
         /// Потоковая загрузка файла в приватный канал-хранилище через WTelegramClient.
         /// Возвращает реальный ID сообщения из Telegram.
         /// </summary>
-        public async Task<int> UploadFileAsync(Stream source, string fileName)
+        public async Task<int> UploadFileAsync(Stream source, string fileName, long length = -1)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -451,43 +451,18 @@ namespace TelegramWebDAV.Services
             var peer = await GetStoragePeerAsync();
 
             Stream uploadStream = source;
-            string? tempFilePath = null;
+
+            // Если поток не поддерживает Seek (например, HttpListenerInputStream от WebDAV PUT)
+            // и нам передан точный размер из Content-Length заголовка, оборачиваем его в StreamWithLength.
+            // Это позволяет WTelegramClient транслировать сетевой поток «на лету» без записи файла на диск!
+            if (length > 0 && (!source.CanSeek || GetStreamLengthSafe(source) <= 0))
+            {
+                AppLogger.Info("TelegramService", $"Трансляция файла '{fileName}' напрямую из сети в Telegram (Размер: {length} байт)...");
+                uploadStream = new StreamWithLength(source, length);
+            }
 
             try
             {
-                // Если поток не поддерживает Seek (например, HttpListenerInputStream от WebDAV PUT),
-                // буферизуем его, чтобы WTelegramClient мог корректно разбить его на чанки MTProto.
-                if (!source.CanSeek)
-                {
-                    AppLogger.Info("TelegramService", $"Поток не поддерживает Seek. Буферизация '{fileName}'...");
-                    
-                    long length = -1;
-                    try { length = source.Length; } catch { }
-
-                    // Если размер небольшой (до 10 МБ), буферизуем в MemoryStream для быстродействия
-                    if (length > 0 && length < 10 * 1024 * 1024)
-                    {
-                        var ms = new MemoryStream();
-                        await source.CopyToAsync(ms);
-                        ms.Position = 0;
-                        uploadStream = ms;
-                    }
-                    else
-                    {
-                        // Для больших файлов или при неизвестной длине пишем на диск, чтобы сохранить RAM
-                        string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Buffer");
-                        Directory.CreateDirectory(tempDir);
-                        tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{fileName}");
-                        
-                        using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                        {
-                            await source.CopyToAsync(fs);
-                        }
-                        
-                        uploadStream = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    }
-                }
-
                 AppLogger.Info("TelegramService", $"Загрузка файла '{fileName}' в Telegram...");
                 var inputFile = await _client.UploadFileAsync(uploadStream, fileName);
 
@@ -505,15 +480,22 @@ namespace TelegramWebDAV.Services
             }
             finally
             {
-                if (tempFilePath != null)
-                {
-                    try { uploadStream.Dispose(); } catch { }
-                    try { File.Delete(tempFilePath); } catch { }
-                }
-                else if (uploadStream != source)
+                if (uploadStream != source)
                 {
                     try { uploadStream.Dispose(); } catch { }
                 }
+            }
+        }
+
+        private long GetStreamLengthSafe(Stream stream)
+        {
+            try
+            {
+                return stream.Length;
+            }
+            catch
+            {
+                return -1;
             }
         }
 
@@ -551,6 +533,64 @@ namespace TelegramWebDAV.Services
             }
             catch { }
             _floodLock?.Dispose();
+        }
+    }
+
+    /// <summary>
+    /// Вспомогательный класс-обертка для прямого стриминга неперематываемых сетевых потоков (например, HttpListenerInputStream),
+    /// сообщающий библиотеке WTelegramClient точный размер Length до начала чтения байтов.
+    /// </summary>
+    public class StreamWithLength : Stream
+    {
+        private readonly Stream _baseStream;
+        private readonly long _length;
+        private long _position;
+
+        public StreamWithLength(Stream baseStream, long length)
+        {
+            _baseStream = baseStream ?? throw new ArgumentNullException(nameof(baseStream));
+            _length = length;
+            _position = 0;
+        }
+
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
+        public override long Length => _length;
+
+        public override long Position
+        {
+            get => _position;
+            set => throw new NotSupportedException("Сетевой поток не поддерживает изменение позиции.");
+        }
+
+        public override void Flush() => _baseStream.Flush();
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
+            int read = _baseStream.Read(buffer, offset, count);
+            _position += read;
+            return read;
+        }
+
+        public override async Task<int> ReadAsync(byte[] buffer, int offset, int count, System.Threading.CancellationToken cancellationToken)
+        {
+            int read = await _baseStream.ReadAsync(buffer, offset, count, cancellationToken);
+            _position += read;
+            return read;
+        }
+
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException("Сетевой поток не поддерживает Seek.");
+        public override void SetLength(long value) => throw new NotSupportedException("Сетевой поток не поддерживает изменение длины.");
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException("Сетевой поток не поддерживает запись.");
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _baseStream.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }
