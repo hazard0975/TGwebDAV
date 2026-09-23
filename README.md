@@ -104,11 +104,12 @@
 * Буферизация через `ArrayPool<byte>.Shared` (Zero-allocation streaming).
 * Среднее потребление RAM сервисом: **~20–35 МБ**.
 
-### 7. Непрерывная интеграция и доставка (GitLab CI/CD)
-* Конфигурация в файле `.gitlab-ci.yml`.
-* Автоматическая сборка под Windows x64 при каждом пуше в основную ветку.
-* Инкремент версии на каждый пуш: `1.0.${CI_PIPELINE_IID}` (1.0.1, 1.0.2...).
-* Публикация артефакта в GitLab Generic Package Registry и автоматическое создание официального GitLab Release с тегом `v1.0.${CI_PIPELINE_IID}`.
+### 7. Непрерывная интеграция и релизы (GitHub Actions)
+* Конфигурация в файле `.github/workflows/release.yml`.
+* Автоматическая сборка под **Windows x64** на раннере `windows-latest` при каждом пуше в ветки `main` / `master`.
+* Автоматический инкремент версии на каждый пуш: `1.0.${{ github.run_number }}` (1.0.1, 1.0.2...).
+* **Self-Contained Single File**: Исполняемый файл компилируется со встроенным рантаймом (`--self-contained true -p:PublishSingleFile=true`) — работает на любой Windows 10/11 «из коробки» без установки .NET.
+* Автоматическая публикация в **GitHub Releases** с тегом `v1.0.${{ github.run_number }}` (архив `.zip` и прямой `.exe`).
 
 ---
 
