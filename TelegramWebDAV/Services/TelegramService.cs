@@ -162,21 +162,36 @@ namespace TelegramWebDAV.Services
                 return;
             }
 
+            string sessionPath = _currentSettings.Telegram.SessionPath;
+            if (!File.Exists(sessionPath))
+            {
+                Console.WriteLine("[TelegramService] Файл сессии не найден. Ожидается ввод номера телефона пользователем.");
+                IsAuthorized = false;
+                CurrentStep = AuthStep.NeedsPhone;
+                LastError = null;
+                try { _client?.Dispose(); } catch { }
+                _client = null;
+                return;
+            }
+
             try
             {
                 InitClient();
                 if (_client == null) return;
 
-                // Попытка войти по существующей сессии без аргументов
+                // Попытка войти по существующей сессии на диске
                 string? result = await _client.Login(null);
                 HandleWTelegramResult(result);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[TelegramService] Ошибка подключения: {ex.Message}");
+                Console.WriteLine($"[TelegramService] Ошибка подключения существующей сессии: {ex.Message}");
                 LastError = ex.Message;
                 IsAuthorized = false;
                 CurrentStep = AuthStep.NeedsPhone;
+                // Сбрасываем экземпляр клиента, чтобы не оставлять его в сбойном (Faulted) состоянии
+                try { _client?.Dispose(); } catch { }
+                _client = null;
             }
         }
 
@@ -260,7 +275,14 @@ namespace TelegramWebDAV.Services
                 throw new InvalidOperationException(LastError);
             }
 
-            InitClient();
+            // На первом шаге (NeedsPhone) или если клиент отсутствует/сброшен, создаем чистый экземпляр клиента
+            if (CurrentStep == AuthStep.NeedsPhone || _client == null)
+            {
+                try { _client?.Dispose(); } catch { }
+                _client = null;
+                InitClient();
+            }
+
             if (_client == null)
                 throw new InvalidOperationException("Не удалось инициализировать Telegram Client.");
 
@@ -286,6 +308,12 @@ namespace TelegramWebDAV.Services
             {
                 Console.WriteLine($"[TelegramService] Ошибка входа: {ex.Message}");
                 LastError = ex.Message;
+                // При ошибке на шаге ввода телефона сбрасываем клиент для чистой следующей попытки
+                if (CurrentStep == AuthStep.NeedsPhone)
+                {
+                    try { _client?.Dispose(); } catch { }
+                    _client = null;
+                }
                 throw;
             }
         }

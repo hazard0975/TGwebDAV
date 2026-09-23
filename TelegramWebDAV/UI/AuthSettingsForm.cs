@@ -58,7 +58,7 @@ namespace TelegramWebDAV.UI
         private void InitializeComponents()
         {
             this.Text = "Telegram WebDAV Service - Настройки";
-            this.Size = new Size(520, 420);
+            this.Size = new Size(570, 520);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -72,6 +72,7 @@ namespace TelegramWebDAV.UI
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
                 Padding = new Padding(15),
                 AutoScroll = true
             };
@@ -137,6 +138,7 @@ namespace TelegramWebDAV.UI
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
                 Padding = new Padding(15),
                 AutoScroll = true
             };
@@ -149,31 +151,31 @@ namespace TelegramWebDAV.UI
                 Margin = new Padding(0, 0, 0, 8)
             };
 
-            var pnlApiId = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 4) };
+            var pnlApiId = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 0, 0, 4) };
             pnlApiId.Controls.Add(new Label { Text = "API ID:  ", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
             _txtApiId = new TextBox
             {
                 Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "",
-                Width = 220
+                Width = 240
             };
             pnlApiId.Controls.Add(_txtApiId);
 
-            var pnlApiHash = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 8) };
+            var pnlApiHash = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 0, 0, 8) };
             pnlApiHash.Controls.Add(new Label { Text = "API Hash:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
             _txtApiHash = new TextBox
             {
                 Text = _settings.Telegram.ApiHash ?? "",
-                Width = 220,
+                Width = 240,
                 UseSystemPasswordChar = true
             };
             pnlApiHash.Controls.Add(_txtApiHash);
 
-            var pnlChannel = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 8) };
+            var pnlChannel = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 0, 0, 8) };
             pnlChannel.Controls.Add(new Label { Text = "Имя канала:", AutoSize = true, Margin = new Padding(0, 5, 2, 0) });
             _txtChannelTitle = new TextBox
             {
                 Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle,
-                Width = 220
+                Width = 240
             };
             pnlChannel.Controls.Add(_txtChannelTitle);
 
@@ -190,7 +192,7 @@ namespace TelegramWebDAV.UI
             {
                 BorderStyle = BorderStyle.Fixed3D,
                 Height = 2,
-                Width = 460,
+                Width = 510,
                 Margin = new Padding(0, 0, 0, 15)
             };
 
@@ -209,10 +211,10 @@ namespace TelegramWebDAV.UI
                 Margin = new Padding(0, 0, 0, 5)
             };
 
-            _txtInput = new TextBox { Width = 300, Margin = new Padding(0, 0, 0, 10) };
+            _txtInput = new TextBox { Width = 320, Margin = new Padding(0, 0, 0, 10) };
 
-            var pnlTgButtons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight };
-            _btnAction = new Button { Text = "Отправить", AutoSize = true, Padding = new Padding(10, 5, 10, 5) };
+            var pnlTgButtons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 5, 0, 10) };
+            _btnAction = new Button { Text = "Отправить", AutoSize = true, Padding = new Padding(10, 5, 10, 5), Margin = new Padding(0, 0, 10, 0) };
             _btnAction.Click += async (s, e) => await HandleTelegramActionAsync();
 
             _btnLogout = new Button { Text = "Выйти из аккаунта", AutoSize = true, Padding = new Padding(10, 5, 10, 5), ForeColor = Color.DarkRed };
@@ -231,7 +233,9 @@ namespace TelegramWebDAV.UI
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
-                Padding = new Padding(15)
+                WrapContents = false,
+                Padding = new Padding(15),
+                AutoScroll = true
             };
 
             _lblRegStatus = new Label
