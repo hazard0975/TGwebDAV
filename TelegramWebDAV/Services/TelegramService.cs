@@ -424,7 +424,7 @@ namespace TelegramWebDAV.Services
                 {
                     using (var completeStream = File.OpenRead(tempFilePath))
                     {
-                        int messageId = await UploadFileAsync(completeStream, fileName);
+                        int? messageId = await UploadFileAsync(completeStream, fileName);
                         return messageId;
                     }
                 }
@@ -439,9 +439,9 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Потоковая загрузка файла в приватный канал-хранилище через WTelegramClient.
-        /// Возвращает реальный ID сообщения из Telegram.
+        /// Возвращает реальный ID сообщения из Telegram, либо null если файл пустой.
         /// </summary>
-        public async Task<int> UploadFileAsync(Stream source, string fileName, long length = -1)
+        public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -470,6 +470,11 @@ namespace TelegramWebDAV.Services
                         ms.Position = 0;
                         uploadStream = ms;
                     }
+                    else if (actualLength == 0)
+                    {
+                        // Пустой файл
+                        uploadStream = new MemoryStream();
+                    }
                     else
                     {
                         // Для больших файлов (более 10 МБ или неизвестного размера) пишем во временный файл на диске, чтобы сохранить RAM
@@ -485,6 +490,13 @@ namespace TelegramWebDAV.Services
                         
                         uploadStream = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     }
+                }
+
+                // Предотвращаем отправку файлов размером 0 байт в Telegram (защита от FILE_PART_0_MISSING)
+                if (uploadStream.Length == 0)
+                {
+                    AppLogger.Info("TelegramService", $"Файл '{fileName}' пустой (0 байт). Регистрация в БД без загрузки в Telegram.");
+                    return null;
                 }
 
                 AppLogger.Info("TelegramService", $"Загрузка файла '{fileName}' в Telegram...");

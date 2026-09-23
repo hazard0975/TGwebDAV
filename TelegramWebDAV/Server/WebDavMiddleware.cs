@@ -328,7 +328,7 @@ namespace TelegramWebDAV.Server
                         // Стандартный монолитный PUT от обычного Проводника Windows.
                         // Если это НЕ аудиофайл, то внутри UploadFileAsync сработает его собственная
                         // надежная гибридная буферизация (RAM для мелких, диск для крупных).
-                        int tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
+                        int? tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
                         
                         // Записываем инфу в базу с метаданными
                         repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta);
