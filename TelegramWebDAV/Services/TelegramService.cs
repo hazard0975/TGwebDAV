@@ -207,6 +207,7 @@ namespace TelegramWebDAV.Services
                     case "api_id": return _currentSettings.Telegram.ApiId.ToString();
                     case "api_hash": return _currentSettings.Telegram.ApiHash;
                     case "session_pathname": return sessionPath;
+                    case "phone_number": return _currentSettings.Telegram.PhoneNumber;
                     default: return null;
                 }
             });
@@ -234,6 +235,16 @@ namespace TelegramWebDAV.Services
                         IsPremium = u.flags.HasFlag(TL.User.Flags.premium)
                     };
                     AppLogger.Info("TelegramService", $"Успешная авторизация пользователя: {u.first_name} (ID: {u.ID})");
+
+                    if (!string.IsNullOrEmpty(u.phone))
+                    {
+                        string phoneFormatted = u.phone.StartsWith("+") ? u.phone : "+" + u.phone;
+                        if (_currentSettings.Telegram.PhoneNumber != phoneFormatted)
+                        {
+                            _currentSettings.Telegram.PhoneNumber = phoneFormatted;
+                            _configManager.Save(_currentSettings);
+                        }
+                    }
                 }
             }
             else if (result == "verification_code")
@@ -278,6 +289,14 @@ namespace TelegramWebDAV.Services
             // На первом шаге (NeedsPhone) или если клиент отсутствует/сброшен, создаем чистый экземпляр клиента
             if (CurrentStep == AuthStep.NeedsPhone || _client == null)
             {
+                string phoneFormatted = input.Trim();
+                if (!phoneFormatted.StartsWith("+") && char.IsDigit(phoneFormatted[0]))
+                {
+                    phoneFormatted = "+" + phoneFormatted;
+                }
+                _currentSettings.Telegram.PhoneNumber = phoneFormatted;
+                _configManager.Save(_currentSettings);
+
                 try { _client?.Dispose(); } catch { }
                 _client = null;
                 InitClient();
@@ -338,6 +357,9 @@ namespace TelegramWebDAV.Services
                 }
                 catch { }
             }
+            _currentSettings.Telegram.PhoneNumber = null;
+            _configManager.Save(_currentSettings);
+
             IsAuthorized = false;
             CurrentStep = AuthStep.NeedsPhone;
             CurrentUser = null;
