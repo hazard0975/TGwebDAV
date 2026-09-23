@@ -205,6 +205,17 @@ namespace TelegramWebDAV.Server
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
+
+            // Прямая запись/загрузка файлов в корзину запрещена
+            if (path.Equals("/.Trash", StringComparison.OrdinalIgnoreCase) || 
+                path.StartsWith("/.Trash/", StringComparison.OrdinalIgnoreCase))
+            {
+                AppLogger.Warn("WebDAV", $"Попытка прямой записи в корзину отклонена: {path}");
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                context.Response.OutputStream.Close();
+                return;
+            }
+
             if (!GetParentPathAndName(path, out string parentPath, out string name))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Conflict;
@@ -215,6 +226,14 @@ namespace TelegramWebDAV.Server
             if (parentNode == null)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                return;
+            }
+
+            if (repository.IsNodeInTrash(parentNode.Id))
+            {
+                AppLogger.Warn("WebDAV", $"Попытка записи файла в подкаталог корзины отклонена: {path}");
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                context.Response.OutputStream.Close();
                 return;
             }
 
@@ -364,6 +383,16 @@ namespace TelegramWebDAV.Server
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
+
+            // Создание папок напрямую в корзине запрещено
+            if (path.Equals("/.Trash", StringComparison.OrdinalIgnoreCase) || 
+                path.StartsWith("/.Trash/", StringComparison.OrdinalIgnoreCase))
+            {
+                AppLogger.Warn("WebDAV", $"Попытка создания папки в корзине отклонена: {path}");
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return Task.CompletedTask;
+            }
+
             if (!GetParentPathAndName(path, out string parentPath, out string name))
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Conflict; // Нельзя создать корень
@@ -374,6 +403,13 @@ namespace TelegramWebDAV.Server
             if (parentNode == null)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Conflict; // Нет родительской папки
+                return Task.CompletedTask;
+            }
+
+            if (repository.IsNodeInTrash(parentNode.Id))
+            {
+                AppLogger.Warn("WebDAV", $"Попытка создания папки внутри подкаталога корзины отклонена: {path}");
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 return Task.CompletedTask;
             }
 
