@@ -162,6 +162,7 @@ namespace TelegramWebDAV.UI
             _notifyIcon.Visible = false;
             _notifyIcon.Dispose();
             _webDavServer?.Stop();
+            AppLogger.Shutdown();
             Application.Exit();
         }
     }

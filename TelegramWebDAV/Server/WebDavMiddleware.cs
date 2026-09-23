@@ -298,7 +298,7 @@ namespace TelegramWebDAV.Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[WebDAV] Ошибка загрузки файла {name}: {ex.Message}");
+                AppLogger.Error("WebDAV", $"Ошибка загрузки файла {name}: {ex.Message}", ex);
                 // В случае ошибки возвращаем 500. Проводник или софт бэкапа перехватят и повторят
                 context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }

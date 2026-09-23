@@ -103,17 +103,17 @@ namespace TelegramWebDAV.Services
                         savedChat is TL.Channel sc)
                     {
                         _storagePeer = sc.ToInputPeer();
-                        Console.WriteLine($"[TelegramService] Подключен существующий приватный канал-хранилище: {sc.Title} (ID: {sc.ID})");
+                        AppLogger.Info("TelegramService", $"Подключен существующий приватный канал-хранилище: {sc.Title} (ID: {sc.ID})");
                         return _storagePeer;
                     }
                     else
                     {
-                        Console.WriteLine($"[TelegramService] Канал с сохраненным ID {_currentSettings.Telegram.StorageChannelId} не найден в диалогах пользователя. Создаем новый.");
+                        AppLogger.Warn("TelegramService", $"Канал с сохраненным ID {_currentSettings.Telegram.StorageChannelId} не найден в диалогах пользователя. Создаем новый.");
                     }
                 }
 
                 // 2. Если ID канала нет в конфиге (StorageChannelId == 0), создаем новый приватный канал
-                Console.WriteLine($"[TelegramService] ID канала-хранилища не задан. Создание нового приватного канала '{targetTitle}'...");
+                AppLogger.Info("TelegramService", $"ID канала-хранилища не задан. Создание нового приватного канала '{targetTitle}'...");
                 var createReq = new TL.Methods.Channels_CreateChannel
                 {
                     flags = TL.Methods.Channels_CreateChannel.Flags.broadcast,
@@ -132,7 +132,7 @@ namespace TelegramWebDAV.Services
                             _storagePeer = newCh.ToInputPeer();
                             _currentSettings.Telegram.StorageChannelId = newCh.ID;
                             _configManager.Save(_currentSettings);
-                            Console.WriteLine($"[TelegramService] Создан новый приватный канал '{newCh.Title}' (ID: {newCh.ID}). ID сохранен в конфиг.");
+                            AppLogger.Info("TelegramService", $"Создан новый приватный канал '{newCh.Title}' (ID: {newCh.ID}). ID сохранен в конфиг.");
                             return _storagePeer;
                         }
                     }
@@ -151,7 +151,7 @@ namespace TelegramWebDAV.Services
         /// </summary>
         public async Task ConnectAsync()
         {
-            Console.WriteLine("[TelegramService] Проверка сессии и подключение к Telegram...");
+            AppLogger.Info("TelegramService", "Проверка сессии и подключение к Telegram...");
             _currentSettings = _configManager.Load();
             
             if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
@@ -165,7 +165,7 @@ namespace TelegramWebDAV.Services
             string sessionPath = _currentSettings.Telegram.SessionPath;
             if (!File.Exists(sessionPath))
             {
-                Console.WriteLine("[TelegramService] Файл сессии не найден. Ожидается ввод номера телефона пользователем.");
+                AppLogger.Info("TelegramService", "Файл сессии не найден. Ожидается ввод номера телефона пользователем.");
                 IsAuthorized = false;
                 CurrentStep = AuthStep.NeedsPhone;
                 LastError = null;
@@ -185,7 +185,7 @@ namespace TelegramWebDAV.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[TelegramService] Ошибка подключения существующей сессии: {ex.Message}");
+                AppLogger.Error("TelegramService", $"Ошибка подключения существующей сессии: {ex.Message}", ex);
                 LastError = ex.Message;
                 IsAuthorized = false;
                 CurrentStep = AuthStep.NeedsPhone;
@@ -233,7 +233,7 @@ namespace TelegramWebDAV.Services
                         Phone = u.phone,
                         IsPremium = u.flags.HasFlag(TL.User.Flags.premium)
                     };
-                    Console.WriteLine($"[TelegramService] Успешная авторизация пользователя: {u.first_name} (ID: {u.ID})");
+                    AppLogger.Info("TelegramService", $"Успешная авторизация пользователя: {u.first_name} (ID: {u.ID})");
                 }
             }
             else if (result == "verification_code")
@@ -241,14 +241,14 @@ namespace TelegramWebDAV.Services
                 IsAuthorized = false;
                 CurrentStep = AuthStep.NeedsCode;
                 LastError = null;
-                Console.WriteLine("[TelegramService] Код подтверждения отправлен в Telegram.");
+                AppLogger.Info("TelegramService", "Код подтверждения отправлен в Telegram.");
             }
             else if (result == "password")
             {
                 IsAuthorized = false;
                 CurrentStep = AuthStep.Needs2FA;
                 LastError = null;
-                Console.WriteLine("[TelegramService] Требуется ввод двухфакторного (2FA) облачного пароля.");
+                AppLogger.Info("TelegramService", "Требуется ввод двухфакторного (2FA) облачного пароля.");
             }
             else
             {
@@ -286,7 +286,7 @@ namespace TelegramWebDAV.Services
             if (_client == null)
                 throw new InvalidOperationException("Не удалось инициализировать Telegram Client.");
 
-            Console.WriteLine($"[TelegramService] Отправка данных на шаге {CurrentStep} в Telegram API...");
+            AppLogger.Info("TelegramService", $"Отправка данных на шаге {CurrentStep} в Telegram API...");
 
             try
             {
@@ -296,7 +296,7 @@ namespace TelegramWebDAV.Services
             }
             catch (TL.RpcException rpcEx)
             {
-                Console.WriteLine($"[TelegramService] RPC Ошибка: {rpcEx.Message} (Код: {rpcEx.Code})");
+                AppLogger.Error("TelegramService", $"RPC Ошибка: {rpcEx.Message} (Код: {rpcEx.Code})", rpcEx);
                 LastError = rpcEx.Message;
                 if (rpcEx.Code == 420) // FLOOD_WAIT_X
                 {
@@ -306,7 +306,7 @@ namespace TelegramWebDAV.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[TelegramService] Ошибка входа: {ex.Message}");
+                AppLogger.Error("TelegramService", $"Ошибка входа: {ex.Message}", ex);
                 LastError = ex.Message;
                 // При ошибке на шаге ввода телефона сбрасываем клиент для чистой следующей попытки
                 if (CurrentStep == AuthStep.NeedsPhone)
@@ -341,7 +341,7 @@ namespace TelegramWebDAV.Services
             IsAuthorized = false;
             CurrentStep = AuthStep.NeedsPhone;
             CurrentUser = null;
-            Console.WriteLine("[TelegramService] Сессия сброшена.");
+            AppLogger.Info("TelegramService", "Сессия сброшена.");
         }
 
         /// <summary>
@@ -352,7 +352,7 @@ namespace TelegramWebDAV.Services
             if (_floodWaitUntil > DateTime.UtcNow)
             {
                 var delay = _floodWaitUntil - DateTime.UtcNow;
-                Console.WriteLine($"[TelegramService] FLOOD_WAIT активен: задержка потока на {delay.TotalSeconds:F1} сек...");
+                AppLogger.Warn("TelegramService", $"FLOOD_WAIT активен: задержка потока на {delay.TotalSeconds:F1} сек...");
                 await Task.Delay(delay);
             }
         }
@@ -360,7 +360,7 @@ namespace TelegramWebDAV.Services
         public void TriggerFloodWait(int seconds)
         {
             _floodWaitUntil = DateTime.UtcNow.AddSeconds(seconds);
-            Console.WriteLine($"[TelegramService] Получен FLOOD_WAIT на {seconds} сек от серверов Telegram.");
+            AppLogger.Warn("TelegramService", $"Получен FLOOD_WAIT на {seconds} сек от серверов Telegram.");
         }
 
         /// <summary>
@@ -397,7 +397,7 @@ namespace TelegramWebDAV.Services
             // Если чанк был последним и файл полностью собран на диске
             if (offset + uploadedBytes >= totalSize)
             {
-                Console.WriteLine($"[TelegramService] Все чанки файла '{fileName}' получены. Загрузка в канал Telegram...");
+                AppLogger.Info("TelegramService", $"Все чанки файла '{fileName}' получены. Загрузка в канал Telegram...");
                 try
                 {
                     using (var completeStream = File.OpenRead(tempFilePath))
@@ -428,19 +428,19 @@ namespace TelegramWebDAV.Services
 
             var peer = await GetStoragePeerAsync();
 
-            Console.WriteLine($"[TelegramService] Загрузка файла '{fileName}' в Telegram...");
+            AppLogger.Info("TelegramService", $"Загрузка файла '{fileName}' в Telegram...");
             var inputFile = await _client.UploadFileAsync(source, fileName);
 
-            Console.WriteLine($"[TelegramService] Файл '{fileName}' загружен в MTProto, отправка медиа в канал...");
+            AppLogger.Info("TelegramService", $"Файл '{fileName}' загружен в MTProto, отправка медиа в канал...");
             var message = await _client.SendMediaAsync(peer, fileName, inputFile);
 
             if (message != null)
             {
-                Console.WriteLine($"[TelegramService] Файл успешно отправлен в канал. Message ID: {message.ID}");
+                AppLogger.Info("TelegramService", $"Файл успешно отправлен в канал. Message ID: {message.ID}");
                 return message.ID;
             }
 
-            Console.WriteLine("[TelegramService] Сообщение отправлено, но ID не определен, возвращаем 1.");
+            AppLogger.Warn("TelegramService", "Сообщение отправлено, но ID не определен, возвращаем 1.");
             return 1;
         }
 

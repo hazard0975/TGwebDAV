@@ -73,12 +73,12 @@ namespace TelegramWebDAV.Utils
 
             if (result == NO_ERROR || result == ERROR_ALREADY_ASSIGNED || result == ERROR_DEVICE_ALREADY_REMEMBERED)
             {
-                Console.WriteLine($"[NetworkDriveMounter] Диск {formattedLetter} успешно смонтирован на {webDavUrl}");
+                Services.AppLogger.Info("NetworkDriveMounter", $"Диск {formattedLetter} успешно смонтирован на {webDavUrl}");
                 return true;
             }
 
             errorMessage = $"Код ошибки WinAPI: {result}";
-            Console.WriteLine($"[NetworkDriveMounter] Ошибка монтирования диска {formattedLetter}: {errorMessage}");
+            Services.AppLogger.Warn("NetworkDriveMounter", $"Ошибка монтирования диска {formattedLetter}: {errorMessage}");
             return false;
         }
 

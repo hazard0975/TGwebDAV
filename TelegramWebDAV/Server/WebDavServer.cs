@@ -54,15 +54,14 @@ namespace TelegramWebDAV.Server
             {
                 _listener.Start();
                 _isRunning = true;
-                Console.WriteLine($"WebDAV Сервер запущен на http://localhost:{_port}/");
+                AppLogger.Info("WebDAV", $"WebDAV Сервер запущен на http://localhost:{_port}/");
                 
                 // Запускаем фоновый цикл обработки входящих запросов
                 Task.Run(ListenLoopAsync);
             }
             catch (HttpListenerException ex)
             {
-                Console.WriteLine($"Ошибка запуска сервера: {ex.Message}");
-                Console.WriteLine("Возможно, требуется запуск от имени администратора для резервирования порта.");
+                AppLogger.Error("WebDAV", $"Ошибка запуска сервера: {ex.Message}. Возможно, требуется запуск от имени администратора для резервирования порта.");
             }
         }
 
@@ -70,7 +69,7 @@ namespace TelegramWebDAV.Server
         {
             _isRunning = false;
             _listener.Stop();
-            Console.WriteLine("WebDAV Сервер остановлен.");
+            AppLogger.Info("WebDAV", "WebDAV Сервер остановлен.");
         }
 
         private async Task ListenLoopAsync()
@@ -89,7 +88,7 @@ namespace TelegramWebDAV.Server
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Неожиданная ошибка в цикле WebDAV: {ex.Message}");
+                    AppLogger.Error("WebDAV", $"Неожиданная ошибка в цикле WebDAV: {ex.Message}", ex);
                 }
             }
         }
@@ -100,7 +99,7 @@ namespace TelegramWebDAV.Server
             var response = context.Response;
 
             string localPath = request.Url?.LocalPath ?? "/";
-            Console.WriteLine($"[{request.HttpMethod}] {localPath}");
+            AppLogger.Debug("WebDAV", $"[{request.HttpMethod}] {localPath}");
 
             try
             {
@@ -142,7 +141,7 @@ namespace TelegramWebDAV.Server
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Ошибка обработки запроса: {ex.Message}");
+                AppLogger.Error("WebDAV", $"Ошибка обработки запроса [{request.HttpMethod}] {localPath}: {ex.Message}", ex);
                 response.StatusCode = (int)HttpStatusCode.InternalServerError;
             }
             finally

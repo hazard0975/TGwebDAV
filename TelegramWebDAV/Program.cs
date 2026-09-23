@@ -24,15 +24,18 @@ namespace TelegramWebDAV
             Console.WriteLine("=================================================");
             Console.WriteLine(" Telegram WebDAV & Network Drive Service v2.0");
             Console.WriteLine("=================================================");
+            AppLogger.Info("Program", "Запуск службы Telegram WebDAV & Network Drive Service v2.0");
 
             // 1. Инициализация конфигурации (appsettings.json)
             var configManager = new ConfigManager();
             var settings = configManager.Load();
+            AppLogger.Info("Program", $"Конфигурация загружена. Порт: {settings.Server.Port}, Диск: {settings.Server.DriveLetter}");
 
             // 2. Инициализация базы данных SQLite с нуля (base.db + WAL)
             var dbManager = new DatabaseManager(settings.Database.Path);
             dbManager.InitializeDatabase();
             var repository = new NodeRepository(dbManager);
+            AppLogger.Info("Program", $"База данных SQLite инициализирована по пути: {settings.Database.Path}");
 
             // 3. Инициализация сервиса Telegram (WTelegramClient)
             var telegramService = new TelegramService(configManager);
@@ -43,10 +46,12 @@ namespace TelegramWebDAV
             if (settings.Server.WebDavEnabled)
             {
                 webDavServer.Start();
+                AppLogger.Info("Program", $"Встроенный WebDAV сервер запущен: http://localhost:{settings.Server.Port}/");
             }
 
             // 5. Запуск приложения в системном трее Windows
             Application.Run(new TrayContext(configManager, repository, telegramService, webDavServer));
+            AppLogger.Shutdown();
         }
     }
 }
