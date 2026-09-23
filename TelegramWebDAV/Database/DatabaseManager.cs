@@ -63,15 +63,67 @@ namespace TelegramWebDAV.Database
             }
         }
 
+        private const string EmbeddedFallbackSchema = @"
+PRAGMA journal_mode=WAL;
+
+CREATE TABLE IF NOT EXISTS nodes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    parent_id INTEGER NULL,
+    name TEXT NOT NULL,
+    is_dir INTEGER NOT NULL,
+    tg_message_id INTEGER NULL,
+    size INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    title TEXT NULL,
+    artist TEXT NULL,
+    album TEXT NULL,
+    duration INTEGER DEFAULT 0,
+    cover_mime TEXT NULL,
+    header_cache_bytes BLOB NULL,
+    version_count INTEGER DEFAULT 1,
+    FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS versions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    node_id INTEGER NOT NULL,
+    version_num INTEGER NOT NULL,
+    tg_message_id INTEGER NOT NULL,
+    size INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    header_cache_bytes BLOB NULL,
+    FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS upload_progress (
+    node_id INTEGER PRIMARY KEY,
+    bytes_uploaded INTEGER DEFAULT 0,
+    total_size INTEGER DEFAULT 0,
+    temp_tg_location TEXT NULL,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_nodes_parent_id ON nodes(parent_id);
+CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
+CREATE INDEX IF NOT EXISTS idx_versions_node_id ON versions(node_id);
+";
+
         private void ApplySchema(SqliteConnection connection)
         {
+            string schemaSql;
             string schemaPath = GetSchemaFilePath();
-            if (!File.Exists(schemaPath))
+            
+            if (File.Exists(schemaPath))
             {
-                throw new FileNotFoundException($"Файл схемы базы данных Schema.sql не найден по пути: {schemaPath}");
+                schemaSql = File.ReadAllText(schemaPath);
+            }
+            else
+            {
+                schemaSql = EmbeddedFallbackSchema;
             }
 
-            string schemaSql = File.ReadAllText(schemaPath);
             var statements = schemaSql.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var rawStatement in statements)

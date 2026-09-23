@@ -20,11 +20,40 @@ namespace TelegramWebDAV
         [STAThread]
         private static async Task Main(string[] args)
         {
+            // Глобальные перехватчики неперехваченных ошибок
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+            {
+                var ex = e.ExceptionObject as Exception;
+                AppLogger.Error("Program", $"UnhandledException: {ex?.Message}", ex);
+                AppLogger.Shutdown();
+            };
+
+            Application.ThreadException += (s, e) =>
+            {
+                AppLogger.Error("Program", $"ThreadException: {e.Exception.Message}", e.Exception);
+                AppLogger.Shutdown();
+            };
+
+            AppLogger.Info("Program", "=================================================");
+            AppLogger.Info("Program", " Telegram WebDAV & Network Drive Service v2.0");
+            AppLogger.Info("Program", "=================================================");
+
             const string mutexName = @"Global\TelegramWebDAV_SingleInstance_Mutex";
-            _singleInstanceMutex = new System.Threading.Mutex(true, mutexName, out bool createdNew);
+            bool createdNew = false;
+            try
+            {
+                _singleInstanceMutex = new System.Threading.Mutex(true, mutexName, out createdNew);
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Warn("Program", $"Предупреждение при инициализации Mutex: {ex.Message}");
+                createdNew = true; // Если произошла ошибка доступа к Mutex, разрешаем запуск
+            }
 
             if (!createdNew)
             {
+                AppLogger.Warn("Program", "Обнаружен уже запущенный экземпляр службы Telegram WebDAV. Завершение работы второго процесса.");
+                AppLogger.Shutdown();
                 MessageBox.Show(
                     "Служба Telegram WebDAV уже запущенa и работает в системном трее Windows.",
                     "Telegram WebDAV Service",
@@ -37,11 +66,6 @@ namespace TelegramWebDAV
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-
-                Console.WriteLine("=================================================");
-                Console.WriteLine(" Telegram WebDAV & Network Drive Service v2.0");
-                Console.WriteLine("=================================================");
-                AppLogger.Info("Program", "Запуск службы Telegram WebDAV & Network Drive Service v2.0");
 
                 // 1. Инициализация конфигурации (appsettings.json)
                 var configManager = new ConfigManager();
@@ -68,10 +92,19 @@ namespace TelegramWebDAV
 
                 // 5. Запуск приложения в системном трее Windows
                 Application.Run(new TrayContext(configManager, repository, telegramService, webDavServer));
-                AppLogger.Shutdown();
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("Program", $"Критическая ошибка при запуске службы Telegram WebDAV: {ex.Message}", ex);
+                MessageBox.Show(
+                    $"Не удалось запустить службу Telegram WebDAV:\n\n{ex.Message}\n\nПодробности записаны в файл logs/app.log.",
+                    "Критическая ошибка запуска",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
             finally
             {
+                AppLogger.Shutdown();
                 if (_singleInstanceMutex != null)
                 {
                     try { _singleInstanceMutex.ReleaseMutex(); } catch { }
