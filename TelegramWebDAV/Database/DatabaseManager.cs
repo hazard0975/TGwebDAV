@@ -37,27 +37,7 @@ namespace TelegramWebDAV.Database
 
                 // Гарантируем наличие всех необходимых столбцов (миграция старых БД)
                 EnsureColumnsExist(connection);
-
-                // Очистка ошибочных 0-байтовых фантомов в корзине (созданных Проводником Windows до исправления)
-                CleanupCorruptedTrashPlaceholders(connection);
             }
-        }
-
-        private void CleanupCorruptedTrashPlaceholders(SqliteConnection connection)
-        {
-            try
-            {
-                using (var cmd = connection.CreateCommand())
-                {
-                    cmd.CommandText = "DELETE FROM nodes WHERE is_deleted = 1 AND size = 0 AND tg_message_id IS NULL AND is_dir = 0;";
-                    int cleaned = cmd.ExecuteNonQuery();
-                    if (cleaned > 0)
-                    {
-                        Console.WriteLine($"[DatabaseManager] Очищено {cleaned} 0-байтовых фантомных файлов из корзины.");
-                    }
-                }
-            }
-            catch { }
         }
 
         private bool HasNodesTable(SqliteConnection connection)

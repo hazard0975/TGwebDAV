@@ -38,28 +38,34 @@ namespace TelegramWebDAV.Database
 
             string[] parts = path.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             Node? currentNode = GetRootNode();
+            bool insideTrash = false;
 
             foreach (var part in parts)
             {
                 if (currentNode == null) return null;
-                
-                bool isTrash = currentNode.Name == ".Trash";
 
+                if (!insideTrash && part.Equals(".Trash", StringComparison.OrdinalIgnoreCase) && currentNode.ParentId == null)
+                {
+                    using (var connection = _dbManager.GetConnection())
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                        command.Parameters.AddWithValue("@parentId", currentNode.Id);
+                        command.Parameters.AddWithValue("@name", part);
+                        currentNode = ReadNode(command);
+                    }
+                    insideTrash = true;
+                    continue;
+                }
+
+                int expectedDeleted = insideTrash ? 1 : 0;
                 using (var connection = _dbManager.GetConnection())
                 using (var command = connection.CreateCommand())
                 {
-                    // Ищем дочерний элемент по имени. Если мы в корзине, ищем с is_deleted = 1, иначе with is_deleted = 0
-                    if (isTrash)
-                    {
-                        command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 1 LIMIT 1;";
-                    }
-                    else
-                    {
-                        command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
-                    }
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = @isDeleted LIMIT 1;";
                     command.Parameters.AddWithValue("@parentId", currentNode.Id);
                     command.Parameters.AddWithValue("@name", part);
-                    
+                    command.Parameters.AddWithValue("@isDeleted", expectedDeleted);
                     currentNode = ReadNode(command);
                 }
             }
@@ -68,12 +74,142 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Возвращает узел по ID.
+        /// </summary>
+        public Node? GetNodeById(int nodeId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM nodes WHERE id = @nodeId LIMIT 1;";
+                command.Parameters.AddWithValue("@nodeId", nodeId);
+                return ReadNode(command);
+            }
+        }
+
+        /// <summary>
+        /// Проверяет, находится ли узел (или его родительская папка) в корзине (.Trash)
+        /// </summary>
+        public bool IsNodeInTrash(int nodeId)
+        {
+            var trash = EnsureTrashFolder();
+            if (nodeId == trash.Id) return true;
+
+            using (var connection = _dbManager.GetConnection())
+            {
+                int currentId = nodeId;
+                while (currentId > 0)
+                {
+                    if (currentId == trash.Id) return true;
+                    using (var cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT parent_id, is_deleted FROM nodes WHERE id = @id LIMIT 1;";
+                        cmd.Parameters.AddWithValue("@id", currentId);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.Read()) return false;
+                            bool isDel = Convert.ToInt32(reader["is_deleted"]) == 1;
+                            if (isDel) return true;
+                            if (reader.IsDBNull(0)) return false;
+                            currentId = Convert.ToInt32(reader["parent_id"]);
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Воспроизводит (зеркалирует) иерархию родительских папок внутри корзины (.Trash)
+        /// и возвращает ID целевой папки в корзине.
+        /// </summary>
+        public int EnsureTrashHierarchyForParent(int originalParentId)
+        {
+            var root = GetRootNode();
+            if (root == null || originalParentId == root.Id)
+            {
+                return EnsureTrashFolder().Id;
+            }
+
+            if (IsNodeInTrash(originalParentId))
+            {
+                return originalParentId;
+            }
+
+            var chain = new List<string>();
+            using (var connection = _dbManager.GetConnection())
+            {
+                int currentId = originalParentId;
+                while (currentId != root.Id)
+                {
+                    using (var cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT id, parent_id, name, is_dir FROM nodes WHERE id = @id LIMIT 1;";
+                        cmd.Parameters.AddWithValue("@id", currentId);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.Read()) break;
+                            string name = reader["name"].ToString() ?? "";
+                            if (!string.IsNullOrEmpty(name))
+                            {
+                                chain.Add(name);
+                            }
+                            if (reader.IsDBNull(1)) break;
+                            currentId = Convert.ToInt32(reader["parent_id"]);
+                        }
+                    }
+                }
+            }
+
+            chain.Reverse();
+
+            var trash = EnsureTrashFolder();
+            int currentTrashParentId = trash.Id;
+
+            using (var connection = _dbManager.GetConnection())
+            {
+                foreach (var folderName in chain)
+                {
+                    int? foundId = null;
+                    using (var searchCmd = connection.CreateCommand())
+                    {
+                        searchCmd.CommandText = "SELECT id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_dir = 1 AND is_deleted = 1 LIMIT 1;";
+                        searchCmd.Parameters.AddWithValue("@parentId", currentTrashParentId);
+                        searchCmd.Parameters.AddWithValue("@name", folderName);
+                        var scalar = searchCmd.ExecuteScalar();
+                        if (scalar != null && scalar != DBNull.Value)
+                        {
+                            foundId = Convert.ToInt32(scalar);
+                        }
+                    }
+
+                    if (foundId.HasValue)
+                    {
+                        currentTrashParentId = foundId.Value;
+                    }
+                    else
+                    {
+                        using (var insertCmd = connection.CreateCommand())
+                        {
+                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, is_deleted) VALUES (@parentId, @name, 1, 1); SELECT last_insert_rowid();";
+                            insertCmd.Parameters.AddWithValue("@parentId", currentTrashParentId);
+                            insertCmd.Parameters.AddWithValue("@name", folderName);
+                            currentTrashParentId = Convert.ToInt32(insertCmd.ExecuteScalar());
+                        }
+                    }
+                }
+            }
+
+            return currentTrashParentId;
+        }
+
+        /// <summary>
         /// Получает всех потомков (папки и файлы) для указанной директории
         /// </summary>
         public List<Node> GetChildren(int parentId)
         {
             var children = new List<Node>();
-            bool isTrash = IsTrashFolder(parentId);
+            bool isTrash = IsNodeInTrash(parentId);
 
             using (var connection = _dbManager.GetConnection())
             using (var command = connection.CreateCommand())
@@ -121,18 +257,118 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Мягкое удаление (перемещение в корзину)
+        /// Мягкое удаление (перемещение в корзину с сохранением структуры каталогов)
         /// </summary>
         public void SoftDeleteNode(int nodeId)
         {
-            var trashFolder = EnsureTrashFolder();
+            var node = GetNodeById(nodeId);
+            if (node == null) return;
+
+            var root = GetRootNode();
+            int originalParentId = node.ParentId ?? root?.Id ?? 1;
+
+            int targetTrashParentId = EnsureTrashHierarchyForParent(originalParentId);
+
             using (var connection = _dbManager.GetConnection())
-            using (var command = connection.CreateCommand())
+            using (var transaction = connection.BeginTransaction())
             {
-                command.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashId, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
-                command.Parameters.AddWithValue("@trashId", trashFolder.Id);
-                command.Parameters.AddWithValue("@nodeId", nodeId);
-                command.ExecuteNonQuery();
+                try
+                {
+                    if (node.IsDir)
+                    {
+                        // Проверяем, существует ли уже такая папка в целевой директории корзины
+                        int? existingTrashFolderId = null;
+                        using (var checkCmd = connection.CreateCommand())
+                        {
+                            checkCmd.Transaction = transaction;
+                            checkCmd.CommandText = "SELECT id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_dir = 1 AND is_deleted = 1 LIMIT 1;";
+                            checkCmd.Parameters.AddWithValue("@parentId", targetTrashParentId);
+                            checkCmd.Parameters.AddWithValue("@name", node.Name);
+                            var scalar = checkCmd.ExecuteScalar();
+                            if (scalar != null && scalar != DBNull.Value)
+                            {
+                                existingTrashFolderId = Convert.ToInt32(scalar);
+                            }
+                        }
+
+                        if (existingTrashFolderId.HasValue)
+                        {
+                            // Если папка уже создана в корзине, переносим дочерние узлы в неё
+                            using (var moveChildrenCmd = connection.CreateCommand())
+                            {
+                                moveChildrenCmd.Transaction = transaction;
+                                moveChildrenCmd.CommandText = "UPDATE nodes SET parent_id = @existingId, is_deleted = 1, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @nodeId;";
+                                moveChildrenCmd.Parameters.AddWithValue("@existingId", existingTrashFolderId.Value);
+                                moveChildrenCmd.Parameters.AddWithValue("@nodeId", nodeId);
+                                moveChildrenCmd.ExecuteNonQuery();
+                            }
+
+                            UpdateChildrenDeletedStateRecursive(connection, transaction, existingTrashFolderId.Value, 1);
+
+                            using (var deleteFolderCmd = connection.CreateCommand())
+                            {
+                                deleteFolderCmd.Transaction = transaction;
+                                deleteFolderCmd.CommandText = "DELETE FROM nodes WHERE id = @nodeId;";
+                                deleteFolderCmd.Parameters.AddWithValue("@nodeId", nodeId);
+                                deleteFolderCmd.ExecuteNonQuery();
+                            }
+                        }
+                        else
+                        {
+                            using (var command = connection.CreateCommand())
+                            {
+                                command.Transaction = transaction;
+                                command.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashParentId, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
+                                command.Parameters.AddWithValue("@trashParentId", targetTrashParentId);
+                                command.Parameters.AddWithValue("@nodeId", nodeId);
+                                command.ExecuteNonQuery();
+                            }
+
+                            UpdateChildrenDeletedStateRecursive(connection, transaction, nodeId, 1);
+                        }
+                    }
+                    else
+                    {
+                        string finalName = node.Name;
+                        int duplicateIndex = 1;
+                        string baseName = System.IO.Path.GetFileNameWithoutExtension(node.Name);
+                        string ext = System.IO.Path.GetExtension(node.Name);
+
+                        while (true)
+                        {
+                            using (var checkCmd = connection.CreateCommand())
+                            {
+                                checkCmd.Transaction = transaction;
+                                checkCmd.CommandText = "SELECT COUNT(*) FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 1 AND id != @nodeId;";
+                                checkCmd.Parameters.AddWithValue("@parentId", targetTrashParentId);
+                                checkCmd.Parameters.AddWithValue("@name", finalName);
+                                checkCmd.Parameters.AddWithValue("@nodeId", nodeId);
+                                long count = Convert.ToInt64(checkCmd.ExecuteScalar() ?? 0);
+                                if (count == 0) break;
+
+                                duplicateIndex++;
+                                finalName = $"{baseName} ({duplicateIndex}){ext}";
+                            }
+                        }
+
+                        using (var command = connection.CreateCommand())
+                        {
+                            command.Transaction = transaction;
+                            command.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashParentId, name = @name, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
+                            command.Parameters.AddWithValue("@trashParentId", targetTrashParentId);
+                            command.Parameters.AddWithValue("@name", finalName);
+                            command.Parameters.AddWithValue("@nodeId", nodeId);
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
 
@@ -141,14 +377,8 @@ namespace TelegramWebDAV.Database
         /// </summary>
         public bool IsTrashFolder(int nodeId)
         {
-            using (var connection = _dbManager.GetConnection())
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "SELECT name FROM nodes WHERE id = @nodeId LIMIT 1;";
-                command.Parameters.AddWithValue("@nodeId", nodeId);
-                string? name = command.ExecuteScalar() as string;
-                return name == ".Trash";
-            }
+            var trash = EnsureTrashFolder();
+            return nodeId == trash.Id;
         }
 
         /// <summary>
@@ -204,7 +434,7 @@ namespace TelegramWebDAV.Database
         /// </summary>
         public void MoveNode(int nodeId, int newParentId, string newName)
         {
-            bool isTrash = IsTrashFolder(newParentId);
+            bool isTrash = IsNodeInTrash(newParentId);
             int isDeletedVal = isTrash ? 1 : 0;
 
             using (var connection = _dbManager.GetConnection())
@@ -323,7 +553,7 @@ namespace TelegramWebDAV.Database
                     }
 
                     // Версионирование: Отправляем старый в корзину, создаем новый с версией + 1
-                    var trashFolder = EnsureTrashFolder();
+                    int targetTrashParentId = EnsureTrashHierarchyForParent(parentId);
                     
                     using (var transaction = connection.BeginTransaction())
                     {
@@ -343,7 +573,7 @@ namespace TelegramWebDAV.Database
                                 trashName = $"{nameWithoutExt}_v{existingNode.Version}{ext}";
                             }
                             updateCmd.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashId, name = @trashName WHERE id = @nodeId;";
-                            updateCmd.Parameters.AddWithValue("@trashId", trashFolder.Id);
+                            updateCmd.Parameters.AddWithValue("@trashId", targetTrashParentId);
                             updateCmd.Parameters.AddWithValue("@trashName", trashName);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
                             updateCmd.ExecuteNonQuery();
