@@ -382,7 +382,7 @@ namespace TelegramWebDAV.Server
             return Task.CompletedTask;
         }
 
-        public static Task HandleDeleteAsync(HttpListenerContext context, NodeRepository repository)
+        public static async Task HandleDeleteAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService telegramService)
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
@@ -391,13 +391,63 @@ namespace TelegramWebDAV.Server
             if (node == null)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                return Task.CompletedTask;
+                return;
             }
 
-            // Мягкое удаление (в корзину)
-            repository.SoftDeleteNode(node.Id);
+            // Проверяем, находится ли файл уже в корзине или помечен ли он как удаленный.
+            // Но также, если путь начинается с "/.Trash", то это перманентное удаление!
+            bool isPermanent = node.IsDeleted || path.StartsWith("/.Trash", StringComparison.OrdinalIgnoreCase);
+
+            if (isPermanent)
+            {
+                // По рекурсии получаем все дочерние узлы, если это папка, чтобы очистить их файлы в Telegram
+                var nodesToDelete = new List<Models.Node> { node };
+                GetNodesRecursive(node, repository, nodesToDelete);
+
+                // Собираем все непустые ID сообщений в Telegram для пакетного удаления
+                var tgMessageIds = new List<int>();
+                var dbNodeIds = new List<int>();
+
+                foreach (var n in nodesToDelete)
+                {
+                    dbNodeIds.Add(n.Id);
+                    if (n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
+                    {
+                        tgMessageIds.Add(n.TgMessageId.Value);
+                    }
+                }
+
+                if (tgMessageIds.Count > 0)
+                {
+                    AppLogger.Info("WebDAV", $"Перманентное удаление: сначала пакетно удаляем {tgMessageIds.Count} сообщений из Telegram...");
+                    await telegramService.DeleteFilesFromTelegramAsync(tgMessageIds);
+                }
+
+                repository.PermanentDeleteNodes(dbNodeIds);
+                AppLogger.Info("WebDAV", $"Успешно удалено {dbNodeIds.Count} узлов из базы данных навсегда.");
+            }
+            else
+            {
+                // Обычное мягкое удаление в корзину
+                repository.SoftDeleteNode(node.Id);
+                AppLogger.Info("WebDAV", $"Узел '{node.Name}' перемещен в корзину (.Trash).");
+            }
+
             context.Response.StatusCode = (int)HttpStatusCode.NoContent;
-            return Task.CompletedTask;
+        }
+
+        private static void GetNodesRecursive(Models.Node parentNode, NodeRepository repository, List<Models.Node> result)
+        {
+            if (!parentNode.IsDir) return;
+            var children = repository.GetChildren(parentNode.Id);
+            foreach (var child in children)
+            {
+                result.Add(child);
+                if (child.IsDir)
+                {
+                    GetNodesRecursive(child, repository, result);
+                }
+            }
         }
 
         public static Task HandleMoveAsync(HttpListenerContext context, NodeRepository repository)

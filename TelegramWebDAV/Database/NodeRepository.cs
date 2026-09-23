@@ -43,11 +43,20 @@ namespace TelegramWebDAV.Database
             {
                 if (currentNode == null) return null;
                 
+                bool isTrash = currentNode.Name == ".Trash";
+
                 using (var connection = _dbManager.GetConnection())
                 using (var command = connection.CreateCommand())
                 {
-                    // Ищем дочерний элемент по имени
-                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                    // Ищем дочерний элемент по имени. Если мы в корзине, ищем с is_deleted = 1, иначе with is_deleted = 0
+                    if (isTrash)
+                    {
+                        command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 1 LIMIT 1;";
+                    }
+                    else
+                    {
+                        command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                    }
                     command.Parameters.AddWithValue("@parentId", currentNode.Id);
                     command.Parameters.AddWithValue("@name", part);
                     
@@ -64,10 +73,19 @@ namespace TelegramWebDAV.Database
         public List<Node> GetChildren(int parentId)
         {
             var children = new List<Node>();
+            bool isTrash = IsTrashFolder(parentId);
+
             using (var connection = _dbManager.GetConnection())
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND is_deleted = 0;";
+                if (isTrash)
+                {
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND is_deleted = 1;";
+                }
+                else
+                {
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND is_deleted = 0;";
+                }
                 command.Parameters.AddWithValue("@parentId", parentId);
                 
                 using (var reader = command.ExecuteReader())
@@ -115,6 +133,69 @@ namespace TelegramWebDAV.Database
                 command.Parameters.AddWithValue("@trashId", trashFolder.Id);
                 command.Parameters.AddWithValue("@nodeId", nodeId);
                 command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Проверяет, является ли папка корзиной (.Trash)
+        /// </summary>
+        public bool IsTrashFolder(int nodeId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT name FROM nodes WHERE id = @nodeId LIMIT 1;";
+                command.Parameters.AddWithValue("@nodeId", nodeId);
+                string? name = command.ExecuteScalar() as string;
+                return name == ".Trash";
+            }
+        }
+
+        /// <summary>
+        /// Одиночное перманентное удаление из базы данных
+        /// </summary>
+        public void PermanentDeleteNode(int nodeId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "DELETE FROM nodes WHERE id = @nodeId;";
+                command.Parameters.AddWithValue("@nodeId", nodeId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Пакетное транзакционное удаление из базы данных для высокой производительности
+        /// </summary>
+        public void PermanentDeleteNodes(List<int> nodeIds)
+        {
+            if (nodeIds == null || nodeIds.Count == 0) return;
+
+            using (var connection = _dbManager.GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.Transaction = transaction;
+                        command.CommandText = "DELETE FROM nodes WHERE id = @id;";
+                        var idParam = command.Parameters.Add("@id", SqliteType.Integer);
+
+                        foreach (var id in nodeIds)
+                        {
+                            idParam.Value = id;
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
         }
 

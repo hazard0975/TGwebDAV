@@ -636,6 +636,62 @@ namespace TelegramWebDAV.Services
             }
         }
 
+        public async Task<bool> DeleteFileFromTelegramAsync(int messageId)
+        {
+            return await DeleteFilesFromTelegramAsync(new System.Collections.Generic.List<int> { messageId });
+        }
+
+        public async Task<bool> DeleteFilesFromTelegramAsync(System.Collections.Generic.List<int> messageIds)
+        {
+            if (messageIds == null || messageIds.Count == 0) return true;
+
+            await EnsureFloodWaitDelayAsync();
+
+            if (_client == null || !IsAuthorized)
+                throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
+
+            try
+            {
+                var peer = await GetStoragePeerAsync();
+                bool isChannel = peer is TL.InputPeerChannel;
+
+                // Разбиваем список по 100 элементов (лимит Telegram на пакетное удаление)
+                const int batchSize = 100;
+                for (int i = 0; i < messageIds.Count; i += batchSize)
+                {
+                    var count = Math.Min(batchSize, messageIds.Count - i);
+                    var batch = messageIds.GetRange(i, count).ToArray();
+
+                    if (isChannel && peer is TL.InputPeerChannel pc)
+                    {
+                        var channel = new TL.InputChannel(pc.channel_id, pc.access_hash);
+                        var deleteReq = new TL.Methods.Channels_DeleteMessages
+                        {
+                            channel = channel,
+                            id = batch
+                        };
+                        await _client.Invoke(deleteReq);
+                    }
+                    else
+                    {
+                        var deleteReq = new TL.Methods.Messages_DeleteMessages
+                        {
+                            id = batch
+                        };
+                        await _client.Invoke(deleteReq);
+                    }
+
+                    AppLogger.Info("TelegramService", $"Пакет из {batch.Length} сообщений успешно удален из Telegram.");
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("TelegramService", $"Ошибка при пакетном удалении сообщений из Telegram: {ex.Message}", ex);
+                return false;
+            }
+        }
+
         public void Dispose()
         {
             try
