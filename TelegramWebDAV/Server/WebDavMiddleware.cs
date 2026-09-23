@@ -284,48 +284,67 @@ namespace TelegramWebDAV.Server
                     AudioMetadataResult? audioMeta = null;
                     Stream uploadStream = context.Request.InputStream;
                     long uploadLength = contentLength;
+                    string? audioTempPath = null;
 
-                    // Для безопасного чтения тегов без полной буферизации файла на диск или в ОЗУ,
-                    // мы вычитываем только первые 128 КБ (этого гарантированно хватает для тегов),
-                    // парсим их, а затем отправляем через BufferedHeadStream напрямую «на лету»!
                     if (AudioMetadataExtractor.IsAudioFile(name))
                     {
-                        byte[] headBuffer = new byte[AudioMetadataExtractor.HeaderCacheSize];
-                        int bytesRead = 0;
-                        try
+                        // Для аудиофайлов до 10 МБ буферизуем в MemoryStream
+                        if (contentLength > 0 && contentLength <= 10 * 1024 * 1024)
                         {
-                            bytesRead = await context.Request.InputStream.ReadAsync(headBuffer, 0, headBuffer.Length);
-                        }
-                        catch (Exception ex)
-                        {
-                            AppLogger.Error("WebDAV", $"Ошибка предварительного чтения заголовка '{name}': {ex.Message}");
-                        }
+                            var ms = new MemoryStream();
+                            await context.Request.InputStream.CopyToAsync(ms);
+                            ms.Position = 0;
 
-                        if (bytesRead > 0)
+                            audioMeta = AudioMetadataExtractor.ExtractFromStream(ms, name);
+                            ms.Position = 0; // Перематываем назад перед отправкой
+
+                            uploadStream = ms;
+                            uploadLength = ms.Length;
+                        }
+                        else
                         {
-                            // Скармливаем предвычитанные байты в парсер метаданных
-                            using (var headMs = new MemoryStream(headBuffer, 0, bytesRead))
+                            // Для больших аудиофайлов (более 10 МБ, например, часовые FLAC/MP3 миксы)
+                            // пишем во временный файл, чтобы не перегружать ОЗУ, считываем теги, а потом льем в Telegram
+                            string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_AudioTemp");
+                            Directory.CreateDirectory(tempDir);
+                            audioTempPath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{name}");
+
+                            using (var fs = new FileStream(audioTempPath, FileMode.Create, FileAccess.Write, FileShare.None))
                             {
-                                audioMeta = AudioMetadataExtractor.ExtractFromStream(headMs, name);
+                                await context.Request.InputStream.CopyToAsync(fs);
                             }
 
-                            // Создаем бесшовный прокси-поток
-                            uploadStream = new BufferedHeadStream(context.Request.InputStream, headBuffer, bytesRead, contentLength);
+                            var fileStreamForMeta = new FileStream(audioTempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                            audioMeta = AudioMetadataExtractor.ExtractFromStream(fileStreamForMeta, name);
+                            fileStreamForMeta.Position = 0;
+
+                            uploadStream = fileStreamForMeta;
+                            uploadLength = fileStreamForMeta.Length;
                         }
                     }
 
-                    // Стандартный монолитный PUT от обычного Проводника Windows.
-                    // Если это большой файл, он транслируется в Telegram напрямую из сети без кэширования на жесткий диск!
-                    int tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
-                    
-                    // Записываем инфу в базу с метаданными
-                    repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta);
-
-                    context.Response.StatusCode = (int)HttpStatusCode.Created;
-
-                    if (uploadStream != context.Request.InputStream)
+                    try
                     {
-                        try { uploadStream.Dispose(); } catch { }
+                        // Стандартный монолитный PUT от обычного Проводника Windows.
+                        // Если это НЕ аудиофайл, то внутри UploadFileAsync сработает его собственная
+                        // надежная гибридная буферизация (RAM для мелких, диск для крупных).
+                        int tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
+                        
+                        // Записываем инфу в базу с метаданными
+                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta);
+
+                        context.Response.StatusCode = (int)HttpStatusCode.Created;
+                    }
+                    finally
+                    {
+                        if (uploadStream != context.Request.InputStream)
+                        {
+                            try { uploadStream.Dispose(); } catch { }
+                        }
+                        if (audioTempPath != null)
+                        {
+                            try { File.Delete(audioTempPath); } catch { }
+                        }
                     }
                 }
             }
