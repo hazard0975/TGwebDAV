@@ -51,12 +51,11 @@ namespace TelegramWebDAV.Services
 
             _workerTask = Task.Run(ProcessQueueAsync);
 
-            // Визуальный разделитель между сеансами запуска в файле лога
-            string banner = Environment.NewLine +
-                "====================================================================================================" + Environment.NewLine +
-                $"=== {DateTime.Now:yyyy-MM-dd HH:mm:ss} | Telegram WebDAV & Network Drive Service ===" + Environment.NewLine +
-                "====================================================================================================";
-            _channel.Writer.TryWrite(banner);
+            // Визуальный разделитель между сеансами запуска в файле лога (ровно 1 пустая строка перед баннером)
+            _channel.Writer.TryWrite("");
+            _channel.Writer.TryWrite("====================================================================================================");
+            _channel.Writer.TryWrite($"=== {DateTime.Now:yyyy-MM-dd HH:mm:ss} | Telegram WebDAV & Network Drive Service ===");
+            _channel.Writer.TryWrite("====================================================================================================");
 
             // Интеграция с внутренним логированием WTelegramClient
             WTelegram.Helpers.Log = (level, str) =>
@@ -229,7 +228,6 @@ namespace TelegramWebDAV.Services
             try
             {
                 Info("AppLogger", "Завершение работы сервиса и сброс буфера логов...");
-                _channel.Writer.TryWrite(Environment.NewLine);
                 _channel.Writer.Complete();
                 _cts.Cancel();
                 _workerTask.Wait(1500);

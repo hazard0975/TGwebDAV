@@ -23,6 +23,7 @@ namespace TelegramWebDAV.UI
         private readonly TelegramService _telegramService;
         private readonly WebDavServer _webDavServer;
         private AppSettings _settings;
+        private AuthSettingsForm? _settingsForm;
 
         public TrayContext(
             ConfigManager configManager,
@@ -90,12 +91,27 @@ namespace TelegramWebDAV.UI
 
         private void ShowSettingsDialog()
         {
-            using (var form = new AuthSettingsForm(_configManager, _telegramService))
+            if (_settingsForm != null && !_settingsForm.IsDisposed)
             {
-                form.ShowDialog();
+                if (_settingsForm.WindowState == FormWindowState.Minimized)
+                {
+                    _settingsForm.WindowState = FormWindowState.Normal;
+                }
+                _settingsForm.BringToFront();
+                _settingsForm.Activate();
+                return;
+            }
+
+            _settingsForm = new AuthSettingsForm(_configManager, _telegramService);
+            _settingsForm.FormClosed += (s, e) =>
+            {
+                _settingsForm = null;
                 _settings = _configManager.Load();
                 BuildContextMenu();
-            }
+            };
+            _settingsForm.Show();
+            _settingsForm.BringToFront();
+            _settingsForm.Activate();
         }
 
         private void OpenDriveInExplorer()
