@@ -1,0 +1,6 @@
+{
+  "name": "Telegram WebDAV Service & Network Drive",
+  "description": "Universal C# WebDAV service and virtual network drive for Telegram media library and storage",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

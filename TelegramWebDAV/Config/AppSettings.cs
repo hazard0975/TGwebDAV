@@ -1,0 +1,50 @@
+using System;
+
+namespace TelegramWebDAV.Config
+{
+    public class AppSettings
+    {
+        public TelegramSettings Telegram { get; set; } = new TelegramSettings();
+        public ServerSettings Server { get; set; } = new ServerSettings();
+        public DatabaseSettings Database { get; set; } = new DatabaseSettings();
+
+        // Обратная совместимость
+        public WebDavSettings WebDav => new WebDavSettings
+        {
+            Port = Server.Port,
+            DriveLetter = Server.DriveLetter,
+            DriveName = Server.DriveName,
+            AutoMountOnStartup = Server.MountDrive
+        };
+    }
+
+    public class TelegramSettings
+    {
+        public int ApiId { get; set; } = 0;
+        public string ApiHash { get; set; } = "";
+        public string SessionPath { get; set; } = "user.session";
+    }
+
+    public class ServerSettings
+    {
+        public bool WebDavEnabled { get; set; } = true;
+        public int Port { get; set; } = 37000;
+        public bool MountDrive { get; set; } = true;
+        public string DriveLetter { get; set; } = "Z:";
+        public string DriveName { get; set; } = "Telegram Drive";
+        public bool AutoStartWithWindows { get; set; } = true;
+    }
+
+    public class DatabaseSettings
+    {
+        public string Path { get; set; } = "base.db";
+    }
+
+    public class WebDavSettings
+    {
+        public int Port { get; set; } = 37000;
+        public string DriveLetter { get; set; } = "Z:";
+        public string DriveName { get; set; } = "Telegram Drive";
+        public bool AutoMountOnStartup { get; set; } = true;
+    }
+}

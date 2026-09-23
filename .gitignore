@@ -1,0 +1,33 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# .NET / C# Build Outputs
+[Bb]in/
+[Oo]bj/
+publish/
+*.zip
+
+# Visual Studio / Rider / VS Code cache & user settings
+.vs/
+.idea/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Telegram & SQLite local data
+*.session
+*.session-journal
+base.db
+base.db-wal
+base.db-shm
+*.db
+*.db-wal
+*.db-shm
