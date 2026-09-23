@@ -55,13 +55,10 @@ jobs:
           tag_name: ${{ env.TAG_NAME }}
           name: "TelegramWebDAV ${{ env.TAG_NAME }}"
           body: |
-            Автоматический релиз для коммита ${{ github.sha }}: ${{ github.event.head_commit.message }}
+            ${{ github.sha }}: ${{ github.event.head_commit.message }}
             
-            **Особенности сборки**:
-            - Полностью автономный Self-Contained исполняемый файл (не требует установки .NET Runtime).
-            - Целевая платформа: Windows 10/11 x64.
           files: |
             TelegramWebDAV-${{ env.TAG_NAME }}-win-x64.zip
-            ./publish/TelegramWebDAV.exe
+            ./publish/TelegramWebDAV-${{ env.TAG_NAME }}.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

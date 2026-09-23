@@ -32,10 +32,13 @@ namespace TelegramWebDAV.UI
 
         // Telegram Tab
         private Label _lblStatus = null!;
+        private Label _lblInstruction = null!;
+        private TextBox _txtApiId = null!;
+        private TextBox _txtApiHash = null!;
+        private Button _btnSaveApi = null!;
         private TextBox _txtInput = null!;
         private Button _btnAction = null!;
         private Button _btnLogout = null!;
-        private Label _lblInstruction = null!;
 
         // Registry Tab
         private Label _lblRegStatus = null!;
@@ -133,7 +136,52 @@ namespace TelegramWebDAV.UI
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
-                Padding = new Padding(15)
+                Padding = new Padding(15),
+                AutoScroll = true
+            };
+
+            var lblApiTitle = new Label
+            {
+                Text = "Параметры приложения Telegram (my.telegram.org):",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                AutoSize = true,
+                Margin = new Padding(0, 0, 0, 8)
+            };
+
+            var pnlApiId = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 4) };
+            pnlApiId.Controls.Add(new Label { Text = "API ID:  ", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _txtApiId = new TextBox
+            {
+                Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "",
+                Width = 220
+            };
+            pnlApiId.Controls.Add(_txtApiId);
+
+            var pnlApiHash = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 8) };
+            pnlApiHash.Controls.Add(new Label { Text = "API Hash:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _txtApiHash = new TextBox
+            {
+                Text = _settings.Telegram.ApiHash ?? "",
+                Width = 220,
+                UseSystemPasswordChar = true
+            };
+            pnlApiHash.Controls.Add(_txtApiHash);
+
+            _btnSaveApi = new Button
+            {
+                Text = "Сохранить API ключи",
+                AutoSize = true,
+                Padding = new Padding(8, 4, 8, 4),
+                Margin = new Padding(0, 0, 0, 15)
+            };
+            _btnSaveApi.Click += (s, e) => SaveTelegramApiKeys();
+
+            var lblSeparator = new Label
+            {
+                BorderStyle = BorderStyle.Fixed3D,
+                Height = 2,
+                Width = 460,
+                Margin = new Padding(0, 0, 0, 15)
             };
 
             _lblStatus = new Label
@@ -141,14 +189,14 @@ namespace TelegramWebDAV.UI
                 Text = "Статус: Проверка сессии...",
                 AutoSize = true,
                 Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                Margin = new Padding(0, 5, 0, 15)
+                Margin = new Padding(0, 0, 0, 10)
             };
 
             _lblInstruction = new Label
             {
                 Text = "Введите номер телефона в международном формате (+7...):",
                 AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
+                Margin = new Padding(0, 0, 0, 5)
             };
 
             _txtInput = new TextBox { Width = 300, Margin = new Padding(0, 0, 0, 10) };
@@ -162,7 +210,9 @@ namespace TelegramWebDAV.UI
 
             pnlTgButtons.Controls.AddRange(new Control[] { _btnAction, _btnLogout });
 
-            pnlTg.Controls.AddRange(new Control[] { _lblStatus, _lblInstruction, _txtInput, pnlTgButtons });
+            pnlTg.Controls.AddRange(new Control[] {
+                lblApiTitle, pnlApiId, pnlApiHash, _btnSaveApi, lblSeparator, _lblStatus, _lblInstruction, _txtInput, pnlTgButtons
+            });
             _tabTelegram.Controls.Add(pnlTg);
 
             // === Вкладка 3: Патч реестра Windows ===
@@ -210,11 +260,40 @@ namespace TelegramWebDAV.UI
             this.Controls.Add(_tabControl);
         }
 
+        private void SaveTelegramApiKeys()
+        {
+            if (!int.TryParse(_txtApiId.Text.Trim(), out int apiId) || apiId <= 0)
+            {
+                MessageBox.Show("Введите корректный числовой API ID (например, 12345678).", "Ошибка валидации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string apiHash = _txtApiHash.Text.Trim();
+            if (string.IsNullOrEmpty(apiHash) || apiHash.Length < 10)
+            {
+                MessageBox.Show("Введите корректный API Hash (строка из 32 шестнадцатеричных символов).", "Ошибка валидации", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            _settings.Telegram.ApiId = apiId;
+            _settings.Telegram.ApiHash = apiHash;
+            _configManager.Save(_settings);
+
+            _telegramService.UpdateApiCredentials(apiId, apiHash);
+            UpdateUiState();
+
+            MessageBox.Show("API ID и API Hash успешно сохранены!", "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void UpdateUiState()
         {
+            bool hasApiKeys = _settings.Telegram.ApiId > 0 && !string.IsNullOrEmpty(_settings.Telegram.ApiHash);
+
             if (_telegramService.IsAuthorized)
             {
-                _lblStatus.Text = "Статус: Авторизован в Telegram ✔";
+                var user = _telegramService.CurrentUser;
+                string userInfo = user != null ? $" ({user.FirstName} {user.LastName} | @{user.Username})" : "";
+                _lblStatus.Text = $"Статус: Авторизован в Telegram ✔{userInfo}";
                 _lblStatus.ForeColor = Color.DarkGreen;
                 _lblInstruction.Text = "Сессия активна. Мультимедиа файлы и папки доступны через WebDAV.";
                 _txtInput.Visible = false;
@@ -225,25 +304,36 @@ namespace TelegramWebDAV.UI
             {
                 _lblStatus.Text = "Статус: Не авторизован ❌";
                 _lblStatus.ForeColor = Color.DarkRed;
-                _txtInput.Visible = true;
-                _btnAction.Visible = true;
+                _txtInput.Visible = hasApiKeys;
+                _btnAction.Visible = hasApiKeys;
                 _btnLogout.Visible = false;
 
-                switch (_telegramService.CurrentStep)
+                if (!hasApiKeys)
                 {
-                    case AuthStep.NeedsPhone:
-                        _lblInstruction.Text = "Введите номер телефона (+7...):";
-                        _btnAction.Text = "Получить код в Telegram";
-                        break;
-                    case AuthStep.NeedsCode:
-                        _lblInstruction.Text = "Введите проверочный 5-значный код из Telegram:";
-                        _btnAction.Text = "Подтвердить код";
-                        break;
-                    case AuthStep.Needs2FA:
-                        _lblInstruction.Text = "Введите облачный пароль 2FA:";
-                        _btnAction.Text = "Войти";
-                        _txtInput.UseSystemPasswordChar = true;
-                        break;
+                    _lblInstruction.Text = "Сначала укажите и сохраните API ID и API Hash (получить на my.telegram.org).";
+                    _lblInstruction.ForeColor = Color.DarkOrange;
+                }
+                else
+                {
+                    _lblInstruction.ForeColor = Color.Black;
+                    switch (_telegramService.CurrentStep)
+                    {
+                        case AuthStep.NeedsPhone:
+                            _lblInstruction.Text = "Введите номер телефона в международном формате (+7...):";
+                            _btnAction.Text = "Получить код в Telegram";
+                            _txtInput.UseSystemPasswordChar = false;
+                            break;
+                        case AuthStep.NeedsCode:
+                            _lblInstruction.Text = "Введите проверочный код из Telegram (пришел в приложение Telegram):";
+                            _btnAction.Text = "Подтвердить код";
+                            _txtInput.UseSystemPasswordChar = false;
+                            break;
+                        case AuthStep.Needs2FA:
+                            _lblInstruction.Text = "Введите облачный пароль 2FA (двухфакторной аутентификации):";
+                            _btnAction.Text = "Войти";
+                            _txtInput.UseSystemPasswordChar = true;
+                            break;
+                    }
                 }
             }
         }

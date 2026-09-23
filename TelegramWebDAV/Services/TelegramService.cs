@@ -36,6 +36,7 @@ namespace TelegramWebDAV.Services
         private AppSettings _currentSettings;
         private readonly SemaphoreSlim _floodLock = new SemaphoreSlim(1, 1);
         private DateTime _floodWaitUntil = DateTime.MinValue;
+        private WTelegram.Client? _client;
 
         public bool IsAuthorized { get; private set; }
         public AuthStep CurrentStep { get; private set; } = AuthStep.NeedsPhone;
@@ -48,136 +49,156 @@ namespace TelegramWebDAV.Services
             _currentSettings = _configManager.Load();
         }
 
+        public void UpdateApiCredentials(int apiId, string apiHash)
+        {
+            _currentSettings.Telegram.ApiId = apiId;
+            _currentSettings.Telegram.ApiHash = apiHash;
+            _client?.Dispose();
+            _client = null;
+            _ = ConnectAsync();
+        }
+
         /// <summary>
-        /// Подключение к серверам Telegram и проверка наличия готовой сессии.
+        /// Подключение к серверам Telegram и проверка наличия готовой сессии через WTelegramClient.
         /// </summary>
         public async Task ConnectAsync()
         {
             Console.WriteLine("[TelegramService] Проверка сессии и подключение к Telegram...");
             _currentSettings = _configManager.Load();
             
-            if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrEmpty(_currentSettings.Telegram.ApiHash))
+            if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
             {
-                LastError = "API ID или API Hash не заданы в appsettings.json";
+                LastError = "API ID или API Hash не заданы.";
                 IsAuthorized = false;
                 CurrentStep = AuthStep.NeedsPhone;
                 return;
             }
 
-            await Task.Delay(300); // Симуляция пинга MTProto
-
-            if (File.Exists(_currentSettings.Telegram.SessionPath))
+            try
             {
+                InitClient();
+                if (_client == null) return;
+
+                // Попытка войти по существующей сессии без аргументов
+                string? result = await _client.Login(null);
+                HandleWTelegramResult(result);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[TelegramService] Ошибка подключения: {ex.Message}");
+                LastError = ex.Message;
+                IsAuthorized = false;
+                CurrentStep = AuthStep.NeedsPhone;
+            }
+        }
+
+        private void InitClient()
+        {
+            if (_client != null) return;
+
+            string sessionPath = _currentSettings.Telegram.SessionPath;
+            _client = new WTelegram.Client(what =>
+            {
+                switch (what)
+                {
+                    case "api_id": return _currentSettings.Telegram.ApiId.ToString();
+                    case "api_hash": return _currentSettings.Telegram.ApiHash;
+                    case "session_pathname": return sessionPath;
+                    default: return null;
+                }
+            });
+        }
+
+        private void HandleWTelegramResult(string? result)
+        {
+            if (result == null)
+            {
+                // Успешная авторизация
                 IsAuthorized = true;
                 CurrentStep = AuthStep.Authorized;
-                CurrentUser = new TelegramUserInfo
+                LastError = null;
+
+                if (_client?.User != null)
                 {
-                    Id = 987654321,
-                    Username = "telegram_user",
-                    FirstName = "Telegram",
-                    LastName = "Drive",
-                    Phone = "+7 999 123-45-67",
-                    IsPremium = true
-                };
-                Console.WriteLine("[TelegramService] Сессия найдена. Пользователь авторизован.");
+                    var u = _client.User;
+                    CurrentUser = new TelegramUserInfo
+                    {
+                        Id = u.ID,
+                        Username = u.MainUsername,
+                        FirstName = u.first_name,
+                        LastName = u.last_name,
+                        Phone = u.phone,
+                        IsPremium = u.flags.HasFlag(TL.User.Flags.premium)
+                    };
+                    Console.WriteLine($"[TelegramService] Успешная авторизация пользователя: {u.first_name} (ID: {u.ID})");
+                }
+            }
+            else if (result == "verification_code")
+            {
+                IsAuthorized = false;
+                CurrentStep = AuthStep.NeedsCode;
+                LastError = null;
+                Console.WriteLine("[TelegramService] Код подтверждения отправлен в Telegram.");
+            }
+            else if (result == "password")
+            {
+                IsAuthorized = false;
+                CurrentStep = AuthStep.Needs2FA;
+                LastError = null;
+                Console.WriteLine("[TelegramService] Требуется ввод двухфакторного (2FA) облачного пароля.");
             }
             else
             {
                 IsAuthorized = false;
                 CurrentStep = AuthStep.NeedsPhone;
-                CurrentUser = null;
-                Console.WriteLine("[TelegramService] Сессия не найдена. Требуется ввод номера телефона.");
+                LastError = $"Ожидался ввод: {result}";
             }
         }
 
         /// <summary>
         /// Пошаговый вход в Telegram:
-        /// 1. Передаем телефон ("+7999...") -> возвращает "verification_code"
-        /// 2. Передаем код подтверждения ("12345") -> возвращает "password" (если включен 2FA) или null (успех)
-        /// 3. Передаем 2FA пароль -> возвращает null (успех)
+        /// 1. Передаем телефон ("+7999...") -> Telegram отправляет код в официальное приложение
+        /// 2. Передаем код подтверждения -> если включен 2FA, требуется "password", иначе успех
+        /// 3. Передаем 2FA пароль -> успех
         /// </summary>
         public async Task<string?> LoginStepAsync(string input)
         {
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Входные данные не могут быть пустыми", nameof(input));
 
-            Console.WriteLine($"[TelegramService] Обработка шага авторизации: {CurrentStep}...");
-            await Task.Delay(500); // Задержка ответа Telegram API
-
-            switch (CurrentStep)
+            if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
             {
-                case AuthStep.NeedsPhone:
-                    if (!input.StartsWith("+") && input.Length < 10)
-                    {
-                        LastError = "Неверный формат номера телефона. Используйте международный формат: +1234567890";
-                        return "invalid_phone";
-                    }
-                    CurrentStep = AuthStep.NeedsCode;
-                    return "verification_code";
-
-                case AuthStep.NeedsCode:
-                    if (input.Trim().Length == 5)
-                    {
-                        // Симуляция успешного входа без 2FA
-                        SaveDummySession();
-                        IsAuthorized = true;
-                        CurrentStep = AuthStep.Authorized;
-                        CurrentUser = new TelegramUserInfo
-                        {
-                            Id = 987654321,
-                            Username = "tg_user",
-                            FirstName = "Telegram",
-                            LastName = "User",
-                            Phone = "+7 999 123-45-67",
-                            IsPremium = true
-                        };
-                        return null; // Успех
-                    }
-                    else if (input.Trim() == "2fa")
-                    {
-                        CurrentStep = AuthStep.Needs2FA;
-                        return "password";
-                    }
-                    else
-                    {
-                        LastError = "Неверный проверочный код из SMS / Telegram.";
-                        return "invalid_code";
-                    }
-
-                case AuthStep.Needs2FA:
-                    if (!string.IsNullOrEmpty(input))
-                    {
-                        SaveDummySession();
-                        IsAuthorized = true;
-                        CurrentStep = AuthStep.Authorized;
-                        CurrentUser = new TelegramUserInfo
-                        {
-                            Id = 987654321,
-                            Username = "tg_secure_user",
-                            FirstName = "Secure",
-                            LastName = "User",
-                            Phone = "+7 999 123-45-67",
-                            IsPremium = true
-                        };
-                        return null; // Успех
-                    }
-                    LastError = "Неверный облачный 2FA пароль.";
-                    return "invalid_password";
-
-                default:
-                    return null;
+                LastError = "Сначала укажите и сохраните API ID и API Hash.";
+                throw new InvalidOperationException(LastError);
             }
-        }
 
-        private void SaveDummySession()
-        {
+            InitClient();
+            if (_client == null)
+                throw new InvalidOperationException("Не удалось инициализировать Telegram Client.");
+
+            Console.WriteLine($"[TelegramService] Отправка данных на шаге {CurrentStep} в Telegram API...");
+
             try
             {
-                File.WriteAllText(_currentSettings.Telegram.SessionPath, "WTelegramSession_ValidData_v2");
+                string? result = await _client.Login(input.Trim());
+                HandleWTelegramResult(result);
+                return result;
+            }
+            catch (TL.RpcException rpcEx)
+            {
+                Console.WriteLine($"[TelegramService] RPC Ошибка: {rpcEx.Message} (Код: {rpcEx.Code})");
+                LastError = rpcEx.Message;
+                if (rpcEx.Code == 420) // FLOOD_WAIT_X
+                {
+                    TriggerFloodWait(rpcEx.X);
+                }
+                throw;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[TelegramService] Ошибка сохранения файла сессии: {ex.Message}");
+                Console.WriteLine($"[TelegramService] Ошибка входа: {ex.Message}");
+                LastError = ex.Message;
+                throw;
             }
         }
 
@@ -186,6 +207,13 @@ namespace TelegramWebDAV.Services
         /// </summary>
         public void Logout()
         {
+            try
+            {
+                _client?.Dispose();
+                _client = null;
+            }
+            catch { }
+
             if (File.Exists(_currentSettings.Telegram.SessionPath))
             {
                 try
@@ -303,6 +331,12 @@ namespace TelegramWebDAV.Services
 
         public void Dispose()
         {
+            try
+            {
+                _client?.Dispose();
+                _client = null;
+            }
+            catch { }
             _floodLock?.Dispose();
         }
     }
