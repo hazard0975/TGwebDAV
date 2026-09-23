@@ -16,12 +16,10 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Инициализация чистой БД при первом запуске (разворачивание схемы)
+        /// Инициализация БД при запуске (разворачивание схемы при отсутствии таблиц)
         /// </summary>
         public void InitializeDatabase()
         {
-            bool isNewDatabase = !File.Exists(_dbPath);
-
             using (var connection = new SqliteConnection(_connectionString))
             {
                 connection.Open();
@@ -29,13 +27,30 @@ namespace TelegramWebDAV.Database
                 // Включаем WAL режим для конкурентного доступа
                 EnableWalMode(connection);
 
-                if (isNewDatabase)
+                if (!HasNodesTable(connection))
                 {
-                    Console.WriteLine("Создание чистой базы данных SQLite (base.db)...");
+                    Console.WriteLine("Создание структуры базы данных SQLite (base.db)...");
                     ApplySchema(connection);
                     SeedRootFolder(connection);
                     Console.WriteLine("База данных успешно инициализирована.");
                 }
+            }
+        }
+
+        private bool HasNodesTable(SqliteConnection connection)
+        {
+            try
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name='nodes';";
+                    var result = command.ExecuteScalar();
+                    return result != null && Convert.ToInt32(result) > 0;
+                }
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -50,13 +65,43 @@ namespace TelegramWebDAV.Database
 
         private void ApplySchema(SqliteConnection connection)
         {
-            string schemaSql = File.ReadAllText(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "Schema.sql"));
-            
-            using (var command = connection.CreateCommand())
+            string schemaPath = GetSchemaFilePath();
+            if (!File.Exists(schemaPath))
             {
-                command.CommandText = schemaSql;
-                command.ExecuteNonQuery();
+                throw new FileNotFoundException($"Файл схемы базы данных Schema.sql не найден по пути: {schemaPath}");
             }
+
+            string schemaSql = File.ReadAllText(schemaPath);
+            var statements = schemaSql.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (var rawStatement in statements)
+            {
+                string statement = rawStatement.Trim();
+                if (string.IsNullOrWhiteSpace(statement)) continue;
+
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = statement;
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private string GetSchemaFilePath()
+        {
+            string path1 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "Schema.sql");
+            if (File.Exists(path1)) return path1;
+
+            string path2 = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Schema.sql");
+            if (File.Exists(path2)) return path2;
+
+            string path3 = Path.Combine(Directory.GetCurrentDirectory(), "Database", "Schema.sql");
+            if (File.Exists(path3)) return path3;
+
+            string path4 = Path.Combine(Directory.GetCurrentDirectory(), "TelegramWebDAV", "Database", "Schema.sql");
+            if (File.Exists(path4)) return path4;
+
+            return path1;
         }
 
         private void SeedRootFolder(SqliteConnection connection)
