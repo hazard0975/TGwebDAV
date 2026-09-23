@@ -450,20 +450,71 @@ namespace TelegramWebDAV.Services
 
             var peer = await GetStoragePeerAsync();
 
-            AppLogger.Info("TelegramService", $"Загрузка файла '{fileName}' в Telegram...");
-            var inputFile = await _client.UploadFileAsync(source, fileName);
+            Stream uploadStream = source;
+            string? tempFilePath = null;
 
-            AppLogger.Info("TelegramService", $"Файл '{fileName}' загружен в MTProto, отправка медиа в канал...");
-            var message = await _client.SendMediaAsync(peer, fileName, inputFile);
-
-            if (message != null)
+            try
             {
-                AppLogger.Info("TelegramService", $"Файл успешно отправлен в канал. Message ID: {message.ID}");
-                return message.ID;
-            }
+                // Если поток не поддерживает Seek (например, HttpListenerInputStream от WebDAV PUT),
+                // буферизуем его, чтобы WTelegramClient мог корректно разбить его на чанки MTProto.
+                if (!source.CanSeek)
+                {
+                    AppLogger.Info("TelegramService", $"Поток не поддерживает Seek. Буферизация '{fileName}'...");
+                    
+                    long length = -1;
+                    try { length = source.Length; } catch { }
 
-            AppLogger.Warn("TelegramService", "Сообщение отправлено, но ID не определен, возвращаем 1.");
-            return 1;
+                    // Если размер небольшой (до 10 МБ), буферизуем в MemoryStream для быстродействия
+                    if (length > 0 && length < 10 * 1024 * 1024)
+                    {
+                        var ms = new MemoryStream();
+                        await source.CopyToAsync(ms);
+                        ms.Position = 0;
+                        uploadStream = ms;
+                    }
+                    else
+                    {
+                        // Для больших файлов или при неизвестной длине пишем на диск, чтобы сохранить RAM
+                        string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Buffer");
+                        Directory.CreateDirectory(tempDir);
+                        tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{fileName}");
+                        
+                        using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            await source.CopyToAsync(fs);
+                        }
+                        
+                        uploadStream = new FileStream(tempFilePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    }
+                }
+
+                AppLogger.Info("TelegramService", $"Загрузка файла '{fileName}' в Telegram...");
+                var inputFile = await _client.UploadFileAsync(uploadStream, fileName);
+
+                AppLogger.Info("TelegramService", $"Файл '{fileName}' загружен в MTProto, отправка медиа в канал...");
+                var message = await _client.SendMediaAsync(peer, fileName, inputFile);
+
+                if (message != null)
+                {
+                    AppLogger.Info("TelegramService", $"Файл успешно отправлен в канал. Message ID: {message.ID}");
+                    return message.ID;
+                }
+
+                AppLogger.Warn("TelegramService", "Сообщение отправлено, но ID не определен, возвращаем 1.");
+                return 1;
+            }
+            finally
+            {
+                if (tempFilePath != null)
+                {
+                    try { uploadStream.Dispose(); } catch { }
+                    try { File.Delete(tempFilePath); } catch { }
+                }
+                else if (uploadStream != source)
+                {
+                    try { uploadStream.Dispose(); } catch { }
+                }
+            }
         }
 
         /// <summary>
