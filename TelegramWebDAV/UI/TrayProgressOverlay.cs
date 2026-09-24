@@ -72,6 +72,9 @@ namespace TelegramWebDAV.UI
                 {
                     _updateTimer.Stop();
                     _hideCheckTimer.Stop();
+                    _isCompleted = false;
+                    _isFinalizing = false;
+                    _currentFileName = string.Empty;
                     Hide();
                     AppLogger.Info("TrayProgressOverlay", "Оверлей успешно скрыт по завершению таймаута.");
                 }
@@ -195,7 +198,8 @@ namespace TelegramWebDAV.UI
 
             _lastHoverTime = DateTime.UtcNow;
 
-            if (!Visible && (_isUploading || _isCompleted))
+            // Показываем окно по наведению на трей только если идет реальная передача
+            if (!Visible && (_isUploading || _isFinalizing))
             {
                 PositionNearTray(useMouse: true);
                 Show();
@@ -241,8 +245,9 @@ namespace TelegramWebDAV.UI
         {
             if (!Visible) return;
 
-            // Если идет активная загрузка или запущен таймер завершения — не скрываем по движению мыши
-            if (_isUploading || _isFinalizing || _isCompleted)
+            // Если окно всплыло по автоматическому показу и идет загрузка — оно висит, пока не закончится
+            // Но если пользователь в режиме "показ только по наведению", или окно в режиме покоя — скрываем при уходе курсора
+            if (AutoShowOnUpload && (_isUploading || _isFinalizing || _isCompleted))
             {
                 return;
             }
