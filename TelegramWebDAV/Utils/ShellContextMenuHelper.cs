@@ -43,11 +43,13 @@ namespace TelegramWebDAV.Utils
                 if (cleanDrive.Equals("AUTO", StringComparison.OrdinalIgnoreCase)) cleanDrive = "Z:";
                 if (!cleanDrive.EndsWith("\\")) cleanDrive += "\\";
 
+                string driveWithoutSlash = cleanDrive.TrimEnd('\\');
                 string trashLocalPath = Path.Combine(cleanDrive, ".Trash");
                 string menuText = "Открыть корзину WebDAV";
                 string explorerCommand = $"explorer.exe \"{trashLocalPath}\"";
 
                 // 1. Контекстное меню для диска (ПКМ по диску Z: в Компьютере)
+                // AppliesTo ограничивает отображение пункта ТОЛЬКО выбранным диском WebDAV
                 using (var driveKey = Registry.CurrentUser.CreateSubKey(DriveKeyPath))
                 {
                     if (driveKey != null)
@@ -55,18 +57,21 @@ namespace TelegramWebDAV.Utils
                         driveKey.SetValue("", menuText);
                         // Используем стандартную системную иконку корзины Windows
                         driveKey.SetValue("Icon", "shell32.dll,31");
+                        driveKey.SetValue("AppliesTo", $"System.ItemFolderPathDisplay:~< \"{cleanDrive}\" OR System.ItemPathDisplay:~< \"{driveWithoutSlash}\"");
                         using var cmdKey = driveKey.CreateSubKey("command");
                         cmdKey?.SetValue("", explorerCommand);
                     }
                 }
 
                 // 2. Контекстное меню для фона папки (ПКМ в пустом месте Проводника)
+                // AppliesTo гарантирует, что пункт появится ТОЛЬКО при нахождении внутри диска Z:\, исключая C:\, D:\ и Рабочий стол
                 using (var bgKey = Registry.CurrentUser.CreateSubKey(BackgroundKeyPath))
                 {
                     if (bgKey != null)
                     {
-                        bgKey.SetValue("", $"{menuText} ({cleanDrive.TrimEnd('\\')})");
+                        bgKey.SetValue("", menuText);
                         bgKey.SetValue("Icon", "shell32.dll,31");
+                        bgKey.SetValue("AppliesTo", $"System.ItemFolderPathDisplay:\"{cleanDrive}*\"");
                         using var cmdKey = bgKey.CreateSubKey("command");
                         cmdKey?.SetValue("", explorerCommand);
                     }
