@@ -60,15 +60,23 @@ namespace TelegramWebDAV.UI
 
             // Статус подключения
             string driveLetter = _settings.Server.DriveLetter ?? "Z:";
-            var itemStatus = new ToolStripMenuItem($"Статус: {(_telegramService.IsAuthorized ? "Telegram В сети ✔" : "Требуется авторизация ❌")}")
+            var itemStatus = new ToolStripLabel
             {
-                Enabled = false,
-                Font = new Font(menu.Font, FontStyle.Bold)
+                Text = _telegramService.IsAuthorized ? "Статус: Авторизовано ✔" : "Статус: Не авторизовано ❌"
             };
             menu.Items.Add(itemStatus);
 
+            // Разделительная линия под статусом
+            menu.Items.Add(new ToolStripSeparator());
+
+            menu.Renderer = new StatusMenuRenderer(itemStatus, () => _telegramService.IsAuthorized);
+            menu.Opening += (s, e) =>
+            {
+                itemStatus.Text = _telegramService.IsAuthorized ? "Статус: Авторизовано ✔" : "Статус: Не авторизовано ❌";
+            };
+
             // Открыть сетевой диск в Проводнике
-            var itemOpenDrive = new ToolStripMenuItem($"Открыть диск ({driveLetter}) в Проводнике");
+            var itemOpenDrive = new ToolStripMenuItem($"Открыть диск ({driveLetter})");
             itemOpenDrive.Click += (s, e) => OpenDriveInExplorer();
             menu.Items.Add(itemOpenDrive);
 
@@ -80,7 +88,7 @@ namespace TelegramWebDAV.UI
             menu.Items.Add(new ToolStripSeparator());
 
             // Настройки и авторизация
-            var itemSettings = new ToolStripMenuItem("Настройки и Авторизация...");
+            var itemSettings = new ToolStripMenuItem("Настройки");
             itemSettings.Click += (s, e) => ShowSettingsDialog();
             menu.Items.Add(itemSettings);
 
@@ -219,6 +227,42 @@ namespace TelegramWebDAV.UI
             _webDavServer?.Stop();
             AppLogger.Shutdown();
             Application.Exit();
+        }
+
+        private class StatusMenuRenderer : ToolStripProfessionalRenderer
+        {
+            private readonly ToolStripItem _statusItem;
+            private readonly Func<bool> _isAuthorized;
+
+            public StatusMenuRenderer(ToolStripItem statusItem, Func<bool> isAuthorized)
+            {
+                _statusItem = statusItem;
+                _isAuthorized = isAuthorized;
+            }
+
+            protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
+            {
+                if (e.Item == _statusItem)
+                {
+                    bool isAuth = _isAuthorized();
+                    string prefix = "Статус: ";
+                    string statusText = isAuth ? "Авторизовано ✔" : "Не авторизовано ❌";
+                    Color statusColor = isAuth ? Color.ForestGreen : Color.Firebrick;
+
+                    var baseFont = e.TextFont ?? SystemFonts.MenuFont ?? SystemFonts.DefaultFont;
+                    using var regFont = new Font(baseFont.FontFamily, baseFont.Size, FontStyle.Regular);
+                    using var boldFont = new Font(baseFont.FontFamily, baseFont.Size, FontStyle.Bold);
+
+                    Size prefixSize = TextRenderer.MeasureText(e.Graphics, prefix, regFont, Size.Empty, TextFormatFlags.NoPadding);
+                    int y = e.TextRectangle.Top + (e.TextRectangle.Height - boldFont.Height) / 2;
+
+                    TextRenderer.DrawText(e.Graphics, prefix, regFont, new Point(e.TextRectangle.Left, y), SystemColors.ControlText, TextFormatFlags.NoPadding);
+                    TextRenderer.DrawText(e.Graphics, statusText, boldFont, new Point(e.TextRectangle.Left + prefixSize.Width + 2, y), statusColor, TextFormatFlags.NoPadding);
+                    return;
+                }
+
+                base.OnRenderItemText(e);
+            }
         }
     }
 }
