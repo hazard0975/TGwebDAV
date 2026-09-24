@@ -20,6 +20,8 @@ namespace TelegramWebDAV.UI
         private readonly System.Windows.Forms.Timer _updateTimer;
         private readonly System.Windows.Forms.Timer _hideCheckTimer;
 
+        public bool AutoShowOnUpload { get; set; } = true;
+
         private string _currentFileName = string.Empty;
         private long _currentBytes = 0;
         private long _totalBytes = 0;
@@ -85,6 +87,15 @@ namespace TelegramWebDAV.UI
                 _lastSpeedCalcTime = now;
             }
 
+            // Если включен автоматический показ при загрузке и окно скрыто — показываем его сразу
+            if (AutoShowOnUpload && !Visible)
+            {
+                PositionNearTray(useMouse: false);
+                Show();
+                _updateTimer.Start();
+                _hideCheckTimer.Start();
+            }
+
             Invalidate();
         }
 
@@ -108,6 +119,8 @@ namespace TelegramWebDAV.UI
                 t.Dispose();
                 if (!_isUploading && Visible)
                 {
+                    _updateTimer.Stop();
+                    _hideCheckTimer.Stop();
                     Hide();
                 }
             };
@@ -126,29 +139,41 @@ namespace TelegramWebDAV.UI
 
             if (!Visible && _isUploading)
             {
-                PositionNearTray();
+                PositionNearTray(useMouse: true);
                 Show();
                 _updateTimer.Start();
                 _hideCheckTimer.Start();
             }
         }
 
-        private void PositionNearTray()
+        private void PositionNearTray(bool useMouse)
         {
-            var mousePos = Cursor.Position;
-            var workingArea = Screen.GetWorkingArea(mousePos);
+            Rectangle workingArea;
+            int x, y;
 
-            int x = mousePos.X - (Width / 2);
-            int y = mousePos.Y - Height - 16;
+            if (useMouse)
+            {
+                var mousePos = Cursor.Position;
+                workingArea = Screen.GetWorkingArea(mousePos);
 
-            // Коррекция по границам экрана
-            if (x + Width > workingArea.Right - 8)
-                x = workingArea.Right - Width - 8;
-            if (x < workingArea.Left + 8)
-                x = workingArea.Left + 8;
+                x = mousePos.X - (Width / 2);
+                y = mousePos.Y - Height - 16;
 
-            if (y < workingArea.Top + 8)
-                y = mousePos.Y + 24; // Если трей сверху
+                if (x + Width > workingArea.Right - 8)
+                    x = workingArea.Right - Width - 8;
+                if (x < workingArea.Left + 8)
+                    x = workingArea.Left + 8;
+
+                if (y < workingArea.Top + 8)
+                    y = mousePos.Y + 24;
+            }
+            else
+            {
+                // Автоматическое позиционирование в правом нижнем углу над панелью задач
+                workingArea = Screen.PrimaryScreen?.WorkingArea ?? Screen.GetWorkingArea(Point.Empty);
+                x = workingArea.Right - Width - 16;
+                y = workingArea.Bottom - Height - 16;
+            }
 
             Location = new Point(x, y);
         }
@@ -157,11 +182,17 @@ namespace TelegramWebDAV.UI
         {
             if (!Visible) return;
 
+            // Если включен режим авто-показа и загрузка все еще активна — не скрываем карточку
+            if (AutoShowOnUpload && _isUploading)
+            {
+                return;
+            }
+
             var mousePos = Cursor.Position;
             var mouseOverOverlay = Bounds.Contains(mousePos);
             var secondsSinceLastHover = (DateTime.UtcNow - _lastHoverTime).TotalSeconds;
 
-            // Если курсор не над окном и прошло больше 0.6 сек с момента последнего движения над треем
+            // В режиме показа только при наведении скрываем окно, если курсор ушел
             if (!mouseOverOverlay && secondsSinceLastHover > 0.6)
             {
                 _updateTimer.Stop();

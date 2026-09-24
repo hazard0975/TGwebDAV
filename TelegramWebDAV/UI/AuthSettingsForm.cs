@@ -31,6 +31,7 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkAutoStart = null!;
         private CheckBox _chkHideTrash = null!;
         private CheckBox _chkContextMenu = null!;
+        private CheckBox _chkAutoShowPopup = null!;
 
         // Telegram Tab
         private Label _lblStatus = null!;
@@ -133,6 +134,14 @@ namespace TelegramWebDAV.UI
                 Text = "Пункт «Открыть корзину WebDAV» в контекстном меню Windows",
                 Checked = _settings.Server.AddTrashToContextMenu,
                 AutoSize = true,
+                Margin = new Padding(0, 5, 0, 5)
+            };
+
+            _chkAutoShowPopup = new CheckBox
+            {
+                Text = "Автоматически открывать карточку прогресса при отправке файлов",
+                Checked = _settings.Server.AutoShowUploadPopup,
+                AutoSize = true,
                 Margin = new Padding(0, 5, 0, 10)
             };
 
@@ -146,7 +155,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, _chkMountDrive, pnlDrive, pnlVol, _chkAutoStart, _chkHideTrash, _chkContextMenu, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, _chkMountDrive, pnlDrive, pnlVol, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
@@ -425,6 +434,7 @@ namespace TelegramWebDAV.UI
             _settings.Server.AutoStartWithWindows = _chkAutoStart.Checked;
             _settings.Server.HideTrashFromRoot = _chkHideTrash.Checked;
             _settings.Server.AddTrashToContextMenu = _chkContextMenu.Checked;
+            _settings.Server.AutoShowUploadPopup = _chkAutoShowPopup.Checked;
 
             if (_chkContextMenu.Checked)
             {

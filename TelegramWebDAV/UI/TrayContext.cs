@@ -39,7 +39,10 @@ namespace TelegramWebDAV.UI
             _telegramService = telegramService;
             _webDavServer = webDavServer;
             _settings = _configManager.Load();
-            _progressOverlay = new TrayProgressOverlay();
+            _progressOverlay = new TrayProgressOverlay
+            {
+                AutoShowOnUpload = _settings.Server.AutoShowUploadPopup
+            };
 
             _notifyIcon = new NotifyIcon
             {
@@ -102,13 +105,6 @@ namespace TelegramWebDAV.UI
             };
             menu.Items.Add(itemStatus);
 
-            var itemUploadStatus = new ToolStripLabel
-            {
-                Visible = false,
-                ForeColor = Color.SteelBlue
-            };
-            menu.Items.Add(itemUploadStatus);
-
             // Разделительная линия под статусом
             menu.Items.Add(new ToolStripSeparator());
 
@@ -116,15 +112,6 @@ namespace TelegramWebDAV.UI
             menu.Opening += (s, e) =>
             {
                 itemStatus.Text = _telegramService.IsAuthorized ? "Статус: Авторизовано ✔" : "Статус: Не авторизовано ❌";
-                if (!string.IsNullOrEmpty(_activeUploadFileName))
-                {
-                    itemUploadStatus.Text = $"Загрузка: {_activeUploadFileName} ({_activeUploadPercent}%)";
-                    itemUploadStatus.Visible = true;
-                }
-                else
-                {
-                    itemUploadStatus.Visible = false;
-                }
             };
 
             // Открыть сетевой диск в Проводнике
@@ -177,6 +164,7 @@ namespace TelegramWebDAV.UI
             {
                 _settingsForm = null;
                 _settings = _configManager.Load();
+                _progressOverlay.AutoShowOnUpload = _settings.Server.AutoShowUploadPopup;
                 BuildContextMenu();
             };
             _settingsForm.Show();
