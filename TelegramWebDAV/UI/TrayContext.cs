@@ -74,6 +74,7 @@ namespace TelegramWebDAV.UI
 
             _telegramService.OnUploadCompleted += (fileName) =>
             {
+                AppLogger.Info("TrayContext", $"Событие OnUploadCompleted для '{fileName}' получено из TelegramService.");
                 _activeUploadFileName = null;
                 _activeUploadPercent = 0;
                 _progressOverlay.CompleteUpload(fileName);

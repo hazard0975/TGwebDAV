@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Windows.Forms;
+using TelegramWebDAV.Services;
 
 namespace TelegramWebDAV.UI
 {
@@ -58,12 +59,14 @@ namespace TelegramWebDAV.UI
             _completionTimer = new System.Windows.Forms.Timer { Interval = 1400 };
             _completionTimer.Tick += (s, e) =>
             {
+                AppLogger.Info("TrayProgressOverlay", $"_completionTimer Tick! _isUploading={_isUploading}, _isCompleted={_isCompleted}, Visible={Visible}");
                 _completionTimer.Stop();
                 if (!_isUploading)
                 {
                     _updateTimer.Stop();
                     _hideCheckTimer.Stop();
                     Hide();
+                    AppLogger.Info("TrayProgressOverlay", "Оверлей успешно скрыт по завершению таймаута.");
                 }
             };
         }
@@ -94,7 +97,11 @@ namespace TelegramWebDAV.UI
             }
 
             // Отменяем любой таймер закрытия от предыдущих файлов
-            _completionTimer.Stop();
+            if (_completionTimer.Enabled)
+            {
+                AppLogger.Info("TrayProgressOverlay", $"Остановлен активный _completionTimer для файла {fileName}");
+                _completionTimer.Stop();
+            }
 
             _currentFileName = fileName;
             _currentBytes = current;
@@ -128,6 +135,7 @@ namespace TelegramWebDAV.UI
             // Если окно скрыто — позиционируем и показываем
             if (!Visible)
             {
+                AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса для {fileName} ({current}/{total})");
                 PositionNearTray(useMouse: false);
                 Show();
                 _updateTimer.Start();
@@ -146,6 +154,7 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
+            AppLogger.Info("TrayProgressOverlay", $"CompleteUpload вызван для '{fileName}'. Запуск _completionTimer...");
             _isUploading = false;
             _isFinalizing = false;
             _isCompleted = true;
@@ -227,6 +236,7 @@ namespace TelegramWebDAV.UI
             // В режиме показа только при наведении скрываем окно, если курсор ушел
             if (!mouseOverOverlay && secondsSinceLastHover > 0.6)
             {
+                AppLogger.Info("TrayProgressOverlay", $"Скрытие окна по HideCheckTimer (mouseOver={mouseOverOverlay}, secondsSinceLastHover={secondsSinceLastHover:F1})");
                 _updateTimer.Stop();
                 _hideCheckTimer.Stop();
                 Hide();
