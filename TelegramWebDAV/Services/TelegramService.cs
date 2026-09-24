@@ -567,10 +567,77 @@ namespace TelegramWebDAV.Services
             return null;
         }
 
+        private class TeeStream : Stream
+        {
+            private readonly Stream _diskStream;
+            private readonly Stream _netStream;
+            private long _skipBytes;
+            private long _remainingNetBytes;
+
+            public TeeStream(Stream diskStream, Stream netStream, long skipBytes, long maxNetBytes)
+            {
+                _diskStream = diskStream;
+                _netStream = netStream;
+                _skipBytes = Math.Max(0, skipBytes);
+                _remainingNetBytes = maxNetBytes;
+            }
+
+            public override bool CanRead => false;
+            public override bool CanSeek => false;
+            public override bool CanWrite => true;
+            public override long Length => _diskStream.Length;
+            public override long Position { get => _diskStream.Position; set => throw new NotSupportedException(); }
+            public override void Flush()
+            {
+                _diskStream.Flush();
+                try { _netStream.Flush(); } catch { }
+            }
+            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+            public override void SetLength(long value) => _diskStream.SetLength(value);
+
+            public override void Write(byte[] buffer, int offset, int count)
+            {
+                // 1. Всегда пишем в файл на диске для кэша
+                _diskStream.Write(buffer, offset, count);
+
+                int netOffset = offset;
+                int netCount = count;
+
+                if (_skipBytes > 0)
+                {
+                    if (_skipBytes >= netCount)
+                    {
+                        _skipBytes -= netCount;
+                        return;
+                    }
+                    netOffset += (int)_skipBytes;
+                    netCount -= (int)_skipBytes;
+                    _skipBytes = 0;
+                }
+
+                if (_remainingNetBytes <= 0 || netCount <= 0) return;
+
+                int toWrite = (int)Math.Min(netCount, _remainingNetBytes);
+                try
+                {
+                    _netStream.Write(buffer, netOffset, toWrite);
+                    _netStream.Flush();
+                    _remainingNetBytes -= toWrite;
+                }
+                catch (Exception ex)
+                {
+                    // Клиент разорвал соединение (например, Проводник прочитал заголовок для подсказки и закрыл дескриптор)
+                    throw new OperationCanceledException("Клиент разорвал соединение", ex);
+                }
+            }
+        }
+
         /// <summary>
-        /// Потоковое скачивание части файла (HTTP 206) из Telegram с использованием локального дискового кэша.
+        /// Потоковое скачивание части файла (HTTP 206) из Telegram с использованием локального дискового кэша
+        /// и одновременного стриминга в ответ клиенту (с мгновенным прерыванием при закрытии соединения клиентом).
         /// </summary>
-        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length)
+        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, long alreadySentBytes = 0)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -582,58 +649,80 @@ namespace TelegramWebDAV.Services
             Directory.CreateDirectory(cacheDir);
             string cacheFilePath = Path.Combine(cacheDir, $"{messageId}.bin");
 
-            // Если файла нет в кэше, скачиваем его целиком один раз из Telegram
-            if (!File.Exists(cacheFilePath))
+            // 1. Если файл уже закэширован на диске полностью, читаем напрямую из дискового файла
+            if (File.Exists(cacheFilePath))
             {
-                AppLogger.Info("TelegramService", $"Файл для сообщения ID {messageId} отсутствует в кэше. Скачивание из Telegram...");
-
-                var document = await GetDocumentFromMessageAsync(messageId);
-                if (document == null)
+                using (var fs = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    throw new FileNotFoundException($"Не удалось найти медиа-документ для сообщения ID {messageId} в Telegram.");
-                }
-
-                // Скачиваем во временный файл, а затем переименовываем, чтобы избежать повреждения кэша при обрыве
-                string tempFilePath = cacheFilePath + ".tmp";
-                try
-                {
-                    using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    fs.Seek(offset + alreadySentBytes, SeekOrigin.Begin);
+                    long remaining = length - alreadySentBytes;
+                    byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
+                    try
                     {
-                        await _client.DownloadFileAsync(document, fs);
+                        while (remaining > 0)
+                        {
+                            int toRead = (int)Math.Min(buffer.Length, remaining);
+                            int read = await fs.ReadAsync(buffer, 0, toRead);
+                            if (read <= 0) break;
+
+                            await destination.WriteAsync(buffer, 0, read);
+                            remaining -= read;
+                        }
                     }
-                    if (File.Exists(cacheFilePath)) File.Delete(cacheFilePath);
-                    File.Move(tempFilePath, cacheFilePath);
-                    AppLogger.Info("TelegramService", $"Файл для сообщения ID {messageId} успешно сохранен в локальный кэш.");
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("TelegramService", $"Клиент прервал чтение из кэша для сообщения {messageId}: {ex.Message}");
+                    }
+                    finally
+                    {
+                        System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    AppLogger.Error("TelegramService", $"Ошибка при скачивании файла из Telegram: {ex.Message}", ex);
-                    try { File.Delete(tempFilePath); } catch { }
-                    throw;
-                }
+                return;
             }
 
-            // Отдаем запрошенную часть файла Проводнику напрямую из быстрого локального кэша
-            using (var fs = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            // 2. Файла нет в кэше. Скачиваем его из Telegram, одновременно стримя в destination через TeeStream
+            var document = await GetDocumentFromMessageAsync(messageId);
+            if (document == null)
             {
-                fs.Seek(offset, SeekOrigin.Begin);
-                byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
-                try
-                {
-                    long remaining = length;
-                    while (remaining > 0)
-                    {
-                        int toRead = (int)Math.Min(buffer.Length, remaining);
-                        int read = await fs.ReadAsync(buffer, 0, toRead);
-                        if (read <= 0) break;
+                throw new FileNotFoundException($"Не удалось найти медиа-документ для сообщения ID {messageId} в Telegram.");
+            }
 
-                        await destination.WriteAsync(buffer, 0, read);
-                        remaining -= read;
-                    }
-                }
-                finally
+            string tempFilePath = cacheFilePath + ".tmp";
+            bool completedSuccessfully = false;
+
+            try
+            {
+                AppLogger.Info("TelegramService", $"Запуск сквозного скачивания файла для сообщения ID {messageId} из Telegram...");
+                using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+                using (var tee = new TeeStream(fs, destination, skipBytes: offset + alreadySentBytes, maxNetBytes: length - alreadySentBytes))
                 {
-                    System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                    await _client.DownloadFileAsync(document, tee);
+                }
+
+                if (File.Exists(cacheFilePath)) File.Delete(cacheFilePath);
+                File.Move(tempFilePath, cacheFilePath);
+                completedSuccessfully = true;
+                AppLogger.Info("TelegramService", $"Файл для сообщения ID {messageId} успешно сохранен в локальный кэш.");
+            }
+            catch (OperationCanceledException)
+            {
+                AppLogger.Info("TelegramService", $"Клиент закрыл соединение для сообщения ID {messageId} (прочитан заголовок). Загрузка из Telegram остановлена.");
+            }
+            catch (Exception ex) when (ex.InnerException is OperationCanceledException)
+            {
+                AppLogger.Info("TelegramService", $"Клиент закрыл соединение для сообщения ID {messageId} (прочитан заголовок). Загрузка из Telegram остановлена.");
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("TelegramService", $"Ошибка при скачивании файла из Telegram: {ex.Message}", ex);
+                throw;
+            }
+            finally
+            {
+                if (!completedSuccessfully && File.Exists(tempFilePath))
+                {
+                    try { File.Delete(tempFilePath); } catch { }
                 }
             }
         }

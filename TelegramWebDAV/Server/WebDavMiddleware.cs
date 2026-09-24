@@ -27,6 +27,35 @@ namespace TelegramWebDAV.Server
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
             
+            // Если Проводник Windows запрашивает desktop.ini для папки, виртуально отдаем FolderType=Generic
+            if (path.EndsWith("/desktop.ini", StringComparison.OrdinalIgnoreCase))
+            {
+                byte[] iniBytes = Encoding.UTF8.GetBytes("[.ShellClassInfo]\r\nFolderType=Generic\r\n[ViewState]\r\nFolderType=Generic\r\n");
+                context.Response.StatusCode = 207;
+                context.Response.ContentType = "text/xml; charset=\"utf-8\"";
+                XNamespace dIni = "DAV:";
+                var propIni = new XElement(dIni + "prop",
+                    new XElement(dIni + "creationdate", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ")),
+                    new XElement(dIni + "getlastmodified", DateTime.UtcNow.ToString("R")),
+                    new XElement(dIni + "resourcetype"),
+                    new XElement(dIni + "getcontentlength", iniBytes.Length),
+                    new XElement(dIni + "getcontenttype", "text/plain")
+                );
+                var propstatIni = new XElement(dIni + "propstat", propIni, new XElement(dIni + "status", "HTTP/1.1 200 OK"));
+                string escapedHrefIni = string.Join("/", Array.ConvertAll(path.Split('/'), Uri.EscapeDataString));
+                var responseIni = new XElement(dIni + "response", new XElement(dIni + "href", escapedHrefIni), propstatIni);
+                var multistatusIni = new XElement(dIni + "multistatus", new XAttribute(XNamespace.Xmlns + "D", dIni.NamespaceName), responseIni);
+                var docIni = new XDocument(new XDeclaration("1.0", "utf-8", null), multistatusIni);
+                using (var msIni = new MemoryStream())
+                {
+                    docIni.Save(msIni);
+                    byte[] buffer = msIni.ToArray();
+                    context.Response.ContentLength64 = buffer.Length;
+                    await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
+                }
+                return;
+            }
+
             // WebDAV обычно запрашивает Depth=1 (папка + прямые дети) или Depth=0 (только сам элемент)
             int depth = 1; 
             string? depthHeader = context.Request.Headers["Depth"];
@@ -144,6 +173,19 @@ namespace TelegramWebDAV.Server
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
+
+            // Виртуальный desktop.ini для поддержки вида 'Общие элементы' в проводнике
+            if (path.EndsWith("/desktop.ini", StringComparison.OrdinalIgnoreCase))
+            {
+                byte[] iniBytes = Encoding.UTF8.GetBytes("[.ShellClassInfo]\r\nFolderType=Generic\r\n[ViewState]\r\nFolderType=Generic\r\n");
+                context.Response.StatusCode = (int)HttpStatusCode.OK;
+                context.Response.ContentType = "text/plain; charset=utf-8";
+                context.Response.ContentLength64 = iniBytes.Length;
+                await context.Response.OutputStream.WriteAsync(iniBytes, 0, iniBytes.Length);
+                context.Response.OutputStream.Close();
+                return;
+            }
+
             var node = repository.GetNodeByPath(path);
             if (node == null || node.IsDir)
             {
@@ -197,6 +239,57 @@ namespace TelegramWebDAV.Server
                 AppLogger.Info("WebDAV", $"[GET Full] '{node.Name}' | Запрос ПОЛНОГО файла ({totalSize} байт, Range отсутствует) | В БД HeaderCache: {node.HeaderCacheBytes?.Length ?? 0} байт | Клиент: {userAgent}");
             }
 
+            // 1. Проверяем попадание в HeaderCacheBytes (предварительно сохраненный в SQLite заголовок)
+            if (node.HeaderCacheBytes != null && node.HeaderCacheBytes.Length > 0)
+            {
+                // Сценарий А: Range-запрос полностью укладывается в размер HeaderCache (например, чтение первых 64 КБ)
+                if (isRange && start >= 0 && end < node.HeaderCacheBytes.Length)
+                {
+                    int offset = (int)start;
+                    int count = (int)length;
+                    await context.Response.OutputStream.WriteAsync(node.HeaderCacheBytes, offset, count);
+                    await context.Response.OutputStream.FlushAsync();
+                    AppLogger.Info("WebDAV", $"[GET HeaderCache HIT] '{node.Name}' диапазон {start}-{end} ({count} байт) отдан мгновенно из локальной БД SQLite.");
+                    try { context.Response.OutputStream.Close(); } catch { }
+                    return;
+                }
+
+                // Сценарий Б: Полный GET или Range с начала файла.
+                // Мгновенно отдаем первые 128 КБ заголовка клиенту из SQLite прямо в поток!
+                // Если Проводник или AIMP запрашивал свойства для всплывающей подсказки (InfoTip),
+                // он распарсит теги и сразу закроет сокет, избежав обращения к Telegram!
+                if (start == 0 && node.TgMessageId.HasValue)
+                {
+                    int headerLen = Math.Min((int)length, node.HeaderCacheBytes.Length);
+                    try
+                    {
+                        await context.Response.OutputStream.WriteAsync(node.HeaderCacheBytes, 0, headerLen);
+                        await context.Response.OutputStream.FlushAsync();
+                        AppLogger.Info("WebDAV", $"[GET Pre-Stream] '{node.Name}': первые {headerLen} байт заголовка мгновенно отданы клиенту из SQLite.");
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("WebDAV", $"Клиент закрыл соединение при отправке заголовка '{node.Name}': {ex.Message}");
+                        return;
+                    }
+
+                    // Даем короткую паузу 150 мс на случай, если Проводник только читал теги для подсказки и уже закрыл дескриптор файла
+                    await Task.Delay(150);
+
+                    // Продолжаем скачивание остатка файла через TelegramService
+                    try
+                    {
+                        await telegramService.DownloadFileAsync(node.TgMessageId.Value, context.Response.OutputStream, start, length, alreadySentBytes: headerLen);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("WebDAV", $"Сквозная передача '{node.Name}' завершена/прервана: {ex.Message}");
+                    }
+                    try { context.Response.OutputStream.Close(); } catch { }
+                    return;
+                }
+            }
+
             if (node.TgMessageId.HasValue)
             {
                 await telegramService.DownloadFileAsync(node.TgMessageId.Value, context.Response.OutputStream, start, length);
@@ -211,7 +304,7 @@ namespace TelegramWebDAV.Server
                 }
             }
             
-            context.Response.OutputStream.Close();
+            try { context.Response.OutputStream.Close(); } catch { }
         }
         
         public static Task HandleHeadAsync(HttpListenerContext context)
