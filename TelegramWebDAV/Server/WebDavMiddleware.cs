@@ -459,9 +459,18 @@ namespace TelegramWebDAV.Server
                 return;
             }
 
+            // Защита системной папки .Trash от удаления снаружи (например, при Ctrl+A в корне):
+            // Папка корзины защищена от удаления; возвращаем 204 No Content, чтобы клиент продолжил без ошибок
+            if (repository.IsTrashFolder(node.Id) || path.TrimEnd('/').Equals("/.Trash", StringComparison.OrdinalIgnoreCase))
+            {
+                AppLogger.Warn("WebDAV", "Запрос на удаление папки '.Trash' отклонен: системная корзина защищена от удаления.");
+                context.Response.StatusCode = (int)HttpStatusCode.NoContent;
+                return;
+            }
+
             // Проверяем, находится ли файл уже в корзине или помечен ли он как удаленный.
-            // Но также, если путь начинается с "/.Trash", то это перманентное удаление!
-            bool isPermanent = node.IsDeleted || path.StartsWith("/.Trash", StringComparison.OrdinalIgnoreCase);
+            // Но также, если путь начинается с "/.Trash/", то это перманентное удаление содержимого корзины!
+            bool isPermanent = node.IsDeleted || path.StartsWith("/.Trash/", StringComparison.OrdinalIgnoreCase);
 
             if (isPermanent)
             {
@@ -530,6 +539,14 @@ namespace TelegramWebDAV.Server
             if (sourceNode == null)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return Task.CompletedTask;
+            }
+
+            // Защита системной папки .Trash от перемещения или переименования
+            if (repository.IsTrashFolder(sourceNode.Id) || path.TrimEnd('/').Equals("/.Trash", StringComparison.OrdinalIgnoreCase))
+            {
+                AppLogger.Warn("WebDAV", "Попытка переименования или перемещения системной папки '.Trash' отклонена.");
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 return Task.CompletedTask;
             }
 
