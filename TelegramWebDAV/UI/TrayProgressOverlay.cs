@@ -19,6 +19,7 @@ namespace TelegramWebDAV.UI
 
         private readonly System.Windows.Forms.Timer _updateTimer;
         private readonly System.Windows.Forms.Timer _hideCheckTimer;
+        private readonly System.Windows.Forms.Timer _completionTimer;
 
         public bool AutoShowOnUpload { get; set; } = true;
 
@@ -53,6 +54,18 @@ namespace TelegramWebDAV.UI
 
             _hideCheckTimer = new System.Windows.Forms.Timer { Interval = 200 };
             _hideCheckTimer.Tick += HideCheckTimer_Tick;
+
+            _completionTimer = new System.Windows.Forms.Timer { Interval = 1400 };
+            _completionTimer.Tick += (s, e) =>
+            {
+                _completionTimer.Stop();
+                if (!_isUploading)
+                {
+                    _updateTimer.Stop();
+                    _hideCheckTimer.Stop();
+                    Hide();
+                }
+            };
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -79,6 +92,9 @@ namespace TelegramWebDAV.UI
                 BeginInvoke(new Action(() => UpdateProgress(fileName, current, total)));
                 return;
             }
+
+            // Отменяем любой таймер закрытия от предыдущих файлов
+            _completionTimer.Stop();
 
             _currentFileName = fileName;
             _currentBytes = current;
@@ -109,8 +125,8 @@ namespace TelegramWebDAV.UI
                 }
             }
 
-            // Если включен автоматический показ при загрузке и окно скрыто — показываем его сразу
-            if (AutoShowOnUpload && !Visible)
+            // Если окно скрыто — позиционируем и показываем
+            if (!Visible)
             {
                 PositionNearTray(useMouse: false);
                 Show();
@@ -137,20 +153,9 @@ namespace TelegramWebDAV.UI
             Invalidate();
             Update();
 
-            // Скрываем через 1.2 секунды после успешного завершения
-            var t = new System.Windows.Forms.Timer { Interval = 1200 };
-            t.Tick += (s, e) =>
-            {
-                t.Stop();
-                t.Dispose();
-                if (!_isUploading && Visible)
-                {
-                    _updateTimer.Stop();
-                    _hideCheckTimer.Stop();
-                    Hide();
-                }
-            };
-            t.Start();
+            // Запускаем гарантированный таймер скрытия
+            _completionTimer.Stop();
+            _completionTimer.Start();
         }
 
         public void NotifyTrayHover()
@@ -163,7 +168,7 @@ namespace TelegramWebDAV.UI
 
             _lastHoverTime = DateTime.UtcNow;
 
-            if (!Visible && _isUploading)
+            if (!Visible && (_isUploading || _isCompleted))
             {
                 PositionNearTray(useMouse: true);
                 Show();
@@ -209,8 +214,8 @@ namespace TelegramWebDAV.UI
         {
             if (!Visible) return;
 
-            // Если включен режим авто-показа и загрузка/финализация все еще активна — не скрываем карточку
-            if (AutoShowOnUpload && (_isUploading || _isFinalizing))
+            // Если идет активная загрузка или запущен таймер завершения — не скрываем по движению мыши
+            if (_isUploading || _isFinalizing || _isCompleted)
             {
                 return;
             }
