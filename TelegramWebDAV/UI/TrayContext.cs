@@ -22,8 +22,11 @@ namespace TelegramWebDAV.UI
         private readonly NodeRepository _repository;
         private readonly TelegramService _telegramService;
         private readonly WebDavServer _webDavServer;
+        private readonly TrayProgressOverlay _progressOverlay;
         private AppSettings _settings;
         private AuthSettingsForm? _settingsForm;
+        private string? _activeUploadFileName;
+        private int _activeUploadPercent;
 
         public TrayContext(
             ConfigManager configManager,
@@ -36,6 +39,7 @@ namespace TelegramWebDAV.UI
             _telegramService = telegramService;
             _webDavServer = webDavServer;
             _settings = _configManager.Load();
+            _progressOverlay = new TrayProgressOverlay();
 
             _notifyIcon = new NotifyIcon
             {
@@ -44,6 +48,7 @@ namespace TelegramWebDAV.UI
                 Visible = true
             };
             _notifyIcon.DoubleClick += (s, e) => ShowSettingsDialog();
+            _notifyIcon.MouseMove += (s, e) => _progressOverlay.NotifyTrayHover();
 
             BuildContextMenu();
             CheckDriveMounting();
@@ -55,10 +60,11 @@ namespace TelegramWebDAV.UI
 
             _telegramService.OnUploadProgress += (fileName, current, total) =>
             {
+                _activeUploadFileName = fileName;
                 if (total > 0)
                 {
-                    int percent = (int)(current * 100 / total);
-                    string text = $"Загрузка: {fileName} ({percent}%)";
+                    _activeUploadPercent = (int)(current * 100 / total);
+                    string text = $"Загрузка: {fileName} ({_activeUploadPercent}%)";
                     if (text.Length > 63) text = text.Substring(0, 60) + "...";
                     try
                     {
@@ -66,15 +72,21 @@ namespace TelegramWebDAV.UI
                     }
                     catch { }
                 }
+
+                _progressOverlay.UpdateProgress(fileName, current, total);
             };
 
             _telegramService.OnUploadCompleted += (fileName) =>
             {
+                _activeUploadFileName = null;
+                _activeUploadPercent = 0;
                 try
                 {
                     _notifyIcon.Text = "Telegram WebDAV & Network Drive";
                 }
                 catch { }
+
+                _progressOverlay.CompleteUpload(fileName);
             };
         }
 
@@ -90,6 +102,13 @@ namespace TelegramWebDAV.UI
             };
             menu.Items.Add(itemStatus);
 
+            var itemUploadStatus = new ToolStripLabel
+            {
+                Visible = false,
+                ForeColor = Color.SteelBlue
+            };
+            menu.Items.Add(itemUploadStatus);
+
             // Разделительная линия под статусом
             menu.Items.Add(new ToolStripSeparator());
 
@@ -97,6 +116,15 @@ namespace TelegramWebDAV.UI
             menu.Opening += (s, e) =>
             {
                 itemStatus.Text = _telegramService.IsAuthorized ? "Статус: Авторизовано ✔" : "Статус: Не авторизовано ❌";
+                if (!string.IsNullOrEmpty(_activeUploadFileName))
+                {
+                    itemUploadStatus.Text = $"Загрузка: {_activeUploadFileName} ({_activeUploadPercent}%)";
+                    itemUploadStatus.Visible = true;
+                }
+                else
+                {
+                    itemUploadStatus.Visible = false;
+                }
             };
 
             // Открыть сетевой диск в Проводнике
@@ -248,6 +276,7 @@ namespace TelegramWebDAV.UI
         {
             _notifyIcon.Visible = false;
             _notifyIcon.Dispose();
+            _progressOverlay.Dispose();
             _webDavServer?.Stop();
             AppLogger.Shutdown();
             Application.Exit();
