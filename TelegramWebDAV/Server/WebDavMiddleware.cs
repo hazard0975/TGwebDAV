@@ -347,8 +347,12 @@ namespace TelegramWebDAV.Server
                             audioMeta = AudioMetadataExtractor.ExtractFromStream(ms, name);
                         }
 
-                        // Оборачиваем считанный префикс и входящий сетевой сокет в StreamingUploadStream
-                        uploadStream = new StreamingUploadStream(context.Request.InputStream, uploadLength, audioHeaderBuffer);
+                        // Оборачиваем считанный префикс и входящий сетевой сокет в StreamingUploadStream с уведомлением о прогрессе
+                        uploadStream = new StreamingUploadStream(
+                            context.Request.InputStream, 
+                            uploadLength, 
+                            audioHeaderBuffer,
+                            onProgress: (pos, total) => telegramService.TriggerUploadProgress(name, pos, total));
                     }
 
                     try

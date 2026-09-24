@@ -50,10 +50,20 @@ namespace TelegramWebDAV.Services
         /// </summary>
         public event Action<string, long, long>? OnUploadProgress;
 
+        public void TriggerUploadProgress(string fileName, long current, long total)
+        {
+            OnUploadProgress?.Invoke(fileName, current, total);
+        }
+
         /// <summary>
         /// Событие завершения загрузки файла в Telegram.
         /// </summary>
         public event Action<string>? OnUploadCompleted;
+
+        public void TriggerUploadCompleted(string fileName)
+        {
+            OnUploadCompleted?.Invoke(fileName);
+        }
 
         public TelegramService(ConfigManager configManager)
         {
@@ -468,9 +478,14 @@ namespace TelegramWebDAV.Services
 
             try
             {
-                // Если поток не поддерживает Seek (входящий сетевой поток WebDAV от Проводника),
-                // оборачиваем его в сквозной StreamingUploadStream без промежуточной записи на диск.
-                if (!source.CanSeek)
+                // Если поток не поддерживает Seek (входящий сетевой поток WebDAV от Проводника)
+                // или если это уже StreamingUploadStream (переданный после извлечения аудио-тегов)
+                if (source is StreamingUploadStream existingStreaming)
+                {
+                    // Уже сквозной поток, регистрируем прогресс для TelegramService
+                    uploadStream = source;
+                }
+                else if (!source.CanSeek)
                 {
                     long actualLength = length > 0 ? length : GetStreamLengthSafe(source);
 

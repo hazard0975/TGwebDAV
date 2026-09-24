@@ -102,12 +102,12 @@ namespace TelegramWebDAV.UI
             {
                 PositionNearTray(useMouse: false);
                 Show();
-                Refresh();
                 _updateTimer.Start();
                 _hideCheckTimer.Start();
             }
 
             Invalidate();
+            Update(); // Принудительно запускаем перерисовку очереди WM_PAINT
         }
 
         public void CompleteUpload(string fileName)
