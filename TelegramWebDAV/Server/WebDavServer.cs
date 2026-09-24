@@ -132,7 +132,7 @@ namespace TelegramWebDAV.Server
                         await WebDavMiddleware.HandleDeleteAsync(context, _repository, _telegramService);
                         break;
                     case "MOVE":
-                        await WebDavMiddleware.HandleMoveAsync(context, _repository);
+                        await WebDavMiddleware.HandleMoveAsync(context, _repository, _telegramService);
                         break;
                     case "HEAD":
                         await WebDavMiddleware.HandleHeadAsync(context);

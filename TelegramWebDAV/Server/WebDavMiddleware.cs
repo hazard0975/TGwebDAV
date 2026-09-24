@@ -326,13 +326,13 @@ namespace TelegramWebDAV.Server
                 }
                 else
                 {
-                    // Проверяем, является ли загружаемый файл аудио
+                    // Проверяем, является ли загружаемый файл аудио (включая временные файлы .tmp софта бэкапа)
                     AudioMetadataResult? audioMeta = null;
                     Stream uploadStream = context.Request.InputStream;
                     long uploadLength = contentLength;
                     byte[]? audioHeaderBuffer = null;
 
-                    if (AudioMetadataExtractor.IsAudioFile(name) && uploadLength > 0)
+                    if (AudioMetadataExtractor.IsPotentialAudio(name) && uploadLength > 0)
                     {
                         // Извлекаем теги ID3/FLAC только из первых 128 КБ заголовка без полной буферизации файла на диск
                         int headerSizeToRead = (int)Math.Min(AudioMetadataExtractor.HeaderCacheSize, uploadLength);
@@ -384,8 +384,32 @@ namespace TelegramWebDAV.Server
                         }
                         else
                         {
+                            // Определяем красивое имя для отображения в Telegram (если Allway Sync шлет временный .tmp файл)
+                            string? tgDisplayName = null;
+                            if (name.EndsWith(".tmp", StringComparison.OrdinalIgnoreCase) || 
+                                name.EndsWith(".temp", StringComparison.OrdinalIgnoreCase) ||
+                                name.StartsWith("allw", StringComparison.OrdinalIgnoreCase))
+                            {
+                                if (audioMeta != null && !string.IsNullOrEmpty(audioMeta.AudioFormat))
+                                {
+                                    string ext = audioMeta.AudioFormat;
+                                    if (!string.IsNullOrEmpty(audioMeta.Artist) && !string.IsNullOrEmpty(audioMeta.Title))
+                                    {
+                                        tgDisplayName = $"{audioMeta.Artist} - {audioMeta.Title}{ext}";
+                                    }
+                                    else if (!string.IsNullOrEmpty(audioMeta.Title))
+                                    {
+                                        tgDisplayName = $"{audioMeta.Title}{ext}";
+                                    }
+                                    else
+                                    {
+                                        tgDisplayName = $"Audio_{DateTime.UtcNow:yyyyMMdd_HHmmss}{ext}";
+                                    }
+                                }
+                            }
+
                             // Прямая потоковая загрузка в Telegram с сохранением TCP Flow Control для Проводника
-                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
+                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName);
                         }
                         
                         DateTime? headerLastModified = null;
@@ -551,7 +575,7 @@ namespace TelegramWebDAV.Server
             }
         }
 
-        public static Task HandleMoveAsync(HttpListenerContext context, NodeRepository repository)
+        public static Task HandleMoveAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService? telegramService = null)
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
@@ -595,6 +619,48 @@ namespace TelegramWebDAV.Server
             }
 
             repository.MoveNode(sourceNode.Id, destParentNode.Id, destName);
+            AppLogger.Info("WebDAV", $"Узел '{sourceNode.Name}' успешно перемещен/переименован в '{destName}'.");
+
+            // 1. Если файл уже в Telegram, обновляем подпись сообщения на настоящее боевое имя
+            if (sourceNode.TgMessageId.HasValue && sourceNode.TgMessageId.Value > 1 && telegramService != null)
+            {
+                _ = telegramService.UpdateMessageCaptionAsync(sourceNode.TgMessageId.Value, destName);
+            }
+
+            // 2. Если файл переименован из .tmp в аудиоформат, обогащаем аудио-метаданные из настоящего имени файла
+            if (AudioMetadataExtractor.IsAudioFile(destName) && string.IsNullOrEmpty(sourceNode.Artist))
+            {
+                try
+                {
+                    string nameNoExt = Path.GetFileNameWithoutExtension(destName);
+                    var meta = new AudioMetadataResult
+                    {
+                        Album = "Telegram Cloud Music",
+                        Bitrate = sourceNode.Bitrate ?? 320,
+                        DurationSeconds = sourceNode.DurationSeconds ?? 210,
+                        Year = DateTime.Now.Year
+                    };
+
+                    if (nameNoExt.Contains(" - "))
+                    {
+                        var parts = nameNoExt.Split(new[] { " - " }, 2, StringSplitOptions.None);
+                        meta.Artist = parts[0].Trim();
+                        meta.Title = parts[1].Trim();
+                    }
+                    else
+                    {
+                        meta.Title = nameNoExt;
+                        meta.Artist = "Unknown Artist";
+                    }
+
+                    repository.UpdateAudioMetadata(sourceNode.Id, meta);
+                }
+                catch
+                {
+                    // Игнорируем некритичные ошибки автозаполнения тегов
+                }
+            }
+
             context.Response.StatusCode = (int)HttpStatusCode.Created;
             return Task.CompletedTask;
         }

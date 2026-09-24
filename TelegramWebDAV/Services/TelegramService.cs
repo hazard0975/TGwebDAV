@@ -474,7 +474,7 @@ namespace TelegramWebDAV.Services
         /// Обеспечивает TCP Flow Control (обратное давление) для синхронизации шкалы прогресса в Проводнике Windows.
         /// Возвращает реальный ID сообщения из Telegram, либо null если файл пустой.
         /// </summary>
-        public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1)
+        public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1, string? displayFileName = null)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -482,6 +482,7 @@ namespace TelegramWebDAV.Services
                 throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
 
             var peer = await GetStoragePeerAsync();
+            string effectiveFileName = !string.IsNullOrEmpty(displayFileName) ? displayFileName : fileName;
 
             Stream uploadStream = source;
             string? tempFilePath = null;
@@ -519,7 +520,7 @@ namespace TelegramWebDAV.Services
                         // Резервный случай для потоков неизвестного размера (Chunked Transfer без Content-Length)
                         string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Buffer");
                         Directory.CreateDirectory(tempDir);
-                        tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{fileName}");
+                        tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{effectiveFileName}");
                         
                         AppLogger.Info("TelegramService", $"Поток без заголовка длины. Буферизация во временный файл: {tempFilePath}");
                         using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -534,25 +535,25 @@ namespace TelegramWebDAV.Services
                 // Предотвращаем отправку файлов размером <= 1 байт в Telegram (защита от FILE_PART_0_MISSING и probe-запросов Total Commander / Проводника)
                 if (uploadStream.Length <= 1)
                 {
-                    AppLogger.Info("TelegramService", $"Файл '{fileName}' пустой или является probe-запросом клиента ({uploadStream.Length} байт). Регистрация в БД без загрузки в Telegram.");
+                    AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' пустой или является probe-запросом клиента ({uploadStream.Length} байт). Регистрация в БД без загрузки в Telegram.");
                     return null;
                 }
 
-                AppLogger.Info("TelegramService", $"Прямая потоковая передача файла '{fileName}' ({uploadStream.Length} байт) в Telegram...");
+                AppLogger.Info("TelegramService", $"Прямая потоковая передача файла '{effectiveFileName}' ({uploadStream.Length} байт) в Telegram...");
                 
                 // Передаем прогресс-колбэк также в WTelegramClient для детального трекинга MTProto частей
                 var inputFile = await _client.UploadFileAsync(
                     uploadStream, 
-                    fileName, 
-                    progress: (pos, total) => OnUploadProgress?.Invoke(fileName, pos, total)
+                    effectiveFileName, 
+                    progress: (pos, total) => OnUploadProgress?.Invoke(effectiveFileName, pos, total)
                 );
 
-                AppLogger.Info("TelegramService", $"Файл '{fileName}' загружен в MTProto, финализация сообщения в канале...");
-                var message = await _client.SendMediaAsync(peer, fileName, inputFile);
+                AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' загружен в MTProto, финализация сообщения в канале...");
+                var message = await _client.SendMediaAsync(peer, effectiveFileName, inputFile);
 
                 if (message != null)
                 {
-                    AppLogger.Info("TelegramService", $"Файл '{fileName}' успешно сохранен в Telegram. Message ID: {message.ID}");
+                    AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' успешно сохранен в Telegram. Message ID: {message.ID}");
                     return message.ID;
                 }
 
@@ -561,7 +562,7 @@ namespace TelegramWebDAV.Services
             }
             finally
             {
-                OnUploadCompleted?.Invoke(fileName);
+                OnUploadCompleted?.Invoke(effectiveFileName);
 
                 if (tempFilePath != null)
                 {
@@ -572,6 +573,30 @@ namespace TelegramWebDAV.Services
                 {
                     try { uploadStream.Dispose(); } catch { }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Обновляет текстовую подпись (Caption) у существующего сообщения в Telegram (например, при переименовании из .tmp)
+        /// </summary>
+        public async Task UpdateMessageCaptionAsync(int messageId, string newCaption)
+        {
+            if (_client == null || !IsAuthorized || messageId <= 1) return;
+            try
+            {
+                var peer = await GetStoragePeerAsync();
+                var editReq = new TL.Methods.Messages_EditMessage
+                {
+                    peer = peer,
+                    id = messageId,
+                    message = newCaption
+                };
+                await _client.Invoke(editReq);
+                AppLogger.Info("TelegramService", $"Подпись сообщения #{messageId} в Telegram обновлена на: '{newCaption}'.");
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Warn("TelegramService", $"Не удалось обновить подпись сообщения #{messageId} в Telegram: {ex.Message}");
             }
         }
 
