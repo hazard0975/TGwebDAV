@@ -91,14 +91,18 @@ namespace TelegramWebDAV.Server
 
         private static XElement CreateResponseElement(XNamespace d, XNamespace z, string path, Node node)
         {
-            // Дата создания (ISO 8601) и дата изменения (RFC 1123)
-            var creationDate = node.CreatedAt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
-            var lastModified = node.UpdatedAt.ToUniversalTime().ToString("R");
+            // Дата создания (ISO 8601) и дата изменения (RFC 1123) строго в UTC
+            var utcCreated = node.CreatedAt.Kind == DateTimeKind.Utc ? node.CreatedAt : DateTime.SpecifyKind(node.CreatedAt, DateTimeKind.Utc);
+            var utcUpdated = node.UpdatedAt.Kind == DateTimeKind.Utc ? node.UpdatedAt : DateTime.SpecifyKind(node.UpdatedAt, DateTimeKind.Utc);
+
+            var creationDate = utcCreated.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            var lastModified = utcUpdated.ToString("R");
+            var creationRfc = utcCreated.ToString("R");
 
             var prop = new XElement(d + "prop",
                 new XElement(d + "creationdate", creationDate),
                 new XElement(d + "getlastmodified", lastModified),
-                new XElement(z + "Win32CreationTime", lastModified),
+                new XElement(z + "Win32CreationTime", creationRfc),
                 new XElement(z + "Win32LastModifiedTime", lastModified)
             );
 

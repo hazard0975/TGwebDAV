@@ -845,8 +845,8 @@ namespace TelegramWebDAV.Database
                 Name = Convert.ToString(reader["name"]) ?? string.Empty,
                 IsDir = Convert.ToInt32(reader["is_dir"]) == 1,
                 Size = Convert.ToInt64(reader["size"]),
-                CreatedAt = Convert.ToDateTime(reader["created_at"]),
-                UpdatedAt = Convert.ToDateTime(reader["updated_at"]),
+                CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
+                UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc),
                 TgMessageId = reader["tg_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_message_id"]) : (int?)null,
                 Version = Convert.ToInt32(reader["version"]),
                 IsDeleted = Convert.ToInt32(reader["is_deleted"]) == 1
