@@ -157,6 +157,8 @@ namespace TelegramWebDAV.Server
             bool isRange = false;
 
             string? rangeHeader = context.Request.Headers["Range"];
+            string userAgent = context.Request.UserAgent ?? "Неизвестный клиент";
+
             if (!string.IsNullOrEmpty(rangeHeader) && rangeHeader.StartsWith("bytes="))
             {
                 isRange = true;
@@ -171,6 +173,7 @@ namespace TelegramWebDAV.Server
 
             if (start >= totalSize || end >= totalSize || start > end)
             {
+                AppLogger.Warn("WebDAV", $"[GET] Недопустимый Range '{rangeHeader}' для '{node.Name}' (размер {totalSize}) | Клиент: {userAgent}");
                 context.Response.StatusCode = (int)HttpStatusCode.RequestedRangeNotSatisfiable;
                 context.Response.AddHeader("Content-Range", $"bytes */{totalSize}");
                 return;
@@ -186,10 +189,12 @@ namespace TelegramWebDAV.Server
             {
                 context.Response.StatusCode = (int)HttpStatusCode.PartialContent;
                 context.Response.AddHeader("Content-Range", $"bytes {start}-{end}/{totalSize}");
+                AppLogger.Info("WebDAV", $"[GET Range] '{node.Name}' | Запрос диапазона: {rangeHeader} (смещение {start}, длина {length} из {totalSize} байт) | В БД HeaderCache: {node.HeaderCacheBytes?.Length ?? 0} байт | Клиент: {userAgent}");
             }
             else
             {
                 context.Response.StatusCode = (int)HttpStatusCode.OK;
+                AppLogger.Info("WebDAV", $"[GET Full] '{node.Name}' | Запрос ПОЛНОГО файла ({totalSize} байт, Range отсутствует) | В БД HeaderCache: {node.HeaderCacheBytes?.Length ?? 0} байт | Клиент: {userAgent}");
             }
 
             if (node.TgMessageId.HasValue)
