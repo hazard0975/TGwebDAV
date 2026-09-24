@@ -67,13 +67,6 @@ namespace TelegramWebDAV.UI
                 if (total > 0)
                 {
                     _activeUploadPercent = (int)(current * 100 / total);
-                    string text = $"Загрузка: {fileName} ({_activeUploadPercent}%)";
-                    if (text.Length > 63) text = text.Substring(0, 60) + "...";
-                    try
-                    {
-                        _notifyIcon.Text = text;
-                    }
-                    catch { }
                 }
 
                 _progressOverlay.UpdateProgress(fileName, current, total);
@@ -83,12 +76,6 @@ namespace TelegramWebDAV.UI
             {
                 _activeUploadFileName = null;
                 _activeUploadPercent = 0;
-                try
-                {
-                    _notifyIcon.Text = "Telegram WebDAV & Network Drive";
-                }
-                catch { }
-
                 _progressOverlay.CompleteUpload(fileName);
             };
         }

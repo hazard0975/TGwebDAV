@@ -33,19 +33,29 @@ namespace TelegramWebDAV.UI
 
         public TrayProgressOverlay()
         {
+            SetStyle(ControlStyles.AllPaintingInWmPaint |
+                     ControlStyles.UserPaint |
+                     ControlStyles.OptimizedDoubleBuffer |
+                     ControlStyles.ResizeRedraw, true);
+            UpdateStyles();
+
             FormBorderStyle = FormBorderStyle.None;
             ShowInTaskbar = false;
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
             Size = new Size(290, 96);
-            DoubleBuffered = true;
-            BackColor = Color.FromArgb(24, 30, 42); // Тёмно-синий современный фон
+            BackColor = Color.FromArgb(30, 41, 59); // Slate 800
 
             _updateTimer = new System.Windows.Forms.Timer { Interval = 250 };
             _updateTimer.Tick += (s, e) => Invalidate();
 
             _hideCheckTimer = new System.Windows.Forms.Timer { Interval = 200 };
             _hideCheckTimer.Tick += HideCheckTimer_Tick;
+        }
+
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            // Подавляем системную заливку фона Windows, чтобы не было черного экрана
         }
 
         protected override CreateParams CreateParams
@@ -92,6 +102,7 @@ namespace TelegramWebDAV.UI
             {
                 PositionNearTray(useMouse: false);
                 Show();
+                Refresh();
                 _updateTimer.Start();
                 _hideCheckTimer.Start();
             }
@@ -141,6 +152,7 @@ namespace TelegramWebDAV.UI
             {
                 PositionNearTray(useMouse: true);
                 Show();
+                Refresh();
                 _updateTimer.Start();
                 _hideCheckTimer.Start();
             }
