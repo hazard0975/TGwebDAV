@@ -322,43 +322,33 @@ namespace TelegramWebDAV.Server
                     AudioMetadataResult? audioMeta = null;
                     Stream uploadStream = context.Request.InputStream;
                     long uploadLength = contentLength;
-                    string? audioTempPath = null;
+                    byte[]? audioHeaderBuffer = null;
 
-                    if (AudioMetadataExtractor.IsAudioFile(name))
+                    if (AudioMetadataExtractor.IsAudioFile(name) && uploadLength > 0)
                     {
-                        // Для аудиофайлов до 10 МБ буферизуем в MemoryStream
-                        if (contentLength > 0 && contentLength <= 10 * 1024 * 1024)
+                        // Извлекаем теги ID3/FLAC только из первых 128 КБ заголовка без полной буферизации файла на диск
+                        int headerSizeToRead = (int)Math.Min(AudioMetadataExtractor.HeaderCacheSize, uploadLength);
+                        audioHeaderBuffer = new byte[headerSizeToRead];
+                        int totalHeaderRead = 0;
+                        while (totalHeaderRead < headerSizeToRead)
                         {
-                            var ms = new MemoryStream();
-                            await context.Request.InputStream.CopyToAsync(ms);
-                            ms.Position = 0;
+                            int r = await context.Request.InputStream.ReadAsync(audioHeaderBuffer, totalHeaderRead, headerSizeToRead - totalHeaderRead);
+                            if (r == 0) break;
+                            totalHeaderRead += r;
+                        }
 
+                        if (totalHeaderRead < headerSizeToRead)
+                        {
+                            Array.Resize(ref audioHeaderBuffer, totalHeaderRead);
+                        }
+
+                        using (var ms = new MemoryStream(audioHeaderBuffer, false))
+                        {
                             audioMeta = AudioMetadataExtractor.ExtractFromStream(ms, name);
-                            ms.Position = 0; // Перематываем назад перед отправкой
-
-                            uploadStream = ms;
-                            uploadLength = ms.Length;
                         }
-                        else
-                        {
-                            // Для больших аудиофайлов (более 10 МБ, например, часовые FLAC/MP3 миксы)
-                            // пишем во временный файл, чтобы не перегружать ОЗУ, считываем теги, а потом льем в Telegram
-                            string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_AudioTemp");
-                            Directory.CreateDirectory(tempDir);
-                            audioTempPath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{name}");
 
-                            using (var fs = new FileStream(audioTempPath, FileMode.Create, FileAccess.Write, FileShare.None))
-                            {
-                                await context.Request.InputStream.CopyToAsync(fs);
-                            }
-
-                            var fileStreamForMeta = new FileStream(audioTempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                            audioMeta = AudioMetadataExtractor.ExtractFromStream(fileStreamForMeta, name);
-                            fileStreamForMeta.Position = 0;
-
-                            uploadStream = fileStreamForMeta;
-                            uploadLength = fileStreamForMeta.Length;
-                        }
+                        // Оборачиваем считанный префикс и входящий сетевой сокет в StreamingUploadStream
+                        uploadStream = new StreamingUploadStream(context.Request.InputStream, uploadLength, audioHeaderBuffer);
                     }
 
                     try
@@ -382,9 +372,7 @@ namespace TelegramWebDAV.Server
                         }
                         else
                         {
-                            // Стандартный монолитный PUT от обычного Проводника Windows или Total Commander.
-                            // Если это НЕ аудиофайл, то внутри UploadFileAsync сработает его собственная
-                            // надежная гибридная буферизация (RAM для мелких, диск для крупных).
+                            // Прямая потоковая загрузка в Telegram с сохранением TCP Flow Control для Проводника
                             tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
                         }
                         
@@ -398,10 +386,6 @@ namespace TelegramWebDAV.Server
                         if (uploadStream != context.Request.InputStream)
                         {
                             try { uploadStream.Dispose(); } catch { }
-                        }
-                        if (audioTempPath != null)
-                        {
-                            try { File.Delete(audioTempPath); } catch { }
                         }
                     }
                 }

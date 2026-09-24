@@ -45,6 +45,16 @@ namespace TelegramWebDAV.Services
         public TelegramUserInfo? CurrentUser { get; private set; }
         public string? LastError { get; private set; }
 
+        /// <summary>
+        /// Событие прогресса загрузки файла в Telegram (имя файла, передано байт, всего байт).
+        /// </summary>
+        public event Action<string, long, long>? OnUploadProgress;
+
+        /// <summary>
+        /// Событие завершения загрузки файла в Telegram.
+        /// </summary>
+        public event Action<string>? OnUploadCompleted;
+
         public TelegramService(ConfigManager configManager)
         {
             _configManager = configManager;
@@ -440,7 +450,8 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Потоковая загрузка файла в приватный канал-хранилище через WTelegramClient.
+        /// Потоковая прямая загрузка файла в приватный канал-хранилище через WTelegramClient.
+        /// Обеспечивает TCP Flow Control (обратное давление) для синхронизации шкалы прогресса в Проводнике Windows.
         /// Возвращает реальный ID сообщения из Telegram, либо null если файл пустой.
         /// </summary>
         public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1)
@@ -457,20 +468,21 @@ namespace TelegramWebDAV.Services
 
             try
             {
-                // Библиотека WTelegramClient строго требует поток с поддержкой Seek (CanSeek == true).
-                // Если входящий сетевой поток WebDAV не поддерживает Seek, мы осуществляем гибридную буферизацию.
+                // Если поток не поддерживает Seek (входящий сетевой поток WebDAV от Проводника),
+                // оборачиваем его в сквозной StreamingUploadStream без промежуточной записи на диск.
                 if (!source.CanSeek)
                 {
                     long actualLength = length > 0 ? length : GetStreamLengthSafe(source);
 
-                    // Для небольших файлов (до 10 МБ) буферизуем в MemoryStream для скорости без износа диска
-                    if (actualLength > 0 && actualLength <= 10 * 1024 * 1024)
+                    if (actualLength > 0)
                     {
-                        AppLogger.Info("TelegramService", $"Буферизация '{fileName}' в ОЗУ (MemoryStream)...");
-                        var ms = new MemoryStream();
-                        await source.CopyToAsync(ms);
-                        ms.Position = 0;
-                        uploadStream = ms;
+                        // Прямой сквозной стриминг с поддержкой обратного давления TCP
+                        uploadStream = new StreamingUploadStream(
+                            source,
+                            actualLength,
+                            prefixBuffer: null,
+                            onProgress: (pos, total) => OnUploadProgress?.Invoke(fileName, pos, total)
+                        );
                     }
                     else if (actualLength == 0)
                     {
@@ -479,12 +491,12 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        // Для больших файлов (более 10 МБ или неизвестного размера) пишем во временный файл на диске, чтобы сохранить RAM
+                        // Резервный случай для потоков неизвестного размера (Chunked Transfer без Content-Length)
                         string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Buffer");
                         Directory.CreateDirectory(tempDir);
                         tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{fileName}");
                         
-                        AppLogger.Info("TelegramService", $"Буферизация '{fileName}' на жесткий диск во временный файл: {tempFilePath}");
+                        AppLogger.Info("TelegramService", $"Поток без заголовка длины. Буферизация во временный файл: {tempFilePath}");
                         using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
                             await source.CopyToAsync(fs);
@@ -501,15 +513,21 @@ namespace TelegramWebDAV.Services
                     return null;
                 }
 
-                AppLogger.Info("TelegramService", $"Загрузка файла '{fileName}' в Telegram...");
-                var inputFile = await _client.UploadFileAsync(uploadStream, fileName);
+                AppLogger.Info("TelegramService", $"Прямая потоковая передача файла '{fileName}' ({uploadStream.Length} байт) в Telegram...");
+                
+                // Передаем прогресс-колбэк также в WTelegramClient для детального трекинга MTProto частей
+                var inputFile = await _client.UploadFileAsync(
+                    uploadStream, 
+                    fileName, 
+                    progress: (pos, total) => OnUploadProgress?.Invoke(fileName, pos, total)
+                );
 
-                AppLogger.Info("TelegramService", $"Файл '{fileName}' загружен в MTProto, отправка медиа в канал...");
+                AppLogger.Info("TelegramService", $"Файл '{fileName}' загружен в MTProto, финализация сообщения в канале...");
                 var message = await _client.SendMediaAsync(peer, fileName, inputFile);
 
                 if (message != null)
                 {
-                    AppLogger.Info("TelegramService", $"Файл успешно отправлен в канал. Message ID: {message.ID}");
+                    AppLogger.Info("TelegramService", $"Файл '{fileName}' успешно сохранен в Telegram. Message ID: {message.ID}");
                     return message.ID;
                 }
 
@@ -518,6 +536,8 @@ namespace TelegramWebDAV.Services
             }
             finally
             {
+                OnUploadCompleted?.Invoke(fileName);
+
                 if (tempFilePath != null)
                 {
                     try { uploadStream.Dispose(); } catch { }

@@ -52,6 +52,30 @@ namespace TelegramWebDAV.UI
             {
                 ShellContextMenuHelper.RegisterTrashContextMenu(_settings.Server.DriveLetter);
             }
+
+            _telegramService.OnUploadProgress += (fileName, current, total) =>
+            {
+                if (total > 0)
+                {
+                    int percent = (int)(current * 100 / total);
+                    string text = $"Загрузка: {fileName} ({percent}%)";
+                    if (text.Length > 63) text = text.Substring(0, 60) + "...";
+                    try
+                    {
+                        _notifyIcon.Text = text;
+                    }
+                    catch { }
+                }
+            };
+
+            _telegramService.OnUploadCompleted += (fileName) =>
+            {
+                try
+                {
+                    _notifyIcon.Text = "Telegram WebDAV & Network Drive";
+                }
+                catch { }
+            };
         }
 
         private void BuildContextMenu()
