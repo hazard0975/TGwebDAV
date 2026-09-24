@@ -26,6 +26,8 @@ namespace TelegramWebDAV.UI
         private long _currentBytes = 0;
         private long _totalBytes = 0;
         private bool _isUploading = false;
+        private bool _isFinalizing = false;
+        private bool _isCompleted = false;
         private DateTime _lastSpeedCalcTime = DateTime.UtcNow;
         private long _lastSpeedBytes = 0;
         private double _bytesPerSecond = 0;
@@ -82,19 +84,29 @@ namespace TelegramWebDAV.UI
             _currentBytes = current;
             _totalBytes = total;
             _isUploading = true;
+            _isCompleted = false;
 
-            var now = DateTime.UtcNow;
-            var elapsed = (now - _lastSpeedCalcTime).TotalSeconds;
-            if (elapsed >= 0.5)
+            if (total > 0 && current >= total)
             {
-                long bytesDiff = current - _lastSpeedBytes;
-                if (bytesDiff >= 0)
+                _isFinalizing = true;
+                _bytesPerSecond = 0;
+            }
+            else
+            {
+                _isFinalizing = false;
+                var now = DateTime.UtcNow;
+                var elapsed = (now - _lastSpeedCalcTime).TotalSeconds;
+                if (elapsed >= 0.5)
                 {
-                    double instantSpeed = bytesDiff / elapsed;
-                    _bytesPerSecond = _bytesPerSecond == 0 ? instantSpeed : (_bytesPerSecond * 0.7 + instantSpeed * 0.3);
+                    long bytesDiff = current - _lastSpeedBytes;
+                    if (bytesDiff >= 0)
+                    {
+                        double instantSpeed = bytesDiff / elapsed;
+                        _bytesPerSecond = _bytesPerSecond == 0 ? instantSpeed : (_bytesPerSecond * 0.7 + instantSpeed * 0.3);
+                    }
+                    _lastSpeedBytes = current;
+                    _lastSpeedCalcTime = now;
                 }
-                _lastSpeedBytes = current;
-                _lastSpeedCalcTime = now;
             }
 
             // Если включен автоматический показ при загрузке и окно скрыто — показываем его сразу
@@ -119,11 +131,14 @@ namespace TelegramWebDAV.UI
             }
 
             _isUploading = false;
+            _isFinalizing = false;
+            _isCompleted = true;
             _bytesPerSecond = 0;
             Invalidate();
+            Update();
 
-            // Скрываем через 1.5 секунды после завершения
-            var t = new System.Windows.Forms.Timer { Interval = 1500 };
+            // Скрываем через 1.2 секунды после успешного завершения
+            var t = new System.Windows.Forms.Timer { Interval = 1200 };
             t.Tick += (s, e) =>
             {
                 t.Stop();
@@ -194,8 +209,8 @@ namespace TelegramWebDAV.UI
         {
             if (!Visible) return;
 
-            // Если включен режим авто-показа и загрузка все еще активна — не скрываем карточку
-            if (AutoShowOnUpload && _isUploading)
+            // Если включен режим авто-показа и загрузка/финализация все еще активна — не скрываем карточку
+            if (AutoShowOnUpload && (_isUploading || _isFinalizing))
             {
                 return;
             }
@@ -237,7 +252,23 @@ namespace TelegramWebDAV.UI
             using (var titleFont = new Font("Segoe UI", 8.5f, FontStyle.Bold))
             using (var titleBrush = new SolidBrush(Color.FromArgb(148, 163, 184))) // Slate 400
             {
-                string header = _isUploading ? "ОТПРАВКА В TELEGRAM" : "TELEGRAM WEBDAV";
+                string header;
+                if (_isCompleted)
+                {
+                    header = "ЗАГРУЗКА ЗАВЕРШЕНА";
+                }
+                else if (_isFinalizing)
+                {
+                    header = "СОХРАНЕНИЕ В ОБЛАКЕ";
+                }
+                else if (_isUploading)
+                {
+                    header = "ОТПРАВКА В TELEGRAM";
+                }
+                else
+                {
+                    header = "TELEGRAM WEBDAV";
+                }
                 g.DrawString(header, titleFont, titleBrush, new PointF(12, 10));
             }
 
@@ -257,7 +288,11 @@ namespace TelegramWebDAV.UI
             int barHeight = 8;
             int percent = 0;
 
-            if (_totalBytes > 0)
+            if (_isCompleted)
+            {
+                percent = 100;
+            }
+            else if (_totalBytes > 0)
             {
                 percent = (int)Math.Min(100, Math.Max(0, (_currentBytes * 100) / _totalBytes));
             }
@@ -291,7 +326,15 @@ namespace TelegramWebDAV.UI
             using (var statsBrush = new SolidBrush(Color.FromArgb(203, 213, 225))) // Slate 300
             {
                 string stats;
-                if (_isUploading && _totalBytes > 0)
+                if (_isCompleted)
+                {
+                    stats = "Файл успешно сохранен в Telegram ✔";
+                }
+                else if (_isFinalizing)
+                {
+                    stats = "Финализация сообщения в канале... ⏳";
+                }
+                else if (_isUploading && _totalBytes > 0)
                 {
                     string currStr = FormatBytes(_currentBytes);
                     string totalStr = FormatBytes(_totalBytes);
