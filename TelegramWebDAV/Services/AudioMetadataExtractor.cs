@@ -41,13 +41,10 @@ namespace TelegramWebDAV.Services
 
                 if (readBytes > 0)
                 {
-                    result.HeaderCache = new byte[readBytes];
-                    Array.Copy(headerBuffer, result.HeaderCache, readBytes);
-
                     // Базовый эвристический парсинг ID3v2 (первые 3 байта 'ID3')
                     if (readBytes >= 10 && headerBuffer[0] == 0x49 && headerBuffer[1] == 0x44 && headerBuffer[2] == 0x33)
                     {
-                        ParseId3v2Header(result.HeaderCache, result, fileName);
+                        ParseId3v2Header(headerBuffer, result, fileName);
                     }
                     else
                     {

@@ -653,8 +653,8 @@ namespace TelegramWebDAV.Database
             command.Parameters.AddWithValue("@duration", (object?)metadata?.DurationSeconds ?? DBNull.Value);
             command.Parameters.AddWithValue("@bitrate", (object?)metadata?.Bitrate ?? DBNull.Value);
 
-            byte[]? headerCache = metadata?.HeaderCache ?? inlineBytes;
-            command.Parameters.AddWithValue("@headerCache", (object?)headerCache ?? DBNull.Value);
+            // Не сохраняем тяжелые BLOB-байты в базу данных, чтобы база на 60 000 треков оставалась легкой (~20 МБ)
+            command.Parameters.AddWithValue("@headerCache", DBNull.Value);
             command.Parameters.AddWithValue("@albumCover", (object?)metadata?.AlbumCover ?? DBNull.Value);
         }
 
@@ -817,7 +817,6 @@ namespace TelegramWebDAV.Database
                 if (reader["track_number"] != DBNull.Value) node.TrackNumber = Convert.ToInt32(reader["track_number"]);
                 if (reader["duration_seconds"] != DBNull.Value) node.DurationSeconds = Convert.ToInt32(reader["duration_seconds"]);
                 if (reader["bitrate"] != DBNull.Value) node.Bitrate = Convert.ToInt32(reader["bitrate"]);
-                if (reader["header_cache_bytes"] != DBNull.Value) node.HeaderCacheBytes = (byte[])reader["header_cache_bytes"];
                 if (reader["album_cover_bytes"] != DBNull.Value) node.AlbumCoverBytes = (byte[])reader["album_cover_bytes"];
             }
             catch

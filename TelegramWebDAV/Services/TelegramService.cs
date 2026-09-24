@@ -637,7 +637,7 @@ namespace TelegramWebDAV.Services
         /// Потоковое скачивание части файла (HTTP 206) из Telegram с использованием локального дискового кэша
         /// и одновременного стриминга в ответ клиенту (с мгновенным прерыванием при закрытии соединения клиентом).
         /// </summary>
-        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, long alreadySentBytes = 0)
+        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -654,8 +654,8 @@ namespace TelegramWebDAV.Services
             {
                 using (var fs = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
-                    fs.Seek(offset + alreadySentBytes, SeekOrigin.Begin);
-                    long remaining = length - alreadySentBytes;
+                    fs.Seek(offset, SeekOrigin.Begin);
+                    long remaining = length;
                     byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
                     try
                     {
@@ -695,7 +695,7 @@ namespace TelegramWebDAV.Services
             {
                 AppLogger.Info("TelegramService", $"Запуск сквозного скачивания файла для сообщения ID {messageId} из Telegram...");
                 using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                using (var tee = new TeeStream(fs, destination, skipBytes: offset + alreadySentBytes, maxNetBytes: length - alreadySentBytes))
+                using (var tee = new TeeStream(fs, destination, skipBytes: offset, maxNetBytes: length))
                 {
                     await _client.DownloadFileAsync(document, tee);
                 }
