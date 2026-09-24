@@ -573,6 +573,8 @@ namespace TelegramWebDAV.Services
             private readonly Stream _netStream;
             private long _skipBytes;
             private long _remainingNetBytes;
+            private long _totalNetBytesWritten;
+            private bool _initialChunkPaced;
 
             public TeeStream(Stream diskStream, Stream netStream, long skipBytes, long maxNetBytes)
             {
@@ -624,6 +626,18 @@ namespace TelegramWebDAV.Services
                     _netStream.Write(buffer, netOffset, toWrite);
                     _netStream.Flush();
                     _remainingNetBytes -= toWrite;
+                    _totalNetBytesWritten += toWrite;
+
+                    // Если мы отдали первый чанк (~128 КБ) полного файла,
+                    // делаем небольшую паузу (250 мс), чтобы дать Windows InfoTip прочитать теги и закрыть дескриптор.
+                    // Если это было наведение курсора мыши - следующий Write/Flush мгновенно выбросит ошибку,
+                    // и скачивание из Telegram остановится.
+                    // Если это воспроизведение в плеере - 128 КБ содержат более 3 секунд звука, пауза незаметна.
+                    if (!_initialChunkPaced && _totalNetBytesWritten >= 131072)
+                    {
+                        _initialChunkPaced = true;
+                        Thread.Sleep(250);
+                    }
                 }
                 catch (Exception ex)
                 {
