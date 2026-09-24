@@ -496,7 +496,7 @@ namespace TelegramWebDAV.Services
                             source,
                             actualLength,
                             prefixBuffer: null,
-                            onProgress: (pos, total) => OnUploadProgress?.Invoke(fileName, pos, total)
+                            onProgress: null
                         );
                     }
                     else if (actualLength == 0)

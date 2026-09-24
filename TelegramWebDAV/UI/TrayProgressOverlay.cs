@@ -110,8 +110,19 @@ namespace TelegramWebDAV.UI
                 _completionTimer.Stop();
             }
 
-            _currentFileName = fileName;
-            _currentBytes = current;
+            // При смене файла сбрасываем счетчик, иначе гарантируем монотонный рост (защита от сетевого джиттера)
+            if (_currentFileName != fileName)
+            {
+                _currentFileName = fileName;
+                _currentBytes = current;
+                _lastSpeedBytes = 0;
+                _lastSpeedCalcTime = DateTime.UtcNow;
+                _bytesPerSecond = 0;
+            }
+            else
+            {
+                _currentBytes = Math.Max(_currentBytes, current);
+            }
             _totalBytes = total;
             _isUploading = true;
             _isCompleted = false;
