@@ -2,6 +2,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 using TelegramWebDAV.Services;
 
@@ -21,6 +22,7 @@ namespace TelegramWebDAV.UI
         private readonly System.Windows.Forms.Timer _updateTimer;
         private readonly System.Windows.Forms.Timer _hideCheckTimer;
         private readonly System.Windows.Forms.Timer _completionTimer;
+        private readonly SynchronizationContext? _syncContext;
 
         public bool AutoShowOnUpload { get; set; } = true;
 
@@ -37,6 +39,8 @@ namespace TelegramWebDAV.UI
 
         public TrayProgressOverlay()
         {
+            _syncContext = SynchronizationContext.Current;
+
             SetStyle(ControlStyles.AllPaintingInWmPaint |
                      ControlStyles.UserPaint |
                      ControlStyles.OptimizedDoubleBuffer |
@@ -49,6 +53,9 @@ namespace TelegramWebDAV.UI
             StartPosition = FormStartPosition.Manual;
             Size = new Size(290, 96);
             BackColor = Color.FromArgb(30, 41, 59); // Slate 800
+
+            // Принудительно создаем дескриптор Win32 HWND
+            CreateControl();
 
             _updateTimer = new System.Windows.Forms.Timer { Interval = 250 };
             _updateTimer.Tick += (s, e) => Invalidate();
@@ -90,9 +97,9 @@ namespace TelegramWebDAV.UI
 
         public void UpdateProgress(string fileName, long current, long total)
         {
-            if (InvokeRequired)
+            if (_syncContext != null && SynchronizationContext.Current != _syncContext)
             {
-                BeginInvoke(new Action(() => UpdateProgress(fileName, current, total)));
+                _syncContext.Post(_ => UpdateProgress(fileName, current, total), null);
                 return;
             }
 
@@ -148,9 +155,9 @@ namespace TelegramWebDAV.UI
 
         public void CompleteUpload(string fileName)
         {
-            if (InvokeRequired)
+            if (_syncContext != null && SynchronizationContext.Current != _syncContext)
             {
-                BeginInvoke(new Action(() => CompleteUpload(fileName)));
+                _syncContext.Post(_ => CompleteUpload(fileName), null);
                 return;
             }
 
@@ -169,9 +176,9 @@ namespace TelegramWebDAV.UI
 
         public void NotifyTrayHover()
         {
-            if (InvokeRequired)
+            if (_syncContext != null && SynchronizationContext.Current != _syncContext)
             {
-                BeginInvoke(new Action(NotifyTrayHover));
+                _syncContext.Post(_ => NotifyTrayHover(), null);
                 return;
             }
 
