@@ -144,7 +144,7 @@ namespace TelegramWebDAV.Server
                         await WebDavMiddleware.HandleUnlockAsync(context);
                         break;
                     case "PROPPATCH":
-                        await WebDavMiddleware.HandleProppatchAsync(context);
+                        await WebDavMiddleware.HandleProppatchAsync(context, _repository);
                         break;
                     default:
                         response.StatusCode = (int)HttpStatusCode.MethodNotAllowed;

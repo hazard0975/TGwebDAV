@@ -504,9 +504,37 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Создание или перезапись файла с поддержкой версионирования и метаданных
+        /// Обновляет временные метки узла (updated_at и created_at)
         /// </summary>
-        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null)
+        public bool UpdateNodeTimestamps(int nodeId, DateTime? modifiedTime, DateTime? creationTime = null)
+        {
+            if (!modifiedTime.HasValue && !creationTime.HasValue) return false;
+
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                var setClauses = new List<string>();
+                if (modifiedTime.HasValue)
+                {
+                    setClauses.Add("updated_at = @updatedAt");
+                    command.Parameters.AddWithValue("@updatedAt", modifiedTime.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+                if (creationTime.HasValue)
+                {
+                    setClauses.Add("created_at = @createdAt");
+                    command.Parameters.AddWithValue("@createdAt", creationTime.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                }
+
+                command.CommandText = $"UPDATE nodes SET {string.Join(", ", setClauses)} WHERE id = @nodeId;";
+                command.Parameters.AddWithValue("@nodeId", nodeId);
+                return command.ExecuteNonQuery() > 0;
+            }
+        }
+
+        /// <summary>
+        /// Создание или перезапись файла с поддержкой версионирования, метаданных и сохранения оригинальных дат
+        /// </summary>
+        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null, DateTime? lastModified = null, DateTime? creationDate = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
@@ -527,7 +555,7 @@ namespace TelegramWebDAV.Database
                     {
                         using (var updateCmd = connection.CreateCommand())
                         {
-                            updateCmd.CommandText = @"
+                            string updateSql = @"
                                 UPDATE nodes SET
                                     size = @size,
                                     tg_message_id = @tgMessageId,
@@ -541,11 +569,17 @@ namespace TelegramWebDAV.Database
                                     bitrate = @bitrate,
                                     header_cache_bytes = @headerCache,
                                     album_cover_bytes = @albumCover,
-                                    updated_at = CURRENT_TIMESTAMP
+                                    updated_at = " + (lastModified.HasValue ? "@updatedAt" : "CURRENT_TIMESTAMP") + @"
                                 WHERE id = @nodeId;";
+
+                            updateCmd.CommandText = updateSql;
                             updateCmd.Parameters.AddWithValue("@size", size);
                             updateCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
+                            if (lastModified.HasValue)
+                            {
+                                updateCmd.Parameters.AddWithValue("@updatedAt", lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                            }
                             AddMetadataParameters(updateCmd, metadata, inlineBytes);
                             updateCmd.ExecuteNonQuery();
                         }
@@ -586,11 +620,11 @@ namespace TelegramWebDAV.Database
                                 INSERT INTO nodes (
                                     parent_id, name, is_dir, size, version, original_node_id, tg_message_id,
                                     artist, title, album, year, genre, track_number, duration_seconds, bitrate,
-                                    header_cache_bytes, album_cover_bytes
+                                    header_cache_bytes, album_cover_bytes, created_at, updated_at
                                 ) VALUES (
                                     @parentId, @name, 0, @size, @version, @originalId, @tgMessageId,
                                     @artist, @title, @album, @year, @genre, @trackNumber, @duration, @bitrate,
-                                    @headerCache, @albumCover
+                                    @headerCache, @albumCover, @createdAt, @updatedAt
                                 );";
                             insertCmd.Parameters.AddWithValue("@parentId", parentId);
                             insertCmd.Parameters.AddWithValue("@name", name);
@@ -598,6 +632,12 @@ namespace TelegramWebDAV.Database
                             insertCmd.Parameters.AddWithValue("@version", existingNode.Version + 1);
                             insertCmd.Parameters.AddWithValue("@originalId", existingNode.Id);
                             insertCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
+                            insertCmd.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
+                                ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
+                                : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
+                            insertCmd.Parameters.AddWithValue("@updatedAt", lastModified.HasValue 
+                                ? lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
+                                : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                             
                             AddMetadataParameters(insertCmd, metadata, inlineBytes);
                             insertCmd.ExecuteNonQuery();
@@ -624,16 +664,22 @@ namespace TelegramWebDAV.Database
                             INSERT INTO nodes (
                                 parent_id, name, is_dir, size, version, tg_message_id,
                                 artist, title, album, year, genre, track_number, duration_seconds, bitrate,
-                                header_cache_bytes, album_cover_bytes
+                                header_cache_bytes, album_cover_bytes, created_at, updated_at
                             ) VALUES (
                                 @parentId, @name, 0, @size, 1, @tgMessageId,
                                 @artist, @title, @album, @year, @genre, @trackNumber, @duration, @bitrate,
-                                @headerCache, @albumCover
+                                @headerCache, @albumCover, @createdAt, @updatedAt
                             );";
                         command.Parameters.AddWithValue("@parentId", parentId);
                         command.Parameters.AddWithValue("@name", name);
                         command.Parameters.AddWithValue("@size", size);
                         command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
+                            ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
+                            : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
+                        command.Parameters.AddWithValue("@updatedAt", lastModified.HasValue 
+                            ? lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
+                            : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                         
                         AddMetadataParameters(command, metadata, inlineBytes);
                         command.ExecuteNonQuery();

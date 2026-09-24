@@ -47,10 +47,11 @@ namespace TelegramWebDAV.Server
             context.Response.ContentType = "text/xml; charset=\"utf-8\"";
             
             XNamespace d = "DAV:";
+            XNamespace z = "urn:schemas-microsoft-com:";
             var responseElements = new List<XElement>();
             
             // 1. Добавляем сам целевой элемент в XML
-            responseElements.Add(CreateResponseElement(d, path, targetNode));
+            responseElements.Add(CreateResponseElement(d, z, path, targetNode));
 
             // 2. Если запрошен Depth=1 и это папка, добавляем её внутренности (детей)
             if (depth == 1 && targetNode.IsDir)
@@ -66,13 +67,14 @@ namespace TelegramWebDAV.Server
 
                     // Формируем URL путь для дочернего элемента
                     string childPath = path.TrimEnd('/') + "/" + child.Name;
-                    responseElements.Add(CreateResponseElement(d, childPath, child));
+                    responseElements.Add(CreateResponseElement(d, z, childPath, child));
                 }
             }
 
-            // Оборачиваем в корневой тэг <D:multistatus>
+            // Оборачиваем в корневой тэг <D:multistatus> с поддержкой пространств DAV: и Microsoft Z:
             var multistatus = new XElement(d + "multistatus",
                 new XAttribute(XNamespace.Xmlns + "D", d.NamespaceName),
+                new XAttribute(XNamespace.Xmlns + "Z", z.NamespaceName),
                 responseElements
             );
 
@@ -87,7 +89,7 @@ namespace TelegramWebDAV.Server
             }
         }
 
-        private static XElement CreateResponseElement(XNamespace d, string path, Node node)
+        private static XElement CreateResponseElement(XNamespace d, XNamespace z, string path, Node node)
         {
             // Дата создания (ISO 8601) и дата изменения (RFC 1123)
             var creationDate = node.CreatedAt.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
@@ -95,7 +97,9 @@ namespace TelegramWebDAV.Server
 
             var prop = new XElement(d + "prop",
                 new XElement(d + "creationdate", creationDate),
-                new XElement(d + "getlastmodified", lastModified)
+                new XElement(d + "getlastmodified", lastModified),
+                new XElement(z + "Win32CreationTime", lastModified),
+                new XElement(z + "Win32LastModifiedTime", lastModified)
             );
 
             if (node.IsDir)
@@ -380,8 +384,23 @@ namespace TelegramWebDAV.Server
                             tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength);
                         }
                         
+                        DateTime? headerLastModified = null;
+                        string? mtimeHeader = context.Request.Headers["X-OC-MTime"];
+                        if (!string.IsNullOrEmpty(mtimeHeader) && TryParseWebDavDate(mtimeHeader, out var parsedMTime))
+                        {
+                            headerLastModified = parsedMTime;
+                        }
+                        else
+                        {
+                            string? lastModHeader = context.Request.Headers["Last-Modified"];
+                            if (!string.IsNullOrEmpty(lastModHeader) && TryParseWebDavDate(lastModHeader, out var parsedLastMod))
+                            {
+                                headerLastModified = parsedLastMod;
+                            }
+                        }
+
                         // Записываем инфу в базу с метаданными и встроенными байтами при необходимости
-                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes);
+                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes, headerLastModified);
 
                         context.Response.StatusCode = (int)HttpStatusCode.Created;
                     }
@@ -620,7 +639,7 @@ namespace TelegramWebDAV.Server
             return Task.CompletedTask;
         }
 
-        public static async Task HandleProppatchAsync(HttpListenerContext context)
+        public static async Task HandleProppatchAsync(HttpListenerContext context, NodeRepository repository)
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
@@ -635,11 +654,11 @@ namespace TelegramWebDAV.Server
             }
             catch { }
 
-            context.Response.StatusCode = 207; // Multi-Status
-            context.Response.ContentType = "text/xml; charset=\"utf-8\"";
-
+            DateTime? lastModified = null;
+            DateTime? creationDate = null;
             XNamespace d = "DAV:";
             var propElements = new List<XElement>();
+
             try
             {
                 if (!string.IsNullOrEmpty(requestBody))
@@ -648,16 +667,56 @@ namespace TelegramWebDAV.Server
                     var setProps = xdoc.Descendants(d + "prop").Descendants();
                     foreach (var prop in setProps)
                     {
-                        propElements.Add(new XElement(prop.Name));
+                        string localName = prop.Name.LocalName;
+                        if (localName.Equals("Win32LastModifiedTime", StringComparison.OrdinalIgnoreCase) ||
+                            localName.Equals("getlastmodified", StringComparison.OrdinalIgnoreCase) ||
+                            localName.Equals("lastmodified", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (TryParseWebDavDate(prop.Value, out var dt))
+                            {
+                                lastModified = dt;
+                            }
+                            propElements.Add(new XElement(prop.Name));
+                        }
+                        else if (localName.Equals("Win32CreationTime", StringComparison.OrdinalIgnoreCase) ||
+                                 localName.Equals("creationdate", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (TryParseWebDavDate(prop.Value, out var dt))
+                            {
+                                creationDate = dt;
+                            }
+                            propElements.Add(new XElement(prop.Name));
+                        }
+                        else
+                        {
+                            propElements.Add(new XElement(prop.Name));
+                        }
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("WebDAV", $"[PROPPATCH] Ошибка парсинга XML свойств: {ex.Message}");
+            }
 
             if (propElements.Count == 0)
             {
                 propElements.Add(new XElement(d + "getlastmodified"));
             }
+
+            // Сохраняем извлеченные даты в базу SQLite
+            if (lastModified.HasValue || creationDate.HasValue)
+            {
+                var node = repository.GetNodeByPath(path);
+                if (node != null)
+                {
+                    repository.UpdateNodeTimestamps(node.Id, lastModified, creationDate);
+                    AppLogger.Info("WebDAV", $"[PROPPATCH] Установлены метки времени для '{node.Name}': Модифицирован={lastModified:yyyy-MM-dd HH:mm:ss}, Создан={creationDate:yyyy-MM-dd HH:mm:ss}");
+                }
+            }
+
+            context.Response.StatusCode = 207; // Multi-Status
+            context.Response.ContentType = "text/xml; charset=\"utf-8\"";
 
             var propstat = new XElement(d + "propstat",
                 new XElement(d + "prop", propElements),
@@ -684,6 +743,44 @@ namespace TelegramWebDAV.Server
                 context.Response.ContentLength64 = buffer.Length;
                 await context.Response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
             }
+        }
+
+        private static bool TryParseWebDavDate(string value, out DateTime result)
+        {
+            result = default;
+            if (string.IsNullOrWhiteSpace(value)) return false;
+
+            value = value.Trim();
+
+            // 1. Стандартный RFC 1123 или ISO 8601 (например, "Wed, 23 Sep 2026 06:42:00 GMT" или "2026-09-23T06:42:00Z")
+            if (DateTimeOffset.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AdjustToUniversal, out var dto))
+            {
+                result = dto.UtcDateTime;
+                return true;
+            }
+
+            // 2. Локальный или системный формат
+            if (DateTime.TryParse(value, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AdjustToUniversal, out var dt))
+            {
+                result = dt.ToUniversalTime();
+                return true;
+            }
+
+            // 3. Формат Unix Timestamp
+            if (long.TryParse(value, out long unixTime))
+            {
+                try
+                {
+                    if (unixTime > 100000000000L)
+                        result = DateTimeOffset.FromUnixTimeMilliseconds(unixTime).UtcDateTime;
+                    else if (unixTime > 0)
+                        result = DateTimeOffset.FromUnixTimeSeconds(unixTime).UtcDateTime;
+                    return true;
+                }
+                catch { }
+            }
+
+            return false;
         }
     }
 }
