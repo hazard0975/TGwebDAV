@@ -69,7 +69,7 @@ namespace TelegramWebDAV.UI
                     _activeUploadPercent = (int)(current * 100 / total);
                 }
 
-                _progressOverlay.UpdateProgress(fileName, current, total);
+                _progressOverlay.UpdateProgress(fileName, current, total, TransferDirection.Upload);
             };
 
             _telegramService.OnUploadCompleted += (fileName) =>
@@ -77,7 +77,18 @@ namespace TelegramWebDAV.UI
                 AppLogger.Info("TrayContext", $"Событие OnUploadCompleted для '{fileName}' получено из TelegramService.");
                 _activeUploadFileName = null;
                 _activeUploadPercent = 0;
-                _progressOverlay.CompleteUpload(fileName);
+                _progressOverlay.CompleteTransfer(fileName, TransferDirection.Upload);
+            };
+
+            _telegramService.OnDownloadProgress += (fileName, current, total) =>
+            {
+                _progressOverlay.UpdateProgress(fileName, current, total, TransferDirection.Download);
+            };
+
+            _telegramService.OnDownloadCompleted += (fileName) =>
+            {
+                AppLogger.Info("TrayContext", $"Событие OnDownloadCompleted для '{fileName}' получено из TelegramService.");
+                _progressOverlay.CompleteTransfer(fileName, TransferDirection.Download);
             };
         }
 

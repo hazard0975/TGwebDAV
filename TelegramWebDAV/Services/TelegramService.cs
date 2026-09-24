@@ -65,6 +65,16 @@ namespace TelegramWebDAV.Services
             OnUploadCompleted?.Invoke(fileName);
         }
 
+        /// <summary>
+        /// Событие прогресса скачивания файла из Telegram (имя файла, скачано байт, всего байт).
+        /// </summary>
+        public event Action<string, long, long>? OnDownloadProgress;
+
+        /// <summary>
+        /// Событие завершения скачивания файла из Telegram.
+        /// </summary>
+        public event Action<string>? OnDownloadCompleted;
+
         public TelegramService(ConfigManager configManager)
         {
             _configManager = configManager;
@@ -686,7 +696,7 @@ namespace TelegramWebDAV.Services
         /// Потоковое скачивание части файла (HTTP 206) из Telegram с использованием локального дискового кэша
         /// и одновременного стриминга в ответ клиенту (с мгновенным прерыванием при закрытии соединения клиентом).
         /// </summary>
-        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length)
+        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, string fileName = "файл")
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -742,17 +752,21 @@ namespace TelegramWebDAV.Services
 
             try
             {
-                AppLogger.Info("TelegramService", $"Запуск сквозного скачивания файла для сообщения ID {messageId} из Telegram...");
+                AppLogger.Info("TelegramService", $"Запуск сквозного скачивания файла '{fileName}' (сообщение ID {messageId}) из Telegram...");
                 using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                 using (var tee = new TeeStream(fs, destination, skipBytes: offset, maxNetBytes: length))
                 {
-                    await _client.DownloadFileAsync(document, tee);
+                    await _client.DownloadFileAsync(
+                        document,
+                        tee,
+                        progress: (pos, total) => OnDownloadProgress?.Invoke(fileName, pos, total)
+                    );
                 }
 
                 if (File.Exists(cacheFilePath)) File.Delete(cacheFilePath);
                 File.Move(tempFilePath, cacheFilePath);
                 completedSuccessfully = true;
-                AppLogger.Info("TelegramService", $"Файл для сообщения ID {messageId} успешно сохранен в локальный кэш.");
+                AppLogger.Info("TelegramService", $"Файл '{fileName}' (сообщение ID {messageId}) успешно сохранен в локальный кэш.");
             }
             catch (OperationCanceledException)
             {
@@ -769,6 +783,11 @@ namespace TelegramWebDAV.Services
             }
             finally
             {
+                if (completedSuccessfully)
+                {
+                    OnDownloadCompleted?.Invoke(fileName);
+                }
+
                 if (!completedSuccessfully && File.Exists(tempFilePath))
                 {
                     try { File.Delete(tempFilePath); } catch { }

@@ -8,10 +8,15 @@ using TelegramWebDAV.Services;
 
 namespace TelegramWebDAV.UI
 {
+    public enum TransferDirection
+    {
+        Upload,
+        Download
+    }
+
     /// <summary>
-    /// Интерактивный всплывающий HUD-виджет для отображения живого прогресса загрузки
-    /// при наведении курсора мыши на иконку в системном трее.
-    /// Обновляется в реальном времени (каждые 200-300 мс) без необходимости убирать мышь.
+    /// Интерактивный всплывающий HUD-виджет для отображения живого прогресса передачи данных
+    /// (выгрузка в Telegram или скачивание/кэширование из Telegram) при активности или наведении на трей.
     /// </summary>
     public class TrayProgressOverlay : Form
     {
@@ -26,10 +31,11 @@ namespace TelegramWebDAV.UI
 
         public bool AutoShowOnUpload { get; set; } = true;
 
+        private TransferDirection _direction = TransferDirection.Upload;
         private string _currentFileName = string.Empty;
         private long _currentBytes = 0;
         private long _totalBytes = 0;
-        private bool _isUploading = false;
+        private bool _isTransferring = false;
         private bool _isFinalizing = false;
         private bool _isCompleted = false;
         private DateTime _lastSpeedCalcTime = DateTime.UtcNow;
@@ -66,9 +72,9 @@ namespace TelegramWebDAV.UI
             _completionTimer = new System.Windows.Forms.Timer { Interval = 1400 };
             _completionTimer.Tick += (s, e) =>
             {
-                AppLogger.Info("TrayProgressOverlay", $"_completionTimer Tick! _isUploading={_isUploading}, _isCompleted={_isCompleted}, Visible={Visible}");
+                AppLogger.Info("TrayProgressOverlay", $"_completionTimer Tick! _isTransferring={_isTransferring}, _isCompleted={_isCompleted}, Visible={Visible}");
                 _completionTimer.Stop();
-                if (!_isUploading)
+                if (!_isTransferring)
                 {
                     _updateTimer.Stop();
                     _hideCheckTimer.Stop();
@@ -98,11 +104,11 @@ namespace TelegramWebDAV.UI
 
         protected override bool ShowWithoutActivation => true;
 
-        public void UpdateProgress(string fileName, long current, long total)
+        public void UpdateProgress(string fileName, long current, long total, TransferDirection direction = TransferDirection.Upload)
         {
             if (_syncContext != null && SynchronizationContext.Current != _syncContext)
             {
-                _syncContext.Post(_ => UpdateProgress(fileName, current, total), null);
+                _syncContext.Post(_ => UpdateProgress(fileName, current, total, direction), null);
                 return;
             }
 
@@ -112,6 +118,8 @@ namespace TelegramWebDAV.UI
                 AppLogger.Info("TrayProgressOverlay", $"Остановлен активный _completionTimer для файла {fileName}");
                 _completionTimer.Stop();
             }
+
+            _direction = direction;
 
             // При смене файла сбрасываем счетчик, иначе гарантируем монотонный рост (защита от сетевого джиттера)
             if (_currentFileName != fileName)
@@ -127,7 +135,7 @@ namespace TelegramWebDAV.UI
                 _currentBytes = Math.Max(_currentBytes, current);
             }
             _totalBytes = total;
-            _isUploading = true;
+            _isTransferring = true;
             _isCompleted = false;
 
             if (total > 0 && current >= total)
@@ -156,7 +164,7 @@ namespace TelegramWebDAV.UI
             // Если окно скрыто — позиционируем и показываем
             if (!Visible)
             {
-                AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса для {fileName} ({current}/{total})");
+                AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса [{_direction}] для {fileName} ({current}/{total})");
                 PositionNearTray(useMouse: false);
                 Show();
                 _updateTimer.Start();
@@ -167,16 +175,17 @@ namespace TelegramWebDAV.UI
             Update(); // Принудительно запускаем перерисовку очереди WM_PAINT
         }
 
-        public void CompleteUpload(string fileName)
+        public void CompleteTransfer(string fileName, TransferDirection direction = TransferDirection.Upload)
         {
             if (_syncContext != null && SynchronizationContext.Current != _syncContext)
             {
-                _syncContext.Post(_ => CompleteUpload(fileName), null);
+                _syncContext.Post(_ => CompleteTransfer(fileName, direction), null);
                 return;
             }
 
-            AppLogger.Info("TrayProgressOverlay", $"CompleteUpload вызван для '{fileName}'. Запуск _completionTimer...");
-            _isUploading = false;
+            AppLogger.Info("TrayProgressOverlay", $"CompleteTransfer [{direction}] вызван для '{fileName}'. Запуск _completionTimer...");
+            _direction = direction;
+            _isTransferring = false;
             _isFinalizing = false;
             _isCompleted = true;
             _bytesPerSecond = 0;
@@ -187,6 +196,9 @@ namespace TelegramWebDAV.UI
             _completionTimer.Stop();
             _completionTimer.Start();
         }
+
+        // Для обратной совместимости
+        public void CompleteUpload(string fileName) => CompleteTransfer(fileName, TransferDirection.Upload);
 
         public void NotifyTrayHover()
         {
@@ -199,7 +211,7 @@ namespace TelegramWebDAV.UI
             _lastHoverTime = DateTime.UtcNow;
 
             // Показываем окно по наведению на трей только если идет реальная передача
-            if (!Visible && (_isUploading || _isFinalizing))
+            if (!Visible && (_isTransferring || _isFinalizing))
             {
                 PositionNearTray(useMouse: true);
                 Show();
@@ -247,7 +259,7 @@ namespace TelegramWebDAV.UI
 
             // Если окно всплыло по автоматическому показу и идет загрузка — оно висит, пока не закончится
             // Но если пользователь в режиме "показ только по наведению", или окно в режиме покоя — скрываем при уходе курсора
-            if (AutoShowOnUpload && (_isUploading || _isFinalizing || _isCompleted))
+            if (AutoShowOnUpload && (_isTransferring || _isFinalizing || _isCompleted))
             {
                 return;
             }
@@ -293,15 +305,15 @@ namespace TelegramWebDAV.UI
                 string header;
                 if (_isCompleted)
                 {
-                    header = "ЗАГРУЗКА ЗАВЕРШЕНА";
+                    header = _direction == TransferDirection.Download ? "СКАЧИВАНИЕ ЗАВЕРШЕНО" : "ЗАГРУЗКА ЗАВЕРШЕНА";
                 }
                 else if (_isFinalizing)
                 {
-                    header = "СОХРАНЕНИЕ В ОБЛАКЕ";
+                    header = _direction == TransferDirection.Download ? "СОХРАНЕНИЕ В КЭШ" : "СОХРАНЕНИЕ В ОБЛАКЕ";
                 }
-                else if (_isUploading)
+                else if (_isTransferring)
                 {
-                    header = "ОТПРАВКА В TELEGRAM";
+                    header = _direction == TransferDirection.Download ? "СКАЧИВАНИЕ ИЗ TELEGRAM" : "ОТПРАВКА В TELEGRAM";
                 }
                 else
                 {
@@ -348,10 +360,18 @@ namespace TelegramWebDAV.UI
                 int fillWidth = Math.Max(6, (barWidth * percent) / 100);
                 using (var fillPath = GetRoundedRect(new Rectangle(barX, barY, fillWidth, barHeight), 4))
                 {
+                    Color startColor = _direction == TransferDirection.Download 
+                        ? Color.FromArgb(245, 158, 11)  // Amber 500
+                        : Color.FromArgb(34, 197, 94);   // Green Emerald 500
+
+                    Color endColor = _direction == TransferDirection.Download
+                        ? Color.FromArgb(251, 191, 36)  // Amber 400
+                        : Color.FromArgb(56, 189, 248);  // Sky 400
+
                     using (var fillBrush = new LinearGradientBrush(
                         new Rectangle(barX, barY, barWidth, barHeight),
-                        Color.FromArgb(34, 197, 94), // Зеленый Emerald 500
-                        Color.FromArgb(56, 189, 248), // Небесно-голубой Sky 400
+                        startColor,
+                        endColor,
                         0f))
                     {
                         g.FillPath(fillBrush, fillPath);
@@ -366,26 +386,30 @@ namespace TelegramWebDAV.UI
                 string stats;
                 if (_isCompleted)
                 {
-                    stats = "Файл успешно сохранен в Telegram ✔";
+                    stats = _direction == TransferDirection.Download 
+                        ? "Файл успешно получен из Telegram ✔" 
+                        : "Файл успешно сохранен в Telegram ✔";
                 }
                 else if (_isFinalizing)
                 {
-                    stats = "Финализация сообщения в канале... ⏳";
+                    stats = _direction == TransferDirection.Download
+                        ? "Завершение кэширования... ⏳"
+                        : "Финализация сообщения в канале... ⏳";
                 }
-                else if (_isUploading && _totalBytes > 0)
+                else if (_isTransferring && _totalBytes > 0)
                 {
                     string currStr = FormatBytes(_currentBytes);
                     string totalStr = FormatBytes(_totalBytes);
                     string speedStr = _bytesPerSecond > 1024 ? $"{FormatBytes((long)_bytesPerSecond)}/с" : "вычисление...";
                     stats = $"{currStr} из {totalStr} ({percent}%) • {speedStr}";
                 }
-                else if (_isUploading)
+                else if (_isTransferring)
                 {
-                    stats = $"Передано: {FormatBytes(_currentBytes)} • отправка...";
+                    stats = $"Передано: {FormatBytes(_currentBytes)} • передача...";
                 }
                 else
                 {
-                    stats = "Все файлы успешно синхронизированы ✔";
+                    stats = "Все файлы синхронизированы ✔";
                 }
 
                 g.DrawString(stats, statsFont, statsBrush, new PointF(12, 68));

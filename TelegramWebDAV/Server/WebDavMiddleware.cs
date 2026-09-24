@@ -202,7 +202,7 @@ namespace TelegramWebDAV.Server
             {
                 try
                 {
-                    await telegramService.DownloadFileAsync(node.TgMessageId.Value, context.Response.OutputStream, start, length);
+                    await telegramService.DownloadFileAsync(node.TgMessageId.Value, context.Response.OutputStream, start, length, node.Name);
                 }
                 catch (Exception ex)
                 {
