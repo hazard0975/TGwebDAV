@@ -36,6 +36,8 @@ namespace TelegramWebDAV.Config
         public string DriveLetter { get; set; } = "Z:";
         public string DriveName { get; set; } = "Telegram Drive";
         public bool AutoStartWithWindows { get; set; } = true;
+        public bool HideTrashFromRoot { get; set; } = true;
+        public bool AddTrashToContextMenu { get; set; } = true;
     }
 
     public class DatabaseSettings

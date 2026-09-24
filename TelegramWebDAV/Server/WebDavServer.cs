@@ -15,9 +15,11 @@ namespace TelegramWebDAV.Server
         private bool _isRunning;
         private readonly NodeRepository _repository;
         private readonly TelegramService _telegramService;
+        private readonly ConfigManager? _configManager;
 
         public WebDavServer(ConfigManager configManager, NodeRepository repository, TelegramService telegramService)
         {
+            _configManager = configManager;
             var settings = configManager.Load();
             _port = settings.Server.Port > 0 ? settings.Server.Port : 37000;
             _listener = new HttpListener();
@@ -114,7 +116,8 @@ namespace TelegramWebDAV.Server
                         await WebDavMiddleware.HandleOptionsAsync(context);
                         break;
                     case "PROPFIND":
-                        await WebDavMiddleware.HandlePropfindAsync(context, _repository);
+                        bool hideTrash = _configManager?.Load().Server.HideTrashFromRoot ?? true;
+                        await WebDavMiddleware.HandlePropfindAsync(context, _repository, hideTrash);
                         break;
                     case "GET":
                         await WebDavMiddleware.HandleGetAsync(context, _repository, _telegramService);

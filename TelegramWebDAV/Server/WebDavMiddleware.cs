@@ -21,7 +21,7 @@ namespace TelegramWebDAV.Server
             return Task.CompletedTask;
         }
 
-        public static async Task HandlePropfindAsync(HttpListenerContext context, NodeRepository repository)
+        public static async Task HandlePropfindAsync(HttpListenerContext context, NodeRepository repository, bool hideTrashFromRoot = true)
         {
             // Извлекаем путь (убирая параметры запроса)
             string localPath = context.Request.Url?.LocalPath ?? "/";
@@ -58,6 +58,12 @@ namespace TelegramWebDAV.Server
                 var children = repository.GetChildren(targetNode.Id);
                 foreach (var child in children)
                 {
+                    // Если включено скрытие корзины и мы находимся в корневом каталоге диска, пропускаем .Trash
+                    if (hideTrashFromRoot && targetNode.ParentId == null && (child.Name.Equals(".Trash", StringComparison.OrdinalIgnoreCase) || repository.IsTrashFolder(child.Id)))
+                    {
+                        continue;
+                    }
+
                     // Формируем URL путь для дочернего элемента
                     string childPath = path.TrimEnd('/') + "/" + child.Name;
                     responseElements.Add(CreateResponseElement(d, childPath, child));

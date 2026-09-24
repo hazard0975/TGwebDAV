@@ -47,6 +47,11 @@ namespace TelegramWebDAV.UI
 
             BuildContextMenu();
             CheckDriveMounting();
+
+            if (_settings.Server.AddTrashToContextMenu)
+            {
+                ShellContextMenuHelper.RegisterTrashContextMenu(_settings.Server.DriveLetter);
+            }
         }
 
         private void BuildContextMenu()
@@ -66,6 +71,11 @@ namespace TelegramWebDAV.UI
             var itemOpenDrive = new ToolStripMenuItem($"Открыть диск ({driveLetter}) в Проводнике");
             itemOpenDrive.Click += (s, e) => OpenDriveInExplorer();
             menu.Items.Add(itemOpenDrive);
+
+            // Открыть корзину в Проводнике
+            var itemOpenTrash = new ToolStripMenuItem($"Открыть корзину ({driveLetter}\\.Trash)");
+            itemOpenTrash.Click += (s, e) => OpenTrashInExplorer();
+            menu.Items.Add(itemOpenTrash);
 
             menu.Items.Add(new ToolStripSeparator());
 
@@ -139,6 +149,35 @@ namespace TelegramWebDAV.UI
             catch (Exception ex)
             {
                 MessageBox.Show($"Не удалось открыть папку: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OpenTrashInExplorer()
+        {
+            string drive = _settings.Server.DriveLetter ?? "Z:";
+            if (drive == "AUTO") drive = "Z:";
+            if (!drive.EndsWith("\\")) drive += "\\";
+
+            string trashPath = Path.Combine(drive, ".Trash");
+            try
+            {
+                if (Directory.Exists(trashPath))
+                {
+                    Process.Start("explorer.exe", $"\"{trashPath}\"");
+                }
+                else
+                {
+                    // Если диск не смонтирован как буква, открываем WebDAV URL корзины
+                    Process.Start(new ProcessStartInfo
+                    {
+                        FileName = $"http://localhost:{_settings.Server.Port}/.Trash",
+                        UseShellExecute = true
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Не удалось открыть корзину: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

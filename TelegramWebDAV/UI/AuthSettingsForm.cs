@@ -29,6 +29,8 @@ namespace TelegramWebDAV.UI
         private ComboBox _cmbDriveLetter = null!;
         private TextBox _txtVolumeName = null!;
         private CheckBox _chkAutoStart = null!;
+        private CheckBox _chkHideTrash = null!;
+        private CheckBox _chkContextMenu = null!;
 
         // Telegram Tab
         private Label _lblStatus = null!;
@@ -115,7 +117,23 @@ namespace TelegramWebDAV.UI
                 Text = "Автозапуск сервиса при входе в Windows",
                 Checked = _settings.Server.AutoStartWithWindows,
                 AutoSize = true,
-                Margin = new Padding(0, 15, 0, 10)
+                Margin = new Padding(0, 15, 0, 5)
+            };
+
+            _chkHideTrash = new CheckBox
+            {
+                Text = "Скрывать папку .Trash из корня диска (чистый корень)",
+                Checked = _settings.Server.HideTrashFromRoot,
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 5)
+            };
+
+            _chkContextMenu = new CheckBox
+            {
+                Text = "Пункт «Открыть корзину WebDAV» в контекстном меню Windows",
+                Checked = _settings.Server.AddTrashToContextMenu,
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 10)
             };
 
             var btnSaveGeneral = new Button
@@ -128,7 +146,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, _chkMountDrive, pnlDrive, pnlVol, _chkAutoStart, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, _chkMountDrive, pnlDrive, pnlVol, _chkAutoStart, _chkHideTrash, _chkContextMenu, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
@@ -405,6 +423,17 @@ namespace TelegramWebDAV.UI
             _settings.Server.DriveLetter = _cmbDriveLetter.SelectedItem?.ToString() ?? "Z:";
             _settings.Server.DriveName = _txtVolumeName.Text.Trim();
             _settings.Server.AutoStartWithWindows = _chkAutoStart.Checked;
+            _settings.Server.HideTrashFromRoot = _chkHideTrash.Checked;
+            _settings.Server.AddTrashToContextMenu = _chkContextMenu.Checked;
+
+            if (_chkContextMenu.Checked)
+            {
+                ShellContextMenuHelper.RegisterTrashContextMenu(_settings.Server.DriveLetter);
+            }
+            else
+            {
+                ShellContextMenuHelper.UnregisterTrashContextMenu();
+            }
 
             _configManager.Save(_settings);
             MessageBox.Show("Настройки успешно сохранены в appsettings.json!", "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);

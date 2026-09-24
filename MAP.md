@@ -51,7 +51,8 @@
 │
 └── Utils/                        # Системные утилиты Windows
     ├── NetworkDriveMounter.cs    # WinAPI (mpr.dll / WNetAddConnection2W) монтирование диска Z:
-    └── WindowsRegistryFixer.cs   # Настройка реестра Windows (BasicAuthLevel=2) для работы в LAN
+    ├── ShellContextMenuHelper.cs # Интеграция пункта «Открыть корзину WebDAV» в контекстное меню Windows (HKCU)
+    └── WindowsRegistryFixer.cs   # Настройка реестра Windows (BasicAuthLevel=2, лимит 4 ГБ) для WebClient
 ```
 
 ---
