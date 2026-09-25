@@ -86,14 +86,48 @@ namespace TelegramWebDAV.Utils
                         Console.WriteLine("Патчи реестра успешно применены:");
                         Console.WriteLine(" - BasicAuthLevel = 2 (HTTP WebDAV разрешен)");
                         Console.WriteLine(" - FileSizeLimitInBytes = 4 GB (лимит 50 МБ снят)");
-                        Console.WriteLine("Требуется перезапуск службы WebClient (net stop webclient && net start webclient) или перезагрузка ПК.");
-                        return true;
                     }
                     else
                     {
                         Console.WriteLine("Раздел реестра WebClient не найден. Служба не установлена?");
                     }
                 }
+
+                // Добавляем доверие к сетевым дискам и 127.0.0.1 в зону "Местная интрасеть" (устраняет предупреждения SmartScreen / Безопасности)
+                try
+                {
+                    using (var zoneKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap"))
+                    {
+                        if (zoneKey != null)
+                        {
+                            zoneKey.SetValue("UNCAsIntranet", 1, RegistryValueKind.DWord);
+                            zoneKey.SetValue("AutoDetect", 0, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    using (var domainKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\localhost"))
+                    {
+                        domainKey?.SetValue("http", 1, RegistryValueKind.DWord);
+                    }
+
+                    using (var rangeKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Ranges\Range1"))
+                    {
+                        if (rangeKey != null)
+                        {
+                            rangeKey.SetValue(":Range", "127.0.0.1", RegistryValueKind.String);
+                            rangeKey.SetValue("http", 1, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    Console.WriteLine(" - Местная интрасеть настроена для localhost / 127.0.0.1 (предупреждения безопасности отключены)");
+                }
+                catch (Exception zoneEx)
+                {
+                    Console.WriteLine($"Предупреждение при настройке зоны доверия: {zoneEx.Message}");
+                }
+
+                Console.WriteLine("Требуется перезапуск службы WebClient (net stop webclient && net start webclient) или перезагрузка ПК.");
+                return true;
             }
             catch (UnauthorizedAccessException)
             {

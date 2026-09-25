@@ -207,7 +207,7 @@ namespace TelegramWebDAV.Services
 
                     AppLogger.Info("WinFsp", $"Попытка монтирования виртуального диска {formattedLetter} через WinFsp...");
 
-                    int result = _host.Mount(formattedLetter, null, false, 0);
+                    int result = _host.Mount(formattedLetter, TelegramWinFspFileSystem.DefaultSecurityDescriptor, false, 0);
                     if (result != FileSystemBase.STATUS_SUCCESS)
                     {
                         errorMessage = $"Код ошибки WinFsp: 0x{result:X8}";
@@ -305,6 +305,23 @@ namespace TelegramWebDAV.Services
             return STATUS_SUCCESS;
         }
 
+        public static readonly byte[] DefaultSecurityDescriptor = CreateDefaultSecurityDescriptor();
+
+        private static byte[] CreateDefaultSecurityDescriptor()
+        {
+            try
+            {
+                var raw = new RawSecurityDescriptor("O:BAG:BAD:P(A;;GA;;;WD)");
+                byte[] binary = new byte[raw.BinaryLength];
+                raw.GetBinaryForm(binary, 0);
+                return binary;
+            }
+            catch
+            {
+                return Array.Empty<byte>();
+            }
+        }
+
         public override int GetVolumeInfo(out VolumeInfo volumeInfo)
         {
             volumeInfo = default;
@@ -317,7 +334,7 @@ namespace TelegramWebDAV.Services
 
         public override int GetSecurity(object fileNode, object fileDesc, ref byte[] securityDescriptor)
         {
-            securityDescriptor = null!;
+            securityDescriptor = DefaultSecurityDescriptor;
             return STATUS_SUCCESS;
         }
 
@@ -326,6 +343,7 @@ namespace TelegramWebDAV.Services
             out uint fileAttributes,
             ref byte[] securityDescriptor)
         {
+            securityDescriptor = DefaultSecurityDescriptor;
             string cleanPath = NormalizePath(fileName);
             if (cleanPath.Contains(":")) // Alternate Data Stream (:Zone.Identifier и др.)
             {

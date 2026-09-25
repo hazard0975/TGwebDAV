@@ -114,7 +114,7 @@ namespace TelegramWebDAV.Services
 
         private void EnsureChunkCacheCapacity()
         {
-            if (_chunkMemoryCache.Count > 32)
+            if (_chunkMemoryCache.Count > 64)
             {
                 var now = DateTime.UtcNow;
                 foreach (var key in _chunkMemoryCache.Keys)
@@ -124,9 +124,13 @@ namespace TelegramWebDAV.Services
                         _chunkMemoryCache.TryRemove(key, out _);
                     }
                 }
-                if (_chunkMemoryCache.Count > 32)
+                if (_chunkMemoryCache.Count > 64)
                 {
-                    _chunkMemoryCache.Clear();
+                    var oldest = _chunkMemoryCache.OrderBy(k => k.Value.expiresAt).Take(16).ToList();
+                    foreach (var kvp in oldest)
+                    {
+                        _chunkMemoryCache.TryRemove(kvp.Key, out _);
+                    }
                 }
             }
         }
@@ -868,25 +872,16 @@ namespace TelegramWebDAV.Services
             long remainingBytes = length;
             long totalSent = 0;
             long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
-            bool isSmallChunk = length <= 262144; // Чтение заголовка/метаданных (не тревожим трей всплывающими окнами)
+            bool isSmallFile = actualTotalSize <= 262144; // Файл размером меньше 256 КБ
 
-            if (isSmallChunk)
-            {
-                AppLogger.Debug("TelegramService", $"[MTProto Чанк] Запрос частичного чтения '{fileName}' (ID {messageId}): смещение {offset}, длина {length} байт.");
-            }
-            else
-            {
-                AppLogger.Info("TelegramService", $"[MTProto Чанк] Запуск потокового скачивания '{fileName}' (ID {messageId}): смещение {offset}, длина {length} байт (всего {actualTotalSize} байт).");
-            }
-
-            // При старте последовательного воспроизведения или потокового чтения сразу прогреваем 2 первых блока по 1 МБ в параллельных потоках
-            if (length > 262144 || (offset == 0 && actualTotalSize > 262144))
+            // При старте чтения файла сразу прогреваем 3 первых блока по 1 МБ упреждающим чтением
+            if (!isSmallFile && offset == 0)
             {
                 TriggerPrefetch(activeClient, location, messageId, 0, 1048576);
                 if (actualTotalSize > 1048576)
-                {
                     TriggerPrefetch(activeClient, location, messageId, 1048576, 1048576);
-                }
+                if (actualTotalSize > 2097152)
+                    TriggerPrefetch(activeClient, location, messageId, 2097152, 1048576);
             }
 
             while (remainingBytes > 0)
@@ -896,7 +891,7 @@ namespace TelegramWebDAV.Services
                 // 1. Проверяем, есть ли уже нужные байты в быстром кэше оперативной памяти
                 if (TryGetFromMemoryCache(messageId, currentPos, out var cachedRaw, out var cachedOffset) && cachedRaw != null)
                 {
-                    // Поддерживаем конвейер упреждающего чтения полным (на 2 МБ вперед)
+                    // Непрерывно держим конвейер упреждающего чтения полным (на 3 МБ вперед)
                     if (actualTotalSize > 0)
                     {
                         long currentBlock = (currentPos / 1048576) * 1048576;
@@ -904,6 +899,8 @@ namespace TelegramWebDAV.Services
                             TriggerPrefetch(activeClient, location, messageId, currentBlock + 1048576, 1048576);
                         if (currentBlock + 2097152 < actualTotalSize)
                             TriggerPrefetch(activeClient, location, messageId, currentBlock + 2097152, 1048576);
+                        if (currentBlock + 3145728 < actualTotalSize)
+                            TriggerPrefetch(activeClient, location, messageId, currentBlock + 3145728, 1048576);
                     }
 
                     int available = cachedRaw.Length - cachedOffset;
@@ -924,34 +921,18 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    if (!isSmallChunk)
+                    if (!isSmallFile && (currentPos >= 262144 || currentPos >= actualTotalSize))
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
                     continue;
                 }
 
-                // 2. Адаптивный выбор размера чанка:
-                // - Чтение тегов/метаданных в начале файла (смещение 0 при запросе <= 256 КБ): ровно 256 КБ (262144 байт)
-                // - Хвост файла (ID3v1 в последних 128 КБ): 131072 байт (128 КБ)
-                // - Воспроизведение звука и потоковое чтение: 1048576 байт (1 МБ) — максимальный чанк MTProto
-                int baseChunkSize;
-                if (currentPos == 0 && length <= 262144)
-                {
-                    baseChunkSize = 262144;
-                }
-                else if (actualTotalSize > 0 && currentPos >= actualTotalSize - 131072)
-                {
-                    baseChunkSize = 131072;
-                }
-                else
-                {
-                    baseChunkSize = 1048576;
-                }
+                // 2. Адаптивный выбор размера чанка MTProto
+                int baseChunkSize = isSmallFile ? 262144 : 1048576;
 
                 // MTProto строго запрещает запросам выходить за пределы одного 1-мегабайтного блока (1048576 байт).
-                // Выравниваем chunkOffset по границе baseChunkSize. Так как 1048576 нацело делится на 262144 и 131072,
-                // чанк гарантированно не пересечет границу 1 МБ и не вызовет LIMIT_INVALID!
+                // Выравниваем chunkOffset по границе baseChunkSize.
                 long chunkOffset = (currentPos / baseChunkSize) * baseChunkSize;
                 int internalOffset = (int)(currentPos - chunkOffset);
                 int requestLimit = baseChunkSize;
@@ -1003,7 +984,7 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                // Гарантированно и непрерывно запускаем упреждающее чтение (Prefetch) следующих 2 блоков по 1 МБ
+                // Непрерывно запускаем упреждающее чтение следующих 3 блоков по 1 МБ
                 if (baseChunkSize == 1048576 && actualTotalSize > 0)
                 {
                     long nextOffset1 = chunkOffset + baseChunkSize;
@@ -1013,6 +994,10 @@ namespace TelegramWebDAV.Services
                     long nextOffset2 = chunkOffset + 2 * baseChunkSize;
                     if (nextOffset2 < actualTotalSize)
                         TriggerPrefetch(activeClient, location, messageId, nextOffset2, baseChunkSize);
+
+                    long nextOffset3 = chunkOffset + 3 * baseChunkSize;
+                    if (nextOffset3 < actualTotalSize)
+                        TriggerPrefetch(activeClient, location, messageId, nextOffset3, baseChunkSize);
                 }
 
                 if (raw != null && raw.Length > 0)
@@ -1042,7 +1027,7 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    if (!isSmallChunk)
+                    if (!isSmallFile && (currentPos >= 262144 || currentPos >= actualTotalSize))
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
@@ -1059,7 +1044,7 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            if (!isSmallChunk && currentPos >= actualTotalSize)
+            if (!isSmallFile && currentPos >= actualTotalSize)
             {
                 OnDownloadCompleted?.Invoke(fileName);
             }
