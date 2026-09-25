@@ -57,6 +57,7 @@ namespace TelegramWebDAV.Services
         // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (~32 МБ) для мгновенного чтения плеерами без повторных обращений к сети
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (byte[] data, DateTime expiresAt)> _chunkMemoryCache = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Task<byte[]?>> _pendingPrefetches = new();
+        private readonly SemaphoreSlim _downloadRpcSemaphore = new SemaphoreSlim(2, 2);
 
         private bool TryGetFromMemoryCache(int messageId, long pos, out byte[]? data, out int offsetInChunk)
         {
@@ -90,8 +91,11 @@ namespace TelegramWebDAV.Services
 
             _pendingPrefetches.GetOrAdd(chunkKey, _ => Task.Run(async () =>
             {
+                await EnsureFloodWaitDelayAsync();
+                await _downloadRpcSemaphore.WaitAsync();
                 try
                 {
+                    await EnsureFloodWaitDelayAsync();
                     var fileBase = await client.Upload_GetFile(location, offset, limit, precise: true);
                     if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                     {
@@ -100,12 +104,19 @@ namespace TelegramWebDAV.Services
                         return uploadFile.bytes;
                     }
                 }
+                catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                {
+                    int waitSec = rpcEx.X > 0 ? rpcEx.X : 2;
+                    AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Префетч получил запрос паузы от Telegram на {waitSec} сек.");
+                    _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
+                }
                 catch
                 {
                     // Фоновый префетч не должен выбрасывать необработанных исключений
                 }
                 finally
                 {
+                    _downloadRpcSemaphore.Release();
                     _pendingPrefetches.TryRemove(chunkKey, out Task<byte[]?>? _);
                 }
                 return null;
@@ -947,33 +958,42 @@ namespace TelegramWebDAV.Services
                 else
                 {
                     TL.Upload_FileBase fileBase;
+                    await _downloadRpcSemaphore.WaitAsync();
                     try
                     {
-                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
-                    }
-                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
-                    {
-                        activeClient = await _client.GetClientForDC(rpcEx.X);
-                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
-                    }
-                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("FILE_REFERENCE_EXPIRED"))
-                    {
-                        var refreshedDoc = await GetDocumentFromMessageAsync(messageId, forceRefresh: true);
-                        if (refreshedDoc != null)
+                        await EnsureFloodWaitDelayAsync();
+                        try
                         {
-                            location = refreshedDoc.ToFileLocation();
-                            activeClient = refreshedDoc.dc_id != 0 ? await _client.GetClientForDC(refreshedDoc.dc_id) : _client;
                             fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                         }
-                        else throw;
+                        catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
+                        {
+                            activeClient = await _client.GetClientForDC(rpcEx.X);
+                            fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                        }
+                        catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("FILE_REFERENCE_EXPIRED"))
+                        {
+                            var refreshedDoc = await GetDocumentFromMessageAsync(messageId, forceRefresh: true);
+                            if (refreshedDoc != null)
+                            {
+                                location = refreshedDoc.ToFileLocation();
+                                activeClient = refreshedDoc.dc_id != 0 ? await _client.GetClientForDC(refreshedDoc.dc_id) : _client;
+                                fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                            }
+                            else throw;
+                        }
+                        catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                        {
+                            int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
+                            AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
+                            _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
+                            await Task.Delay(waitSec * 1000);
+                            fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                        }
                     }
-                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                    finally
                     {
-                        int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
-                        AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
-                        _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
-                        await Task.Delay(waitSec * 1000);
-                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                        _downloadRpcSemaphore.Release();
                     }
 
                     if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)

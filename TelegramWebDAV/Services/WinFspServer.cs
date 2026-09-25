@@ -325,9 +325,31 @@ namespace TelegramWebDAV.Services
         public override int GetVolumeInfo(out VolumeInfo volumeInfo)
         {
             volumeInfo = default;
-            volumeInfo.TotalSize = 1024UL * 1024 * 1024 * 1024 * 2; // 2 ТБ виртуального пространства
-            volumeInfo.FreeSize = 1024UL * 1024 * 1024 * 1024 * 1;  // 1 ТБ свободного места
-            string driveName = _configManager.Load().Server.DriveName ?? "Telegram Drive";
+            var settings = _configManager.CurrentSettings;
+            long usedBytes = _repository.GetTotalUsedSpaceBytes(settings.Server.IncludeTrashInUsedSpace);
+
+            long baseCapacityGb = settings.Server.VirtualDiskCapacityGb > 0 ? settings.Server.VirtualDiskCapacityGb : 1024;
+            long totalCapacityBytes = baseCapacityGb * 1024L * 1024L * 1024L;
+
+            // Если включено авто-расширение: если занято более 70%, динамически увеличиваем емкость,
+            // чтобы диск в Проводнике всегда имел >= 30% свободного места и не окрашивался в красный цвет
+            if (settings.Server.AutoExpandDiskCapacity && usedBytes > 0)
+            {
+                double usageRatio = (double)usedBytes / totalCapacityBytes;
+                if (usageRatio >= 0.70)
+                {
+                    long requiredCapacity = (long)(usedBytes / 0.70);
+                    long step = 100L * 1024L * 1024L * 1024L; // Шаг округления 100 ГБ
+                    long rounded = ((requiredCapacity + step - 1) / step) * step;
+                    totalCapacityBytes = Math.Max(totalCapacityBytes, rounded);
+                }
+            }
+
+            long freeBytes = Math.Max(0, totalCapacityBytes - usedBytes);
+
+            volumeInfo.TotalSize = (ulong)totalCapacityBytes;
+            volumeInfo.FreeSize = (ulong)freeBytes;
+            string driveName = settings.Server.DriveName ?? "Telegram Drive";
             volumeInfo.SetVolumeLabel(driveName);
             return STATUS_SUCCESS;
         }

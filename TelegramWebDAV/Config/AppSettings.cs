@@ -50,6 +50,11 @@ namespace TelegramWebDAV.Config
         public bool HideTrashFromRoot { get; set; } = true;
         public bool AddTrashToContextMenu { get; set; } = true;
         public bool AutoShowUploadPopup { get; set; } = true;
+
+        // Настройки емкости виртуального диска
+        public long VirtualDiskCapacityGb { get; set; } = 1024;
+        public bool AutoExpandDiskCapacity { get; set; } = true;
+        public bool IncludeTrashInUsedSpace { get; set; } = true;
     }
 
     public class DatabaseSettings

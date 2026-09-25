@@ -38,6 +38,8 @@ namespace TelegramWebDAV.Config
             }
         }
 
+        public AppSettings CurrentSettings => Load();
+
         public void Save(AppSettings settings)
         {
             lock (_lock)

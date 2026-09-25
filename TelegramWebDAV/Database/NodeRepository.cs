@@ -1046,5 +1046,40 @@ namespace TelegramWebDAV.Database
 
             return node;
         }
+
+        private long _cachedUsedBytes = 0;
+        private DateTime _usedBytesCacheExpiresAt = DateTime.MinValue;
+        private bool _cachedIncludeTrash = true;
+        private readonly object _usedBytesLock = new object();
+
+        /// <summary>
+        /// Возвращает суммарный объём всех сохраненных файлов в байтах.
+        /// </summary>
+        public long GetTotalUsedSpaceBytes(bool includeTrash = true)
+        {
+            lock (_usedBytesLock)
+            {
+                if (_usedBytesCacheExpiresAt > DateTime.UtcNow && _cachedIncludeTrash == includeTrash)
+                {
+                    return _cachedUsedBytes;
+                }
+
+                using var connection = _dbManager.GetConnection();
+                using var command = connection.CreateCommand();
+                command.CommandText = @"
+                    SELECT COALESCE(SUM(size), 0) 
+                    FROM nodes 
+                    WHERE is_dir = 0 AND (@includeTrash = 1 OR is_deleted = 0);";
+                command.Parameters.AddWithValue("@includeTrash", includeTrash ? 1 : 0);
+
+                object? result = command.ExecuteScalar();
+                long total = result != null && result != DBNull.Value ? Convert.ToInt64(result) : 0;
+
+                _cachedUsedBytes = total;
+                _cachedIncludeTrash = includeTrash;
+                _usedBytesCacheExpiresAt = DateTime.UtcNow.AddSeconds(3); // Кэшируем на 3 секунды
+                return total;
+            }
+        }
     }
 }

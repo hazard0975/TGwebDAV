@@ -29,6 +29,9 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkMountDrive = null!;
         private ComboBox _cmbDriveLetter = null!;
         private TextBox _txtVolumeName = null!;
+        private NumericUpDown _numCapacityGb = null!;
+        private CheckBox _chkAutoExpand = null!;
+        private CheckBox _chkIncludeTrashInSpace = null!;
         private CheckBox _chkAutoStart = null!;
         private CheckBox _chkHideTrash = null!;
         private CheckBox _chkContextMenu = null!;
@@ -62,7 +65,7 @@ namespace TelegramWebDAV.UI
         private void InitializeComponents()
         {
             this.Text = "Telegram WebDAV Service - Настройки";
-            this.Size = new Size(570, 520);
+            this.Size = new Size(570, 600);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -117,17 +120,44 @@ namespace TelegramWebDAV.UI
             _cmbDriveLetter.SelectedItem = _settings.Server.DriveLetter ?? "Z:";
             pnlDrive.Controls.Add(_cmbDriveLetter);
 
-            var pnlVol = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 10, 0, 0) };
+            var pnlVol = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 10, 0, 5) };
             pnlVol.Controls.Add(new Label { Text = "Имя тома:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
             _txtVolumeName = new TextBox { Text = _settings.Server.DriveName ?? "Telegram Drive", Width = 150 };
             pnlVol.Controls.Add(_txtVolumeName);
+
+            var pnlCapacity = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
+            pnlCapacity.Controls.Add(new Label { Text = "Размер диска (ГБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _numCapacityGb = new NumericUpDown
+            {
+                Minimum = 10,
+                Maximum = 1048576, // До 1 ПБ
+                Value = Math.Max(10, Math.Min(1048576, _settings.Server.VirtualDiskCapacityGb > 0 ? _settings.Server.VirtualDiskCapacityGb : 1024)),
+                Width = 100
+            };
+            pnlCapacity.Controls.Add(_numCapacityGb);
+
+            _chkAutoExpand = new CheckBox
+            {
+                Text = "Автоматически расширять диск при заполнении > 70% (диск не будет красным)",
+                Checked = _settings.Server.AutoExpandDiskCapacity,
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 5)
+            };
+
+            _chkIncludeTrashInSpace = new CheckBox
+            {
+                Text = "Учитывать файлы в корзине (.Trash) в занятом месте диска",
+                Checked = _settings.Server.IncludeTrashInUsedSpace,
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 5)
+            };
 
             _chkAutoStart = new CheckBox
             {
                 Text = "Автозапуск сервиса при входе в Windows",
                 Checked = _settings.Server.AutoStartWithWindows,
                 AutoSize = true,
-                Margin = new Padding(0, 15, 0, 5)
+                Margin = new Padding(0, 10, 0, 5)
             };
 
             _chkHideTrash = new CheckBox
@@ -164,7 +194,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
@@ -442,6 +472,9 @@ namespace TelegramWebDAV.UI
             _settings.Server.MountDrive = _chkMountDrive.Checked;
             _settings.Server.DriveLetter = _cmbDriveLetter.SelectedItem?.ToString() ?? "Z:";
             _settings.Server.DriveName = _txtVolumeName.Text.Trim();
+            _settings.Server.VirtualDiskCapacityGb = (long)_numCapacityGb.Value;
+            _settings.Server.AutoExpandDiskCapacity = _chkAutoExpand.Checked;
+            _settings.Server.IncludeTrashInUsedSpace = _chkIncludeTrashInSpace.Checked;
             _settings.Server.AutoStartWithWindows = _chkAutoStart.Checked;
             _settings.Server.HideTrashFromRoot = _chkHideTrash.Checked;
             _settings.Server.AddTrashToContextMenu = _chkContextMenu.Checked;
