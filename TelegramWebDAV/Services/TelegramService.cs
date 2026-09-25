@@ -41,6 +41,12 @@ namespace TelegramWebDAV.Services
         private DateTime _floodWaitUntil = DateTime.MinValue;
         private WTelegram.Client? _client;
 
+        // Кэш дескрипторов документов Telegram (TL.Document) для устранения лишних сетевых вызовов Channels_GetMessages
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (TL.Document document, DateTime expiresAt)> _documentCache = new();
+
+        // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (~8 МБ) для мгновенного чтения плеерами без повторных обращений к сети
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (byte[] data, DateTime expiresAt)> _chunkMemoryCache = new();
+
         public bool IsAuthorized { get; private set; }
         public AuthStep CurrentStep { get; private set; } = AuthStep.NeedsPhone;
         public TelegramUserInfo? CurrentUser { get; private set; }
@@ -614,29 +620,41 @@ namespace TelegramWebDAV.Services
             }
         }
 
-        private async Task<TL.Document?> GetDocumentFromMessageAsync(int messageId)
+        private async Task<TL.Document?> GetDocumentFromMessageAsync(int messageId, bool forceRefresh = false)
         {
+            if (!forceRefresh && _documentCache.TryGetValue(messageId, out var cached) && cached.expiresAt > DateTime.UtcNow)
+            {
+                return cached.document;
+            }
+
             if (_client == null) return null;
             var peer = await GetStoragePeerAsync();
             var messagesBase = await _client.GetMessages(peer, new TL.InputMessage[] { new TL.InputMessageID { id = messageId } });
             
+            TL.Document? document = null;
             if (messagesBase is TL.Messages_Messages messages && messages.messages.Length > 0)
             {
                 var msg = messages.messages[0] as TL.Message;
-                if (msg?.media is TL.MessageMediaDocument mediaDoc && mediaDoc.document is TL.Document document)
+                if (msg?.media is TL.MessageMediaDocument mediaDoc && mediaDoc.document is TL.Document doc)
                 {
-                    return document;
+                    document = doc;
                 }
             }
             else if (messagesBase is TL.Messages_ChannelMessages channelMessages && channelMessages.messages.Length > 0)
             {
                 var msg = channelMessages.messages[0] as TL.Message;
-                if (msg?.media is TL.MessageMediaDocument mediaDoc && mediaDoc.document is TL.Document document)
+                if (msg?.media is TL.MessageMediaDocument mediaDoc && mediaDoc.document is TL.Document doc)
                 {
-                    return document;
+                    document = doc;
                 }
             }
-            return null;
+
+            if (document != null)
+            {
+                _documentCache[messageId] = (document, DateTime.UtcNow.AddMinutes(15));
+            }
+
+            return document;
         }
 
         /// <summary>
@@ -727,28 +745,69 @@ namespace TelegramWebDAV.Services
                 int internalOffset = (int)(currentPos - chunkOffset);
                 int requestLimit = baseChunkSize;
 
-                TL.Upload_FileBase fileBase;
-                try
+                string chunkKey = $"{messageId}:{chunkOffset}:{requestLimit}";
+                byte[]? raw = null;
+
+                if (_chunkMemoryCache.TryGetValue(chunkKey, out var cachedChunk) && cachedChunk.expiresAt > DateTime.UtcNow)
                 {
-                    fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                    raw = cachedChunk.data;
                 }
-                catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
+                else
                 {
-                    activeClient = await _client.GetClientForDC(rpcEx.X);
-                    fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
-                }
-                catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
-                {
-                    int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
-                    AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
-                    _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
-                    await Task.Delay(waitSec * 1000);
-                    fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                    TL.Upload_FileBase fileBase;
+                    try
+                    {
+                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                    }
+                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
+                    {
+                        activeClient = await _client.GetClientForDC(rpcEx.X);
+                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                    }
+                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("FILE_REFERENCE_EXPIRED"))
+                    {
+                        var refreshedDoc = await GetDocumentFromMessageAsync(messageId, forceRefresh: true);
+                        if (refreshedDoc != null)
+                        {
+                            location = refreshedDoc.ToFileLocation();
+                            activeClient = refreshedDoc.dc_id != 0 ? await _client.GetClientForDC(refreshedDoc.dc_id) : _client;
+                            fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                        }
+                        else throw;
+                    }
+                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                    {
+                        int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
+                        AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
+                        _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
+                        await Task.Delay(waitSec * 1000);
+                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                    }
+
+                    if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
+                    {
+                        raw = uploadFile.bytes;
+                        if (_chunkMemoryCache.Count > 64)
+                        {
+                            var now = DateTime.UtcNow;
+                            foreach (var key in _chunkMemoryCache.Keys)
+                            {
+                                if (_chunkMemoryCache.TryGetValue(key, out var item) && item.expiresAt <= now)
+                                {
+                                    _chunkMemoryCache.TryRemove(key, out _);
+                                }
+                            }
+                            if (_chunkMemoryCache.Count > 64)
+                            {
+                                _chunkMemoryCache.Clear();
+                            }
+                        }
+                        _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(5));
+                    }
                 }
 
-                if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
+                if (raw != null && raw.Length > 0)
                 {
-                    byte[] raw = uploadFile.bytes;
                     if (internalOffset >= raw.Length)
                     {
                         // Смещение вышло за пределы доступных байт
