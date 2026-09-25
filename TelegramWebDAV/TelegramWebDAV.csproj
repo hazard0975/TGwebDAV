@@ -26,6 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Tools\**" />
+    <EmbeddedResource Remove="Tools\**" />
+    <None Remove="Tools\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -35,7 +41,8 @@
   </ItemGroup>
 
   <Target Name="FixWinFspNet" AfterTargets="Build">
-    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)/../Tools/WinFspFixer/WinFspFixer.csproj&quot; -- &quot;$(TargetDir).&quot;" />
+    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)/Tools/WinFspFixer/WinFspFixer.csproj&quot; -- &quot;$(TargetDir).&quot;" Condition="Exists('$(MSBuildProjectDirectory)/Tools/WinFspFixer/WinFspFixer.csproj')" />
+    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)/../Tools/WinFspFixer/WinFspFixer.csproj&quot; -- &quot;$(TargetDir).&quot;" Condition="!Exists('$(MSBuildProjectDirectory)/Tools/WinFspFixer/WinFspFixer.csproj') AND Exists('$(MSBuildProjectDirectory)/../Tools/WinFspFixer/WinFspFixer.csproj')" />
   </Target>
 
 </Project>
