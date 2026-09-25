@@ -36,6 +36,8 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkHideTrash = null!;
         private CheckBox _chkContextMenu = null!;
         private CheckBox _chkAutoShowPopup = null!;
+        private CheckBox _chkEnableDiskCache = null!;
+        private NumericUpDown _numMemoryCacheMb = null!;
 
         // Telegram Tab
         private Label _lblStatus = null!;
@@ -181,8 +183,27 @@ namespace TelegramWebDAV.UI
                 Text = "Автоматически открывать карточку прогресса при отправке файлов",
                 Checked = _settings.Server.AutoShowUploadPopup,
                 AutoSize = true,
-                Margin = new Padding(0, 5, 0, 10)
+                Margin = new Padding(0, 5, 0, 5)
             };
+
+            _chkEnableDiskCache = new CheckBox
+            {
+                Text = "Сохранять прочитанные файлы в дисковый кэш (%TEMP%)",
+                Checked = _settings.Server.EnableDiskReadCache,
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 5)
+            };
+
+            var pnlMemCache = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 10) };
+            pnlMemCache.Controls.Add(new Label { Text = "Буфер кэша в ОЗУ (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _numMemoryCacheMb = new NumericUpDown
+            {
+                Minimum = 32,
+                Maximum = 4096, // До 4 ГБ
+                Value = Math.Max(32, Math.Min(4096, _settings.Server.MemoryCacheSizeMb > 0 ? _settings.Server.MemoryCacheSizeMb : 128)),
+                Width = 100
+            };
+            pnlMemCache.Controls.Add(_numMemoryCacheMb);
 
             var btnSaveGeneral = new Button
             {
@@ -194,7 +215,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkEnableDiskCache, pnlMemCache, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
@@ -523,6 +544,8 @@ namespace TelegramWebDAV.UI
             _settings.Server.HideTrashFromRoot = _chkHideTrash.Checked;
             _settings.Server.AddTrashToContextMenu = _chkContextMenu.Checked;
             _settings.Server.AutoShowUploadPopup = _chkAutoShowPopup.Checked;
+            _settings.Server.EnableDiskReadCache = _chkEnableDiskCache.Checked;
+            _settings.Server.MemoryCacheSizeMb = (int)_numMemoryCacheMb.Value;
 
             if (_chkContextMenu.Checked)
             {

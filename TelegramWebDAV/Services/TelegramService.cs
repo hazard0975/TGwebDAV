@@ -128,7 +128,15 @@ namespace TelegramWebDAV.Services
 
         private void EnsureChunkCacheCapacity()
         {
-            if (_chunkMemoryCache.Count > 64)
+            int maxChunks = 128; // По умолчанию 128 МБ в ОЗУ
+            try
+            {
+                int configMb = _configManager?.CurrentSettings?.Server?.MemoryCacheSizeMb ?? 128;
+                maxChunks = Math.Max(16, configMb); // 1 чанк = 1 МБ
+            }
+            catch { }
+
+            if (_chunkMemoryCache.Count > maxChunks)
             {
                 var now = DateTime.UtcNow;
                 foreach (var key in _chunkMemoryCache.Keys)
@@ -138,9 +146,10 @@ namespace TelegramWebDAV.Services
                         _chunkMemoryCache.TryRemove(key, out _);
                     }
                 }
-                if (_chunkMemoryCache.Count > 64)
+                if (_chunkMemoryCache.Count > maxChunks)
                 {
-                    var oldest = _chunkMemoryCache.OrderBy(k => k.Value.expiresAt).Take(16).ToList();
+                    int toRemove = Math.Max(8, _chunkMemoryCache.Count - maxChunks);
+                    var oldest = _chunkMemoryCache.OrderBy(k => k.Value.expiresAt).Take(toRemove).ToList();
                     foreach (var kvp in oldest)
                     {
                         _chunkMemoryCache.TryRemove(kvp.Key, out _);
@@ -855,8 +864,8 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Потоковое скачивание точечных чанков (HTTP 206 Range) напрямую из Telegram через MTProto Upload_GetFile.
-        /// Запрашивает данные с гарантированным выравниванием по границам 1 МБ без риска ошибки LIMIT_INVALID.
+        /// Потоковое скачивание чанков напрямую из Telegram через MTProto Upload_GetFile.
+        /// В режиме Pure RAM Mode качает данные 100% через ОЗУ (без файлов на диске), сохраняя чанки в динамический 128 МБ RAM-кэш.
         /// </summary>
         public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, string fileName = "файл", long totalFileSize = -1)
         {
@@ -865,19 +874,23 @@ namespace TelegramWebDAV.Services
             if (_client == null || !IsAuthorized)
                 throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
 
-            // Путь к папке кэша
-            string cacheDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_ReadCache");
-            Directory.CreateDirectory(cacheDir);
-            string cacheFilePath = Path.Combine(cacheDir, $"{messageId}.bin");
+            bool enableDiskCache = _configManager?.CurrentSettings?.Server?.EnableDiskReadCache ?? false;
 
-            // 1. Если файл уже закэширован на диске полностью, читаем напрямую из дискового файла
-            if (File.Exists(cacheFilePath))
+            // 1. Если дисковый кэш включен и файл уже закэширован на диске полностью
+            if (enableDiskCache)
             {
-                await ReadFromFileCacheAsync(cacheFilePath, destination, offset, length, messageId);
-                return;
+                string cacheDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_ReadCache");
+                Directory.CreateDirectory(cacheDir);
+                string cacheFilePath = Path.Combine(cacheDir, $"{messageId}.bin");
+
+                if (File.Exists(cacheFilePath))
+                {
+                    await ReadFromFileCacheAsync(cacheFilePath, destination, offset, length, messageId);
+                    return;
+                }
             }
 
-            // 2. Файла нет в локальном дисковом кэше. Точечно запрашиваем дескриптор документа
+            // 2. Запрашиваем дескриптор документа
             var document = await GetDocumentFromMessageAsync(messageId);
             if (document == null)
             {
@@ -888,16 +901,20 @@ namespace TelegramWebDAV.Services
             bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
             bool isMetadataProbe = length <= 262144 && offset == 0; // Быстрый запрос заголовков Проводником Windows
 
-            // Для скачивания всего файла или при старте со смещения 0 скачиваем файл через Multi-Session Worker Pool (3 параллельных сокета к DC)
-            if (offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
+            // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
+            if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
             {
+                string cacheDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_ReadCache");
+                Directory.CreateDirectory(cacheDir);
+                string cacheFilePath = Path.Combine(cacheDir, $"{messageId}.bin");
+
                 var fileLock = _fileDownloadLocks.GetOrAdd(messageId, _ => new SemaphoreSlim(1, 1));
                 await fileLock.WaitAsync();
                 try
                 {
                     if (!File.Exists(cacheFilePath))
                     {
-                        AppLogger.Info("TelegramService", $"[Multi-Session Worker Pool] Старт параллельной скачки файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт) через 3 воркера MTProto...");
+                        AppLogger.Info("TelegramService", $"[Disk Cache Mode] Скачивание файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт) воркерами в дисковый кэш...");
                         var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3);
                         bool success = await workerPool.DownloadFileAsync(
                             document,
@@ -906,14 +923,14 @@ namespace TelegramWebDAV.Services
 
                         if (success && File.Exists(cacheFilePath))
                         {
-                            AppLogger.Info("TelegramService", $"[Multi-Session Worker Pool] Файл '{fileName}' (ID {messageId}) успешно скачан воркерами и сохранен в кэш.");
+                            AppLogger.Info("TelegramService", $"[Disk Cache Mode] Файл '{fileName}' (ID {messageId}) успешно сохранен в кэш.");
                             OnDownloadCompleted?.Invoke(fileName);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Warn("TelegramService", $"[Multi-Session Worker Pool] Ошибка при фоновом скачивании файла ID {messageId}: {ex.Message}. Переход к точечному чанковому стримингу.");
+                    AppLogger.Warn("TelegramService", $"[Disk Cache Mode] Ошибка при фоновом скачивании файла ID {messageId}: {ex.Message}.");
                 }
                 finally
                 {
@@ -923,6 +940,34 @@ namespace TelegramWebDAV.Services
                 if (File.Exists(cacheFilePath))
                 {
                     await ReadFromFileCacheAsync(cacheFilePath, destination, offset, length, messageId);
+                    return;
+                }
+            }
+
+            // РЕЖИМ 100% PURE RAM STREAMING (без файлов на диске):
+            // Для скачивания архивов и больших файлов качаем чанки через MtprotoDownloadWorkerPool напрямую в ОЗУ с заполнением 128 МБ RAM-кэша
+            if (!enableDiskCache && !isSmallFile && !isMetadataProbe && length > 262144)
+            {
+                var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3);
+                bool success = await workerPool.DownloadToStreamAsync(
+                    document,
+                    destination,
+                    offset,
+                    length,
+                    onChunkReceived: (chunkBytes, chunkOffset) =>
+                    {
+                        EnsureChunkCacheCapacity();
+                        string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
+                        _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
+                    },
+                    onProgress: (transferred, total) => OnDownloadProgress?.Invoke(fileName, transferred, total));
+
+                if (success)
+                {
+                    if (offset + length >= actualTotalSize)
+                    {
+                        OnDownloadCompleted?.Invoke(fileName);
+                    }
                     return;
                 }
             }

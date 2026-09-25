@@ -55,6 +55,10 @@ namespace TelegramWebDAV.Config
         public long VirtualDiskCapacityGb { get; set; } = 1024;
         public bool AutoExpandDiskCapacity { get; set; } = true;
         public bool IncludeTrashInUsedSpace { get; set; } = true;
+
+        // Настройки кэширования
+        public bool EnableDiskReadCache { get; set; } = false; // По умолчанию 100% через ОЗУ
+        public int MemoryCacheSizeMb { get; set; } = 128; // Динамический RAM-буфер 128 МБ
     }
 
     public class DatabaseSettings
