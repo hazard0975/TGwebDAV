@@ -44,8 +44,82 @@ namespace TelegramWebDAV.Services
         // Кэш дескрипторов документов Telegram (TL.Document) для устранения лишних сетевых вызовов Channels_GetMessages
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (TL.Document document, DateTime expiresAt)> _documentCache = new();
 
-        // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (~8 МБ) для мгновенного чтения плеерами без повторных обращений к сети
+        // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (~32 МБ) для мгновенного чтения плеерами без повторных обращений к сети
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (byte[] data, DateTime expiresAt)> _chunkMemoryCache = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Task<byte[]?>> _pendingPrefetches = new();
+
+        private bool TryGetFromMemoryCache(int messageId, long pos, out byte[]? data, out int offsetInChunk)
+        {
+            var now = DateTime.UtcNow;
+            foreach (var kvp in _chunkMemoryCache)
+            {
+                var parts = kvp.Key.Split(':');
+                if (parts.Length == 3 && int.TryParse(parts[0], out var mId) && mId == messageId)
+                {
+                    if (long.TryParse(parts[1], out var chunkStart) && int.TryParse(parts[2], out var _))
+                    {
+                        var chunkData = kvp.Value.data;
+                        if (pos >= chunkStart && pos < chunkStart + chunkData.Length && kvp.Value.expiresAt > now)
+                        {
+                            data = chunkData;
+                            offsetInChunk = (int)(pos - chunkStart);
+                            return true;
+                        }
+                    }
+                }
+            }
+            data = null;
+            offsetInChunk = 0;
+            return false;
+        }
+
+        private void TriggerPrefetch(WTelegram.Client client, TL.InputFileLocationBase location, int messageId, long offset, int limit)
+        {
+            string chunkKey = $"{messageId}:{offset}:{limit}";
+            if (_chunkMemoryCache.ContainsKey(chunkKey)) return;
+
+            _pendingPrefetches.GetOrAdd(chunkKey, _ => Task.Run(async () =>
+            {
+                try
+                {
+                    var fileBase = await client.Upload_GetFile(location, offset, limit, precise: true);
+                    if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
+                    {
+                        EnsureChunkCacheCapacity();
+                        _chunkMemoryCache[chunkKey] = (uploadFile.bytes, DateTime.UtcNow.AddMinutes(5));
+                        return uploadFile.bytes;
+                    }
+                }
+                catch
+                {
+                    // Фоновый префетч не должен выбрасывать необработанных исключений
+                }
+                finally
+                {
+                    _pendingPrefetches.TryRemove(chunkKey, out Task<byte[]?>? _);
+                }
+                return null;
+            }));
+        }
+
+        private void EnsureChunkCacheCapacity()
+        {
+            if (_chunkMemoryCache.Count > 32)
+            {
+                var now = DateTime.UtcNow;
+                foreach (var key in _chunkMemoryCache.Keys)
+                {
+                    if (_chunkMemoryCache.TryGetValue(key, out var item) && item.expiresAt <= now)
+                    {
+                        _chunkMemoryCache.TryRemove(key, out _);
+                    }
+                }
+                if (_chunkMemoryCache.Count > 32)
+                {
+                    _chunkMemoryCache.Clear();
+                }
+            }
+        }
 
         public bool IsAuthorized { get; private set; }
         public AuthStep CurrentStep { get; private set; } = AuthStep.NeedsPhone;
@@ -793,11 +867,54 @@ namespace TelegramWebDAV.Services
             {
                 await EnsureFloodWaitDelayAsync();
 
-                // Выбираем размер чанка: 512 КБ для потокового чтения/копирования или 128 КБ для коротких запросов тегов
-                int baseChunkSize = remainingBytes >= 524288 ? 524288 : 131072;
+                // 1. Проверяем, есть ли уже нужные байты в быстром кэше оперативной памяти
+                if (TryGetFromMemoryCache(messageId, currentPos, out var cachedRaw, out var cachedOffset) && cachedRaw != null)
+                {
+                    int available = cachedRaw.Length - cachedOffset;
+                    int toSend = (int)Math.Min(available, remainingBytes);
+
+                    try
+                    {
+                        await destination.WriteAsync(cachedRaw, cachedOffset, toSend);
+                        await destination.FlushAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("TelegramService", $"Клиент прервал соединение для '{fileName}' (ID {messageId}): {ex.Message}");
+                        return;
+                    }
+
+                    currentPos += toSend;
+                    remainingBytes -= toSend;
+                    totalSent += toSend;
+
+                    if (!isSmallChunk)
+                    {
+                        OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
+                    }
+                    continue;
+                }
+
+                // 2. Адаптивный выбор размера чанка:
+                // - Чтение тегов/метаданных в начале файла (смещение 0 при запросе <= 256 КБ): ровно 256 КБ (262144 байт)
+                // - Хвост файла (ID3v1 в последних 128 КБ): 131072 байт (128 КБ)
+                // - Воспроизведение звука и потоковое чтение: 1048576 байт (1 МБ) — максимальный чанк MTProto
+                int baseChunkSize;
+                if (currentPos == 0 && length <= 262144)
+                {
+                    baseChunkSize = 262144;
+                }
+                else if (actualTotalSize > 0 && currentPos >= actualTotalSize - 131072)
+                {
+                    baseChunkSize = 131072;
+                }
+                else
+                {
+                    baseChunkSize = 1048576;
+                }
 
                 // MTProto строго запрещает запросам выходить за пределы одного 1-мегабайтного блока (1048576 байт).
-                // Выравниваем chunkOffset по границе baseChunkSize. Так как 1048576 нацело делится и на 524288, и на 131072,
+                // Выравниваем chunkOffset по границе baseChunkSize. Так как 1048576 нацело делится на 262144 и 131072,
                 // чанк гарантированно не пересечет границу 1 МБ и не вызовет LIMIT_INVALID!
                 long chunkOffset = (currentPos / baseChunkSize) * baseChunkSize;
                 int internalOffset = (int)(currentPos - chunkOffset);
@@ -806,9 +923,9 @@ namespace TelegramWebDAV.Services
                 string chunkKey = $"{messageId}:{chunkOffset}:{requestLimit}";
                 byte[]? raw = null;
 
-                if (_chunkMemoryCache.TryGetValue(chunkKey, out var cachedChunk) && cachedChunk.expiresAt > DateTime.UtcNow)
+                if (_pendingPrefetches.TryGetValue(chunkKey, out var pendingPrefetch))
                 {
-                    raw = cachedChunk.data;
+                    raw = await pendingPrefetch;
                 }
                 else
                 {
@@ -845,22 +962,15 @@ namespace TelegramWebDAV.Services
                     if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                     {
                         raw = uploadFile.bytes;
-                        if (_chunkMemoryCache.Count > 64)
-                        {
-                            var now = DateTime.UtcNow;
-                            foreach (var key in _chunkMemoryCache.Keys)
-                            {
-                                if (_chunkMemoryCache.TryGetValue(key, out var item) && item.expiresAt <= now)
-                                {
-                                    _chunkMemoryCache.TryRemove(key, out _);
-                                }
-                            }
-                            if (_chunkMemoryCache.Count > 64)
-                            {
-                                _chunkMemoryCache.Clear();
-                            }
-                        }
+                        EnsureChunkCacheCapacity();
                         _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(5));
+
+                        // Запускаем упреждающее чтение (Prefetch) следующего 1 МБ блока в фоновом потоке
+                        if (baseChunkSize == 1048576 && actualTotalSize > 0 && (chunkOffset + baseChunkSize) < actualTotalSize)
+                        {
+                            long nextOffset = chunkOffset + baseChunkSize;
+                            TriggerPrefetch(activeClient, location, messageId, nextOffset, baseChunkSize);
+                        }
                     }
                 }
 
