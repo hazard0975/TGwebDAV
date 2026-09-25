@@ -1,7 +1,14 @@
 using System;
+using System.Text.Json.Serialization;
 
 namespace TelegramWebDAV.Config
 {
+    public enum DriveEngine
+    {
+        WinFsp,
+        WebDav
+    }
+
     public class AppSettings
     {
         public TelegramSettings Telegram { get; set; } = new TelegramSettings();
@@ -30,6 +37,9 @@ namespace TelegramWebDAV.Config
 
     public class ServerSettings
     {
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public DriveEngine Engine { get; set; } = DriveEngine.WinFsp;
+
         public bool WebDavEnabled { get; set; } = true;
         public int Port { get; set; } = 37000;
         public bool MountDrive { get; set; } = true;

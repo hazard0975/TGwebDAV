@@ -22,6 +22,7 @@ namespace TelegramWebDAV.UI
         private readonly NodeRepository _repository;
         private readonly TelegramService _telegramService;
         private readonly WebDavServer _webDavServer;
+        private readonly VirtualDriveManager _virtualDriveManager;
         private readonly TrayProgressOverlay _progressOverlay;
         private AppSettings _settings;
         private AuthSettingsForm? _settingsForm;
@@ -32,12 +33,14 @@ namespace TelegramWebDAV.UI
             ConfigManager configManager,
             NodeRepository repository,
             TelegramService telegramService,
-            WebDavServer webDavServer)
+            WebDavServer webDavServer,
+            VirtualDriveManager virtualDriveManager)
         {
             _configManager = configManager;
             _repository = repository;
             _telegramService = telegramService;
             _webDavServer = webDavServer;
+            _virtualDriveManager = virtualDriveManager;
             _settings = _configManager.Load();
             _progressOverlay = new TrayProgressOverlay
             {
@@ -232,30 +235,21 @@ namespace TelegramWebDAV.UI
         {
             if (_settings.Server.MountDrive)
             {
-                string letter = _settings.Server.DriveLetter == "AUTO"
-                    ? NetworkDriveMounter.GetFirstAvailableDriveLetter()
-                    : _settings.Server.DriveLetter ?? "Z:";
-
-                string url = $"http://localhost:{_settings.Server.Port}/";
-                NetworkDriveMounter.Mount(letter, url, out _);
+                _virtualDriveManager.Mount(_settings.Server.DriveLetter, out _);
             }
         }
 
         private void RemountDrive()
         {
-            string letter = _settings.Server.DriveLetter == "AUTO"
-                ? NetworkDriveMounter.GetFirstAvailableDriveLetter()
-                : _settings.Server.DriveLetter ?? "Z:";
-
-            NetworkDriveMounter.Unmount(letter, true);
-            string url = $"http://localhost:{_settings.Server.Port}/";
-            if (NetworkDriveMounter.Mount(letter, url, out string error))
+            if (_virtualDriveManager.Remount(out string error))
             {
-                _notifyIcon.ShowBalloonTip(2000, "Telegram WebDAV", $"Сетевой диск {letter} успешно переподключен", ToolTipIcon.Info);
+                string engineName = _virtualDriveManager.ActiveEngine == DriveEngine.WinFsp ? "WinFsp (ОЗУ)" : "WebDAV";
+                string letter = _virtualDriveManager.MountedLetter ?? _settings.Server.DriveLetter ?? "Z:";
+                _notifyIcon.ShowBalloonTip(2000, "Telegram Drive", $"Диск {letter} успешно переподключен [{engineName}]", ToolTipIcon.Info);
             }
             else
             {
-                _notifyIcon.ShowBalloonTip(3000, "Telegram WebDAV", $"Ошибка подключения: {error}", ToolTipIcon.Warning);
+                _notifyIcon.ShowBalloonTip(3000, "Telegram Drive", $"Ошибка подключения: {error}", ToolTipIcon.Warning);
             }
         }
 
@@ -264,6 +258,7 @@ namespace TelegramWebDAV.UI
             _notifyIcon.Visible = false;
             _notifyIcon.Dispose();
             _progressOverlay.Dispose();
+            _virtualDriveManager.Dispose();
             _webDavServer?.Stop();
             AppLogger.Shutdown();
             Application.Exit();

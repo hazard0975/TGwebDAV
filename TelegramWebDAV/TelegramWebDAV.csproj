@@ -4,6 +4,8 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <RootNamespace>TelegramWebDAV</RootNamespace>
@@ -13,6 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
+    <PackageReference Include="winfsp.net" Version="2.2.26215" />
     <PackageReference Include="WTelegramClient" Version="4.1.6" />
     <PackageReference Include="z440.atl.core" Version="6.1.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />

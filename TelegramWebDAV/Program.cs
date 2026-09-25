@@ -90,8 +90,12 @@ namespace TelegramWebDAV
                     AppLogger.Info("Program", $"Встроенный WebDAV сервер запущен: http://localhost:{settings.Server.Port}/");
                 }
 
-                // 5. Запуск приложения в системном трее Windows
-                Application.Run(new TrayContext(configManager, repository, telegramService, webDavServer));
+                // 5. Инициализация менеджера виртуального диска (WinFsp / WebDAV)
+                var winFspServer = new WinFspServer(configManager, repository, telegramService);
+                var virtualDriveManager = new VirtualDriveManager(configManager, winFspServer);
+
+                // 6. Запуск приложения в системном трее Windows
+                Application.Run(new TrayContext(configManager, repository, telegramService, webDavServer, virtualDriveManager));
             }
             catch (Exception ex)
             {

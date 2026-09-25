@@ -25,6 +25,7 @@ namespace TelegramWebDAV.UI
         // General Tab
         private CheckBox _chkWebDavEnabled = null!;
         private NumericUpDown _numPort = null!;
+        private ComboBox _cmbEngine = null!;
         private CheckBox _chkMountDrive = null!;
         private ComboBox _cmbDriveLetter = null!;
         private TextBox _txtVolumeName = null!;
@@ -93,12 +94,20 @@ namespace TelegramWebDAV.UI
             _numPort = new NumericUpDown { Minimum = 1024, Maximum = 65535, Value = _settings.Server.Port, Width = 80 };
             pnlPort.Controls.Add(_numPort);
 
+            var pnlEngine = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 10, 0, 5) };
+            pnlEngine.Controls.Add(new Label { Text = "Драйвер диска:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _cmbEngine = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 380 };
+            _cmbEngine.Items.Add("WinFsp (Прямой стриминг в память, без кэша на C:)");
+            _cmbEngine.Items.Add("WebDAV (Встроенная служба Windows WebClient)");
+            _cmbEngine.SelectedIndex = _settings.Server.Engine == DriveEngine.WinFsp ? 0 : 1;
+            pnlEngine.Controls.Add(_cmbEngine);
+
             _chkMountDrive = new CheckBox
             {
                 Text = "Автоматически монтировать сетевой диск в Windows",
                 Checked = _settings.Server.MountDrive,
                 AutoSize = true,
-                Margin = new Padding(0, 15, 0, 10)
+                Margin = new Padding(0, 10, 0, 10)
             };
 
             var pnlDrive = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight };
@@ -155,7 +164,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, _chkMountDrive, pnlDrive, pnlVol, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
@@ -426,6 +435,8 @@ namespace TelegramWebDAV.UI
 
         private void SaveGeneralSettings()
         {
+            var oldEngine = _settings.Server.Engine;
+            _settings.Server.Engine = _cmbEngine.SelectedIndex == 0 ? DriveEngine.WinFsp : DriveEngine.WebDav;
             _settings.Server.WebDavEnabled = _chkWebDavEnabled.Checked;
             _settings.Server.Port = (int)_numPort.Value;
             _settings.Server.MountDrive = _chkMountDrive.Checked;
@@ -446,7 +457,13 @@ namespace TelegramWebDAV.UI
             }
 
             _configManager.Save(_settings);
-            MessageBox.Show("Настройки успешно сохранены в appsettings.json!", "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            string msg = "Настройки успешно сохранены в appsettings.json!";
+            if (oldEngine != _settings.Server.Engine)
+            {
+                msg += $"\n\nДрайвер диска изменен на {_settings.Server.Engine}. Выполните «Переподключить сетевой диск» в трее или перезапустите сервис для применения изменений.";
+            }
+            MessageBox.Show(msg, "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
     }
 }
