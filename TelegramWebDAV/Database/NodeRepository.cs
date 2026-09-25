@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Microsoft.Data.Sqlite;
 using TelegramWebDAV.Models;
 using TelegramWebDAV.Services;
@@ -85,6 +86,105 @@ namespace TelegramWebDAV.Database
                 command.Parameters.AddWithValue("@nodeId", nodeId);
                 return ReadNode(command);
             }
+        }
+
+        /// <summary>
+        /// Формирует полный логический путь к узлу от корня (например, "/Music/Rock/Queen/song.mp3")
+        /// </summary>
+        public string GetNodeFullPath(int nodeId)
+        {
+            var root = GetRootNode();
+            if (root != null && nodeId == root.Id) return "/";
+
+            var parts = new List<string>();
+            int currentId = nodeId;
+
+            using (var connection = _dbManager.GetConnection())
+            {
+                while (currentId > 0 && (root == null || currentId != root.Id))
+                {
+                    using (var cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT parent_id, name FROM nodes WHERE id = @id LIMIT 1;";
+                        cmd.Parameters.AddWithValue("@id", currentId);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.Read()) break;
+                            string name = reader["name"]?.ToString() ?? "";
+                            if (!string.IsNullOrEmpty(name))
+                            {
+                                parts.Add(name);
+                            }
+                            if (reader.IsDBNull(0)) break;
+                            currentId = Convert.ToInt32(reader["parent_id"]);
+                        }
+                    }
+                }
+            }
+
+            if (parts.Count == 0) return "/";
+            parts.Reverse();
+            return "/" + string.Join("/", parts);
+        }
+
+        /// <summary>
+        /// Формирует полный путь к узлу с подписью версии (_vN) перед расширением для Telegram Caption.
+        /// Например: "/Music/Rock/Queen/01. Bohemian Rhapsody_v1.mp3"
+        /// </summary>
+        public string GetNodeFullPathWithVersion(int nodeId)
+        {
+            var node = GetNodeById(nodeId);
+            if (node == null) return "/";
+
+            string parentPath = node.ParentId.HasValue ? GetNodeFullPath(node.ParentId.Value) : "";
+            if (parentPath == "/") parentPath = "";
+
+            int version = node.Version > 0 ? node.Version : 1;
+            string nameWithVersion;
+            if (node.IsDir)
+            {
+                nameWithVersion = $"{node.Name}_v{version}";
+            }
+            else
+            {
+                string ext = Path.GetExtension(node.Name);
+                string nameWithoutExt = Path.GetFileNameWithoutExtension(node.Name);
+                nameWithVersion = $"{nameWithoutExt}_v{version}{ext}";
+            }
+
+            return $"{parentPath}/{nameWithVersion}";
+        }
+
+        /// <summary>
+        /// Вычисляет следующий номер версии для файла в указанной директории (1 для нового файла, N+1 при перезаписи)
+        /// </summary>
+        public int GetNextVersionForFile(int parentId, string fileName)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT version, size, tg_message_id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                command.Parameters.AddWithValue("@parentId", parentId);
+                command.Parameters.AddWithValue("@name", fileName);
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        long size = Convert.ToInt64(reader["size"]);
+                        bool hasTg = !reader.IsDBNull(reader.GetOrdinal("tg_message_id"));
+                        int currentVersion = Convert.ToInt32(reader["version"]);
+
+                        // Если это пустой файл-заглушка Проводника (size <= 1 без tg_message_id), это ещё версия 1
+                        if (size <= 1 && !hasTg)
+                        {
+                            return Math.Max(1, currentVersion);
+                        }
+
+                        return currentVersion + 1;
+                    }
+                }
+            }
+            return 1;
         }
 
         /// <summary>

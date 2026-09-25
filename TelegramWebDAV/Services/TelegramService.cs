@@ -474,7 +474,7 @@ namespace TelegramWebDAV.Services
         /// Обеспечивает TCP Flow Control (обратное давление) для синхронизации шкалы прогресса в Проводнике Windows.
         /// Возвращает реальный ID сообщения из Telegram, либо null если файл пустой.
         /// </summary>
-        public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1, string? displayFileName = null)
+        public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1, string? displayFileName = null, string? caption = null)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -483,6 +483,7 @@ namespace TelegramWebDAV.Services
 
             var peer = await GetStoragePeerAsync();
             string effectiveFileName = !string.IsNullOrEmpty(displayFileName) ? displayFileName : fileName;
+            string effectiveCaption = !string.IsNullOrEmpty(caption) ? caption : effectiveFileName;
 
             Stream uploadStream = source;
             string? tempFilePath = null;
@@ -548,8 +549,8 @@ namespace TelegramWebDAV.Services
                     progress: (pos, total) => OnUploadProgress?.Invoke(effectiveFileName, pos, total)
                 );
 
-                AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' загружен в MTProto, финализация сообщения в канале...");
-                var message = await _client.SendMediaAsync(peer, effectiveFileName, inputFile);
+                AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' загружен в MTProto, финализация сообщения в канале (подпись: '{effectiveCaption}')...");
+                var message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
 
                 if (message != null)
                 {

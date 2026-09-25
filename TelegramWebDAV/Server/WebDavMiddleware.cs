@@ -392,24 +392,32 @@ namespace TelegramWebDAV.Server
                             {
                                 if (audioMeta != null && !string.IsNullOrEmpty(audioMeta.AudioFormat))
                                 {
-                                    string ext = audioMeta.AudioFormat;
+                                    string audioExt = audioMeta.AudioFormat;
                                     if (!string.IsNullOrEmpty(audioMeta.Artist) && !string.IsNullOrEmpty(audioMeta.Title))
                                     {
-                                        tgDisplayName = $"{audioMeta.Artist} - {audioMeta.Title}{ext}";
+                                        tgDisplayName = $"{audioMeta.Artist} - {audioMeta.Title}{audioExt}";
                                     }
                                     else if (!string.IsNullOrEmpty(audioMeta.Title))
                                     {
-                                        tgDisplayName = $"{audioMeta.Title}{ext}";
+                                        tgDisplayName = $"{audioMeta.Title}{audioExt}";
                                     }
                                     else
                                     {
-                                        tgDisplayName = $"Audio_{DateTime.UtcNow:yyyyMMdd_HHmmss}{ext}";
+                                        tgDisplayName = $"Audio_{DateTime.UtcNow:yyyyMMdd_HHmmss}{audioExt}";
                                     }
                                 }
                             }
 
+                            // Вычисляем полный путь с версией для подписи в Telegram (например, "/Music/Rock/Queen/01. Bohemian Rhapsody_v1.mp3")
+                            int nextVersion = repository.GetNextVersionForFile(parentNode.Id, name);
+                            string parentFullPath = repository.GetNodeFullPath(parentNode.Id);
+                            if (parentFullPath == "/") parentFullPath = "";
+                            string fileExt = Path.GetExtension(name);
+                            string nameNoExt = Path.GetFileNameWithoutExtension(name);
+                            string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
+
                             // Прямая потоковая загрузка в Telegram с сохранением TCP Flow Control для Проводника
-                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName);
+                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion);
                         }
                         
                         DateTime? headerLastModified = null;
@@ -621,10 +629,11 @@ namespace TelegramWebDAV.Server
             repository.MoveNode(sourceNode.Id, destParentNode.Id, destName);
             AppLogger.Info("WebDAV", $"Узел '{sourceNode.Name}' успешно перемещен/переименован в '{destName}'.");
 
-            // 1. Если файл уже в Telegram, обновляем подпись сообщения на настоящее боевое имя
+            // 1. Если файл уже в Telegram, обновляем подпись сообщения на полный логический путь с версией
             if (sourceNode.TgMessageId.HasValue && sourceNode.TgMessageId.Value > 1 && telegramService != null)
             {
-                _ = telegramService.UpdateMessageCaptionAsync(sourceNode.TgMessageId.Value, destName);
+                string fullPathWithVersion = repository.GetNodeFullPathWithVersion(sourceNode.Id);
+                _ = telegramService.UpdateMessageCaptionAsync(sourceNode.TgMessageId.Value, fullPathWithVersion);
             }
 
             // 2. Если файл переименован из .tmp в аудиоформат, обогащаем аудио-метаданные из настоящего имени файла
