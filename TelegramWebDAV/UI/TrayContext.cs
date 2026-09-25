@@ -72,7 +72,7 @@ namespace TelegramWebDAV.UI
                     _activeUploadPercent = (int)(current * 100 / total);
                 }
 
-                _progressOverlay.UpdateProgress(fileName, current, total, TransferDirection.Upload);
+                _progressOverlay.UpdateProgress(fileName, current, total, TransferDirection.Upload, _telegramService.PendingUploadsCount);
             };
 
             _telegramService.OnUploadCompleted += (fileName) =>

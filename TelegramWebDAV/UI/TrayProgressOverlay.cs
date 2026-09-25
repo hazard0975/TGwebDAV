@@ -35,6 +35,7 @@ namespace TelegramWebDAV.UI
         private string _currentFileName = string.Empty;
         private long _currentBytes = 0;
         private long _totalBytes = 0;
+        private int _queueCount = 0;
         private bool _isTransferring = false;
         private bool _isFinalizing = false;
         private bool _isCompleted = false;
@@ -104,13 +105,15 @@ namespace TelegramWebDAV.UI
 
         protected override bool ShowWithoutActivation => true;
 
-        public void UpdateProgress(string fileName, long current, long total, TransferDirection direction = TransferDirection.Upload)
+        public void UpdateProgress(string fileName, long current, long total, TransferDirection direction = TransferDirection.Upload, int queueCount = 0)
         {
             if (_syncContext != null && SynchronizationContext.Current != _syncContext)
             {
-                _syncContext.Post(_ => UpdateProgress(fileName, current, total, direction), null);
+                _syncContext.Post(_ => UpdateProgress(fileName, current, total, direction, queueCount), null);
                 return;
             }
+
+            _queueCount = queueCount;
 
             // Отменяем любой таймер закрытия от предыдущих файлов
             if (_completionTimer.Enabled)
@@ -306,6 +309,12 @@ namespace TelegramWebDAV.UI
                 if (_isCompleted)
                 {
                     header = _direction == TransferDirection.Download ? "СКАЧИВАНИЕ ЗАВЕРШЕНО" : "ЗАГРУЗКА ЗАВЕРШЕНА";
+                }
+                else if (_queueCount > 1)
+                {
+                    header = _direction == TransferDirection.Download 
+                        ? $"СКАЧИВАНИЕ ИЗ TELEGRAM (в очереди: {_queueCount})" 
+                        : $"ОТПРАВКА В TELEGRAM (в очереди: {_queueCount})";
                 }
                 else if (_isFinalizing)
                 {

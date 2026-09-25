@@ -41,6 +41,16 @@ namespace TelegramWebDAV.Services
         private DateTime _floodWaitUntil = DateTime.MinValue;
         private WTelegram.Client? _client;
 
+        // Очередь последовательной загрузки файлов в Telegram (Upload Queue)
+        // Предотвращает конкуренцию за полосу пропускания, мерцание оверлея и FLOOD_WAIT
+        private readonly SemaphoreSlim _uploadSemaphore = new SemaphoreSlim(1, 1);
+        private int _pendingUploadsCount = 0;
+
+        /// <summary>
+        /// Количество файлов в очереди на отправку в Telegram (включая текущий передаваемый).
+        /// </summary>
+        public int PendingUploadsCount => _pendingUploadsCount;
+
         // Кэш дескрипторов документов Telegram (TL.Document) для устранения лишних сетевых вызовов Channels_GetMessages
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (TL.Document document, DateTime expiresAt)> _documentCache = new();
 
@@ -593,12 +603,8 @@ namespace TelegramWebDAV.Services
         /// </summary>
         public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1, string? displayFileName = null, string? caption = null)
         {
-            await EnsureFloodWaitDelayAsync();
-
-            if (_client == null || !IsAuthorized)
-                throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
-
-            var peer = await GetStoragePeerAsync();
+            Interlocked.Increment(ref _pendingUploadsCount);
+            await _uploadSemaphore.WaitAsync();
             string effectiveFileName = !string.IsNullOrEmpty(displayFileName) ? displayFileName : fileName;
             string effectiveCaption = !string.IsNullOrEmpty(caption) ? caption : effectiveFileName;
 
@@ -607,6 +613,13 @@ namespace TelegramWebDAV.Services
 
             try
             {
+                await EnsureFloodWaitDelayAsync();
+
+                if (_client == null || !IsAuthorized)
+                    throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
+
+                var peer = await GetStoragePeerAsync();
+
                 // Если поток не поддерживает Seek (входящий сетевой поток WebDAV от Проводника)
                 // или если это уже StreamingUploadStream (переданный после извлечения аудио-тегов)
                 if (source is StreamingUploadStream existingStreaming)
@@ -702,6 +715,9 @@ namespace TelegramWebDAV.Services
                 {
                     try { uploadStream.Dispose(); } catch { }
                 }
+
+                _uploadSemaphore.Release();
+                Interlocked.Decrement(ref _pendingUploadsCount);
             }
         }
 
@@ -1151,6 +1167,7 @@ namespace TelegramWebDAV.Services
             }
             catch { }
             _floodLock?.Dispose();
+            _uploadSemaphore?.Dispose();
         }
     }
 }
