@@ -77,6 +77,25 @@ namespace TelegramWebDAV.Services
                             {
                                 Environment.SetEnvironmentVariable("PATH", binPath + Path.PathSeparator + currentPath);
                             }
+
+                            // Выбираем соответствующую DLL по архитектуре процесса (x64 или x86)
+                            string dllName = Environment.Is64BitProcess ? "winfsp-x64.dll" : "winfsp-x86.dll";
+                            string fullDllPath = Path.Combine(binPath, dllName);
+
+                            if (File.Exists(fullDllPath))
+                            {
+                                try
+                                {
+                                    // Прямая предзагрузка нативной библиотеки в память процесса Windows через .NET 8 API
+                                    NativeLibrary.Load(fullDllPath);
+                                    AppLogger.Info("WinFsp", $"Нативная библиотека {dllName} успешно предзагружена в память процесса из {fullDllPath}");
+                                }
+                                catch (Exception loadEx)
+                                {
+                                    AppLogger.Warn("WinFsp", $"Не удалось предзагрузить {dllName} через NativeLibrary.Load: {loadEx.Message}");
+                                }
+                            }
+
                             AppLogger.Info("WinFsp", $"Зарегистрирован путь к нативным DLL WinFsp: {binPath}");
                         }
                     }
@@ -202,8 +221,9 @@ namespace TelegramWebDAV.Services
                 }
                 catch (Exception ex)
                 {
-                    errorMessage = ex.Message;
-                    AppLogger.Error("WinFsp", $"Исключение при монтировании диска {formattedLetter}: {ex.Message}", ex);
+                    string details = ex.InnerException != null ? $"{ex.Message} (Детали: {ex.InnerException.Message})" : ex.Message;
+                    errorMessage = details;
+                    AppLogger.Error("WinFsp", $"Исключение при монтировании диска {formattedLetter}: {details}", ex);
                     if (_host != null)
                     {
                         try { _host.Dispose(); } catch { }
