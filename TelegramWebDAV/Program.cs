@@ -20,6 +20,9 @@ namespace TelegramWebDAV
         [STAThread]
         private static async Task Main(string[] args)
         {
+            // Включаем системную поддержку Assembly.Location в .NET 8 для корректной работы сторонних библиотек (WinFsp)
+            AppContext.SetData("Switch.System.Reflection.Assembly.Location.IncludeInSingleFileApp", true);
+
             // Глобальные перехватчики неперехваченных ошибок
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {

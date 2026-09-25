@@ -94,35 +94,6 @@ namespace TelegramWebDAV.Services
                                 {
                                     AppLogger.Warn("WinFsp", $"Не удалось предзагрузить {dllName} через NativeLibrary.Load: {loadEx.Message}");
                                 }
-
-                                // Чистая настройка полей Fsp.Interop.Api прямо в ОЗУ процесса (без записи в реестр Windows)
-                                try
-                                {
-                                    var apiType = typeof(FileSystemHost).Assembly.GetType("Fsp.Interop.Api");
-                                    if (apiType != null)
-                                    {
-                                        var flags = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
-                                        foreach (var field in apiType.GetFields(flags))
-                                        {
-                                            if (field.FieldType == typeof(string))
-                                            {
-                                                try
-                                                {
-                                                    field.SetValue(null, fullDllPath);
-                                                    AppLogger.Info("WinFsp", $"Поле памяти WinFsp {field.Name} настроено на {fullDllPath}");
-                                                }
-                                                catch { }
-                                            }
-                                        }
-
-                                        System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(apiType.TypeHandle);
-                                        AppLogger.Info("WinFsp", "Инициализатор Fsp.Interop.Api успешно выполнен!");
-                                    }
-                                }
-                                catch (Exception apiEx)
-                                {
-                                    AppLogger.Warn("WinFsp", $"Инициализация Api в ОЗУ: {apiEx.InnerException?.Message ?? apiEx.Message}");
-                                }
                             }
 
                             AppLogger.Info("WinFsp", $"Зарегистрирован путь к нативным DLL WinFsp: {binPath}");
