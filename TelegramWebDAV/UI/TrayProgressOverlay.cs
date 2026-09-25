@@ -43,6 +43,7 @@ namespace TelegramWebDAV.UI
         private long _lastSpeedBytes = 0;
         private double _bytesPerSecond = 0;
         private DateTime _lastHoverTime = DateTime.MinValue;
+        private DateTime _lastProgressUpdateTime = DateTime.UtcNow;
 
         public TrayProgressOverlay()
         {
@@ -140,6 +141,7 @@ namespace TelegramWebDAV.UI
             _totalBytes = total;
             _isTransferring = true;
             _isCompleted = false;
+            _lastProgressUpdateTime = DateTime.UtcNow;
 
             if (total > 0 && current >= total)
             {
@@ -260,8 +262,20 @@ namespace TelegramWebDAV.UI
         {
             if (!Visible) return;
 
-            // Если окно всплыло по автоматическому показу и идет загрузка — оно висит, пока не закончится
-            // Но если пользователь в режиме "показ только по наведению", или окно в режиме покоя — скрываем при уходе курсора
+            // Если прошло более 1.5 сек с момента последнего обновления данных при отсутствии активности,
+            // запускаем штатный таймер финализации и скрытия (защита от зависания окна при обрыве потока/завершении чтения)
+            var secondsSinceProgress = (DateTime.UtcNow - _lastProgressUpdateTime).TotalSeconds;
+            if ((_isTransferring || _isFinalizing) && secondsSinceProgress >= 1.5)
+            {
+                if (!_completionTimer.Enabled)
+                {
+                    AppLogger.Info("TrayProgressOverlay", $"Таймаут неактивности передачи ({secondsSinceProgress:F1} сек). Запуск скрытия оверлея...");
+                    CompleteTransfer(_currentFileName, _direction);
+                }
+                return;
+            }
+
+            // Если окно всплыло по автоматическому показу и идет активная загрузка — оно отображается
             if (AutoShowOnUpload && (_isTransferring || _isFinalizing || _isCompleted))
             {
                 return;
