@@ -57,6 +57,7 @@ namespace TelegramWebDAV.Services
         // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (~32 МБ) для мгновенного чтения плеерами без повторных обращений к сети
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (byte[] data, DateTime expiresAt)> _chunkMemoryCache = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Task<byte[]?>> _pendingPrefetches = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, SemaphoreSlim> _fileDownloadLocks = new();
         private readonly SemaphoreSlim _downloadRpcSemaphore = new SemaphoreSlim(1, 1);
 
         private bool TryGetFromMemoryCache(int messageId, long pos, out byte[]? data, out int offsetInChunk)
@@ -822,6 +823,37 @@ namespace TelegramWebDAV.Services
             return document;
         }
 
+        private async Task ReadFromFileCacheAsync(string cacheFilePath, Stream destination, long offset, long length, int messageId)
+        {
+            using (var fs = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                fs.Seek(offset, SeekOrigin.Begin);
+                long remaining = length;
+                byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
+                try
+                {
+                    while (remaining > 0)
+                    {
+                        int toRead = (int)Math.Min(buffer.Length, remaining);
+                        int read = await fs.ReadAsync(buffer, 0, toRead);
+                        if (read <= 0) break;
+
+                        await destination.WriteAsync(buffer, 0, read);
+                        remaining -= read;
+                    }
+                    await destination.FlushAsync();
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("TelegramService", $"Клиент прервал чтение из кэша для сообщения {messageId}: {ex.Message}");
+                }
+                finally
+                {
+                    System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                }
+            }
+        }
+
         /// <summary>
         /// Потоковое скачивание точечных чанков (HTTP 206 Range) напрямую из Telegram через MTProto Upload_GetFile.
         /// Запрашивает данные с гарантированным выравниванием по границам 1 МБ без риска ошибки LIMIT_INVALID.
@@ -841,41 +873,61 @@ namespace TelegramWebDAV.Services
             // 1. Если файл уже закэширован на диске полностью, читаем напрямую из дискового файла
             if (File.Exists(cacheFilePath))
             {
-                using (var fs = new FileStream(cacheFilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
-                {
-                    fs.Seek(offset, SeekOrigin.Begin);
-                    long remaining = length;
-                    byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(131072);
-                    try
-                    {
-                        while (remaining > 0)
-                        {
-                            int toRead = (int)Math.Min(buffer.Length, remaining);
-                            int read = await fs.ReadAsync(buffer, 0, toRead);
-                            if (read <= 0) break;
-
-                            await destination.WriteAsync(buffer, 0, read);
-                            remaining -= read;
-                        }
-                        await destination.FlushAsync();
-                    }
-                    catch (Exception ex)
-                    {
-                        AppLogger.Debug("TelegramService", $"Клиент прервал чтение из кэша для сообщения {messageId}: {ex.Message}");
-                    }
-                    finally
-                    {
-                        System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
-                    }
-                }
+                await ReadFromFileCacheAsync(cacheFilePath, destination, offset, length, messageId);
                 return;
             }
 
-            // 2. Файла нет в локальном дисковом кэше. Точечно запрашиваем чанки через MTProto Upload_GetFile
+            // 2. Файла нет в локальном дисковом кэше. Точечно запрашиваем дескриптор документа
             var document = await GetDocumentFromMessageAsync(messageId);
             if (document == null)
             {
                 throw new FileNotFoundException($"Не удалось найти медиа-документ для сообщения ID {messageId} в Telegram.");
+            }
+
+            long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
+            bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
+            bool isMetadataProbe = length <= 262144 && offset == 0; // Быстрый запрос заголовков Проводником Windows
+
+            // Для последовательного скачивания всего файла или при старте со смещения 0 скачиваем файл через официальный движок WTelegram
+            if (offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
+            {
+                var fileLock = _fileDownloadLocks.GetOrAdd(messageId, _ => new SemaphoreSlim(1, 1));
+                await fileLock.WaitAsync();
+                try
+                {
+                    if (!File.Exists(cacheFilePath))
+                    {
+                        string tempPath = cacheFilePath + ".tmp";
+                        AppLogger.Info("TelegramService", $"[Official MTProto Engine] Старт официальной скачки файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт)...");
+                        using (var tempFs = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                        {
+                            await _client.DownloadFileAsync(document, tempFs, progress: (transferred, total) =>
+                            {
+                                OnDownloadProgress?.Invoke(fileName, transferred, total);
+                            });
+                        }
+                        if (File.Exists(tempPath))
+                        {
+                            File.Move(tempPath, cacheFilePath, overwrite: true);
+                            AppLogger.Info("TelegramService", $"[Official MTProto Engine] Файл '{fileName}' (ID {messageId}) успешно скачан и сохранен в дисковый кэш.");
+                            OnDownloadCompleted?.Invoke(fileName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Warn("TelegramService", $"[Official MTProto Engine] Ошибка при фоновом скачивании файла ID {messageId}: {ex.Message}. Переход к чанковому стримингу.");
+                }
+                finally
+                {
+                    fileLock.Release();
+                }
+
+                if (File.Exists(cacheFilePath))
+                {
+                    await ReadFromFileCacheAsync(cacheFilePath, destination, offset, length, messageId);
+                    return;
+                }
             }
 
             var activeClient = document.dc_id != 0 ? await _client.GetClientForDC(document.dc_id) : _client;
@@ -884,9 +936,6 @@ namespace TelegramWebDAV.Services
             long currentPos = offset;
             long remainingBytes = length;
             long totalSent = 0;
-            long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
-            bool isSmallFile = actualTotalSize <= 262144; // Файл размером меньше 256 КБ
-            bool isMetadataProbe = length <= 262144 && offset == 0; // Быстрый запрос заголовков Проводником Windows
 
             // При старте последовательного чтения большого файла (копирование/воспроизведение) прогреваем 1 упреждающий блок
             if (!isSmallFile && !isMetadataProbe && offset == 0 && actualTotalSize > 1048576)
