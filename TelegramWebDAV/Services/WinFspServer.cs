@@ -207,7 +207,7 @@ namespace TelegramWebDAV.Services
 
                     AppLogger.Info("WinFsp", $"Попытка монтирования виртуального диска {formattedLetter} через WinFsp...");
 
-                    int result = _host.Mount(formattedLetter, TelegramWinFspFileSystem.DefaultSecurityDescriptor, false, 0);
+                    int result = _host.Mount(formattedLetter, null, false, 0);
                     if (result != FileSystemBase.STATUS_SUCCESS)
                     {
                         errorMessage = $"Код ошибки WinFsp: 0x{result:X8}";
@@ -305,23 +305,6 @@ namespace TelegramWebDAV.Services
             return STATUS_SUCCESS;
         }
 
-        public static readonly byte[] DefaultSecurityDescriptor = CreateDefaultSecurityDescriptor();
-
-        private static byte[] CreateDefaultSecurityDescriptor()
-        {
-            try
-            {
-                var raw = new RawSecurityDescriptor("O:BAG:BAD:P(A;;GA;;;WD)");
-                byte[] binary = new byte[raw.BinaryLength];
-                raw.GetBinaryForm(binary, 0);
-                return binary;
-            }
-            catch
-            {
-                return Array.Empty<byte>();
-            }
-        }
-
         public override int GetVolumeInfo(out VolumeInfo volumeInfo)
         {
             volumeInfo = default;
@@ -351,42 +334,6 @@ namespace TelegramWebDAV.Services
             volumeInfo.FreeSize = (ulong)freeBytes;
             string driveName = settings.Server.DriveName ?? "Telegram Drive";
             volumeInfo.SetVolumeLabel(driveName);
-            return STATUS_SUCCESS;
-        }
-
-        public override int GetSecurity(object fileNode, object fileDesc, ref byte[] securityDescriptor)
-        {
-            securityDescriptor = DefaultSecurityDescriptor;
-            return STATUS_SUCCESS;
-        }
-
-        public override int GetSecurityByName(
-            string fileName,
-            out uint fileAttributes,
-            ref byte[] securityDescriptor)
-        {
-            securityDescriptor = DefaultSecurityDescriptor;
-            string cleanPath = NormalizePath(fileName);
-            if (cleanPath.Contains(":")) // Alternate Data Stream (:Zone.Identifier и др.)
-            {
-                fileAttributes = 0;
-                return NT_STATUS_OBJECT_NAME_NOT_FOUND;
-            }
-
-            if (cleanPath == "/")
-            {
-                fileAttributes = (uint)FileAttributes.Directory;
-                return STATUS_SUCCESS;
-            }
-
-            var node = _repository.GetNodeByPath(cleanPath);
-            if (node == null)
-            {
-                fileAttributes = 0;
-                return NT_STATUS_OBJECT_NAME_NOT_FOUND;
-            }
-
-            fileAttributes = node.IsDir ? (uint)FileAttributes.Directory : (uint)FileAttributes.Normal;
             return STATUS_SUCCESS;
         }
 

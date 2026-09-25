@@ -138,7 +138,7 @@ namespace TelegramWebDAV.UI
 
             _chkAutoExpand = new CheckBox
             {
-                Text = "Автоматически расширять диск при заполнении > 70% (диск не будет красным)",
+                Text = "Автоматически расширять диск при заполнении > 70%",
                 Checked = _settings.Server.AutoExpandDiskCapacity,
                 AutoSize = true,
                 Margin = new Padding(0, 5, 0, 5)
@@ -306,34 +306,78 @@ namespace TelegramWebDAV.UI
 
             _lblRegStatus = new Label
             {
-                Text = "Комплексный фикс реестра для встроенного WebClient Windows:\n" +
-                       "1. BasicAuthLevel = 2 — разрешение подключения по HTTP в локальной сети.\n" +
-                       "2. FileSizeLimitInBytes = 4 GB — снятие стандартного ограничения Windows в 50 МБ на файл (ошибка 0x800700DF в Проводнике).",
+                Text = "Комплексный фикс реестра Windows для служб WebDAV и виртуальных дисков:\n\n" +
+                       "1. BasicAuthLevel = 2 — разрешение подключения WebDAV по HTTP в локальной сети.\n" +
+                       "2. FileSizeLimitInBytes = 4 GB — снятие системного лимита в 50 МБ на файл (ошибка 0x800700DF).\n" +
+                       "3. EnableLinkedConnections = 1 — сквозная видимость дисков между сессиями пользователя и Администратора.\n" +
+                       "4. ZoneMap (Местная интрасеть) — устранение системных предупреждений безопасности при копировании файлов.",
                 AutoSize = true,
-                MaximumSize = new Size(450, 0),
+                MaximumSize = new Size(520, 0),
                 Margin = new Padding(0, 5, 0, 15)
             };
 
-            _btnApplyRegFix = new Button
+            var lblRegCurrentState = new Label
             {
-                Text = "Применить комплексный фикс реестра (HTTP + 4 ГБ)",
                 AutoSize = true,
-                Padding = new Padding(10, 8, 10, 8)
+                Font = new Font(this.Font, FontStyle.Bold),
+                Margin = new Padding(0, 0, 0, 15)
             };
-            _btnApplyRegFix.Click += (s, e) =>
+
+            Action refreshRegState = () =>
             {
-                bool success = WindowsRegistryFixer.ApplyAllFixes();
-                if (success)
+                bool isApplied = WindowsRegistryFixer.IsAllFixesApplied();
+                if (isApplied)
                 {
-                    MessageBox.Show("Патчи реестра успешно применены (HTTP разрешен, лимит 50 МБ снят до 4 ГБ)!\n\nРекомендуется перезапустить службу WebClient или перезагрузить компьютер.", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    lblRegCurrentState.Text = "Статус: Все системные патчи успешно применены ✔";
+                    lblRegCurrentState.ForeColor = Color.DarkGreen;
                 }
                 else
                 {
-                    MessageBox.Show("Не удалось применить изменения. Запустите приложение от имени Администратора.", "Ошибка доступа", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    lblRegCurrentState.Text = "Статус: Рекомендуется применить системные патчи реестра ⚠";
+                    lblRegCurrentState.ForeColor = Color.DarkOrange;
+                }
+            };
+            refreshRegState();
+
+            _btnApplyRegFix = new Button
+            {
+                Text = "🛡 Применить комплексный фикс реестра (с запросом UAC)",
+                AutoSize = true,
+                Padding = new Padding(12, 10, 12, 10),
+                Font = new Font(this.Font.FontFamily, 9.5f, FontStyle.Bold)
+            };
+            _btnApplyRegFix.Click += (s, e) =>
+            {
+                _btnApplyRegFix.Enabled = false;
+                try
+                {
+                    bool success = WindowsRegistryFixer.ApplyAllFixesWithElevation(out string message);
+                    refreshRegState();
+                    if (success)
+                    {
+                        MessageBox.Show(
+                            "Патчи реестра Windows успешно применены:\n\n" +
+                            "• BasicAuthLevel = 2 (HTTP WebDAV разрешен)\n" +
+                            "• FileSizeLimitInBytes = 4 GB (лимит 50 МБ снят)\n" +
+                            "• EnableLinkedConnections = 1 (диск виден и от Администратора)\n" +
+                            "• Местная интрасеть для localhost/дисков настроена\n\n" +
+                            "Для полного вступления изменений в силу рекомендуется перезапустить службу WebClient или перезагрузить ПК.",
+                            "Патч реестра Windows",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(message, "Патч реестра Windows", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                finally
+                {
+                    _btnApplyRegFix.Enabled = true;
                 }
             };
 
-            pnlReg.Controls.AddRange(new Control[] { _lblRegStatus, _btnApplyRegFix });
+            pnlReg.Controls.AddRange(new Control[] { _lblRegStatus, lblRegCurrentState, _btnApplyRegFix });
             _tabRegistry.Controls.Add(pnlReg);
 
             _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry });

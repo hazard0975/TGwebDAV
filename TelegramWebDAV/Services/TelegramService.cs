@@ -248,7 +248,7 @@ namespace TelegramWebDAV.Services
                 if (_currentSettings.Telegram.StorageChannelId != 0 && _currentSettings.Telegram.StorageChannelAccessHash != 0)
                 {
                     _storagePeer = new TL.InputPeerChannel(_currentSettings.Telegram.StorageChannelId, _currentSettings.Telegram.StorageChannelAccessHash);
-                    AppLogger.Info("TelegramService", $"Подключен канал-хранилище из настроек: '{targetTitle}' (ID: {_currentSettings.Telegram.StorageChannelId}) за 0 мс.");
+                    AppLogger.Info("TelegramService", $"Подключен канал-хранилище из настроек: '{targetTitle}' (ID: {_currentSettings.Telegram.StorageChannelId}).");
                     return _storagePeer;
                 }
 

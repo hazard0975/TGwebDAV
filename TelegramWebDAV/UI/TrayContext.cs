@@ -243,7 +243,7 @@ namespace TelegramWebDAV.UI
         {
             if (_virtualDriveManager.Remount(out string error))
             {
-                string engineName = _virtualDriveManager.ActiveEngine == DriveEngine.WinFsp ? "WinFsp (ОЗУ)" : "WebDAV";
+                string engineName = _virtualDriveManager.ActiveEngine == DriveEngine.WinFsp ? "WinFsp" : "WebDAV";
                 string letter = _virtualDriveManager.MountedLetter ?? _settings.Server.DriveLetter ?? "Z:";
                 _notifyIcon.ShowBalloonTip(2000, "Telegram Drive", $"Диск {letter} успешно переподключен [{engineName}]", ToolTipIcon.Info);
             }

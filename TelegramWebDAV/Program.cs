@@ -20,6 +20,14 @@ namespace TelegramWebDAV
         [STAThread]
         private static async Task Main(string[] args)
         {
+            // Обработка запроса на применение твиков реестра с повышенными привилегиями (UAC)
+            if (args != null && args.Length > 0 && args[0] == "--apply-registry-fix")
+            {
+                bool success = TelegramWebDAV.Utils.WindowsRegistryFixer.ApplyAllFixes();
+                Environment.Exit(success ? 0 : 1);
+                return;
+            }
+
             // Включаем системную поддержку Assembly.Location в .NET 8 для корректной работы сторонних библиотек (WinFsp)
             AppContext.SetData("Switch.System.Reflection.Assembly.Location.IncludeInSingleFileApp", true);
 
