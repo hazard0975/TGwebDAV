@@ -68,26 +68,6 @@ namespace TelegramWebDAV.Services
 
                     if (!string.IsNullOrEmpty(installDir))
                     {
-                        // Обеспечиваем наличие InstallDir в 64-битной и 32-битной ветках реестра
-                        try
-                        {
-                            using var hklm64 = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
-                            using var winfspKey = hklm64.OpenSubKey(@"SOFTWARE\WinFsp", writable: true) ?? hklm64.CreateSubKey(@"SOFTWARE\WinFsp", writable: true);
-                            if (winfspKey != null)
-                            {
-                                var currentVal = winfspKey.GetValue("InstallDir") as string;
-                                if (string.IsNullOrEmpty(currentVal))
-                                {
-                                    winfspKey.SetValue("InstallDir", installDir.EndsWith("\\") ? installDir : installDir + "\\", RegistryValueKind.String);
-                                    AppLogger.Info("WinFsp", $"Синхронизирован InstallDir = {installDir} в 64-битном реестре.");
-                                }
-                            }
-                        }
-                        catch (Exception regEx)
-                        {
-                            AppLogger.Warn("WinFsp", $"Не удалось проверить/записать 64-битную ветку реестра WinFsp: {regEx.Message}");
-                        }
-
                         string binPath = Path.Combine(installDir, "bin");
                         if (Directory.Exists(binPath))
                         {
@@ -114,25 +94,39 @@ namespace TelegramWebDAV.Services
                                 {
                                     AppLogger.Warn("WinFsp", $"Не удалось предзагрузить {dllName} через NativeLibrary.Load: {loadEx.Message}");
                                 }
+
+                                // Чистая настройка полей Fsp.Interop.Api прямо в ОЗУ процесса (без записи в реестр Windows)
+                                try
+                                {
+                                    var apiType = typeof(FileSystemHost).Assembly.GetType("Fsp.Interop.Api");
+                                    if (apiType != null)
+                                    {
+                                        var flags = System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Public;
+                                        foreach (var field in apiType.GetFields(flags))
+                                        {
+                                            if (field.FieldType == typeof(string))
+                                            {
+                                                try
+                                                {
+                                                    field.SetValue(null, fullDllPath);
+                                                    AppLogger.Info("WinFsp", $"Поле памяти WinFsp {field.Name} настроено на {fullDllPath}");
+                                                }
+                                                catch { }
+                                            }
+                                        }
+
+                                        System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(apiType.TypeHandle);
+                                        AppLogger.Info("WinFsp", "Инициализатор Fsp.Interop.Api успешно выполнен!");
+                                    }
+                                }
+                                catch (Exception apiEx)
+                                {
+                                    AppLogger.Warn("WinFsp", $"Инициализация Api в ОЗУ: {apiEx.InnerException?.Message ?? apiEx.Message}");
+                                }
                             }
 
                             AppLogger.Info("WinFsp", $"Зарегистрирован путь к нативным DLL WinFsp: {binPath}");
                         }
-                    }
-
-                    // Диагностический вызов инициализатора типов WinFsp с полным логом исключений
-                    try
-                    {
-                        var apiType = typeof(FileSystemHost).Assembly.GetType("Fsp.Interop.Api");
-                        if (apiType != null)
-                        {
-                            System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(apiType.TypeHandle);
-                            AppLogger.Info("WinFsp", "Инициализатор Fsp.Interop.Api успешно выполнен!");
-                        }
-                    }
-                    catch (Exception apiEx)
-                    {
-                        AppLogger.Error("WinFsp", $"Ошибка инициализатора Fsp.Interop.Api: {apiEx}", apiEx);
                     }
 
                     _dllLoaded = true;
