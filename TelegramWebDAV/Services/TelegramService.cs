@@ -888,7 +888,7 @@ namespace TelegramWebDAV.Services
             bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
             bool isMetadataProbe = length <= 262144 && offset == 0; // Быстрый запрос заголовков Проводником Windows
 
-            // Для последовательного скачивания всего файла или при старте со смещения 0 скачиваем файл через официальный движок WTelegram
+            // Для скачивания всего файла или при старте со смещения 0 скачиваем файл через Multi-Session Worker Pool (3 параллельных сокета к DC)
             if (offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
             {
                 var fileLock = _fileDownloadLocks.GetOrAdd(messageId, _ => new SemaphoreSlim(1, 1));
@@ -897,26 +897,23 @@ namespace TelegramWebDAV.Services
                 {
                     if (!File.Exists(cacheFilePath))
                     {
-                        string tempPath = cacheFilePath + ".tmp";
-                        AppLogger.Info("TelegramService", $"[Official MTProto Engine] Старт официальной скачки файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт)...");
-                        using (var tempFs = new FileStream(tempPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                        AppLogger.Info("TelegramService", $"[Multi-Session Worker Pool] Старт параллельной скачки файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт) через 3 воркера MTProto...");
+                        var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3);
+                        bool success = await workerPool.DownloadFileAsync(
+                            document,
+                            cacheFilePath,
+                            onProgress: (transferred, total) => OnDownloadProgress?.Invoke(fileName, transferred, total));
+
+                        if (success && File.Exists(cacheFilePath))
                         {
-                            await _client.DownloadFileAsync(document, tempFs, progress: (transferred, total) =>
-                            {
-                                OnDownloadProgress?.Invoke(fileName, transferred, total);
-                            });
-                        }
-                        if (File.Exists(tempPath))
-                        {
-                            File.Move(tempPath, cacheFilePath, overwrite: true);
-                            AppLogger.Info("TelegramService", $"[Official MTProto Engine] Файл '{fileName}' (ID {messageId}) успешно скачан и сохранен в дисковый кэш.");
+                            AppLogger.Info("TelegramService", $"[Multi-Session Worker Pool] Файл '{fileName}' (ID {messageId}) успешно скачан воркерами и сохранен в кэш.");
                             OnDownloadCompleted?.Invoke(fileName);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Warn("TelegramService", $"[Official MTProto Engine] Ошибка при фоновом скачивании файла ID {messageId}: {ex.Message}. Переход к чанковому стримингу.");
+                    AppLogger.Warn("TelegramService", $"[Multi-Session Worker Pool] Ошибка при фоновом скачивании файла ID {messageId}: {ex.Message}. Переход к точечному чанковому стримингу.");
                 }
                 finally
                 {
