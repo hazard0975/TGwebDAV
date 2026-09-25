@@ -31,6 +31,67 @@ namespace TelegramWebDAV.Services
         public bool IsMounted => _host != null;
         public string? MountPoint => _currentMountPoint;
 
+        [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern bool SetDllDirectory(string lpPathName);
+
+        private static bool _dllLoaded = false;
+        private static readonly object _dllLock = new object();
+
+        /// <summary>
+        /// Гарантирует регистрацию нативной библиотеки WinFsp (winfsp-x64.dll) в системном пути DLL Windows.
+        /// </summary>
+        public static bool EnsureWinFspNativeDllLoaded()
+        {
+            if (_dllLoaded) return true;
+            lock (_dllLock)
+            {
+                if (_dllLoaded) return true;
+                try
+                {
+                    string? installDir = null;
+                    using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WinFsp") ??
+                                     Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\WinFsp"))
+                    {
+                        if (key != null)
+                        {
+                            installDir = key.GetValue("InstallDir") as string;
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(installDir))
+                    {
+                        string pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                        string pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                        if (Directory.Exists(Path.Combine(pf86, "WinFsp"))) installDir = Path.Combine(pf86, "WinFsp");
+                        else if (Directory.Exists(Path.Combine(pf, "WinFsp"))) installDir = Path.Combine(pf, "WinFsp");
+                    }
+
+                    if (!string.IsNullOrEmpty(installDir))
+                    {
+                        string binPath = Path.Combine(installDir, "bin");
+                        if (Directory.Exists(binPath))
+                        {
+                            SetDllDirectory(binPath);
+                            string currentPath = Environment.GetEnvironmentVariable("PATH") ?? "";
+                            if (!currentPath.Contains(binPath, StringComparison.OrdinalIgnoreCase))
+                            {
+                                Environment.SetEnvironmentVariable("PATH", binPath + Path.PathSeparator + currentPath);
+                            }
+                            AppLogger.Info("WinFsp", $"Зарегистрирован путь к нативным DLL WinFsp: {binPath}");
+                        }
+                    }
+
+                    _dllLoaded = true;
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Warn("WinFsp", $"Предупреждение при регистрации путей WinFsp: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
         public WinFspServer(
             ConfigManager configManager,
             NodeRepository repository,
@@ -39,6 +100,7 @@ namespace TelegramWebDAV.Services
             _configManager = configManager;
             _repository = repository;
             _telegramService = telegramService;
+            EnsureWinFspNativeDllLoaded();
         }
 
         /// <summary>
@@ -48,6 +110,8 @@ namespace TelegramWebDAV.Services
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return false;
+
+            EnsureWinFspNativeDllLoaded();
 
             try
             {
@@ -68,6 +132,14 @@ namespace TelegramWebDAV.Services
             // Дополнительная проверка наличия в системной папке или PATH
             try
             {
+                string pf86 = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
+                string pf = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles);
+                if (File.Exists(Path.Combine(pf86, "WinFsp", "bin", "winfsp-x64.dll")) ||
+                    File.Exists(Path.Combine(pf, "WinFsp", "bin", "winfsp-x64.dll")))
+                {
+                    return true;
+                }
+
                 string systemDir = Environment.GetFolderPath(Environment.SpecialFolder.System);
                 if (File.Exists(Path.Combine(systemDir, "winfsp-x64.dll")) ||
                     File.Exists(Path.Combine(systemDir, "winfsp-x86.dll")))
