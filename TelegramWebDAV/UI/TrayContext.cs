@@ -88,6 +88,11 @@ namespace TelegramWebDAV.UI
                 _progressOverlay.UpdateProgress(fileName, current, total, TransferDirection.Download);
             };
 
+            _telegramService.OnChunkCached += (fileName, current, total) =>
+            {
+                _progressOverlay.UpdateChunkProgress(fileName, current, total);
+            };
+
             _telegramService.OnDownloadCompleted += (fileName) =>
             {
                 AppLogger.Info("TrayContext", $"Событие OnDownloadCompleted для '{fileName}' получено из TelegramService.");

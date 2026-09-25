@@ -189,6 +189,11 @@ namespace TelegramWebDAV.Services
         public event Action<string, long, long>? OnDownloadProgress;
 
         /// <summary>
+        /// Событие кэширования отдельных чанков / метаданных / тегов файла в ОЗУ.
+        /// </summary>
+        public event Action<string, long, long>? OnChunkCached;
+
+        /// <summary>
         /// Событие завершения скачивания файла из Telegram.
         /// </summary>
         public event Action<string>? OnDownloadCompleted;
@@ -948,6 +953,7 @@ namespace TelegramWebDAV.Services
             // Для скачивания архивов и больших файлов качаем чанки через MtprotoDownloadWorkerPool напрямую в ОЗУ с заполнением 128 МБ RAM-кэша
             if (!enableDiskCache && !isSmallFile && !isMetadataProbe && length > 262144)
             {
+                bool isFullFileDownload = (offset == 0 && length >= actualTotalSize);
                 var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3);
                 bool success = await workerPool.DownloadToStreamAsync(
                     document,
@@ -960,11 +966,17 @@ namespace TelegramWebDAV.Services
                         string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
                         _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
                     },
-                    onProgress: (transferred, total) => OnDownloadProgress?.Invoke(fileName, transferred, total));
+                    onProgress: (transferred, total) =>
+                    {
+                        if (isFullFileDownload)
+                            OnDownloadProgress?.Invoke(fileName, transferred, actualTotalSize);
+                        else
+                            OnChunkCached?.Invoke(fileName, transferred, actualTotalSize);
+                    });
 
                 if (success)
                 {
-                    if (offset + length >= actualTotalSize)
+                    if (isFullFileDownload)
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
@@ -1020,8 +1032,12 @@ namespace TelegramWebDAV.Services
 
                     AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из памяти RAM '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%).");
 
-                    // Уведомление о прогрессе вызываем только при реальной передаче файла (не при чтении пары килобайт метаданных)
-                    if (!isSmallFile && !isMetadataProbe && (totalSent >= 524288 || currentPos >= actualTotalSize))
+                    // Уведомление о прогрессе вызываем в зависимости от типа чтения
+                    if (isMetadataProbe || length < actualTotalSize)
+                    {
+                        OnChunkCached?.Invoke(fileName, totalSent, actualTotalSize);
+                    }
+                    else if (!isSmallFile && (totalSent >= 524288 || currentPos >= actualTotalSize))
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
@@ -1131,7 +1147,11 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    if (!isSmallFile && !isMetadataProbe && (totalSent >= 524288 || currentPos >= actualTotalSize))
+                    if (isMetadataProbe || length < actualTotalSize)
+                    {
+                        OnChunkCached?.Invoke(fileName, totalSent, actualTotalSize);
+                    }
+                    else if (!isSmallFile && (totalSent >= 524288 || currentPos >= actualTotalSize))
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }

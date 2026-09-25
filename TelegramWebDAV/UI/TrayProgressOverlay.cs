@@ -39,6 +39,7 @@ namespace TelegramWebDAV.UI
         private bool _isTransferring = false;
         private bool _isFinalizing = false;
         private bool _isCompleted = false;
+        private bool _isChunkCaching = false;
         private DateTime _lastSpeedCalcTime = DateTime.UtcNow;
         private long _lastSpeedBytes = 0;
         private double _bytesPerSecond = 0;
@@ -124,6 +125,7 @@ namespace TelegramWebDAV.UI
             }
 
             _direction = direction;
+            _isChunkCaching = false;
 
             // При смене файла сбрасываем счетчик, иначе гарантируем монотонный рост (защита от сетевого джиттера)
             if (_currentFileName != fileName)
@@ -178,6 +180,42 @@ namespace TelegramWebDAV.UI
 
             Invalidate();
             Update(); // Принудительно запускаем перерисовку очереди WM_PAINT
+        }
+
+        public void UpdateChunkProgress(string fileName, long current, long total)
+        {
+            if (_syncContext != null && SynchronizationContext.Current != _syncContext)
+            {
+                _syncContext.Post(_ => UpdateChunkProgress(fileName, current, total), null);
+                return;
+            }
+
+            if (_completionTimer.Enabled)
+            {
+                _completionTimer.Stop();
+            }
+
+            _direction = TransferDirection.Download;
+            _isChunkCaching = true;
+            _currentFileName = fileName;
+            _currentBytes = current;
+            _totalBytes = total;
+            _isTransferring = true;
+            _isCompleted = false;
+            _isFinalizing = false;
+            _lastProgressUpdateTime = DateTime.UtcNow;
+
+            if (!Visible)
+            {
+                AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса [Кэширование в RAM] для {fileName} ({current}/{total})");
+                PositionNearTray(useMouse: false);
+                Show();
+                _updateTimer.Start();
+                _hideCheckTimer.Start();
+            }
+
+            Invalidate();
+            Update();
         }
 
         public void CompleteTransfer(string fileName, TransferDirection direction = TransferDirection.Upload)
@@ -329,6 +367,10 @@ namespace TelegramWebDAV.UI
                     header = _direction == TransferDirection.Download 
                         ? $"СКАЧИВАНИЕ ИЗ TELEGRAM (в очереди: {_queueCount})" 
                         : $"ОТПРАВКА В TELEGRAM (в очереди: {_queueCount})";
+                }
+                else if (_isChunkCaching)
+                {
+                    header = "КЭШИРОВАНИЕ В RAM";
                 }
                 else if (_isFinalizing)
                 {
