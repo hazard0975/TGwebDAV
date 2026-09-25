@@ -108,9 +108,20 @@ namespace TelegramWebDAV.Services
             {
                 _currentSettings.Telegram.StorageChannelTitle = title.Trim();
                 _currentSettings.Telegram.StorageChannelId = 0; // Сбрасываем ID для поиска или создания с новым именем
+                _currentSettings.Telegram.StorageChannelAccessHash = 0;
                 _storagePeer = null;
                 _configManager.Save(_currentSettings);
             }
+        }
+
+        /// <summary>
+        /// Сбрасывает закэшированный канал-хранилище (например, при удалении канала пользователем).
+        /// </summary>
+        public void InvalidateStoragePeer()
+        {
+            _storagePeer = null;
+            _currentSettings.Telegram.StorageChannelAccessHash = 0;
+            _configManager.Save(_currentSettings);
         }
 
         /// <summary>
@@ -134,7 +145,15 @@ namespace TelegramWebDAV.Services
                     ? "Telegram WebDAV Drive"
                     : _currentSettings.Telegram.StorageChannelTitle.Trim();
 
-                // 1. Если StorageChannelId уже сохранен в настройках, используем его
+                // 1. Если StorageChannelId и StorageChannelAccessHash уже сохранены в настройках — мгновенно используем их без сетевых запросов!
+                if (_currentSettings.Telegram.StorageChannelId != 0 && _currentSettings.Telegram.StorageChannelAccessHash != 0)
+                {
+                    _storagePeer = new TL.InputPeerChannel(_currentSettings.Telegram.StorageChannelId, _currentSettings.Telegram.StorageChannelAccessHash);
+                    AppLogger.Info("TelegramService", $"Подключен канал-хранилище из настроек: '{targetTitle}' (ID: {_currentSettings.Telegram.StorageChannelId}) за 0 мс.");
+                    return _storagePeer;
+                }
+
+                // 2. Если StorageChannelId есть, но хэш еще не сохранен (или сброшен) — находим канал в диалогах
                 if (_currentSettings.Telegram.StorageChannelId != 0)
                 {
                     var chats = await _client.Messages_GetAllChats();
@@ -142,7 +161,9 @@ namespace TelegramWebDAV.Services
                         savedChat is TL.Channel sc)
                     {
                         _storagePeer = sc.ToInputPeer();
-                        AppLogger.Info("TelegramService", $"Подключен существующий приватный канал-хранилище: {sc.Title} (ID: {sc.ID})");
+                        _currentSettings.Telegram.StorageChannelAccessHash = sc.access_hash;
+                        _configManager.Save(_currentSettings);
+                        AppLogger.Info("TelegramService", $"Подключен существующий приватный канал-хранилище: {sc.Title} (ID: {sc.ID}, AccessHash сохранен в конфиг).");
                         return _storagePeer;
                     }
                     else
@@ -151,7 +172,7 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                // 2. Если ID канала нет в конфиге (StorageChannelId == 0), создаем новый приватный канал
+                // 3. Если ID канала нет в конфиге (StorageChannelId == 0), создаем новый приватный канал
                 AppLogger.Info("TelegramService", $"ID канала-хранилища не задан. Создание нового приватного канала '{targetTitle}'...");
                 var createReq = new TL.Methods.Channels_CreateChannel
                 {
@@ -170,8 +191,9 @@ namespace TelegramWebDAV.Services
                         {
                             _storagePeer = newCh.ToInputPeer();
                             _currentSettings.Telegram.StorageChannelId = newCh.ID;
+                            _currentSettings.Telegram.StorageChannelAccessHash = newCh.access_hash;
                             _configManager.Save(_currentSettings);
-                            AppLogger.Info("TelegramService", $"Создан новый приватный канал '{newCh.Title}' (ID: {newCh.ID}). ID сохранен в конфиг.");
+                            AppLogger.Info("TelegramService", $"Создан новый приватный канал '{newCh.Title}' (ID: {newCh.ID}). ID и AccessHash сохранены в конфиг.");
                             return _storagePeer;
                         }
                     }
@@ -284,6 +306,20 @@ namespace TelegramWebDAV.Services
                             _configManager.Save(_currentSettings);
                         }
                     }
+
+                    // Фоновый прогрев канала-хранилища сразу после успешной авторизации,
+                    // чтобы первая операция копирования/чтения файлов выполнялась мгновенно
+                    _ = Task.Run(async () =>
+                    {
+                        try
+                        {
+                            await GetStoragePeerAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Warn("TelegramService", $"Фоновый прогрев канала-хранилища: {ex.Message}");
+                        }
+                    });
                 }
             }
             else if (result == "verification_code")
@@ -557,7 +593,18 @@ namespace TelegramWebDAV.Services
                 );
 
                 AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' загружен в MTProto, финализация сообщения в канале (подпись: '{effectiveCaption}')...");
-                var message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                TL.Message? message = null;
+                try
+                {
+                    message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                }
+                catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
+                {
+                    AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
+                    InvalidateStoragePeer();
+                    peer = await GetStoragePeerAsync();
+                    message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                }
 
                 if (message != null)
                 {
@@ -629,7 +676,18 @@ namespace TelegramWebDAV.Services
 
             if (_client == null) return null;
             var peer = await GetStoragePeerAsync();
-            var messagesBase = await _client.GetMessages(peer, new TL.InputMessage[] { new TL.InputMessageID { id = messageId } });
+            TL.Messages_MessagesBase messagesBase;
+            try
+            {
+                messagesBase = await _client.GetMessages(peer, new TL.InputMessage[] { new TL.InputMessageID { id = messageId } });
+            }
+            catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
+            {
+                AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
+                InvalidateStoragePeer();
+                peer = await GetStoragePeerAsync();
+                messagesBase = await _client.GetMessages(peer, new TL.InputMessage[] { new TL.InputMessageID { id = messageId } });
+            }
             
             TL.Document? document = null;
             if (messagesBase is TL.Messages_Messages messages && messages.messages.Length > 0)

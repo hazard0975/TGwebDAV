@@ -32,6 +32,7 @@ namespace TelegramWebDAV.Config
         public string SessionPath { get; set; } = "user.session";
         public string StorageChannelTitle { get; set; } = "Telegram WebDAV Drive";
         public long StorageChannelId { get; set; } = 0;
+        public long StorageChannelAccessHash { get; set; } = 0;
         public string? PhoneNumber { get; set; }
     }
 
