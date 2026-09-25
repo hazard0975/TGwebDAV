@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using TelegramWebDAV.Config;
 using TelegramWebDAV.Models;
+using TL;
 
 namespace TelegramWebDAV.Services
 {
@@ -638,89 +639,9 @@ namespace TelegramWebDAV.Services
             return null;
         }
 
-        private class TeeStream : Stream
-        {
-            private readonly Stream _diskStream;
-            private readonly Stream _netStream;
-            private long _skipBytes;
-            private long _remainingNetBytes;
-            private long _totalNetBytesWritten;
-            private bool _initialChunkPaced;
-
-            public TeeStream(Stream diskStream, Stream netStream, long skipBytes, long maxNetBytes)
-            {
-                _diskStream = diskStream;
-                _netStream = netStream;
-                _skipBytes = Math.Max(0, skipBytes);
-                _remainingNetBytes = maxNetBytes;
-            }
-
-            public override bool CanRead => false;
-            public override bool CanSeek => false;
-            public override bool CanWrite => true;
-            public override long Length => _diskStream.Length;
-            public override long Position { get => _diskStream.Position; set => throw new NotSupportedException(); }
-            public override void Flush()
-            {
-                _diskStream.Flush();
-                try { _netStream.Flush(); } catch { }
-            }
-            public override int Read(byte[] buffer, int offset, int count) => throw new NotSupportedException();
-            public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
-            public override void SetLength(long value) => _diskStream.SetLength(value);
-
-            public override void Write(byte[] buffer, int offset, int count)
-            {
-                // 1. Всегда пишем в файл на диске для кэша
-                _diskStream.Write(buffer, offset, count);
-
-                int netOffset = offset;
-                int netCount = count;
-
-                if (_skipBytes > 0)
-                {
-                    if (_skipBytes >= netCount)
-                    {
-                        _skipBytes -= netCount;
-                        return;
-                    }
-                    netOffset += (int)_skipBytes;
-                    netCount -= (int)_skipBytes;
-                    _skipBytes = 0;
-                }
-
-                if (_remainingNetBytes <= 0 || netCount <= 0) return;
-
-                int toWrite = (int)Math.Min(netCount, _remainingNetBytes);
-                try
-                {
-                    _netStream.Write(buffer, netOffset, toWrite);
-                    _netStream.Flush();
-                    _remainingNetBytes -= toWrite;
-                    _totalNetBytesWritten += toWrite;
-
-                    // Если мы отдали первый чанк (~128 КБ) полного файла,
-                    // делаем небольшую паузу (250 мс), чтобы дать Windows InfoTip прочитать теги и закрыть дескриптор.
-                    // Если это было наведение курсора мыши - следующий Write/Flush мгновенно выбросит ошибку,
-                    // и скачивание из Telegram остановится.
-                    // Если это воспроизведение в плеере - 128 КБ содержат более 3 секунд звука, пауза незаметна.
-                    if (!_initialChunkPaced && _totalNetBytesWritten >= 131072)
-                    {
-                        _initialChunkPaced = true;
-                        Thread.Sleep(250);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Клиент разорвал соединение (например, Проводник прочитал заголовок для подсказки и закрыл дескриптор)
-                    throw new OperationCanceledException("Клиент разорвал соединение", ex);
-                }
-            }
-        }
-
         /// <summary>
-        /// Потоковое скачивание части файла (HTTP 206) из Telegram с использованием локального дискового кэша
-        /// и одновременного стриминга в ответ клиенту (с мгновенным прерыванием при закрытии соединения клиентом).
+        /// Потоковое скачивание точечных чанков (HTTP 206 Range) напрямую из Telegram через MTProto Upload_GetFile.
+        /// Запрашивает ровно запрошенный диапазон байт (128 КБ для тегов/заголовков) без выкачивания всего файла.
         /// </summary>
         public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, string fileName = "файл")
         {
@@ -753,6 +674,7 @@ namespace TelegramWebDAV.Services
                             await destination.WriteAsync(buffer, 0, read);
                             remaining -= read;
                         }
+                        await destination.FlushAsync();
                     }
                     catch (Exception ex)
                     {
@@ -766,58 +688,109 @@ namespace TelegramWebDAV.Services
                 return;
             }
 
-            // 2. Файла нет в кэше. Скачиваем его из Telegram, одновременно стримя в destination через TeeStream
+            // 2. Файла нет в локальном дисковом кэше. Точечно запрашиваем чанки через MTProto Upload_GetFile
             var document = await GetDocumentFromMessageAsync(messageId);
             if (document == null)
             {
                 throw new FileNotFoundException($"Не удалось найти медиа-документ для сообщения ID {messageId} в Telegram.");
             }
 
-            string tempFilePath = cacheFilePath + ".tmp";
-            bool completedSuccessfully = false;
+            var activeClient = document.dc_id != 0 ? await _client.GetClientForDC(document.dc_id) : _client;
+            TL.InputFileLocationBase location = document.ToFileLocation();
 
-            try
+            // Чанк 128 КБ (131072 байт) — стандарт MTProto, кратный 1024,
+            // идеально покрывающий типичный Range-запрос метаданных аудио за 1 обращение к Telegram.
+            const int chunkSize = 131072;
+            long currentPos = offset;
+            long remainingBytes = length;
+            long totalSent = 0;
+            bool isSmallChunk = length <= 262144; // Чтение заголовка/метаданных (не тревожим трей всплывающими окнами)
+
+            if (isSmallChunk)
             {
-                AppLogger.Info("TelegramService", $"Запуск сквозного скачивания файла '{fileName}' (сообщение ID {messageId}) из Telegram...");
-                using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
-                using (var tee = new TeeStream(fs, destination, skipBytes: offset, maxNetBytes: length))
+                AppLogger.Debug("TelegramService", $"[MTProto Чанк] Запрос частичного чтения '{fileName}' (ID {messageId}): смещение {offset}, длина {length} байт.");
+            }
+            else
+            {
+                AppLogger.Info("TelegramService", $"[MTProto Чанк] Запуск потокового скачивания '{fileName}' (ID {messageId}): смещение {offset}, длина {length} байт.");
+            }
+
+            while (remainingBytes > 0)
+            {
+                await EnsureFloodWaitDelayAsync();
+
+                // MTProto с precise=true требует, чтобы chunkOffset был кратен 1024 байтам
+                long chunkOffset = (currentPos / 1024) * 1024;
+                int internalOffset = (int)(currentPos - chunkOffset);
+                int requestLimit = chunkSize;
+
+                TL.Upload_FileBase fileBase;
+                try
                 {
-                    await _client.DownloadFileAsync(
-                        document,
-                        tee,
-                        progress: (pos, total) => OnDownloadProgress?.Invoke(fileName, pos, total)
-                    );
+                    fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                }
+                catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
+                {
+                    activeClient = await _client.GetClientForDC(rpcEx.X);
+                    fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                }
+                catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                {
+                    int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
+                    AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
+                    _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
+                    await Task.Delay(waitSec * 1000);
+                    fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                 }
 
-                if (File.Exists(cacheFilePath)) File.Delete(cacheFilePath);
-                File.Move(tempFilePath, cacheFilePath);
-                completedSuccessfully = true;
-                AppLogger.Info("TelegramService", $"Файл '{fileName}' (сообщение ID {messageId}) успешно сохранен в локальный кэш.");
-            }
-            catch (OperationCanceledException)
-            {
-                AppLogger.Info("TelegramService", $"Клиент закрыл соединение для сообщения ID {messageId} (прочитан заголовок). Загрузка из Telegram остановлена.");
-            }
-            catch (Exception ex) when (ex.InnerException is OperationCanceledException)
-            {
-                AppLogger.Info("TelegramService", $"Клиент закрыл соединение для сообщения ID {messageId} (прочитан заголовок). Загрузка из Telegram остановлена.");
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Error("TelegramService", $"Ошибка при скачивании файла из Telegram: {ex.Message}", ex);
-                throw;
-            }
-            finally
-            {
-                if (completedSuccessfully)
+                if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                 {
-                    OnDownloadCompleted?.Invoke(fileName);
-                }
+                    byte[] raw = uploadFile.bytes;
+                    if (internalOffset >= raw.Length)
+                    {
+                        // Смещение вышло за пределы доступных байт
+                        break;
+                    }
 
-                if (!completedSuccessfully && File.Exists(tempFilePath))
-                {
-                    try { File.Delete(tempFilePath); } catch { }
+                    int available = raw.Length - internalOffset;
+                    int toSend = (int)Math.Min(available, remainingBytes);
+
+                    try
+                    {
+                        await destination.WriteAsync(raw, internalOffset, toSend);
+                        await destination.FlushAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Клиент (AIMP, Проводник) получил нужные байты и закрыл соединение
+                        AppLogger.Debug("TelegramService", $"Клиент прервал соединение для '{fileName}' (ID {messageId}): {ex.Message}");
+                        return;
+                    }
+
+                    currentPos += toSend;
+                    remainingBytes -= toSend;
+                    totalSent += toSend;
+
+                    if (!isSmallChunk)
+                    {
+                        OnDownloadProgress?.Invoke(fileName, totalSent, length);
+                    }
+
+                    // Если Telegram вернул меньше данных, чем requestLimit — достигнут конец файла
+                    if (raw.Length < requestLimit && remainingBytes > 0)
+                    {
+                        break;
+                    }
                 }
+                else
+                {
+                    break;
+                }
+            }
+
+            if (!isSmallChunk && totalSent > 0)
+            {
+                OnDownloadCompleted?.Invoke(fileName);
             }
         }
 

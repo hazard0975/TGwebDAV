@@ -221,10 +221,25 @@ namespace TelegramWebDAV.Server
             try { context.Response.OutputStream.Close(); } catch { }
         }
         
-        public static Task HandleHeadAsync(HttpListenerContext context)
+        public static Task HandleHeadAsync(HttpListenerContext context, NodeRepository repository)
         {
-            // HEAD работает так же как GET, но возвращает только заголовки (размер файла)
-            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
+
+            var node = repository.GetNodeByPath(path);
+            if (node == null || node.IsDir)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                try { context.Response.Close(); } catch { }
+                return Task.CompletedTask;
+            }
+
+            context.Response.ContentType = "application/octet-stream";
+            context.Response.ContentLength64 = node.Size;
+            context.Response.AddHeader("Accept-Ranges", "bytes");
+            context.Response.AddHeader("Last-Modified", node.UpdatedAt.ToString("R"));
+            context.Response.StatusCode = (int)HttpStatusCode.OK;
+            try { context.Response.Close(); } catch { }
             return Task.CompletedTask;
         }
 
