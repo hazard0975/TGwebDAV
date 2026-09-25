@@ -863,6 +863,16 @@ namespace TelegramWebDAV.Services
                 AppLogger.Info("TelegramService", $"[MTProto Чанк] Запуск потокового скачивания '{fileName}' (ID {messageId}): смещение {offset}, длина {length} байт (всего {actualTotalSize} байт).");
             }
 
+            // При старте последовательного воспроизведения или потокового чтения сразу прогреваем 2 первых блока по 1 МБ в параллельных потоках
+            if (length > 262144 || (offset == 0 && actualTotalSize > 262144))
+            {
+                TriggerPrefetch(activeClient, location, messageId, 0, 1048576);
+                if (actualTotalSize > 1048576)
+                {
+                    TriggerPrefetch(activeClient, location, messageId, 1048576, 1048576);
+                }
+            }
+
             while (remainingBytes > 0)
             {
                 await EnsureFloodWaitDelayAsync();
@@ -870,6 +880,16 @@ namespace TelegramWebDAV.Services
                 // 1. Проверяем, есть ли уже нужные байты в быстром кэше оперативной памяти
                 if (TryGetFromMemoryCache(messageId, currentPos, out var cachedRaw, out var cachedOffset) && cachedRaw != null)
                 {
+                    // Поддерживаем конвейер упреждающего чтения полным (на 2 МБ вперед)
+                    if (actualTotalSize > 0)
+                    {
+                        long currentBlock = (currentPos / 1048576) * 1048576;
+                        if (currentBlock + 1048576 < actualTotalSize)
+                            TriggerPrefetch(activeClient, location, messageId, currentBlock + 1048576, 1048576);
+                        if (currentBlock + 2097152 < actualTotalSize)
+                            TriggerPrefetch(activeClient, location, messageId, currentBlock + 2097152, 1048576);
+                    }
+
                     int available = cachedRaw.Length - cachedOffset;
                     int toSend = (int)Math.Min(available, remainingBytes);
 
@@ -964,14 +984,19 @@ namespace TelegramWebDAV.Services
                         raw = uploadFile.bytes;
                         EnsureChunkCacheCapacity();
                         _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(5));
-
-                        // Запускаем упреждающее чтение (Prefetch) следующего 1 МБ блока в фоновом потоке
-                        if (baseChunkSize == 1048576 && actualTotalSize > 0 && (chunkOffset + baseChunkSize) < actualTotalSize)
-                        {
-                            long nextOffset = chunkOffset + baseChunkSize;
-                            TriggerPrefetch(activeClient, location, messageId, nextOffset, baseChunkSize);
-                        }
                     }
+                }
+
+                // Гарантированно и непрерывно запускаем упреждающее чтение (Prefetch) следующих 2 блоков по 1 МБ
+                if (baseChunkSize == 1048576 && actualTotalSize > 0)
+                {
+                    long nextOffset1 = chunkOffset + baseChunkSize;
+                    if (nextOffset1 < actualTotalSize)
+                        TriggerPrefetch(activeClient, location, messageId, nextOffset1, baseChunkSize);
+
+                    long nextOffset2 = chunkOffset + 2 * baseChunkSize;
+                    if (nextOffset2 < actualTotalSize)
+                        TriggerPrefetch(activeClient, location, messageId, nextOffset2, baseChunkSize);
                 }
 
                 if (raw != null && raw.Length > 0)
@@ -1018,7 +1043,7 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            if (!isSmallChunk && (currentPos >= actualTotalSize || totalSent >= length))
+            if (!isSmallChunk && currentPos >= actualTotalSize)
             {
                 OnDownloadCompleted?.Invoke(fileName);
             }
