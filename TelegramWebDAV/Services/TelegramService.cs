@@ -641,9 +641,9 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Потоковое скачивание точечных чанков (HTTP 206 Range) напрямую из Telegram через MTProto Upload_GetFile.
-        /// Запрашивает ровно запрошенный диапазон байт (128 КБ для тегов/заголовков) без выкачивания всего файла.
+        /// Запрашивает данные с гарантированным выравниванием по границам 1 МБ без риска ошибки LIMIT_INVALID.
         /// </summary>
-        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, string fileName = "файл")
+        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, string fileName = "файл", long totalFileSize = -1)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -698,12 +698,10 @@ namespace TelegramWebDAV.Services
             var activeClient = document.dc_id != 0 ? await _client.GetClientForDC(document.dc_id) : _client;
             TL.InputFileLocationBase location = document.ToFileLocation();
 
-            // Чанк 128 КБ (131072 байт) — стандарт MTProto, кратный 1024,
-            // идеально покрывающий типичный Range-запрос метаданных аудио за 1 обращение к Telegram.
-            const int chunkSize = 131072;
             long currentPos = offset;
             long remainingBytes = length;
             long totalSent = 0;
+            long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
             bool isSmallChunk = length <= 262144; // Чтение заголовка/метаданных (не тревожим трей всплывающими окнами)
 
             if (isSmallChunk)
@@ -712,17 +710,22 @@ namespace TelegramWebDAV.Services
             }
             else
             {
-                AppLogger.Info("TelegramService", $"[MTProto Чанк] Запуск потокового скачивания '{fileName}' (ID {messageId}): смещение {offset}, длина {length} байт.");
+                AppLogger.Info("TelegramService", $"[MTProto Чанк] Запуск потокового скачивания '{fileName}' (ID {messageId}): смещение {offset}, длина {length} байт (всего {actualTotalSize} байт).");
             }
 
             while (remainingBytes > 0)
             {
                 await EnsureFloodWaitDelayAsync();
 
-                // MTProto с precise=true требует, чтобы chunkOffset был кратен 1024 байтам
-                long chunkOffset = (currentPos / 1024) * 1024;
+                // Выбираем размер чанка: 512 КБ для потокового чтения/копирования или 128 КБ для коротких запросов тегов
+                int baseChunkSize = remainingBytes >= 524288 ? 524288 : 131072;
+
+                // MTProto строго запрещает запросам выходить за пределы одного 1-мегабайтного блока (1048576 байт).
+                // Выравниваем chunkOffset по границе baseChunkSize. Так как 1048576 нацело делится и на 524288, и на 131072,
+                // чанк гарантированно не пересечет границу 1 МБ и не вызовет LIMIT_INVALID!
+                long chunkOffset = (currentPos / baseChunkSize) * baseChunkSize;
                 int internalOffset = (int)(currentPos - chunkOffset);
-                int requestLimit = chunkSize;
+                int requestLimit = baseChunkSize;
 
                 TL.Upload_FileBase fileBase;
                 try
@@ -773,7 +776,7 @@ namespace TelegramWebDAV.Services
 
                     if (!isSmallChunk)
                     {
-                        OnDownloadProgress?.Invoke(fileName, totalSent, length);
+                        OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
 
                     // Если Telegram вернул меньше данных, чем requestLimit — достигнут конец файла
@@ -788,7 +791,7 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            if (!isSmallChunk && totalSent > 0)
+            if (!isSmallChunk && (currentPos >= actualTotalSize || totalSent >= length))
             {
                 OnDownloadCompleted?.Invoke(fileName);
             }

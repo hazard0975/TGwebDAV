@@ -1,9 +1,11 @@
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Threading;
+using System.Threading.Tasks;
 using Fsp;
 using Fsp.Interop;
 using Microsoft.Win32;
@@ -194,7 +196,7 @@ namespace TelegramWebDAV.Services
                     _host = new FileSystemHost(fileSystem);
 
                     var settings = _configManager.Load();
-                    _host.FileSystemName = "TelegramFS";
+                    _host.FileSystemName = "NTFS";
                     _host.VolumeCreationTime = (ulong)DateTime.UtcNow.ToFileTimeUtc();
                     _host.VolumeSerialNumber = 0x54454C47; // TELG
                     _host.SectorSize = 4096;
@@ -270,6 +272,8 @@ namespace TelegramWebDAV.Services
 
     /// <summary>
     /// Реализация интерфейсов ядра файловой системы Windows для WinFsp.
+    /// Поддерживает полноценное чтение (прямой стриминг MTProto чанков в память плеера) 
+    /// и запись (копирование файлов в Telegram, создание папок, переименование и удаление).
     /// </summary>
     internal class TelegramWinFspFileSystem : FileSystemBase
     {
@@ -277,10 +281,14 @@ namespace TelegramWebDAV.Services
         private readonly NodeRepository _repository;
         private readonly TelegramService _telegramService;
 
+        private const int NT_STATUS_SUCCESS = 0;
         private const int NT_STATUS_UNSUCCESSFUL = unchecked((int)0xC0000001);
         private const int NT_STATUS_END_OF_FILE = unchecked((int)0xC0000011);
-        private const int NT_STATUS_FILE_IS_A_DIRECTORY = unchecked((int)0xC00000BA);
         private const int NT_STATUS_OBJECT_NAME_NOT_FOUND = unchecked((int)0xC0000034);
+        private const int NT_STATUS_OBJECT_NAME_COLLISION = unchecked((int)0xC0000035);
+        private const int NT_STATUS_OBJECT_PATH_NOT_FOUND = unchecked((int)0xC000003A);
+        private const int NT_STATUS_FILE_IS_A_DIRECTORY = unchecked((int)0xC00000BA);
+        private const int NT_STATUS_DIRECTORY_NOT_EMPTY = unchecked((int)0xC0000101);
 
         public TelegramWinFspFileSystem(
             ConfigManager configManager,
@@ -307,12 +315,24 @@ namespace TelegramWebDAV.Services
             return STATUS_SUCCESS;
         }
 
+        public override int GetSecurity(object fileNode, object fileDesc, ref byte[] securityDescriptor)
+        {
+            securityDescriptor = null!;
+            return STATUS_SUCCESS;
+        }
+
         public override int GetSecurityByName(
             string fileName,
             out uint fileAttributes,
             ref byte[] securityDescriptor)
         {
             string cleanPath = NormalizePath(fileName);
+            if (cleanPath.Contains(":")) // Alternate Data Stream (:Zone.Identifier и др.)
+            {
+                fileAttributes = 0;
+                return NT_STATUS_OBJECT_NAME_NOT_FOUND;
+            }
+
             if (cleanPath == "/")
             {
                 fileAttributes = (uint)FileAttributes.Directory;
@@ -340,11 +360,19 @@ namespace TelegramWebDAV.Services
             out string normalizedName)
         {
             string cleanPath = NormalizePath(fileName);
-            Node? node;
+            if (cleanPath.Contains(":"))
+            {
+                fileNode = null!;
+                fileDesc = null!;
+                fileInfo = default;
+                normalizedName = null!;
+                return NT_STATUS_OBJECT_NAME_NOT_FOUND;
+            }
 
+            Node? node;
             if (cleanPath == "/")
             {
-                node = new Node
+                node = _repository.GetRootNode() ?? new Node
                 {
                     Id = 1,
                     ParentId = null,
@@ -375,9 +403,337 @@ namespace TelegramWebDAV.Services
             return STATUS_SUCCESS;
         }
 
+        public override int Create(
+            string fileName,
+            uint createOptions,
+            uint grantedAccess,
+            uint fileAttributes,
+            byte[] securityDescriptor,
+            ulong allocationSize,
+            out object fileNode,
+            out object fileDesc,
+            out FileInfo fileInfo,
+            out string normalizedName)
+        {
+            string cleanPath = NormalizePath(fileName);
+            if (cleanPath.Contains(":"))
+            {
+                fileNode = null!;
+                fileDesc = null!;
+                fileInfo = default;
+                normalizedName = null!;
+                return NT_STATUS_OBJECT_NAME_NOT_FOUND;
+            }
+
+            string parentPath = GetParentPath(cleanPath);
+            string itemName = GetFileName(cleanPath);
+            var parentNode = parentPath == "/" ? _repository.GetRootNode() : _repository.GetNodeByPath(parentPath);
+            if (parentNode == null)
+            {
+                fileNode = null!;
+                fileDesc = null!;
+                fileInfo = default;
+                normalizedName = null!;
+                return NT_STATUS_OBJECT_PATH_NOT_FOUND;
+            }
+
+            bool isDir = (createOptions & FILE_DIRECTORY_FILE) != 0;
+            if (isDir)
+            {
+                var dirNode = _repository.EnsureDirectoryPathExists(cleanPath);
+                if (dirNode == null)
+                {
+                    fileNode = null!;
+                    fileDesc = null!;
+                    fileInfo = default;
+                    normalizedName = null!;
+                    return NT_STATUS_UNSUCCESSFUL;
+                }
+
+                fileNode = dirNode;
+                fileDesc = new FspNodeContext(dirNode);
+                FillFileInfo(dirNode, out fileInfo);
+                normalizedName = fileName;
+                AppLogger.Info("WinFsp", $"Создан каталог: '{cleanPath}' (ID {dirNode.Id})");
+                return STATUS_SUCCESS;
+            }
+            else
+            {
+                _repository.CreateOrUpdateFile(parentNode.Id, itemName, 0, null);
+                var node = _repository.GetNodeByPath(cleanPath);
+                if (node == null)
+                {
+                    fileNode = null!;
+                    fileDesc = null!;
+                    fileInfo = default;
+                    normalizedName = null!;
+                    return NT_STATUS_UNSUCCESSFUL;
+                }
+
+                string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_FspUploads");
+                Directory.CreateDirectory(tempDir);
+                string tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid():N}_{itemName}");
+                var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+
+                var ctx = new FspNodeContext(node)
+                {
+                    TempFileStream = fs,
+                    TempFilePath = tempFilePath,
+                    IsModified = true
+                };
+
+                fileNode = node;
+                fileDesc = ctx;
+                FillFileInfo(node, out fileInfo);
+                normalizedName = fileName;
+                AppLogger.Info("WinFsp", $"Создан файл для записи: '{cleanPath}' (ID {node.Id})");
+                return STATUS_SUCCESS;
+            }
+        }
+
+        public override int Overwrite(
+            object fileNode,
+            object fileDesc,
+            uint fileAttributes,
+            bool replaceFileAttributes,
+            ulong allocationSize,
+            out FileInfo fileInfo)
+        {
+            var node = (Node)fileNode;
+            var ctx = (FspNodeContext)fileDesc;
+            node.Size = 0;
+            node.UpdatedAt = DateTime.UtcNow;
+            if (ctx.TempFileStream != null)
+            {
+                ctx.TempFileStream.SetLength(0);
+                ctx.IsModified = true;
+            }
+            FillFileInfo(node, out fileInfo);
+            return STATUS_SUCCESS;
+        }
+
+        public override int Write(
+            object fileNode,
+            object fileDesc,
+            IntPtr buffer,
+            ulong offset,
+            uint length,
+            bool writeToEndOfFile,
+            bool constrainedIo,
+            out uint bytesTransferred,
+            out FileInfo fileInfo)
+        {
+            var node = (Node)fileNode;
+            var ctx = (FspNodeContext)fileDesc;
+            if (node.IsDir)
+            {
+                bytesTransferred = 0;
+                FillFileInfo(node, out fileInfo);
+                return NT_STATUS_FILE_IS_A_DIRECTORY;
+            }
+
+            if (ctx.TempFileStream == null)
+            {
+                string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_FspUploads");
+                Directory.CreateDirectory(tempDir);
+                ctx.TempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid():N}_{node.Name}");
+                ctx.TempFileStream = new FileStream(ctx.TempFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
+            }
+
+            unsafe
+            {
+                using var unmanaged = new UnmanagedMemoryStream((byte*)buffer.ToPointer(), length);
+                if (writeToEndOfFile)
+                    ctx.TempFileStream.Seek(0, SeekOrigin.End);
+                else
+                    ctx.TempFileStream.Seek((long)offset, SeekOrigin.Begin);
+
+                byte[] poolBuffer = ArrayPool<byte>.Shared.Rent(65536);
+                try
+                {
+                    int read;
+                    uint totalWritten = 0;
+                    while ((read = unmanaged.Read(poolBuffer, 0, (int)Math.Min(poolBuffer.Length, length - totalWritten))) > 0)
+                    {
+                        ctx.TempFileStream.Write(poolBuffer, 0, read);
+                        totalWritten += (uint)read;
+                    }
+                    bytesTransferred = totalWritten;
+                }
+                finally
+                {
+                    ArrayPool<byte>.Shared.Return(poolBuffer);
+                }
+            }
+
+            ctx.IsModified = true;
+            if (ctx.TempFileStream.Length > node.Size)
+            {
+                node.Size = ctx.TempFileStream.Length;
+            }
+            node.UpdatedAt = DateTime.UtcNow;
+            FillFileInfo(node, out fileInfo);
+            return STATUS_SUCCESS;
+        }
+
+        public override int SetFileSize(
+            object fileNode,
+            object fileDesc,
+            ulong newSize,
+            bool setAllocationSize,
+            out FileInfo fileInfo)
+        {
+            var node = (Node)fileNode;
+            var ctx = (FspNodeContext)fileDesc;
+            if (!setAllocationSize)
+            {
+                node.Size = (long)newSize;
+                if (ctx.TempFileStream != null)
+                {
+                    ctx.TempFileStream.SetLength((long)newSize);
+                    ctx.IsModified = true;
+                }
+            }
+            FillFileInfo(node, out fileInfo);
+            return STATUS_SUCCESS;
+        }
+
+        public override int SetBasicInfo(
+            object fileNode,
+            object fileDesc,
+            uint fileAttributes,
+            ulong creationTime,
+            ulong lastAccessTime,
+            ulong lastWriteTime,
+            ulong changeTime,
+            out FileInfo fileInfo)
+        {
+            var node = (Node)fileNode;
+            if (lastWriteTime != 0)
+            {
+                node.UpdatedAt = DateTime.FromFileTimeUtc((long)lastWriteTime);
+            }
+            FillFileInfo(node, out fileInfo);
+            return STATUS_SUCCESS;
+        }
+
+        public override int CanDelete(object fileNode, object fileDesc, string fileName)
+        {
+            var node = (Node)fileNode;
+            if (node.IsDir)
+            {
+                var children = _repository.GetChildren(node.Id);
+                if (children.Count > 0)
+                {
+                    return NT_STATUS_DIRECTORY_NOT_EMPTY;
+                }
+            }
+            return STATUS_SUCCESS;
+        }
+
+        public override int SetDelete(object fileNode, object fileDesc, string fileName, bool deleteFile)
+        {
+            if (fileDesc is FspNodeContext ctx)
+            {
+                ctx.DeleteOnClose = deleteFile;
+            }
+            return STATUS_SUCCESS;
+        }
+
+        public override int Rename(
+            object fileNode,
+            object fileDesc,
+            string fileName,
+            string newFileName,
+            bool replaceIfExists)
+        {
+            var node = (Node)fileNode;
+            string oldClean = NormalizePath(fileName);
+            string newClean = NormalizePath(newFileName);
+
+            string newParentPath = GetParentPath(newClean);
+            string newName = GetFileName(newClean);
+
+            var targetParent = newParentPath == "/" ? _repository.GetRootNode() : _repository.GetNodeByPath(newParentPath);
+            if (targetParent == null)
+            {
+                return NT_STATUS_OBJECT_PATH_NOT_FOUND;
+            }
+
+            try
+            {
+                _repository.MoveNode(node.Id, targetParent.Id, newName);
+                node.Name = newName;
+                node.ParentId = targetParent.Id;
+                AppLogger.Info("WinFsp", $"Переименование/перемещение: '{oldClean}' -> '{newClean}'");
+                return STATUS_SUCCESS;
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("WinFsp", $"Ошибка переименования '{oldClean}' -> '{newClean}': {ex.Message}", ex);
+                return NT_STATUS_UNSUCCESSFUL;
+            }
+        }
+
+        public override void Cleanup(object fileNode, object fileDesc, string fileName, uint flags)
+        {
+            var node = (Node)fileNode;
+            var ctx = (FspNodeContext)fileDesc;
+
+            if ((flags & CleanupDelete) != 0 || ctx.DeleteOnClose)
+            {
+                AppLogger.Info("WinFsp", $"Удаление элемента '{node.Name}' (ID {node.Id})...");
+                _repository.SoftDeleteNode(node.Id);
+                ctx.Dispose();
+                return;
+            }
+
+            if (ctx.IsModified && ctx.TempFileStream != null && ctx.TempFilePath != null)
+            {
+                ctx.IsModified = false;
+                long finalLength = ctx.TempFileStream.Length;
+                ctx.TempFileStream.Flush();
+                ctx.TempFileStream.Dispose();
+                ctx.TempFileStream = null;
+
+                string tempPath = ctx.TempFilePath;
+                ctx.TempFilePath = null;
+
+                int parentId = node.ParentId ?? 1;
+                string nodeName = node.Name;
+
+                // Отправляем в Telegram в фоновом потоке, не блокируя ядро Windows
+                _ = Task.Run(async () =>
+                {
+                    try
+                    {
+                        AppLogger.Info("WinFsp", $"Начало фоновой отправки файла '{nodeName}' ({finalLength} байт) в Telegram...");
+                        using var fs = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                        int? msgId = await _telegramService.UploadFileAsync(fs, nodeName, finalLength);
+                        if (msgId.HasValue)
+                        {
+                            _repository.CreateOrUpdateFile(parentId, nodeName, finalLength, msgId.Value);
+                            AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {msgId.Value}).");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Error("WinFsp", $"Ошибка фоновой загрузки '{nodeName}' в Telegram: {ex.Message}", ex);
+                    }
+                    finally
+                    {
+                        try { File.Delete(tempPath); } catch { }
+                    }
+                });
+            }
+        }
+
         public override void Close(object fileNode, object fileDesc)
         {
-            // Освобождение ресурсов при закрытии дескриптора файла
+            if (fileDesc is FspNodeContext ctx)
+            {
+                ctx.Dispose();
+            }
         }
 
         public override int GetFileInfo(object fileNode, object fileDesc, out FileInfo fileInfo)
@@ -485,9 +841,9 @@ namespace TelegramWebDAV.Services
 
                 unsafe
                 {
-                    // Прямой стриминг в предоставленный ядром Windows буфер без создания файлов на диске C:!
+                    // Прямой стриминг в предоставленный ядром Windows буфер без создания промежуточных файлов на диске C:!
                     using var memStream = new UnmanagedMemoryStream((byte*)buffer.ToPointer(), toRead, toRead, FileAccess.Write);
-                    _telegramService.DownloadFileAsync(node.TgMessageId.Value, memStream, (long)offset, (long)toRead, node.Name)
+                    _telegramService.DownloadFileAsync(node.TgMessageId.Value, memStream, (long)offset, (long)toRead, node.Name, node.Size)
                                     .GetAwaiter().GetResult();
                     bytesTransferred = (uint)memStream.Position;
                 }
@@ -524,10 +880,46 @@ namespace TelegramWebDAV.Services
             return string.IsNullOrEmpty(p) ? "/" : p;
         }
 
-        private class FspNodeContext
+        private static string GetParentPath(string path)
         {
-            public Node Node { get; }
+            string p = NormalizePath(path);
+            if (p == "/") return "/";
+            int lastSlash = p.LastIndexOf('/');
+            if (lastSlash <= 0) return "/";
+            return p.Substring(0, lastSlash);
+        }
+
+        private static string GetFileName(string path)
+        {
+            string p = NormalizePath(path);
+            if (p == "/") return "";
+            int lastSlash = p.LastIndexOf('/');
+            return lastSlash >= 0 ? p.Substring(lastSlash + 1) : p;
+        }
+
+        private class FspNodeContext : IDisposable
+        {
+            public Node Node { get; set; }
+            public FileStream? TempFileStream { get; set; }
+            public string? TempFilePath { get; set; }
+            public bool IsModified { get; set; }
+            public bool DeleteOnClose { get; set; }
+
             public FspNodeContext(Node node) => Node = node;
+
+            public void Dispose()
+            {
+                if (TempFileStream != null)
+                {
+                    try { TempFileStream.Dispose(); } catch { }
+                    TempFileStream = null;
+                }
+                if (TempFilePath != null && File.Exists(TempFilePath))
+                {
+                    try { File.Delete(TempFilePath); } catch { }
+                    TempFilePath = null;
+                }
+            }
         }
 
         private class FspDirectoryEnumContext
