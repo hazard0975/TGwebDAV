@@ -357,6 +357,80 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Гарантирует существование всей цепочки родительских каталогов по указанному пути (по аналогии с mkdir -p).
+        /// Если какие-либо промежуточные папки отсутствуют, они автоматически создаются в SQLite.
+        /// Возвращает узел конечной папки или null в случае ошибки / запрета.
+        /// </summary>
+        public Node? EnsureDirectoryPathExists(string directoryPath)
+        {
+            if (string.IsNullOrEmpty(directoryPath) || directoryPath == "/")
+            {
+                return GetRootNode();
+            }
+
+            // Запрещаем автоматическое создание путей внутри корзины
+            if (directoryPath.Equals("/.Trash", StringComparison.OrdinalIgnoreCase) ||
+                directoryPath.StartsWith("/.Trash/", StringComparison.OrdinalIgnoreCase))
+            {
+                return null;
+            }
+
+            var root = GetRootNode();
+            if (root == null) return null;
+
+            string[] parts = directoryPath.Split(new[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            Node currentNode = root;
+
+            using (var connection = _dbManager.GetConnection())
+            {
+                foreach (var part in parts)
+                {
+                    // Ищем существующую активную (не удаленную) директорию с таким именем
+                    Node? nextNode = null;
+                    using (var searchCmd = connection.CreateCommand())
+                    {
+                        searchCmd.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                        searchCmd.Parameters.AddWithValue("@parentId", currentNode.Id);
+                        searchCmd.Parameters.AddWithValue("@name", part);
+                        nextNode = ReadNode(searchCmd);
+                    }
+
+                    if (nextNode != null)
+                    {
+                        if (!nextNode.IsDir)
+                        {
+                            // Если на пути встретился файл вместо каталога, создать подпапку нельзя
+                            return null;
+                        }
+                        currentNode = nextNode;
+                    }
+                    else
+                    {
+                        // Папка отсутствует — атомарно создаем её
+                        using (var insertCmd = connection.CreateCommand())
+                        {
+                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, is_deleted) VALUES (@parentId, @name, 1, 0); SELECT last_insert_rowid();";
+                            insertCmd.Parameters.AddWithValue("@parentId", currentNode.Id);
+                            insertCmd.Parameters.AddWithValue("@name", part);
+                            int newFolderId = Convert.ToInt32(insertCmd.ExecuteScalar());
+
+                            using (var fetchCmd = connection.CreateCommand())
+                            {
+                                fetchCmd.CommandText = "SELECT * FROM nodes WHERE id = @id LIMIT 1;";
+                                fetchCmd.Parameters.AddWithValue("@id", newFolderId);
+                                var created = ReadNode(fetchCmd);
+                                if (created == null) return null;
+                                currentNode = created;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return currentNode;
+        }
+
+        /// <summary>
         /// Мягкое удаление (перемещение в корзину с сохранением структуры каталогов)
         /// </summary>
         public void SoftDeleteNode(int nodeId)

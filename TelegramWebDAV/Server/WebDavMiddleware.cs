@@ -252,8 +252,16 @@ namespace TelegramWebDAV.Server
             var parentNode = repository.GetNodeByPath(parentPath);
             if (parentNode == null)
             {
-                context.Response.StatusCode = (int)HttpStatusCode.Conflict;
-                return;
+                // Если клиент (например, Total Commander при синхронизации каталогов, rclone, скрипты бэкапа)
+                // выполняет прямую запись в подкаталог без предварительного MKCOL,
+                // автоматически создаем недостающую цепочку родительских каталогов
+                parentNode = repository.EnsureDirectoryPathExists(parentPath);
+                if (parentNode == null)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                    return;
+                }
+                AppLogger.Info("WebDAV", $"[PUT] Автоматически создана структура родительских каталогов для '{parentPath}'");
             }
 
             if (repository.IsNodeInTrash(parentNode.Id))
