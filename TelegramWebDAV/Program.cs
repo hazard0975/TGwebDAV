@@ -20,6 +20,9 @@ namespace TelegramWebDAV
         [STAThread]
         private static async Task Main(string[] args)
         {
+            // Автоматическая подгонка winfsp-msil.dll под .NET 8 (устранение устаревшего CheckVersion)
+            WinFspPatcher.PatchIfNeeded();
+
             // Включаем системную поддержку Assembly.Location в .NET 8 для корректной работы сторонних библиотек (WinFsp)
             AppContext.SetData("Switch.System.Reflection.Assembly.Location.IncludeInSingleFileApp", true);
 
