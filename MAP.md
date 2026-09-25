@@ -41,9 +41,14 @@
 │   │                             #  - Пошаговая авторизация (Телефон -> SMS -> 2FA)
 │   │                             #  - Потоковая передача данных через ArrayPool<byte>
 │   │                             #  - Перехват и удержание FLOOD_WAIT без разрыва связи
-│   └── AudioMetadataExtractor.cs # Интеграция с ATL.NET:
-│                                 #  - Извлечение ID3v1, ID3v2, FLAC тегов
-│                                 #  - Кэширование первых 128 КБ заголовка (header_cache_bytes)
+│   ├── AudioMetadataExtractor.cs # Интеграция с ATL.NET:
+│   │                             #  - Извлечение ID3v1, ID3v2, FLAC тегов
+│   │                             #  - Кэширование первых 128 КБ заголовка (header_cache_bytes)
+│   ├── VirtualDriveManager.cs    # Менеджер переключения движков (WinFsp / WebDAV)
+│   ├── WinFspServer.cs           # Интеграция FUSE диска WinFsp (прямой стриминг в память)
+│   └── WinFsp/
+│       └── Native/
+│           └── WinFspNative.cs   # Нативные P/Invoke биндинги WinFsp (чистая .NET 8 / Single-File реализация)
 │
 ├── UI/                           # Пользовательский интерфейс Windows
 │   ├── TrayContext.cs            # Иконка в системном трее (NotifyIcon) и контекстное меню

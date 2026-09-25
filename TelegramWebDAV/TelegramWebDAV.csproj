@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.8" />
-    <PackageReference Include="winfsp.net" Version="2.2.26215" />
     <PackageReference Include="WTelegramClient" Version="4.1.6" />
     <PackageReference Include="z440.atl.core" Version="6.1.0" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
@@ -26,12 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Tools\**" />
-    <EmbeddedResource Remove="Tools\**" />
-    <None Remove="Tools\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -39,10 +32,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <Target Name="FixWinFspNet" AfterTargets="Build">
-    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)/Tools/WinFspFixer/WinFspFixer.csproj&quot; -- &quot;$(TargetDir).&quot;" Condition="Exists('$(MSBuildProjectDirectory)/Tools/WinFspFixer/WinFspFixer.csproj')" />
-    <Exec Command="dotnet run --project &quot;$(MSBuildProjectDirectory)/../Tools/WinFspFixer/WinFspFixer.csproj&quot; -- &quot;$(TargetDir).&quot;" Condition="!Exists('$(MSBuildProjectDirectory)/Tools/WinFspFixer/WinFspFixer.csproj') AND Exists('$(MSBuildProjectDirectory)/../Tools/WinFspFixer/WinFspFixer.csproj')" />
-  </Target>
 
 </Project>
