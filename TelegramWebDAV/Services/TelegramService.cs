@@ -884,9 +884,10 @@ namespace TelegramWebDAV.Services
             long totalSent = 0;
             long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
             bool isSmallFile = actualTotalSize <= 262144; // Файл размером меньше 256 КБ
+            bool isMetadataProbe = length <= 262144 && offset == 0; // Быстрый запрос заголовков Проводником Windows
 
-            // При старте чтения файла сразу прогреваем 3 первых блока по 1 МБ упреждающим чтением
-            if (!isSmallFile && offset == 0)
+            // При старте последовательного чтения большого файла (копирование/воспроизведение) прогреваем упреждающие блоки
+            if (!isSmallFile && !isMetadataProbe && offset == 0)
             {
                 TriggerPrefetch(activeClient, location, messageId, 0, 1048576);
                 if (actualTotalSize > 1048576)
@@ -902,8 +903,8 @@ namespace TelegramWebDAV.Services
                 // 1. Проверяем, есть ли уже нужные байты в быстром кэше оперативной памяти
                 if (TryGetFromMemoryCache(messageId, currentPos, out var cachedRaw, out var cachedOffset) && cachedRaw != null)
                 {
-                    // Непрерывно держим конвейер упреждающего чтения полным (на 3 МБ вперед)
-                    if (actualTotalSize > 0)
+                    // Непрерывно держим конвейер упреждающего чтения полным (на 3 МБ вперед) только для активного потока
+                    if (actualTotalSize > 0 && !isMetadataProbe && (totalSent > 0 || length > 262144))
                     {
                         long currentBlock = (currentPos / 1048576) * 1048576;
                         if (currentBlock + 1048576 < actualTotalSize)
@@ -932,7 +933,8 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    if (!isSmallFile && (currentPos >= 262144 || currentPos >= actualTotalSize))
+                    // Уведомление о прогрессе вызываем только при реальной передаче файла (не при чтении пары килобайт метаданных)
+                    if (!isSmallFile && !isMetadataProbe && (totalSent >= 524288 || currentPos >= actualTotalSize))
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
@@ -940,7 +942,7 @@ namespace TelegramWebDAV.Services
                 }
 
                 // 2. Адаптивный выбор размера чанка MTProto
-                int baseChunkSize = isSmallFile ? 262144 : 1048576;
+                int baseChunkSize = (isSmallFile || isMetadataProbe) ? 262144 : 1048576;
 
                 // MTProto строго запрещает запросам выходить за пределы одного 1-мегабайтного блока (1048576 байт).
                 // Выравниваем chunkOffset по границе baseChunkSize.
@@ -1004,8 +1006,8 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                // Непрерывно запускаем упреждающее чтение следующих 3 блоков по 1 МБ
-                if (baseChunkSize == 1048576 && actualTotalSize > 0)
+                // Упреждающее чтение следующих блоков запускаем только для непрерывной передачи данных
+                if (baseChunkSize == 1048576 && actualTotalSize > 0 && !isMetadataProbe)
                 {
                     long nextOffset1 = chunkOffset + baseChunkSize;
                     if (nextOffset1 < actualTotalSize)
@@ -1047,7 +1049,7 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    if (!isSmallFile && (currentPos >= 262144 || currentPos >= actualTotalSize))
+                    if (!isSmallFile && !isMetadataProbe && (totalSent >= 524288 || currentPos >= actualTotalSize))
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
@@ -1064,7 +1066,7 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            if (!isSmallFile && currentPos >= actualTotalSize)
+            if (!isSmallFile && !isMetadataProbe && totalSent >= 524288 && currentPos >= actualTotalSize)
             {
                 OnDownloadCompleted?.Invoke(fileName);
             }

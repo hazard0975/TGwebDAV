@@ -128,33 +128,98 @@ namespace TelegramWebDAV.Utils
                     Console.WriteLine($"Предупреждение при настройке EnableLinkedConnections: {sysEx.Message}");
                 }
 
-                // Добавляем доверие к сетевым дискам и 127.0.0.1 в зону "Местная интрасеть" (устраняет предупреждения SmartScreen / Безопасности)
+                // Добавляем доверие к сетевым дискам и 127.0.0.1 в зону "Местная интрасеть" и отключаем предупреждения безопасности
                 try
                 {
+                    // 1. Настройка ZoneMap (Местная интрасеть)
                     using (var zoneKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap"))
                     {
                         if (zoneKey != null)
                         {
                             zoneKey.SetValue("UNCAsIntranet", 1, RegistryValueKind.DWord);
                             zoneKey.SetValue("AutoDetect", 0, RegistryValueKind.DWord);
+                            zoneKey.SetValue("IntranetName", 1, RegistryValueKind.DWord);
+                            zoneKey.SetValue("ProxyBypass", 1, RegistryValueKind.DWord);
                         }
                     }
 
+                    // 2. Добавление localhost в доверенную зону (все протоколы: file, http, https, wildcard *)
                     using (var domainKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains\localhost"))
                     {
-                        domainKey?.SetValue("http", 1, RegistryValueKind.DWord);
+                        if (domainKey != null)
+                        {
+                            domainKey.SetValue("*", 1, RegistryValueKind.DWord);
+                            domainKey.SetValue("http", 1, RegistryValueKind.DWord);
+                            domainKey.SetValue("https", 1, RegistryValueKind.DWord);
+                            domainKey.SetValue("file", 1, RegistryValueKind.DWord);
+                        }
                     }
 
+                    // 3. Добавление 127.0.0.1 в доверенные IP-диапазоны
                     using (var rangeKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Ranges\Range1"))
                     {
                         if (rangeKey != null)
                         {
                             rangeKey.SetValue(":Range", "127.0.0.1", RegistryValueKind.String);
+                            rangeKey.SetValue("*", 1, RegistryValueKind.DWord);
                             rangeKey.SetValue("http", 1, RegistryValueKind.DWord);
+                            rangeKey.SetValue("https", 1, RegistryValueKind.DWord);
+                            rangeKey.SetValue("file", 1, RegistryValueKind.DWord);
                         }
                     }
 
-                    Console.WriteLine(" - Местная интрасеть настроена для localhost / 127.0.0.1 (предупреждения безопасности отключены)");
+                    // 4. Добавление IPv6 ::1
+                    using (var range2Key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Ranges\Range2"))
+                    {
+                        if (range2Key != null)
+                        {
+                            range2Key.SetValue(":Range", "::1", RegistryValueKind.String);
+                            range2Key.SetValue("*", 1, RegistryValueKind.DWord);
+                            range2Key.SetValue("http", 1, RegistryValueKind.DWord);
+                            range2Key.SetValue("file", 1, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    // 5. Отключение диалога предупреждения безопасности при копировании/запуске файлов из зоны Интрасети (Zone 1)
+                    // 1806 = Launching applications and unsafe files (0 = Enable / Разрешить без окна предупреждения)
+                    // 1609 = Promote data binding (0 = Enable)
+                    // 1803 = File Download (0 = Enable)
+                    using (var zone1Key = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings\Zones\1"))
+                    {
+                        if (zone1Key != null)
+                        {
+                            zone1Key.SetValue("1806", 0, RegistryValueKind.DWord);
+                            zone1Key.SetValue("1609", 0, RegistryValueKind.DWord);
+                            zone1Key.SetValue("1803", 0, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    // 6. Политика безопасных типов файлов (LowRiskFileTypes) для проводника Windows
+                    const string lowRiskExtensions = ".exe;.bat;.cmd;.mp3;.flac;.wav;.7z;.zip;.rar;.iso;.mkv;.mp4;.avi;.txt;.pdf;.doc;.docx;.xls;.xlsx;.bin;.cue;.ogg;.m4a;.ape;.mov;.wmv;.ts;.m3u;.m3u8;.jpg;.jpeg;.png;.gif;";
+
+                    using (var assocCu = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Policies\Associations"))
+                    {
+                        if (assocCu != null)
+                        {
+                            assocCu.SetValue("LowRiskFileTypes", lowRiskExtensions, RegistryValueKind.String);
+                            assocCu.SetValue("DefaultFileTypeRisk", 6151, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    try
+                    {
+                        using (var assocLm = Registry.LocalMachine.CreateSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Associations"))
+                        {
+                            if (assocLm != null)
+                            {
+                                assocLm.SetValue("LowRiskFileTypes", lowRiskExtensions, RegistryValueKind.String);
+                                assocLm.SetValue("DefaultFileTypeRisk", 6151, RegistryValueKind.DWord);
+                            }
+                        }
+                    }
+                    catch { }
+
+                    Console.WriteLine(" - Местная интрасеть и LowRiskFileTypes настроены (окна предупреждений безопасности отключены)");
                 }
                 catch (Exception zoneEx)
                 {
