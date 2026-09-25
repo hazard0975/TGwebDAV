@@ -48,8 +48,6 @@ namespace TelegramWebDAV.Services
                 if (_dllLoaded) return true;
                 try
                 {
-                    WinFspPatcher.PatchIfNeeded();
-
                     string? installDir = null;
                     using (var key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WinFsp") ??
                                      Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\WinFsp"))

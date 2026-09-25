@@ -101,7 +101,7 @@
   - `[x] Монтировать как сетевой диск`
 - [x] Реализация нативного виртуального диска WinFsp (`WinFspServer.cs` + `VirtualDriveManager.cs`):
   - Полноценная поддержка FUSE для Windows через NuGet-пакет `winfsp.net`.
-  - Реализован класс `WinFspPatcher` (`WinFspPatcher.cs`), автоматически адаптирующий `winfsp-msil.dll` под .NET 8 x64 при запуске и полностью устраняющий ошибку `The path is empty`.
+  - Автоматическая подгонка `winfsp-msil.dll` на этапе компиляции MSBuild (`Tools/WinFspFixer`), устраняющая метод `CheckVersion` и ошибку `The path is empty` без каких-либо изменений файлов во время выполнения.
   - Автоматическая регистрация `SetDllDirectory` и предзагрузка `winfsp-x64.dll`.
   - Прямое точечное чтение чанков MTProto прямо в оперативную память плееров и Проводника без промежуточной записи на системный диск `C:` (`TfsStore\Tfs_DAV`).
   - Устранена первопричина сбоев и тормозов службы Windows WebClient.
