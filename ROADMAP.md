@@ -101,7 +101,7 @@
   - `[x] Монтировать как сетевой диск`
 - [x] Реализация нативного виртуального диска WinFsp (`WinFspServer.cs` + `VirtualDriveManager.cs`):
   - Полноценная поддержка FUSE для Windows через встроенные биндинги WinFsp (`TelegramWebDAV/Services/WinFsp/Native/WinFspNative.cs`), скомпилированные нативно под .NET 8.
-  - Устранена первопричина критического падения статического конструктора WinFsp (`The path is empty. (Parameter 'path')`): полный отказ от устаревшего пакета `winfsp.net` и Mono.Cecil-патчей `WinFspFixer`, интеграция чистой безопасной инициализации P/Invoke без несовместимого с Single-File бандлом метода `CheckVersion`.
+  - Устранена первопричина критического падения статического конструктора WinFsp (`The path is empty` и `cannot load telegramwebdav-x64.dll`): полный отказ от устаревшего пакета `winfsp.net` и Mono.Cecil-патчей `WinFspFixer`, интеграция чистой безопасной инициализации P/Invoke без несовместимого с Single-File бандлом метода `CheckVersion` и с жесткой фиксацией нативного имени библиотеки `winfsp-x64.dll`.
   - Автоматическая регистрация `SetDllDirectory` и предзагрузка `winfsp-x64.dll` через `NativeLibrary.Load`.
   - Прямое точечное чтение чанков MTProto прямо в оперативную память плееров и Проводника без промежуточной записи на системный диск `C:` (`TfsStore\Tfs_DAV`).
   - Устранена первопричина сбоев и тормозов службы Windows WebClient.

@@ -9050,12 +9050,6 @@ namespace Fsp.Interop
 		{
 			ProductName = "WinFsp";
 			ProductFileName = "winfsp";
-			object[] customAttributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), inherit: false);
-			if (customAttributes != null && customAttributes.Length != 0 && customAttributes[0] is AssemblyProductAttribute)
-			{
-				ProductName = (customAttributes[0] as AssemblyProductAttribute).Product;
-				ProductFileName = ProductName.ToLowerInvariant();
-			}
 			LoadProto(LoadDll());
 		}
 
