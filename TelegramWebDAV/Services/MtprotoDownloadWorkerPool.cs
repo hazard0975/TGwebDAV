@@ -108,7 +108,9 @@ namespace TelegramWebDAV.Services
             for (int chunkIdx = startChunkIndex; chunkIdx <= endChunkIndex; chunkIdx++)
             {
                 long chunkStart = (long)chunkIdx * chunkSize;
-                int requestLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
+                int rawLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
+                // Telegram MTProto требует, чтобы limit был строго кратен 4 КБ (4096 байт)
+                int requestLimit = Math.Min(chunkSize, Math.Max(4096, ((rawLimit + 4095) / 4096) * 4096));
 
                 var task = new DownloadChunkTask
                 {
@@ -125,7 +127,9 @@ namespace TelegramWebDAV.Services
             while (allChunkTasks.Count < _workerCount && ((long)nextPrefetchChunk * chunkSize) < totalSize)
             {
                 long chunkStart = (long)nextPrefetchChunk * chunkSize;
-                int requestLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
+                int rawLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
+                // Telegram MTProto требует, чтобы limit был строго кратен 4 КБ (4096 байт)
+                int requestLimit = Math.Min(chunkSize, Math.Max(4096, ((rawLimit + 4095) / 4096) * 4096));
 
                 allChunkTasks.Add(new DownloadChunkTask
                 {
@@ -303,14 +307,17 @@ namespace TelegramWebDAV.Services
             long offset = 0;
             while (offset < totalSize)
             {
-                int limit = (int)Math.Min(chunkSize, totalSize - offset);
+                int rawLimit = (int)Math.Min(chunkSize, totalSize - offset);
+                // Telegram MTProto требует, чтобы limit был строго кратен 4 КБ (4096 байт)
+                int requestLimit = Math.Min(chunkSize, Math.Max(4096, ((rawLimit + 4095) / 4096) * 4096));
+
                 chunkQueue.Enqueue(new DownloadChunkTask
                 {
                     ChunkIndex = (int)(offset / chunkSize),
                     ChunkOffset = offset,
-                    RequestLimit = limit
+                    RequestLimit = requestLimit
                 });
-                offset += limit;
+                offset += rawLimit;
             }
 
             long totalDownloadedBytes = 0;
