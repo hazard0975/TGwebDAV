@@ -90,6 +90,7 @@ namespace TelegramWebDAV.Services
             long length,
             Action<byte[], long>? onChunkReceived = null,
             Action<long, long>? onProgress = null,
+            Func<long, byte[]?>? existingChunkProvider = null,
             CancellationToken cancellationToken = default)
         {
             if (document == null) throw new ArgumentNullException(nameof(document));
@@ -158,6 +159,21 @@ namespace TelegramWebDAV.Services
                     while (chunkQueue.TryDequeue(out var chunk))
                     {
                         if (cancellationToken.IsCancellationRequested) break;
+
+                        // Если чанк уже доступен в памяти (RAM кэш), пропускаем сетевой запрос
+                        if (existingChunkProvider != null)
+                        {
+                            var existingBytes = existingChunkProvider(chunk.ChunkOffset);
+                            if (existingBytes != null && existingBytes.Length > 0)
+                            {
+                                downloadedChunks[chunk.ChunkOffset] = existingBytes;
+                                onChunkReceived?.Invoke(existingBytes, chunk.ChunkOffset);
+                                long currentTotal = Interlocked.Add(ref totalDownloadedBytes, existingBytes.Length);
+                                onProgress?.Invoke(currentTotal, length);
+                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}) уже имеется в RAM, сетевой запрос пропущен.");
+                                continue;
+                            }
+                        }
 
                         try
                         {
