@@ -61,6 +61,7 @@ namespace TelegramWebDAV.Services
         // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (~32 МБ) для мгновенного чтения плеерами без повторных обращений к сети
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (byte[] data, DateTime expiresAt)> _chunkMemoryCache = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, Task<byte[]?>> _pendingPrefetches = new();
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, bool> _activePoolPrefetches = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, SemaphoreSlim> _fileDownloadLocks = new();
         private readonly SemaphoreSlim _downloadRpcSemaphore = new SemaphoreSlim(1, 1);
 
@@ -459,62 +460,70 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Возвращает или создает независимый клиент MTProto со своим TCP-соединением для каждого параллельного воркера.
+        /// Для предотвращения конфликта блокировки файла user.session в Windows воркеры переиспользуют 
+        /// постоянные дочерние сессии через GetClientForDC основного клиента либо изолированное хранилище.
         /// </summary>
         public async Task<WTelegram.Client> GetWorkerClientAsync(int workerId, int dcId)
         {
-            WTelegram.Client targetClient;
+            if (_client == null)
+                throw new InvalidOperationException("Основной клиент Telegram не инициализирован.");
 
-            if (workerId <= 1 || _client == null)
+            if (workerId <= 1)
             {
-                targetClient = _client!;
+                return dcId != 0 ? await _client.GetClientForDC(dcId) : _client;
             }
-            else if (_workerClientsPool.TryGetValue(workerId, out var existingClient))
+
+            if (_workerClientsPool.TryGetValue(workerId, out var existingClient))
             {
-                targetClient = existingClient;
+                return dcId != 0 ? await existingClient.GetClientForDC(dcId) : existingClient;
             }
-            else
+
+            try
             {
-                try
+                // Для воркеров 2 и 3 клонируем авторизацию из сессии основного клиента без повторного монопольного захвата файла на диске
+                string sessionPath = _currentSettings.Telegram.SessionPath;
+                byte[]? sessionBytes = null;
+                if (File.Exists(sessionPath))
                 {
-                    string sessionPath = _currentSettings.Telegram.SessionPath;
-                    var extraClient = new WTelegram.Client(what =>
+                    using (var fs = new FileStream(sessionPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    using (var ms = new MemoryStream())
                     {
-                        switch (what)
-                        {
-                            case "api_id": return _currentSettings.Telegram.ApiId.ToString();
-                            case "api_hash": return _currentSettings.Telegram.ApiHash;
-                            case "session_pathname": return sessionPath;
-                            case "phone_number": return _currentSettings.Telegram.PhoneNumber;
-                            default: return null;
-                        }
-                    });
-
-                    string? loginResult = await extraClient.Login(null);
-                    if (loginResult == null)
-                    {
-                        _workerClientsPool[workerId] = extraClient;
-                        targetClient = extraClient;
-                        AppLogger.Info("TelegramService", $"[Воркер #{workerId}] Успешно запущен дополнительный независимый TCP-клиент MTProto.");
-                    }
-                    else
-                    {
-                        AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Не удалось авторизовать дочерний клиент ({loginResult}), используем основной.");
-                        targetClient = _client!;
+                        await fs.CopyToAsync(ms);
+                        sessionBytes = ms.ToArray();
                     }
                 }
-                catch (Exception ex)
+
+                var extraClient = new WTelegram.Client(what =>
                 {
-                    AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Ошибка инициализации независимого TCP-клиента: {ex.Message}. Используем основной.");
-                    targetClient = _client!;
+                    switch (what)
+                    {
+                        case "api_id": return _currentSettings.Telegram.ApiId.ToString();
+                        case "api_hash": return _currentSettings.Telegram.ApiHash;
+                        case "session_key": return sessionBytes != null ? Convert.ToBase64String(sessionBytes) : null;
+                        case "session_pathname": return null; // Запрещаем вторичным воркерам напрямую блокировать user.session на диске
+                        case "phone_number": return _currentSettings.Telegram.PhoneNumber;
+                        default: return null;
+                    }
+                }, sessionStore: sessionBytes != null ? new MemoryStream(sessionBytes) : null);
+
+                string? loginResult = await extraClient.Login(null);
+                if (loginResult == null)
+                {
+                    _workerClientsPool[workerId] = extraClient;
+                    AppLogger.Info("TelegramService", $"[Воркер #{workerId}] Успешно запущен дополнительный независимый TCP-клиент MTProto.");
+                    return dcId != 0 ? await extraClient.GetClientForDC(dcId) : extraClient;
+                }
+                else
+                {
+                    AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Не удалось авторизовать дочерний клиент ({loginResult}), используем основной клиент.");
                 }
             }
-
-            if (dcId != 0 && targetClient != null)
+            catch (Exception ex)
             {
-                return await targetClient.GetClientForDC(dcId);
+                AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Ошибка инициализации независимого TCP-клиента ({ex.Message}), используем сессию DC основного клиента.");
             }
 
-            return targetClient ?? _client!;
+            return dcId != 0 ? await _client.GetClientForDC(dcId) : _client;
         }
 
         private void HandleWTelegramResult(string? result)
@@ -1093,29 +1102,42 @@ namespace TelegramWebDAV.Services
                     await destination.FlushAsync();
                     AppLogger.Info("TelegramService", $"[Cache RAM] Мгновенная отдача из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
 
-                    // Запускаем воркеров на упреждающую прокачку следующих 3 МБ в ОЗУ
-                    if (actualTotalSize > offset + bytesToSend)
+                    // Запускаем воркеров на упреждающую прокачку только при приближении к границе 1 МБ блока
+                    // и только если для следующего диапазона ещё не запущена фоновая подкачка (защита от Prefetch Storm)
+                    long currentChunkEnd = ((offset / 1048576) + 1) * 1048576;
+                    long bytesLeftInChunk = currentChunkEnd - (offset + bytesToSend);
+
+                    if (actualTotalSize > currentChunkEnd && bytesLeftInChunk <= 262144)
                     {
-                        long nextPrefetchOffset = offset + bytesToSend;
-                        _ = Task.Run(async () =>
+                        long nextPrefetchOffset = currentChunkEnd;
+                        string prefetchKey = $"{messageId}:{nextPrefetchOffset}";
+
+                        if (_activePoolPrefetches.TryAdd(prefetchKey, true))
                         {
-                            try
+                            _ = Task.Run(async () =>
                             {
-                                var prefetchPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
-                                await prefetchPool.DownloadToStreamAsync(
-                                    document,
-                                    Stream.Null,
-                                    nextPrefetchOffset,
-                                    Math.Min(3 * 1048576, actualTotalSize - nextPrefetchOffset),
-                                    onChunkReceived: (chunkBytes, chunkOffset) =>
-                                    {
-                                        EnsureChunkCacheCapacity();
-                                        string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
-                                        _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
-                                    });
-                            }
-                            catch { }
-                        });
+                                try
+                                {
+                                    var prefetchPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
+                                    await prefetchPool.DownloadToStreamAsync(
+                                        document,
+                                        Stream.Null,
+                                        nextPrefetchOffset,
+                                        Math.Min(3 * 1048576, actualTotalSize - nextPrefetchOffset),
+                                        onChunkReceived: (chunkBytes, chunkOffset) =>
+                                        {
+                                            EnsureChunkCacheCapacity();
+                                            string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
+                                            _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
+                                        });
+                                }
+                                catch { }
+                                finally
+                                {
+                                    _activePoolPrefetches.TryRemove(prefetchKey, out _);
+                                }
+                            });
+                        }
                     }
                     return;
                 }
