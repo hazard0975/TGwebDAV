@@ -95,25 +95,40 @@ namespace TelegramWebDAV.Services
             if (length <= 0) return true;
 
             int chunkSize = 1048576; // 1 МБ чанк
-            var chunkTasks = new List<DownloadChunkTask>();
+            var requestedChunkTasks = new List<DownloadChunkTask>();
+            var allChunkTasks = new List<DownloadChunkTask>();
 
             long currentOffset = offset;
             long remaining = length;
-            int index = 0;
             while (remaining > 0)
             {
                 int limit = (int)Math.Min(chunkSize, remaining);
-                chunkTasks.Add(new DownloadChunkTask
+                var task = new DownloadChunkTask
                 {
-                    ChunkIndex = index++,
+                    ChunkIndex = (int)(currentOffset / chunkSize),
                     ChunkOffset = currentOffset,
                     RequestLimit = limit
-                });
+                };
+                requestedChunkTasks.Add(task);
+                allChunkTasks.Add(task);
                 currentOffset += limit;
                 remaining -= limit;
             }
 
-            var chunkQueue = new ConcurrentQueue<DownloadChunkTask>(chunkTasks);
+            // Гарантируем параллелизм всех 3 воркеров: если запрошено меньше 3 МБ, расширяем очередь упреждающими чанками
+            while (allChunkTasks.Count < _workerCount && currentOffset < totalSize)
+            {
+                int limit = (int)Math.Min(chunkSize, totalSize - currentOffset);
+                allChunkTasks.Add(new DownloadChunkTask
+                {
+                    ChunkIndex = (int)(currentOffset / chunkSize),
+                    ChunkOffset = currentOffset,
+                    RequestLimit = limit
+                });
+                currentOffset += limit;
+            }
+
+            var chunkQueue = new ConcurrentQueue<DownloadChunkTask>(allChunkTasks);
             var downloadedChunks = new ConcurrentDictionary<long, byte[]>();
 
             int actualWorkers = Math.Min(_workerCount, chunkQueue.Count);
@@ -121,7 +136,7 @@ namespace TelegramWebDAV.Services
 
             long totalDownloadedBytes = 0;
 
-            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Старт скачивания {length:N0} байт (со смещения {offset:N0}) через {actualWorkers} воркеров MTProto...");
+            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Старт скачивания {length:N0} байт (со смещения {offset:N0}, чанки #{requestedChunkTasks[0].ChunkIndex}..#{allChunkTasks[allChunkTasks.Count - 1].ChunkIndex}) через {actualWorkers} параллельных воркеров MTProto...");
 
             for (int w = 0; w < actualWorkers; w++)
             {
@@ -141,7 +156,7 @@ namespace TelegramWebDAV.Services
                         {
                             await PaceRequestAsync(workerId, cancellationToken);
 
-                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}, размер {chunk.RequestLimit / 1024} КБ)...");
+                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос Глобального Чанка #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}, размер {chunk.RequestLimit / 1024} КБ)...");
                             var sw = Stopwatch.StartNew();
 
                             var fileBase = await workerClient.Upload_GetFile(location, chunk.ChunkOffset, chunk.RequestLimit, precise: true);
@@ -155,7 +170,7 @@ namespace TelegramWebDAV.Services
                                 long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
                                 onProgress?.Invoke(currentTotal, length);
 
-                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Успешно получен чанк #{chunk.ChunkIndex} ({uploadFile.bytes.Length / 1024} КБ за {sw.ElapsedMilliseconds} мс).");
+                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Успешно получен Глобальный Чанк #{chunk.ChunkIndex} ({uploadFile.bytes.Length / 1024} КБ за {sw.ElapsedMilliseconds} мс).");
                             }
                             else if (chunk.RetryCount < 3)
                             {
@@ -174,7 +189,7 @@ namespace TelegramWebDAV.Services
                         }
                         catch (Exception ex)
                         {
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}): {ex.Message}");
+                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка Глобального Чанка #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}): {ex.Message}");
                             if (chunk.RetryCount < 3)
                             {
                                 chunk.RetryCount++;
@@ -186,27 +201,30 @@ namespace TelegramWebDAV.Services
                 }, cancellationToken);
             }
 
-            // Последовательный вывод скачанных чанков из RAM в destinationStream
-            foreach (var task in chunkTasks)
+            // Вывод запрошенных чанков в destinationStream (если destinationStream задан)
+            if (destinationStream != null && destinationStream != Stream.Null)
             {
-                byte[]? chunkBytes = null;
-                while (!downloadedChunks.TryGetValue(task.ChunkOffset, out chunkBytes))
+                foreach (var task in requestedChunkTasks)
                 {
-                    if (cancellationToken.IsCancellationRequested) return false;
-                    await Task.Delay(10, cancellationToken);
-                }
+                    byte[]? chunkBytes = null;
+                    while (!downloadedChunks.TryGetValue(task.ChunkOffset, out chunkBytes))
+                    {
+                        if (cancellationToken.IsCancellationRequested) return false;
+                        await Task.Delay(10, cancellationToken);
+                    }
 
-                if (chunkBytes == null) continue;
+                    if (chunkBytes == null) continue;
 
-                try
-                {
-                    await destinationStream.WriteAsync(chunkBytes, 0, chunkBytes.Length, cancellationToken);
-                    await destinationStream.FlushAsync(cancellationToken);
-                }
-                catch (Exception ex)
-                {
-                    AppLogger.Debug("MtprotoWorkerPool", $"Клиент прервал RAM-стриминг: {ex.Message}");
-                    return false;
+                    try
+                    {
+                        await destinationStream.WriteAsync(chunkBytes, 0, chunkBytes.Length, cancellationToken);
+                        await destinationStream.FlushAsync(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("MtprotoWorkerPool", $"Клиент прервал RAM-стриминг: {ex.Message}");
+                        return false;
+                    }
                 }
             }
 
@@ -230,13 +248,12 @@ namespace TelegramWebDAV.Services
             var chunkQueue = new ConcurrentQueue<DownloadChunkTask>();
 
             long offset = 0;
-            int index = 0;
             while (offset < totalSize)
             {
                 int limit = (int)Math.Min(chunkSize, totalSize - offset);
                 chunkQueue.Enqueue(new DownloadChunkTask
                 {
-                    ChunkIndex = index++,
+                    ChunkIndex = (int)(offset / chunkSize),
                     ChunkOffset = offset,
                     RequestLimit = limit
                 });

@@ -1082,7 +1082,51 @@ namespace TelegramWebDAV.Services
             }
 
             // РЕЖИМ 100% PURE RAM STREAMING (без файлов на диске):
-            // Для скачивания архивов и больших файлов качаем чанки через MtprotoDownloadWorkerPool напрямую в ОЗУ с заполнением 128 МБ RAM-кэша
+            // 1. Проверяем, есть ли запрашиваемый чанк уже в ОЗУ (был ранее упреждающе выкачан воркером)
+            if (!enableDiskCache && TryGetFromMemoryCache(messageId, offset, out var ramCachedRaw, out var ramCachedOffset) && ramCachedRaw != null)
+            {
+                int availableInChunk = ramCachedRaw.Length - ramCachedOffset;
+                int bytesToSend = (int)Math.Min(availableInChunk, length);
+                try
+                {
+                    await destination.WriteAsync(ramCachedRaw, ramCachedOffset, bytesToSend);
+                    await destination.FlushAsync();
+                    AppLogger.Info("TelegramService", $"[Cache RAM] Мгновенная отдача из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
+
+                    // Запускаем воркеров на упреждающую прокачку следующих 3 МБ в ОЗУ
+                    if (actualTotalSize > offset + bytesToSend)
+                    {
+                        long nextPrefetchOffset = offset + bytesToSend;
+                        _ = Task.Run(async () =>
+                        {
+                            try
+                            {
+                                var prefetchPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
+                                await prefetchPool.DownloadToStreamAsync(
+                                    document,
+                                    Stream.Null,
+                                    nextPrefetchOffset,
+                                    Math.Min(3 * 1048576, actualTotalSize - nextPrefetchOffset),
+                                    onChunkReceived: (chunkBytes, chunkOffset) =>
+                                    {
+                                        EnsureChunkCacheCapacity();
+                                        string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
+                                        _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
+                                    });
+                            }
+                            catch { }
+                        });
+                    }
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("TelegramService", $"Клиент прервал соединение при чтении из RAM кэша: {ex.Message}");
+                    return;
+                }
+            }
+
+            // 2. Для скачивания архивов и больших файлов качаем чанки через MtprotoDownloadWorkerPool напрямую в ОЗУ с заполнением 128 МБ RAM-кэша
             if (!enableDiskCache && !isSmallFile && !isMetadataProbe && length > 262144)
             {
                 bool isFullFileDownload = (offset == 0 && length >= actualTotalSize);
