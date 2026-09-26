@@ -64,6 +64,46 @@ namespace TelegramWebDAV.Services
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, bool> _activePoolPrefetches = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, SemaphoreSlim> _fileDownloadLocks = new();
         private readonly SemaphoreSlim _downloadRpcSemaphore = new SemaphoreSlim(1, 1);
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, NetworkTransferAudit> _networkAudits = new();
+
+        public class NetworkTransferAudit
+        {
+            public string FileName { get; set; } = string.Empty;
+            public long FileSize { get; set; }
+            private long _networkBytesDownloaded;
+            private long _ramBytesDelivered;
+            private int _completionLogged;
+
+            public void AddNetworkBytes(long bytes) => Interlocked.Add(ref _networkBytesDownloaded, bytes);
+            public void AddRamBytes(long bytes) => Interlocked.Add(ref _ramBytesDelivered, bytes);
+
+            public long NetworkBytes => Interlocked.Read(ref _networkBytesDownloaded);
+            public long RamBytes => Interlocked.Read(ref _ramBytesDelivered);
+
+            public void LogCompletionOnce()
+            {
+                if (Interlocked.CompareExchange(ref _completionLogged, 1, 0) == 0)
+                {
+                    long net = NetworkBytes;
+                    long ram = RamBytes;
+                    double ratio = FileSize > 0 ? (double)net / FileSize : 1.0;
+                    string verdict;
+                    if (ratio <= 1.05)
+                        verdict = "1.00x (Идеально — 0% дублирования)";
+                    else if (ratio <= 1.25)
+                        verdict = $"{ratio:F2}x (Допустимо — остаток хвоста чанка)";
+                    else
+                        verdict = $"{ratio:F2}x (ВНИМАНИЕ — обнаружено избыточное дублирование сетевых запросов!)";
+
+                    string msg = $"[NetworkAudit] Завершено для '{FileName}': Размер: {FileSize:N0} б ({FileSize / 1048576.0:F2} МБ) | Из сети TG: {net:N0} б ({net / 1048576.0:F2} МБ) | Из ОЗУ: {ram:N0} б ({ram / 1048576.0:F2} МБ) | Эффективность сети: {verdict}";
+
+                    if (ratio > 1.25)
+                        AppLogger.Warn("TelegramService", msg);
+                    else
+                        AppLogger.Info("TelegramService", msg);
+                }
+            }
+        }
 
         private bool TryGetFromMemoryCache(int messageId, long pos, out byte[]? data, out int offsetInChunk)
         {
@@ -1006,6 +1046,10 @@ namespace TelegramWebDAV.Services
             bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
             bool isMetadataProbe = length <= 262144 && offset == 0; // Быстрый запрос заголовков Проводником Windows
 
+            var audit = _networkAudits.GetOrAdd(messageId, _ => new NetworkTransferAudit { FileName = fileName, FileSize = actualTotalSize });
+            audit.FileName = fileName;
+            audit.FileSize = actualTotalSize;
+
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
             {
@@ -1029,6 +1073,8 @@ namespace TelegramWebDAV.Services
                         if (success && File.Exists(cacheFilePath))
                         {
                             AppLogger.Info("TelegramService", $"[Disk Cache Mode] Файл '{fileName}' (ID {messageId}) успешно сохранен в кэш.");
+                            audit.AddNetworkBytes(new FileInfo(cacheFilePath).Length);
+                            audit.LogCompletionOnce();
                             OnDownloadCompleted?.Invoke(fileName);
                         }
                     }
@@ -1075,6 +1121,7 @@ namespace TelegramWebDAV.Services
                 {
                     await destination.WriteAsync(ramCachedRaw, ramCachedOffset, bytesToSend);
                     await destination.FlushAsync();
+                    audit.AddRamBytes(bytesToSend);
                     AppLogger.Info("TelegramService", $"[Cache RAM] Мгновенная отдача из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
 
                     // Запускаем воркеров на упреждающую прокачку ТОЛЬКО если следующего 1 МБ блока ещё НЕТ в ОЗУ
@@ -1121,6 +1168,7 @@ namespace TelegramWebDAV.Services
                                         prefetchLength,
                                         onChunkReceived: (chunkBytes, chunkOffset) =>
                                         {
+                                            audit.AddNetworkBytes(chunkBytes.Length);
                                             EnsureChunkCacheCapacity();
                                             string ramKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
                                             _chunkMemoryCache[ramKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
@@ -1179,6 +1227,7 @@ namespace TelegramWebDAV.Services
                     length,
                     onChunkReceived: (chunkBytes, chunkOffset) =>
                     {
+                        audit.AddNetworkBytes(chunkBytes.Length);
                         EnsureChunkCacheCapacity();
                         string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
                         _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
@@ -1205,6 +1254,7 @@ namespace TelegramWebDAV.Services
                 {
                     if (!isMetadataProbe && isFullFileDownload)
                     {
+                        audit.LogCompletionOnce();
                         OnDownloadCompleted?.Invoke(fileName);
                     }
                     return;
@@ -1254,6 +1304,7 @@ namespace TelegramWebDAV.Services
                     currentPos += toSend;
                     remainingBytes -= toSend;
                     totalSent += toSend;
+                    audit.AddRamBytes(toSend);
 
                     AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из памяти RAM '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%).");
 
@@ -1265,6 +1316,7 @@ namespace TelegramWebDAV.Services
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                         if (isFullDownload && currentPos >= actualTotalSize)
                         {
+                            audit.LogCompletionOnce();
                             OnDownloadCompleted?.Invoke(fileName);
                         }
                     }
@@ -1334,6 +1386,7 @@ namespace TelegramWebDAV.Services
                 if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                 {
                     raw = uploadFile.bytes;
+                    audit.AddNetworkBytes(raw.Length);
                     EnsureChunkCacheCapacity();
                     _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(5));
                     AppLogger.Info("TelegramService", $"[MTProto] Получен чанк для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length:N0} байт, сохранен в RAM кэш.");
@@ -1385,6 +1438,7 @@ namespace TelegramWebDAV.Services
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                         if (isFullDownload && currentPos >= actualTotalSize)
                         {
+                            audit.LogCompletionOnce();
                             OnDownloadCompleted?.Invoke(fileName);
                         }
                     }
@@ -1408,6 +1462,7 @@ namespace TelegramWebDAV.Services
 
             if (!isSmallFile && !isMetadataProbe && totalSent >= 524288 && currentPos >= actualTotalSize)
             {
+                audit.LogCompletionOnce();
                 OnDownloadCompleted?.Invoke(fileName);
             }
         }
