@@ -1,447 +1,898 @@
-[2026-09-26 23:30:35.774] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #217B
-[2026-09-26 23:30:35.831] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:34Z
-[2026-09-26 23:30:35.831] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #217B
-[2026-09-26 23:30:35.831] [INFO ] [TelegramService] [MTProto] Запрос чанка для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): смещение 0, размер 262 144 байт (0 / 8 950 388 байт)...
-[2026-09-26 23:30:35.831] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:34Z (svc)
-[2026-09-26 23:30:35.831] [DEBUG] [WTelegram]             → Upload_GetFile                         #AD27
-[2026-09-26 23:30:35.831] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:35.906] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:35Z
-[2026-09-26 23:30:35.906] [DEBUG] [WTelegram]              → Upload_File                           #AD27
-[2026-09-26 23:30:35.906] [INFO ] [TelegramService] [MTProto] Получен чанк для 'Miley_Cyrus_-_Midnight_Sky.mp3': смещение 0, размер 262 144 байт, сохранен в RAM кэш.
-[2026-09-26 23:30:35.906] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Запрос метаданных] для Miley_Cyrus_-_Midnight_Sky.mp3 (4/8950388)
-[2026-09-26 23:30:35.908] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 0, 65 536 байт).
-[2026-09-26 23:30:35.909] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 65 536, 65 536 байт).
-[2026-09-26 23:30:35.909] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 131 072, 65 536 байт).
-[2026-09-26 23:30:35.909] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 196 608, 65 536 байт).
-[2026-09-26 23:30:35.909] [INFO ] [TelegramService] [MTProto] Запрос чанка для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): смещение 0, размер 1 048 576 байт (262 144 / 8 950 388 байт)...
-[2026-09-26 23:30:35.910] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:35Z (svc)
-[2026-09-26 23:30:35.910] [DEBUG] [WTelegram]             → Upload_GetFile                         #C33C
-[2026-09-26 23:30:35.910] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:36.069] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:35Z
-[2026-09-26 23:30:36.069] [DEBUG] [WTelegram]              → Upload_File                           #C33C
-[2026-09-26 23:30:36.070] [INFO ] [TelegramService] [MTProto] Получен чанк для 'Miley_Cyrus_-_Midnight_Sky.mp3': смещение 0, размер 1 048 576 байт, сохранен в RAM кэш.
-[2026-09-26 23:30:36.070] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 327 680, 65 536 байт).
-[2026-09-26 23:30:36.070] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 393 216, 65 536 байт).
-[2026-09-26 23:30:36.070] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 458 752, 65 536 байт).
-[2026-09-26 23:30:36.070] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 524 288, 65 536 байт).
-[2026-09-26 23:30:36.071] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 589 824, 65 536 байт).
-[2026-09-26 23:30:36.071] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 655 360, 65 536 байт).
-[2026-09-26 23:30:36.071] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 720 896, 65 536 байт).
-[2026-09-26 23:30:36.071] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 786 432, 65 536 байт).
-[2026-09-26 23:30:36.072] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 851 968, 65 536 байт).
-[2026-09-26 23:30:36.072] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 917 504, 26 214 байт).
-[2026-09-26 23:30:36.073] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 0, 8 байт).
-[2026-09-26 23:30:36.075] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 3 145 728 байт (диапазон 1 048 576..4 194 304, чанки #1..#3) через 3 параллельных воркеров MTProto...
-[2026-09-26 23:30:36.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 943 718, 65 536 байт).
-[2026-09-26 23:30:36.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 1 009 254, 39 322 байт).
-[2026-09-26 23:30:36.079] [WARN ] [TelegramService] [Воркер #2] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
-[2026-09-26 23:30:36.079] [WARN ] [TelegramService] [Воркер #3] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
-[2026-09-26 23:30:36.079] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #1 (смещение 1 048 576, размер 1024 КБ)...
-[2026-09-26 23:30:36.079] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:35Z (svc)
-[2026-09-26 23:30:36.079] [DEBUG] [WTelegram]             → Upload_GetFile                         #FC7C
-[2026-09-26 23:30:36.079] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:36.202] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:35Z
-[2026-09-26 23:30:36.203] [DEBUG] [WTelegram]              → Upload_File                           #FC7C
-[2026-09-26 23:30:36.204] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #1 (1024 КБ за 124 мс).
-[2026-09-26 23:30:36.204] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 048 576, 65 536 байт).
-[2026-09-26 23:30:36.204] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 114 112, 65 536 байт).
-[2026-09-26 23:30:36.204] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 179 648, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 245 184, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 310 720, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 376 256, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 441 792, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 507 328, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 572 864, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 638 400, 65 536 байт).
-[2026-09-26 23:30:36.205] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 703 936, 65 536 байт).
-[2026-09-26 23:30:36.206] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 769 472, 65 536 байт).
-[2026-09-26 23:30:36.206] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 1 048 576 байт (диапазон 4 194 304..5 242 880, чанки #4..#4) через 1 параллельных воркеров MTProto...
-[2026-09-26 23:30:36.206] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 835 008, 52 428 байт).
-[2026-09-26 23:30:36.206] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 887 436, 65 536 байт).
-[2026-09-26 23:30:36.207] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 952 972, 65 536 байт).
-[2026-09-26 23:30:36.207] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 2 018 508, 65 536 байт).
-[2026-09-26 23:30:36.207] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 2 084 044, 13 108 байт).
-[2026-09-26 23:30:36.282] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос Глобального Чанка #2 (смещение 2 097 152, размер 1024 КБ)...
-[2026-09-26 23:30:36.282] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:35Z (svc)
-[2026-09-26 23:30:36.282] [DEBUG] [WTelegram]             → Upload_GetFile                         #05E8
-[2026-09-26 23:30:36.282] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:36.394] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:35Z
-[2026-09-26 23:30:36.394] [DEBUG] [WTelegram]              → Upload_File                           #05E8
-[2026-09-26 23:30:36.395] [INFO ] [MtprotoWorkerPool] [Воркер #2] Успешно получен Глобальный Чанк #2 (1024 КБ за 112 мс).
-[2026-09-26 23:30:36.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 097 152, 65 536 байт).
-[2026-09-26 23:30:36.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 162 688, 65 536 байт).
-[2026-09-26 23:30:36.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 228 224, 65 536 байт).
-[2026-09-26 23:30:36.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 293 760, 65 536 байт).
-[2026-09-26 23:30:36.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 359 296, 65 536 байт).
-[2026-09-26 23:30:36.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 424 832, 65 536 байт).
-[2026-09-26 23:30:36.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 490 368, 65 536 байт).
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 555 904, 65 536 байт).
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 621 440, 65 536 байт).
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 686 976, 65 536 байт).
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 752 512, 65 536 байт).
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 818 048, 13 106 байт).
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 831 154, 65 536 байт).
-[2026-09-26 23:30:36.396] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 1 048 576 байт (диапазон 5 242 880..6 291 456, чанки #5..#5) через 1 параллельных воркеров MTProto...
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 896 690, 65 536 байт).
-[2026-09-26 23:30:36.396] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 962 226, 65 536 байт).
-[2026-09-26 23:30:36.397] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 3 027 762, 65 536 байт).
-[2026-09-26 23:30:36.397] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 3 093 298, 52 430 байт).
-[2026-09-26 23:30:36.486] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос Глобального Чанка #3 (смещение 3 145 728, размер 1024 КБ)...
-[2026-09-26 23:30:36.486] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:35Z (svc)
-[2026-09-26 23:30:36.486] [DEBUG] [WTelegram]             → Upload_GetFile                         #4E2C
-[2026-09-26 23:30:36.486] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:36.572] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:35Z
-[2026-09-26 23:30:36.572] [DEBUG] [WTelegram]              → Upload_File                           #4E2C
-[2026-09-26 23:30:36.572] [INFO ] [MtprotoWorkerPool] [Воркер #3] Успешно получен Глобальный Чанк #3 (1024 КБ за 86 мс).
-[2026-09-26 23:30:36.572] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 145 728, 65 536 байт).
-[2026-09-26 23:30:36.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 211 264, 65 536 байт).
-[2026-09-26 23:30:36.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 276 800, 65 536 байт).
-[2026-09-26 23:30:36.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 342 336, 65 536 байт).
-[2026-09-26 23:30:36.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 407 872, 65 536 байт).
-[2026-09-26 23:30:36.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 473 408, 65 536 байт).
-[2026-09-26 23:30:36.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 538 944, 65 536 байт).
-[2026-09-26 23:30:36.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 604 480, 65 536 байт).
-[2026-09-26 23:30:36.574] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 670 016, 65 536 байт).
-[2026-09-26 23:30:36.574] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 735 552, 39 320 байт).
-[2026-09-26 23:30:36.575] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 774 872, 65 536 байт).
-[2026-09-26 23:30:36.575] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 840 408, 65 536 байт).
-[2026-09-26 23:30:36.575] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 905 944, 65 536 байт).
-[2026-09-26 23:30:36.575] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 1 048 576 байт (диапазон 6 291 456..7 340 032, чанки #6..#6) через 1 параллельных воркеров MTProto...
-[2026-09-26 23:30:36.575] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 971 480, 65 536 байт).
-[2026-09-26 23:30:36.575] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 4 037 016, 65 536 байт).
-[2026-09-26 23:30:36.575] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 4 102 552, 65 536 байт).
-[2026-09-26 23:30:36.575] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 4 168 088, 26 216 байт).
-[2026-09-26 23:30:36.692] [DEBUG] [WTelegram] 2>Receiving Updates                                  2026-09-26 20:30:35Z  
-[2026-09-26 23:30:36.694] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #4 (смещение 4 194 304, размер 1024 КБ)...
-[2026-09-26 23:30:36.695] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:35Z (svc)
-[2026-09-26 23:30:36.695] [DEBUG] [WTelegram]             → Upload_GetFile                         #EC60
-[2026-09-26 23:30:36.695] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:36.793] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:35Z
-[2026-09-26 23:30:36.793] [DEBUG] [WTelegram]              → Upload_File                           #EC60
-[2026-09-26 23:30:36.793] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #4 (1024 КБ за 98 мс).
-[2026-09-26 23:30:36.793] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 194 304, 65 536 байт).
-[2026-09-26 23:30:36.793] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 259 840, 65 536 байт).
-[2026-09-26 23:30:36.793] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 325 376, 65 536 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 390 912, 65 536 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 456 448, 65 536 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 521 984, 65 536 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 587 520, 65 536 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 653 056, 65 534 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 718 590, 65 536 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 784 126, 65 536 байт).
-[2026-09-26 23:30:36.794] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 849 662, 65 536 байт).
-[2026-09-26 23:30:36.795] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 915 198, 65 536 байт).
-[2026-09-26 23:30:36.795] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 980 734, 65 536 байт).
-[2026-09-26 23:30:36.795] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 1 048 576 байт (диапазон 7 340 032..8 388 608, чанки #7..#7) через 1 параллельных воркеров MTProto...
-[2026-09-26 23:30:36.795] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 046 270, 65 536 байт).
-[2026-09-26 23:30:36.795] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 111 806, 65 536 байт).
-[2026-09-26 23:30:36.795] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 177 342, 65 536 байт).
-[2026-09-26 23:30:36.795] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 242 878, 2 байт).
-[2026-09-26 23:30:36.898] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #5 (смещение 5 242 880, размер 1024 КБ)...
-[2026-09-26 23:30:36.899] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:36Z (svc)
-[2026-09-26 23:30:36.899] [DEBUG] [WTelegram]             → Upload_GetFile                         #D5ED
-[2026-09-26 23:30:36.899] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:37.062] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:36Z
-[2026-09-26 23:30:37.062] [DEBUG] [WTelegram]              → Upload_File                           #D5ED
-[2026-09-26 23:30:37.063] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #5 (1024 КБ за 163 мс).
-[2026-09-26 23:30:37.063] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 242 880, 65 536 байт).
-[2026-09-26 23:30:37.063] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 308 416, 65 536 байт).
-[2026-09-26 23:30:37.063] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 373 952, 65 536 байт).
-[2026-09-26 23:30:37.064] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 439 488, 65 536 байт).
-[2026-09-26 23:30:37.064] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 505 024, 65 536 байт).
-[2026-09-26 23:30:37.064] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 570 560, 65 536 байт).
-[2026-09-26 23:30:37.064] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 636 096, 26 212 байт).
-[2026-09-26 23:30:37.064] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 662 308, 65 536 байт).
-[2026-09-26 23:30:37.064] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 727 844, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 793 380, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 858 916, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 924 452, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 989 988, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 561 780 байт (диапазон 8 388 608..8 950 388, чанки #8..#8) через 1 параллельных воркеров MTProto...
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 6 055 524, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 6 121 060, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 6 186 596, 65 536 байт).
-[2026-09-26 23:30:37.065] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 6 252 132, 39 324 байт).
-[2026-09-26 23:30:37.106] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #6 (смещение 6 291 456, размер 1024 КБ)...
-[2026-09-26 23:30:37.107] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:36Z (svc)
-[2026-09-26 23:30:37.107] [DEBUG] [WTelegram]             → Upload_GetFile                         #1795
-[2026-09-26 23:30:37.107] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:37.214] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:36Z
-[2026-09-26 23:30:37.215] [DEBUG] [WTelegram]              → Upload_File                           #1795
-[2026-09-26 23:30:37.216] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #6 (1024 КБ за 108 мс).
-[2026-09-26 23:30:37.216] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 291 456, 65 536 байт).
-[2026-09-26 23:30:37.216] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 356 992, 65 536 байт).
-[2026-09-26 23:30:37.216] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 422 528, 65 536 байт).
-[2026-09-26 23:30:37.216] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 488 064, 65 536 байт).
-[2026-09-26 23:30:37.216] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 553 600, 52 426 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 606 026, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 671 562, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 737 098, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 802 634, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 868 170, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 933 706, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 6 999 242, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 064 778, 65 536 байт).
-[2026-09-26 23:30:37.217] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 130 314, 65 536 байт).
-[2026-09-26 23:30:37.218] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 195 850, 65 536 байт).
-[2026-09-26 23:30:37.218] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 261 386, 65 536 байт).
-[2026-09-26 23:30:37.218] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 326 922, 13 110 байт).
-[2026-09-26 23:30:37.315] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #7 (смещение 7 340 032, размер 1024 КБ)...
-[2026-09-26 23:30:37.315] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:36Z (svc)
-[2026-09-26 23:30:37.315] [DEBUG] [WTelegram]             → Upload_GetFile                         #5765
-[2026-09-26 23:30:37.315] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:37.404] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:36Z
-[2026-09-26 23:30:37.404] [DEBUG] [WTelegram]              → Upload_File                           #5765
-[2026-09-26 23:30:37.405] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #7 (1024 КБ за 89 мс).
-[2026-09-26 23:30:37.405] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 340 032, 65 536 байт).
-[2026-09-26 23:30:37.405] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 405 568, 65 536 байт).
-[2026-09-26 23:30:37.405] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 471 104, 65 536 байт).
-[2026-09-26 23:30:37.405] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 536 640, 13 104 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 549 744, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 615 280, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 680 816, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 746 352, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 811 888, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 877 424, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 942 960, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 8 008 496, 65 536 байт).
-[2026-09-26 23:30:37.407] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 8 074 032, 65 536 байт).
-[2026-09-26 23:30:37.408] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 8 139 568, 65 536 байт).
-[2026-09-26 23:30:37.408] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 8 205 104, 65 536 байт).
-[2026-09-26 23:30:37.408] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 8 270 640, 65 536 байт).
-[2026-09-26 23:30:37.408] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 8 336 176, 52 432 байт).
-[2026-09-26 23:30:37.522] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #8 (смещение 8 388 608, размер 1024 КБ)...
-[2026-09-26 23:30:37.522] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 20:30:36Z (svc)
-[2026-09-26 23:30:37.522] [DEBUG] [WTelegram]             → Upload_GetFile                         #1C95
-[2026-09-26 23:30:37.522] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-26 23:30:37.612] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 20:30:36Z
-[2026-09-26 23:30:37.612] [DEBUG] [WTelegram]              → Upload_File                           #1C95
-[2026-09-26 23:30:37.612] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #8 (548 КБ за 90 мс).
-[2026-09-26 23:30:37.612] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 388 608, 65 536 байт).
-[2026-09-26 23:30:37.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 454 144, 39 318 байт).
-[2026-09-26 23:30:37.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 493 462, 65 536 байт).
-[2026-09-26 23:30:37.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 558 998, 65 536 байт).
-[2026-09-26 23:30:37.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 624 534, 65 536 байт).
-[2026-09-26 23:30:37.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 690 070, 65 536 байт).
-[2026-09-26 23:30:37.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 755 606, 65 536 байт).
-[2026-09-26 23:30:37.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 821 142, 65 536 байт).
-[2026-09-26 23:30:37.614] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 886 678, 63 710 байт).
-[2026-09-26 23:30:37.621] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 0, 262 144 байт).
-[2026-09-26 23:30:37.621] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 950 260, 128 байт).
-[2026-09-26 23:30:37.621] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 950 245, 143 байт).
-[2026-09-26 23:30:37.621] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 0, 262 144 байт).
-[2026-09-26 23:30:37.622] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 950 260, 128 байт).
-[2026-09-26 23:30:37.622] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 950 245, 143 байт).
-[2026-09-26 23:30:37.622] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 950 228, 160 байт).
-[2026-09-26 23:30:37.622] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 16 384, 262 144 байт).
-[2026-09-26 23:30:37.652] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 0, 4 байт).
-[2026-09-26 23:30:37.652] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 0, 40 байт).
-[2026-09-26 23:30:37.652] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 0, 4 096 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 4 096, 12 288 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 16 384, 4 096 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 950 245, 143 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 950 228, 160 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 16 384, 4 096 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 20 480, 28 672 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 16 384, 32 768 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 49 152, 32 395 байт).
-[2026-09-26 23:30:37.653] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 81 547, 32 391 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 113 938, 32 392 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 146 330, 32 392 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 178 722, 32 392 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 211 114, 32 392 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 243 506, 32 392 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 275 898, 32 391 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 308 289, 32 392 байт).
-[2026-09-26 23:30:37.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 340 681, 32 392 байт).
-[2026-09-26 23:30:37.655] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 373 073, 32 392 байт).
-...
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 857 873, 32 392 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 890 265, 32 392 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 922 657, 32 392 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 955 049, 32 391 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 987 440, 32 392 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 2 019 832, 32 392 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 2 052 224, 32 392 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 2 084 616, 12 536 байт).
-[2026-09-26 23:30:37.660] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 097 152, 32 395 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 129 547, 32 391 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 161 938, 32 392 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 194 330, 32 392 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 226 722, 32 392 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 259 114, 32 392 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 291 506, 32 392 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 323 898, 32 391 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 356 289, 32 392 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 388 681, 32 392 байт).
-[2026-09-26 23:30:37.661] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 421 073, 32 392 байт).
-[2026-09-26 23:30:37.662] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 453 465, 32 392 байт).
-...
-[2026-09-26 23:30:37.665] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 274 755, 32 392 байт).
-[2026-09-26 23:30:37.665] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 307 147, 32 391 байт).
-[2026-09-26 23:30:37.665] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 339 538, 32 392 байт).
-[2026-09-26 23:30:37.665] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 371 930, 32 392 байт).
-[2026-09-26 23:30:37.665] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 404 322, 32 392 байт).
-[2026-09-26 23:30:37.665] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 436 714, 32 392 байт).
-[2026-09-26 23:30:37.666] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 469 106, 32 392 байт).
-[2026-09-26 23:30:37.666] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 501 498, 32 391 байт).
-[2026-09-26 23:30:37.666] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 533 889, 32 392 байт).
-[2026-09-26 23:30:37.666] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 566 281, 32 392 байт).
-[2026-09-26 23:30:37.668] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 598 673, 32 392 байт).
-[2026-09-26 23:30:37.668] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 631 065, 32 392 байт).
-[2026-09-26 23:30:37.668] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 663 457, 32 392 байт).
-[2026-09-26 23:30:37.668] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 695 849, 32 391 байт).
-[2026-09-26 23:30:37.668] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 728 240, 32 392 байт).
-[2026-09-26 23:30:37.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 760 632, 32 392 байт).
-[2026-09-26 23:30:37.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 793 024, 32 392 байт).
-[2026-09-26 23:30:37.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 825 416, 32 392 байт).
-[2026-09-26 23:30:37.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 857 808, 32 392 байт).
-[2026-09-26 23:30:37.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 890 200, 32 391 байт).
-[2026-09-26 23:30:37.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 922 591, 32 392 байт).
-[2026-09-26 23:30:37.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #3 (смещение 3 954 983, 32 392 байт).
-...
-[2026-09-26 23:30:37.673] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 906 885, 32 392 байт).
-[2026-09-26 23:30:37.673] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 939 277, 32 392 байт).
-[2026-09-26 23:30:37.673] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 971 669, 32 392 байт).
-[2026-09-26 23:30:37.673] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 004 061, 32 392 байт).
-[2026-09-26 23:30:37.673] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 036 453, 32 391 байт).
-[2026-09-26 23:30:37.673] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 068 844, 32 392 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 101 236, 32 392 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 133 628, 32 392 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 166 020, 32 392 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 198 412, 32 392 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 230 804, 12 076 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 242 880, 31 809 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 274 689, 32 392 байт).
-[2026-09-26 23:30:37.674] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 307 081, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 339 473, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 371 865, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 404 257, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 436 649, 32 391 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 469 040, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 501 432, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 533 824, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 566 216, 32 392 байт).
-[2026-09-26 23:30:37.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 598 608, 32 392 байт).
-[2026-09-26 23:30:37.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 631 000, 32 391 байт).
-[2026-09-26 23:30:37.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 663 391, 32 392 байт).
-[2026-09-26 23:30:37.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 695 783, 32 392 байт).
-[2026-09-26 23:30:37.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 728 175, 32 392 байт).
-[2026-09-26 23:30:37.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 760 567, 32 392 байт).
-[2026-09-26 23:30:37.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #5 (смещение 5 792 959, 32 392 байт).
-...
-[2026-09-26 23:30:37.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 003 996, 32 391 байт).
-[2026-09-26 23:30:37.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 036 387, 32 392 байт).
-[2026-09-26 23:30:37.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 068 779, 32 392 байт).
-[2026-09-26 23:30:37.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 101 171, 32 392 байт).
-[2026-09-26 23:30:37.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 133 563, 32 392 байт).
-[2026-09-26 23:30:37.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 165 955, 32 392 байт).
-[2026-09-26 23:30:37.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 198 347, 32 391 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 230 738, 32 392 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 263 130, 32 392 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 295 522, 32 392 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 327 914, 12 118 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 340 032, 31 768 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 371 800, 32 391 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 404 191, 32 392 байт).
-[2026-09-26 23:30:37.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 436 583, 32 392 байт).
-[2026-09-26 23:30:37.683] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 468 975, 32 392 байт).
-[2026-09-26 23:30:37.683] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 501 367, 32 392 байт).
-...
-[2026-09-26 23:30:37.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 680 012, 32 392 байт).
-[2026-09-26 23:30:37.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 712 404, 32 392 байт).
-[2026-09-26 23:30:37.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 744 796, 32 391 байт).
-[2026-09-26 23:30:37.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 777 187, 32 392 байт).
-[2026-09-26 23:30:37.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 809 579, 32 392 байт).
-[2026-09-26 23:30:37.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 841 971, 32 392 байт).
-[2026-09-26 23:30:37.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 874 363, 32 392 байт).
-[2026-09-26 23:30:37.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 906 755, 32 392 байт).
-[2026-09-26 23:30:37.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 939 147, 11 113 байт).
-[2026-09-26 23:30:37.689] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 17 428, 32 768 байт).
-[2026-09-26 23:30:37.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 50 196, 32 395 байт).
-[2026-09-26 23:30:37.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 82 591, 32 392 байт).
-[2026-09-26 23:30:37.697] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 114 983, 32 392 байт).
-[2026-09-26 23:30:37.700] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 147 375, 32 392 байт).
-[2026-09-26 23:30:37.703] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 179 767, 32 392 байт).
-...
-[2026-09-26 23:30:37.729] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 503 685, 32 392 байт).
-[2026-09-26 23:30:37.732] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 536 077, 32 392 байт).
-[2026-09-26 23:30:37.734] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 568 469, 32 392 байт).
-[2026-09-26 23:30:37.737] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 600 861, 32 392 байт).
-[2026-09-26 23:30:37.739] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 633 253, 32 391 байт).
-[2026-09-26 23:30:37.742] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 665 644, 32 392 байт).
-[2026-09-26 23:30:37.742] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,7 сек). Запуск скрытия оверлея...
-[2026-09-26 23:30:37.742] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Miley_Cyrus_-_Midnight_Sky.mp3'. Запуск _completionTimer...
-[2026-09-26 23:30:37.745] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 698 036, 32 392 байт).
-[2026-09-26 23:30:37.748] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 730 428, 32 392 байт).
-[2026-09-26 23:30:37.751] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 762 820, 32 392 байт).
-[2026-09-26 23:30:37.753] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 795 212, 32 392 байт).
-[2026-09-26 23:30:37.756] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 827 604, 32 392 байт).
-[2026-09-26 23:30:37.759] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 859 996, 32 391 байт).
-[2026-09-26 23:30:37.762] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 892 387, 32 392 байт).
-[2026-09-26 23:30:37.765] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 924 779, 32 392 байт).
-[2026-09-26 23:30:37.767] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 957 171, 32 392 байт).
-[2026-09-26 23:30:37.770] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 989 563, 32 392 байт).
-[2026-09-26 23:30:37.772] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #0 (смещение 1 021 955, 26 621 байт).
-[2026-09-26 23:30:37.774] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 048 576, 31 893 байт).
-[2026-09-26 23:30:37.777] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 080 469, 32 392 байт).
-[2026-09-26 23:30:37.780] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 112 861, 32 392 байт).
-[2026-09-26 23:30:37.783] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 145 253, 32 391 байт).
-[2026-09-26 23:30:37.785] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 177 644, 32 392 байт).
-[2026-09-26 23:30:37.788] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 210 036, 32 392 байт).
-[2026-09-26 23:30:37.790] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 242 428, 32 392 байт).
-[2026-09-26 23:30:37.793] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 274 820, 32 392 байт).
-[2026-09-26 23:30:37.796] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #1 (смещение 1 307 212, 32 392 байт).
-...
-[2026-09-26 23:30:37.913] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 744 991, 32 392 байт).
-[2026-09-26 23:30:37.916] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 777 383, 32 392 байт).
-[2026-09-26 23:30:37.918] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 809 775, 32 392 байт).
-[2026-09-26 23:30:37.921] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 842 167, 32 392 байт).
-[2026-09-26 23:30:37.923] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 874 559, 32 392 байт).
-[2026-09-26 23:30:37.926] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 906 951, 32 391 байт).
-[2026-09-26 23:30:37.929] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 939 342, 32 392 байт).
-[2026-09-26 23:30:37.932] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 2 971 734, 32 392 байт).
-[2026-09-26 23:30:37.934] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 3 004 126, 32 392 байт).
-[2026-09-26 23:30:37.937] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 3 036 518, 32 392 байт).
-[2026-09-26 23:30:37.940] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 3 068 910, 32 392 байт).
-[2026-09-26 23:30:37.942] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #2 (смещение 3 101 302, 32 391 байт).
-...
-[2026-09-26 23:30:38.074] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 744 926, 32 392 байт).
-[2026-09-26 23:30:38.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 777 318, 32 392 байт).
-[2026-09-26 23:30:38.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 809 710, 32 392 байт).
-[2026-09-26 23:30:38.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 842 102, 32 391 байт).
-[2026-09-26 23:30:38.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 874 493, 32 392 байт).
-[2026-09-26 23:30:38.087] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 906 885, 32 392 байт).
-[2026-09-26 23:30:38.089] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 939 277, 32 392 байт).
-[2026-09-26 23:30:38.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 4 971 669, 32 392 байт).
-[2026-09-26 23:30:38.095] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 004 061, 32 392 байт).
-[2026-09-26 23:30:38.098] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 036 453, 32 391 байт).
-[2026-09-26 23:30:38.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 068 844, 32 392 байт).
-[2026-09-26 23:30:38.103] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 101 236, 32 392 байт).
-[2026-09-26 23:30:38.106] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 133 628, 32 392 байт).
-[2026-09-26 23:30:38.108] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #4 (смещение 5 166 020, 32 392 байт).
-...
-[2026-09-26 23:30:38.264] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 068 779, 32 392 байт).
-[2026-09-26 23:30:38.266] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 101 171, 32 392 байт).
-[2026-09-26 23:30:38.269] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 133 563, 32 392 байт).
-[2026-09-26 23:30:38.271] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 165 955, 32 392 байт).
-[2026-09-26 23:30:38.274] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 198 347, 32 391 байт).
-[2026-09-26 23:30:38.277] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 230 738, 32 392 байт).
-[2026-09-26 23:30:38.280] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 263 130, 32 392 байт).
-[2026-09-26 23:30:38.282] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 295 522, 32 392 байт).
-[2026-09-26 23:30:38.285] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #6 (смещение 7 327 914, 12 118 байт).
-[2026-09-26 23:30:38.286] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 340 032, 31 768 байт).
-[2026-09-26 23:30:38.289] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 371 800, 32 391 байт).
-[2026-09-26 23:30:38.291] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 404 191, 32 392 байт).
-[2026-09-26 23:30:38.294] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 436 583, 32 392 байт).
-[2026-09-26 23:30:38.297] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 468 975, 32 392 байт).
-[2026-09-26 23:30:38.299] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 501 367, 32 392 байт).
-[2026-09-26 23:30:38.302] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 533 759, 32 392 байт).
-[2026-09-26 23:30:38.304] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #7 (смещение 7 566 151, 32 391 байт).
-...
-[2026-09-26 23:30:38.409] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 841 971, 32 392 байт).
-[2026-09-26 23:30:38.412] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 874 363, 32 392 байт).
-[2026-09-26 23:30:38.415] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 906 755, 32 392 байт).
-[2026-09-26 23:30:38.417] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 315): Глобальный Чанк #8 (смещение 8 939 147, 11 113 байт).
-[2026-09-26 23:30:39.150] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
-[2026-09-26 23:30:39.152] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-09-27 00:13:25.817] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #1CB9
+[2026-09-27 00:13:25.875] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:26Z
+[2026-09-27 00:13:25.876] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #1CB9
+[2026-09-27 00:13:25.882] [INFO ] [TelegramService] [MTProto] Запрос чанка для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): смещение 0, размер 262 144 байт (0 / 9 768 858 байт)...
+[2026-09-27 00:13:25.882] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:25Z (svc)
+[2026-09-27 00:13:25.882] [DEBUG] [WTelegram]             → Upload_GetFile                         #C35E
+[2026-09-27 00:13:25.882] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:26.101] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:25Z
+[2026-09-27 00:13:26.101] [DEBUG] [WTelegram]              → Upload_File                           #C35E
+[2026-09-27 00:13:26.104] [INFO ] [TelegramService] [MTProto] Получен чанк для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3': смещение 0, размер 262 144 байт, сохранен в RAM кэш.
+[2026-09-27 00:13:26.105] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Запрос метаданных] для Lady Gaga - Just Dance (feat. Colby O'Donis).mp3 (4/9768858)
+[2026-09-27 00:13:26.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 0, 65 536 байт).
+[2026-09-27 00:13:26.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 65 536, 65 536 байт).
+[2026-09-27 00:13:26.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 131 072, 65 536 байт).
+[2026-09-27 00:13:26.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 196 608, 65 536 байт).
+[2026-09-27 00:13:26.108] [INFO ] [TelegramService] [MTProto] Запрос чанка для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): смещение 0, размер 1 048 576 байт (262 144 / 9 768 858 байт)...
+[2026-09-27 00:13:26.108] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:25Z (svc)
+[2026-09-27 00:13:26.108] [DEBUG] [WTelegram]             → Upload_GetFile                         #100A
+[2026-09-27 00:13:26.108] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:26.303] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:25Z
+[2026-09-27 00:13:26.303] [DEBUG] [WTelegram]              → Upload_File                           #100A
+[2026-09-27 00:13:26.304] [INFO ] [TelegramService] [MTProto] Получен чанк для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3': смещение 0, размер 1 048 576 байт, сохранен в RAM кэш.
+[2026-09-27 00:13:26.304] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 327 680, 65 536 байт).
+[2026-09-27 00:13:26.304] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 393 216, 65 536 байт).
+[2026-09-27 00:13:26.305] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 458 752, 65 536 байт).
+[2026-09-27 00:13:26.305] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 524 288, 65 536 байт).
+[2026-09-27 00:13:26.305] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 589 824, 65 536 байт).
+[2026-09-27 00:13:26.305] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 655 360, 65 536 байт).
+[2026-09-27 00:13:26.305] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 720 896, 65 536 байт).
+[2026-09-27 00:13:26.306] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 786 432, 65 536 байт).
+[2026-09-27 00:13:26.306] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 851 968, 65 536 байт).
+[2026-09-27 00:13:26.306] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 917 504, 65 536 байт).
+[2026-09-27 00:13:26.307] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 983 040, 65 536 байт).
+[2026-09-27 00:13:26.310] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 3 145 728 байт (диапазон 4 194 304..7 340 032, чанки #4..#6) через 3 параллельных воркера MTProto...
+[2026-09-27 00:13:26.310] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 2 428 826 байт (диапазон 7 340 032..9 768 858, чанки #7..#9) через 3 параллельных воркера MTProto...
+[2026-09-27 00:13:26.310] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Старт скачивания 3 145 728 байт (диапазон 1 048 576..4 194 304, чанки #1..#3) через 3 параллельных воркера MTProto...
+[2026-09-27 00:13:26.314] [WARN ] [TelegramService] [Воркер #3] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
+[2026-09-27 00:13:26.314] [WARN ] [TelegramService] [Воркер #2] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
+[2026-09-27 00:13:26.314] [WARN ] [TelegramService] [Воркер #3] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
+[2026-09-27 00:13:26.314] [WARN ] [TelegramService] [Воркер #3] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
+[2026-09-27 00:13:26.314] [WARN ] [TelegramService] [Воркер #2] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
+[2026-09-27 00:13:26.314] [WARN ] [TelegramService] [Воркер #2] Ошибка инициализации независимого TCP-клиента (The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.), используем сессию DC основного клиента.
+[2026-09-27 00:13:26.315] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос Глобального Чанка #2 (смещение 2 097 152, размер 1024 КБ)...
+[2026-09-27 00:13:26.315] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:25Z (svc)
+[2026-09-27 00:13:26.315] [DEBUG] [WTelegram]             → Upload_GetFile                         #50F6
+[2026-09-27 00:13:26.315] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:26.425] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:25Z
+[2026-09-27 00:13:26.425] [DEBUG] [WTelegram]              → Upload_File                           #50F6
+[2026-09-27 00:13:26.426] [INFO ] [MtprotoWorkerPool] [Воркер #3] Успешно получен Глобальный Чанк #2 (1024 КБ за 110 мс).
+[2026-09-27 00:13:26.514] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос Глобального Чанка #5 (смещение 5 242 880, размер 1024 КБ)...
+[2026-09-27 00:13:26.515] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:25Z (svc)
+[2026-09-27 00:13:26.515] [DEBUG] [WTelegram]             → Upload_GetFile                         #E566
+[2026-09-27 00:13:26.515] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:26.596] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:25Z
+[2026-09-27 00:13:26.597] [DEBUG] [WTelegram]              → Upload_File                           #E566
+[2026-09-27 00:13:26.597] [INFO ] [MtprotoWorkerPool] [Воркер #3] Успешно получен Глобальный Чанк #5 (1024 КБ за 82 мс).
+[2026-09-27 00:13:26.718] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #7 (смещение 7 340 032, размер 1024 КБ)...
+[2026-09-27 00:13:26.719] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:25Z (svc)
+[2026-09-27 00:13:26.719] [DEBUG] [WTelegram]             → Upload_GetFile                         #EF96
+[2026-09-27 00:13:26.719] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:26.802] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:25Z
+[2026-09-27 00:13:26.802] [DEBUG] [WTelegram]              → Upload_File                           #EF96
+[2026-09-27 00:13:26.803] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #7 (1024 КБ за 84 мс).
+[2026-09-27 00:13:26.926] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос Глобального Чанка #3 (смещение 3 145 728, размер 1024 КБ)...
+[2026-09-27 00:13:26.927] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:26Z (svc)
+[2026-09-27 00:13:26.927] [DEBUG] [WTelegram]             → Upload_GetFile                         #1A2B
+[2026-09-27 00:13:26.927] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:27.019] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:26Z
+[2026-09-27 00:13:27.020] [DEBUG] [WTelegram]              → Upload_File                           #1A2B
+[2026-09-27 00:13:27.020] [INFO ] [MtprotoWorkerPool] [Воркер #2] Успешно получен Глобальный Чанк #3 (1024 КБ за 93 мс).
+[2026-09-27 00:13:27.134] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #4 (смещение 4 194 304, размер 1024 КБ)...
+[2026-09-27 00:13:27.134] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:26Z (svc)
+[2026-09-27 00:13:27.134] [DEBUG] [WTelegram]             → Upload_GetFile                         #84E3
+[2026-09-27 00:13:27.134] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:27.301] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:26Z
+[2026-09-27 00:13:27.301] [DEBUG] [WTelegram]              → Upload_File                           #84E3
+[2026-09-27 00:13:27.301] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #4 (1024 КБ за 167 мс).
+[2026-09-27 00:13:27.339] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос Глобального Чанка #6 (смещение 6 291 456, размер 1024 КБ)...
+[2026-09-27 00:13:27.340] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:26Z (svc)
+[2026-09-27 00:13:27.340] [DEBUG] [WTelegram]             → Upload_GetFile                         #F9A7
+[2026-09-27 00:13:27.340] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:27.440] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:26Z
+[2026-09-27 00:13:27.441] [DEBUG] [WTelegram]              → Upload_File                           #F9A7
+[2026-09-27 00:13:27.441] [INFO ] [MtprotoWorkerPool] [Воркер #2] Успешно получен Глобальный Чанк #6 (1024 КБ за 101 мс).
+[2026-09-27 00:13:27.546] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос Глобального Чанка #1 (смещение 1 048 576, размер 1024 КБ)...
+[2026-09-27 00:13:27.546] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:26Z (svc)
+[2026-09-27 00:13:27.546] [DEBUG] [WTelegram]             → Upload_GetFile                         #2C1F
+[2026-09-27 00:13:27.546] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:27.674] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:26Z
+[2026-09-27 00:13:27.674] [DEBUG] [WTelegram]              → Upload_File                           #2C1F
+[2026-09-27 00:13:27.675] [INFO ] [MtprotoWorkerPool] [Воркер #1] Успешно получен Глобальный Чанк #1 (1024 КБ за 128 мс).
+[2026-09-27 00:13:27.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 048 576, 65 536 байт).
+[2026-09-27 00:13:27.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 114 112, 65 536 байт).
+[2026-09-27 00:13:27.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 179 648, 65 536 байт).
+[2026-09-27 00:13:27.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 245 184, 65 536 байт).
+[2026-09-27 00:13:27.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 310 720, 65 536 байт).
+[2026-09-27 00:13:27.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 376 256, 65 536 байт).
+[2026-09-27 00:13:27.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 441 792, 65 536 байт).
+[2026-09-27 00:13:27.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 507 328, 65 536 байт).
+[2026-09-27 00:13:27.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 572 864, 65 536 байт).
+[2026-09-27 00:13:27.676] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 638 400, 65 536 байт).
+[2026-09-27 00:13:27.677] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 703 936, 65 536 байт).
+[2026-09-27 00:13:27.677] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 769 472, 65 536 байт).
+[2026-09-27 00:13:27.677] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 835 008, 65 536 байт).
+[2026-09-27 00:13:27.677] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 900 544, 65 536 байт).
+[2026-09-27 00:13:27.677] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 966 080, 65 536 байт).
+[2026-09-27 00:13:27.677] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 2 031 616, 65 536 байт).
+[2026-09-27 00:13:27.678] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 097 152, 65 536 байт).
+[2026-09-27 00:13:27.678] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 162 688, 65 536 байт).
+[2026-09-27 00:13:27.678] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 228 224, 65 536 байт).
+[2026-09-27 00:13:27.678] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 293 760, 65 536 байт).
+[2026-09-27 00:13:27.679] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 359 296, 65 536 байт).
+[2026-09-27 00:13:27.679] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 424 832, 65 536 байт).
+[2026-09-27 00:13:27.679] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 490 368, 65 536 байт).
+[2026-09-27 00:13:27.679] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 555 904, 65 536 байт).
+[2026-09-27 00:13:27.679] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 621 440, 65 536 байт).
+[2026-09-27 00:13:27.679] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 686 976, 65 536 байт).
+[2026-09-27 00:13:27.679] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 752 512, 65 536 байт).
+[2026-09-27 00:13:27.680] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 818 048, 65 536 байт).
+[2026-09-27 00:13:27.680] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 883 584, 65 536 байт).
+[2026-09-27 00:13:27.680] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 949 120, 65 536 байт).
+[2026-09-27 00:13:27.680] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 014 656, 65 536 байт).
+[2026-09-27 00:13:27.680] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 080 192, 65 536 байт).
+[2026-09-27 00:13:27.680] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 145 728, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 211 264, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 276 800, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 342 336, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 407 872, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 473 408, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 538 944, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 604 480, 65 536 байт).
+[2026-09-27 00:13:27.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 670 016, 65 536 байт).
+[2026-09-27 00:13:27.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 735 552, 65 536 байт).
+[2026-09-27 00:13:27.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 801 088, 65 536 байт).
+[2026-09-27 00:13:27.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 866 624, 65 536 байт).
+[2026-09-27 00:13:27.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 932 160, 65 536 байт).
+[2026-09-27 00:13:27.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 997 696, 65 536 байт).
+[2026-09-27 00:13:27.682] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 063 232, 65 536 байт).
+[2026-09-27 00:13:27.683] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 128 768, 65 536 байт).
+[2026-09-27 00:13:27.684] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 194 304, 65 536 байт).
+[2026-09-27 00:13:27.684] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 259 840, 65 536 байт).
+[2026-09-27 00:13:27.684] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 325 376, 65 536 байт).
+[2026-09-27 00:13:27.685] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 390 912, 65 536 байт).
+[2026-09-27 00:13:27.685] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 456 448, 65 536 байт).
+[2026-09-27 00:13:27.685] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 521 984, 65 536 байт).
+[2026-09-27 00:13:27.685] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 587 520, 65 536 байт).
+[2026-09-27 00:13:27.686] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 653 056, 65 536 байт).
+[2026-09-27 00:13:27.686] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 718 592, 65 536 байт).
+[2026-09-27 00:13:27.686] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 784 128, 65 536 байт).
+[2026-09-27 00:13:27.686] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 849 664, 65 536 байт).
+[2026-09-27 00:13:27.686] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 915 200, 65 536 байт).
+[2026-09-27 00:13:27.686] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 980 736, 65 536 байт).
+[2026-09-27 00:13:27.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 046 272, 65 536 байт).
+[2026-09-27 00:13:27.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 111 808, 65 536 байт).
+[2026-09-27 00:13:27.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 177 344, 65 536 байт).
+[2026-09-27 00:13:27.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 242 880, 65 536 байт).
+[2026-09-27 00:13:27.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 308 416, 65 536 байт).
+[2026-09-27 00:13:27.687] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 373 952, 65 536 байт).
+[2026-09-27 00:13:27.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 439 488, 65 536 байт).
+[2026-09-27 00:13:27.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 505 024, 65 536 байт).
+[2026-09-27 00:13:27.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 570 560, 65 536 байт).
+[2026-09-27 00:13:27.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 636 096, 65 536 байт).
+[2026-09-27 00:13:27.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 701 632, 65 536 байт).
+[2026-09-27 00:13:27.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 767 168, 65 536 байт).
+[2026-09-27 00:13:27.688] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 832 704, 65 536 байт).
+[2026-09-27 00:13:27.689] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 898 240, 65 536 байт).
+[2026-09-27 00:13:27.689] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 963 776, 65 536 байт).
+[2026-09-27 00:13:27.689] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 029 312, 65 536 байт).
+[2026-09-27 00:13:27.689] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 094 848, 65 536 байт).
+[2026-09-27 00:13:27.689] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 160 384, 65 536 байт).
+[2026-09-27 00:13:27.690] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 225 920, 65 536 байт).
+[2026-09-27 00:13:27.690] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 291 456, 65 536 байт).
+[2026-09-27 00:13:27.690] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 356 992, 65 536 байт).
+[2026-09-27 00:13:27.690] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 422 528, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 488 064, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 553 600, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 619 136, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 684 672, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 750 208, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 815 744, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 881 280, 65 536 байт).
+[2026-09-27 00:13:27.691] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 946 816, 65 536 байт).
+[2026-09-27 00:13:27.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 012 352, 65 536 байт).
+[2026-09-27 00:13:27.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 077 888, 65 536 байт).
+[2026-09-27 00:13:27.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 143 424, 65 536 байт).
+[2026-09-27 00:13:27.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 208 960, 65 536 байт).
+[2026-09-27 00:13:27.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 274 496, 65 536 байт).
+[2026-09-27 00:13:27.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 340 032, 65 536 байт).
+[2026-09-27 00:13:27.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 405 568, 65 536 байт).
+[2026-09-27 00:13:27.693] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 471 104, 65 536 байт).
+[2026-09-27 00:13:27.693] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 536 640, 65 536 байт).
+[2026-09-27 00:13:27.693] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 602 176, 65 536 байт).
+[2026-09-27 00:13:27.693] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 667 712, 65 536 байт).
+[2026-09-27 00:13:27.693] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 733 248, 65 536 байт).
+[2026-09-27 00:13:27.693] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 798 784, 65 536 байт).
+[2026-09-27 00:13:27.693] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 864 320, 65 536 байт).
+[2026-09-27 00:13:27.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 929 856, 65 536 байт).
+[2026-09-27 00:13:27.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 995 392, 65 536 байт).
+[2026-09-27 00:13:27.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 060 928, 65 536 байт).
+[2026-09-27 00:13:27.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 126 464, 65 536 байт).
+[2026-09-27 00:13:27.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 192 000, 65 536 байт).
+[2026-09-27 00:13:27.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 257 536, 65 536 байт).
+[2026-09-27 00:13:27.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 323 072, 65 536 байт).
+[2026-09-27 00:13:27.753] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос Глобального Чанка #8 (смещение 8 388 608, размер 1024 КБ)...
+[2026-09-27 00:13:27.754] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:26Z (svc)
+[2026-09-27 00:13:27.754] [DEBUG] [WTelegram]             → Upload_GetFile                         #91C3
+[2026-09-27 00:13:27.754] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:27.844] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:26Z
+[2026-09-27 00:13:27.845] [DEBUG] [WTelegram]              → Upload_File                           #91C3
+[2026-09-27 00:13:27.845] [INFO ] [MtprotoWorkerPool] [Воркер #2] Успешно получен Глобальный Чанк #8 (1024 КБ за 91 мс).
+[2026-09-27 00:13:27.845] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 388 608, 65 536 байт).
+[2026-09-27 00:13:27.845] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 454 144, 65 536 байт).
+[2026-09-27 00:13:27.846] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 519 680, 65 536 байт).
+[2026-09-27 00:13:27.846] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 585 216, 65 536 байт).
+[2026-09-27 00:13:27.846] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 650 752, 65 536 байт).
+[2026-09-27 00:13:27.846] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 716 288, 65 536 байт).
+[2026-09-27 00:13:27.846] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 781 824, 65 536 байт).
+[2026-09-27 00:13:27.846] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 847 360, 65 536 байт).
+[2026-09-27 00:13:27.846] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 912 896, 65 536 байт).
+[2026-09-27 00:13:27.847] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 978 432, 65 536 байт).
+[2026-09-27 00:13:27.847] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 043 968, 65 536 байт).
+[2026-09-27 00:13:27.847] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 109 504, 65 536 байт).
+[2026-09-27 00:13:27.847] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 175 040, 65 536 байт).
+[2026-09-27 00:13:27.847] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 240 576, 65 536 байт).
+[2026-09-27 00:13:27.847] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 306 112, 65 536 байт).
+[2026-09-27 00:13:27.847] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 371 648, 65 536 байт).
+[2026-09-27 00:13:27.960] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос Глобального Чанка #9 (смещение 9 437 184, размер 1024 КБ)...
+[2026-09-27 00:13:27.960] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,7 сек). Запуск скрытия оверлея...
+[2026-09-27 00:13:27.960] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-26 21:13:27Z (svc)
+[2026-09-27 00:13:27.960] [DEBUG] [WTelegram]             → Upload_GetFile                         #A974
+[2026-09-27 00:13:27.960] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-27 00:13:27.961] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.023] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-26 21:13:27Z
+[2026-09-27 00:13:28.023] [DEBUG] [WTelegram]              → Upload_File                           #A974
+[2026-09-27 00:13:28.023] [INFO ] [MtprotoWorkerPool] [Воркер #3] Успешно получен Глобальный Чанк #9 (323 КБ за 63 мс).
+[2026-09-27 00:13:28.023] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 437 184, 65 536 байт).
+[2026-09-27 00:13:28.024] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 502 720, 65 536 байт).
+[2026-09-27 00:13:28.024] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 568 256, 65 536 байт).
+[2026-09-27 00:13:28.024] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 633 792, 65 536 байт).
+[2026-09-27 00:13:28.024] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 699 328, 65 536 байт).
+[2026-09-27 00:13:28.025] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 764 864, 3 994 байт).
+[2026-09-27 00:13:28.025] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3': Размер: 9 768 858 б (9,32 МБ) | Из сети TG: 10 031 002 б (9,57 МБ) | Из ОЗУ: 9 703 322 б (9,25 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
+[2026-09-27 00:13:28.025] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.025] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.036] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 0, 262 144 байт).
+[2026-09-27 00:13:28.036] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 768 730, 128 байт).
+[2026-09-27 00:13:28.036] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.036] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 768 715, 143 байт).
+[2026-09-27 00:13:28.037] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.037] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.037] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 765 762, 3 096 байт).
+[2026-09-27 00:13:28.037] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.037] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 0, 262 144 байт).
+[2026-09-27 00:13:28.037] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 768 730, 128 байт).
+[2026-09-27 00:13:28.037] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.038] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 768 715, 143 байт).
+[2026-09-27 00:13:28.038] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.038] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 765 730, 3 128 байт).
+[2026-09-27 00:13:28.038] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.038] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.038] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 97 203, 164 941 байт).
+[2026-09-27 00:13:28.039] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.040] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.040] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.041] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.071] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 0, 4 байт).
+[2026-09-27 00:13:28.071] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 0, 40 байт).
+[2026-09-27 00:13:28.072] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 0, 4 096 байт).
+[2026-09-27 00:13:28.072] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 4 096, 93 107 байт).
+[2026-09-27 00:13:28.072] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 97 203, 4 096 байт).
+[2026-09-27 00:13:28.072] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 768 715, 143 байт).
+[2026-09-27 00:13:28.072] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.073] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.073] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 765 762, 3 096 байт).
+[2026-09-27 00:13:28.073] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.073] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 765 752, 3 106 байт).
+[2026-09-27 00:13:28.073] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.073] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 765 730, 3 128 байт).
+[2026-09-27 00:13:28.073] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' получено из TelegramService.
+[2026-09-27 00:13:28.073] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 97 203, 4 096 байт).
+[2026-09-27 00:13:28.073] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 101 299, 28 672 байт).
+[2026-09-27 00:13:28.073] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 97 203, 32 768 байт).
+[2026-09-27 00:13:28.074] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 129 971, 32 368 байт).
+[2026-09-27 00:13:28.074] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 162 339, 32 364 байт).
+[2026-09-27 00:13:28.074] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 194 703, 32 364 байт).
+[2026-09-27 00:13:28.074] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.074] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 227 067, 32 364 байт).
+[2026-09-27 00:13:28.074] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 259 431, 2 713 байт).
+[2026-09-27 00:13:28.074] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 262 144, 31 739 байт).
+[2026-09-27 00:13:28.075] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 293 883, 32 364 байт).
+[2026-09-27 00:13:28.075] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 326 247, 32 364 байт).
+[2026-09-27 00:13:28.075] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 358 611, 32 364 байт).
+[2026-09-27 00:13:28.075] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 390 975, 32 364 байт).
+[2026-09-27 00:13:28.075] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 423 339, 32 364 байт).
+[2026-09-27 00:13:28.075] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 455 703, 32 364 байт).
+[2026-09-27 00:13:28.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 488 067, 32 364 байт).
+[2026-09-27 00:13:28.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 520 431, 32 364 байт).
+[2026-09-27 00:13:28.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 552 795, 32 364 байт).
+[2026-09-27 00:13:28.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 585 159, 32 364 байт).
+[2026-09-27 00:13:28.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 617 523, 32 364 байт).
+[2026-09-27 00:13:28.076] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 649 887, 32 364 байт).
+[2026-09-27 00:13:28.076] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.077] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 682 251, 32 364 байт).
+[2026-09-27 00:13:28.077] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 714 615, 32 364 байт).
+[2026-09-27 00:13:28.077] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 746 979, 32 364 байт).
+[2026-09-27 00:13:28.077] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 779 343, 32 364 байт).
+[2026-09-27 00:13:28.077] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 811 707, 32 364 байт).
+[2026-09-27 00:13:28.077] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3'. Запуск _completionTimer...
+[2026-09-27 00:13:28.078] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 844 071, 32 364 байт).
+[2026-09-27 00:13:28.078] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 876 435, 32 364 байт).
+[2026-09-27 00:13:28.078] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 908 799, 32 364 байт).
+[2026-09-27 00:13:28.078] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 941 163, 32 364 байт).
+[2026-09-27 00:13:28.078] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 973 527, 32 364 байт).
+[2026-09-27 00:13:28.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 1 005 891, 32 364 байт).
+[2026-09-27 00:13:28.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 1 038 255, 10 321 байт).
+[2026-09-27 00:13:28.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 048 576, 32 483 байт).
+[2026-09-27 00:13:28.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 081 059, 32 364 байт).
+[2026-09-27 00:13:28.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 113 423, 32 364 байт).
+[2026-09-27 00:13:28.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 145 787, 32 364 байт).
+[2026-09-27 00:13:28.079] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 178 151, 32 364 байт).
+[2026-09-27 00:13:28.080] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 210 515, 32 364 байт).
+[2026-09-27 00:13:28.080] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 242 879, 32 364 байт).
+[2026-09-27 00:13:28.080] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 275 243, 32 364 байт).
+[2026-09-27 00:13:28.080] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 307 607, 32 364 байт).
+[2026-09-27 00:13:28.080] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 339 971, 32 364 байт).
+[2026-09-27 00:13:28.080] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 372 335, 32 364 байт).
+[2026-09-27 00:13:28.080] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 404 699, 32 364 байт).
+[2026-09-27 00:13:28.081] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 437 063, 32 364 байт).
+[2026-09-27 00:13:28.081] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 469 427, 32 364 байт).
+[2026-09-27 00:13:28.081] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 501 791, 32 364 байт).
+[2026-09-27 00:13:28.081] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 534 155, 32 364 байт).
+[2026-09-27 00:13:28.081] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 566 519, 32 364 байт).
+[2026-09-27 00:13:28.081] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 598 883, 32 364 байт).
+[2026-09-27 00:13:28.081] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 631 247, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 663 611, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 695 975, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 728 339, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 760 703, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 793 067, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 825 431, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 857 795, 32 364 байт).
+[2026-09-27 00:13:28.082] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 890 159, 32 364 байт).
+[2026-09-27 00:13:28.083] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 922 523, 32 364 байт).
+[2026-09-27 00:13:28.083] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 954 887, 32 364 байт).
+[2026-09-27 00:13:28.083] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 987 251, 32 364 байт).
+[2026-09-27 00:13:28.083] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 2 019 615, 32 364 байт).
+[2026-09-27 00:13:28.083] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 2 051 979, 32 364 байт).
+[2026-09-27 00:13:28.083] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 2 084 343, 12 809 байт).
+[2026-09-27 00:13:28.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 097 152, 32 083 байт).
+[2026-09-27 00:13:28.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 129 235, 32 364 байт).
+[2026-09-27 00:13:28.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 161 599, 32 364 байт).
+[2026-09-27 00:13:28.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 193 963, 32 364 байт).
+[2026-09-27 00:13:28.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 226 327, 32 364 байт).
+[2026-09-27 00:13:28.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 258 691, 32 364 байт).
+[2026-09-27 00:13:28.084] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 291 055, 32 364 байт).
+[2026-09-27 00:13:28.085] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 323 419, 32 364 байт).
+[2026-09-27 00:13:28.085] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 355 783, 32 364 байт).
+[2026-09-27 00:13:28.085] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 388 147, 32 364 байт).
+[2026-09-27 00:13:28.085] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 420 511, 32 364 байт).
+[2026-09-27 00:13:28.085] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 452 875, 32 364 байт).
+[2026-09-27 00:13:28.085] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 485 239, 32 364 байт).
+[2026-09-27 00:13:28.086] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 517 603, 32 364 байт).
+[2026-09-27 00:13:28.086] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 549 967, 32 364 байт).
+[2026-09-27 00:13:28.086] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 582 331, 32 364 байт).
+[2026-09-27 00:13:28.086] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 614 695, 32 364 байт).
+[2026-09-27 00:13:28.087] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 647 059, 32 364 байт).
+[2026-09-27 00:13:28.087] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 679 423, 32 364 байт).
+[2026-09-27 00:13:28.087] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 711 787, 32 364 байт).
+[2026-09-27 00:13:28.087] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 744 151, 32 364 байт).
+[2026-09-27 00:13:28.087] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 776 515, 32 364 байт).
+[2026-09-27 00:13:28.087] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 808 879, 32 364 байт).
+[2026-09-27 00:13:28.088] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 841 243, 32 364 байт).
+[2026-09-27 00:13:28.088] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 873 607, 32 364 байт).
+[2026-09-27 00:13:28.088] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 905 971, 32 364 байт).
+[2026-09-27 00:13:28.088] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 938 335, 32 364 байт).
+[2026-09-27 00:13:28.088] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 970 699, 32 364 байт).
+[2026-09-27 00:13:28.089] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 003 063, 32 364 байт).
+[2026-09-27 00:13:28.089] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 035 427, 32 364 байт).
+[2026-09-27 00:13:28.089] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 067 791, 32 364 байт).
+[2026-09-27 00:13:28.089] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 100 155, 32 364 байт).
+[2026-09-27 00:13:28.089] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 132 519, 13 209 байт).
+[2026-09-27 00:13:28.089] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 145 728, 32 727 байт).
+[2026-09-27 00:13:28.090] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 178 455, 32 364 байт).
+[2026-09-27 00:13:28.090] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 210 819, 32 364 байт).
+[2026-09-27 00:13:28.090] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 243 183, 32 364 байт).
+[2026-09-27 00:13:28.090] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 275 547, 32 364 байт).
+[2026-09-27 00:13:28.090] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 307 911, 32 364 байт).
+[2026-09-27 00:13:28.090] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 340 275, 32 364 байт).
+[2026-09-27 00:13:28.090] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 372 639, 32 364 байт).
+[2026-09-27 00:13:28.091] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 405 003, 32 364 байт).
+[2026-09-27 00:13:28.091] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 437 367, 32 364 байт).
+[2026-09-27 00:13:28.091] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 469 731, 32 364 байт).
+[2026-09-27 00:13:28.091] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 502 095, 32 364 байт).
+[2026-09-27 00:13:28.091] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 534 459, 32 364 байт).
+[2026-09-27 00:13:28.091] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 566 823, 32 364 байт).
+[2026-09-27 00:13:28.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 599 187, 32 364 байт).
+[2026-09-27 00:13:28.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 631 551, 32 364 байт).
+[2026-09-27 00:13:28.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 663 915, 32 364 байт).
+[2026-09-27 00:13:28.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 696 279, 32 364 байт).
+[2026-09-27 00:13:28.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 728 643, 32 364 байт).
+[2026-09-27 00:13:28.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 761 007, 32 364 байт).
+[2026-09-27 00:13:28.092] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 793 371, 32 364 байт).
+[2026-09-27 00:13:28.093] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 825 735, 32 364 байт).
+[2026-09-27 00:13:28.093] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 858 099, 32 364 байт).
+[2026-09-27 00:13:28.093] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 890 463, 32 364 байт).
+[2026-09-27 00:13:28.093] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 922 827, 32 364 байт).
+[2026-09-27 00:13:28.093] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 955 191, 32 364 байт).
+[2026-09-27 00:13:28.093] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 987 555, 32 364 байт).
+[2026-09-27 00:13:28.093] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 019 919, 32 364 байт).
+[2026-09-27 00:13:28.094] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 052 283, 32 364 байт).
+[2026-09-27 00:13:28.094] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 084 647, 32 364 байт).
+[2026-09-27 00:13:28.094] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 117 011, 32 364 байт).
+[2026-09-27 00:13:28.094] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 149 375, 32 364 байт).
+[2026-09-27 00:13:28.094] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 181 739, 12 565 байт).
+[2026-09-27 00:13:28.094] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 194 304, 32 327 байт).
+[2026-09-27 00:13:28.095] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 226 631, 32 364 байт).
+[2026-09-27 00:13:28.095] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 258 995, 32 364 байт).
+[2026-09-27 00:13:28.095] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 291 359, 32 364 байт).
+[2026-09-27 00:13:28.095] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 323 723, 32 364 байт).
+[2026-09-27 00:13:28.095] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 356 087, 32 364 байт).
+[2026-09-27 00:13:28.095] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 388 451, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 420 815, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 453 179, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 485 543, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 517 907, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 550 271, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 582 635, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 614 999, 32 364 байт).
+[2026-09-27 00:13:28.096] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 647 363, 32 364 байт).
+[2026-09-27 00:13:28.097] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 679 727, 32 364 байт).
+[2026-09-27 00:13:28.097] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 712 091, 32 364 байт).
+[2026-09-27 00:13:28.097] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 744 455, 32 364 байт).
+[2026-09-27 00:13:28.097] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 776 819, 32 364 байт).
+[2026-09-27 00:13:28.097] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 809 183, 32 364 байт).
+[2026-09-27 00:13:28.097] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 841 547, 32 364 байт).
+[2026-09-27 00:13:28.097] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 873 911, 32 364 байт).
+[2026-09-27 00:13:28.098] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 906 275, 32 364 байт).
+[2026-09-27 00:13:28.098] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 938 639, 32 364 байт).
+[2026-09-27 00:13:28.098] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 971 003, 32 364 байт).
+[2026-09-27 00:13:28.098] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 003 367, 32 364 байт).
+[2026-09-27 00:13:28.098] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 035 731, 32 364 байт).
+[2026-09-27 00:13:28.098] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 068 095, 32 364 байт).
+[2026-09-27 00:13:28.099] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 100 459, 32 364 байт).
+[2026-09-27 00:13:28.099] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 132 823, 32 364 байт).
+[2026-09-27 00:13:28.099] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 165 187, 32 364 байт).
+[2026-09-27 00:13:28.099] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 197 551, 32 364 байт).
+[2026-09-27 00:13:28.099] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 229 915, 12 965 байт).
+[2026-09-27 00:13:28.099] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 242 880, 31 927 байт).
+[2026-09-27 00:13:28.099] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 274 807, 32 364 байт).
+[2026-09-27 00:13:28.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 307 171, 32 364 байт).
+[2026-09-27 00:13:28.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 339 535, 32 364 байт).
+[2026-09-27 00:13:28.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 371 899, 32 364 байт).
+[2026-09-27 00:13:28.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 404 263, 32 364 байт).
+[2026-09-27 00:13:28.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 436 627, 32 364 байт).
+[2026-09-27 00:13:28.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 468 991, 32 364 байт).
+[2026-09-27 00:13:28.100] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 501 355, 32 364 байт).
+[2026-09-27 00:13:28.101] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 533 719, 32 364 байт).
+[2026-09-27 00:13:28.101] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 566 083, 32 364 байт).
+[2026-09-27 00:13:28.101] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 598 447, 32 364 байт).
+[2026-09-27 00:13:28.101] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 630 811, 32 364 байт).
+[2026-09-27 00:13:28.101] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 663 175, 32 364 байт).
+[2026-09-27 00:13:28.101] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 695 539, 32 364 байт).
+[2026-09-27 00:13:28.101] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 727 903, 32 364 байт).
+[2026-09-27 00:13:28.102] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 760 267, 32 364 байт).
+[2026-09-27 00:13:28.102] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 792 631, 32 364 байт).
+[2026-09-27 00:13:28.102] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 824 995, 32 364 байт).
+[2026-09-27 00:13:28.102] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 857 359, 32 364 байт).
+[2026-09-27 00:13:28.102] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 889 723, 32 364 байт).
+[2026-09-27 00:13:28.102] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 922 087, 32 364 байт).
+[2026-09-27 00:13:28.103] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 954 451, 32 364 байт).
+[2026-09-27 00:13:28.103] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 986 815, 32 364 байт).
+[2026-09-27 00:13:28.103] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 019 179, 32 364 байт).
+[2026-09-27 00:13:28.103] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 051 543, 32 364 байт).
+[2026-09-27 00:13:28.103] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 083 907, 32 364 байт).
+[2026-09-27 00:13:28.104] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 116 271, 32 364 байт).
+[2026-09-27 00:13:28.104] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 148 635, 32 364 байт).
+[2026-09-27 00:13:28.104] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 180 999, 32 364 байт).
+[2026-09-27 00:13:28.104] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 213 363, 32 364 байт).
+[2026-09-27 00:13:28.104] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 245 727, 32 364 байт).
+[2026-09-27 00:13:28.105] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 278 091, 13 365 байт).
+[2026-09-27 00:13:28.105] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 291 456, 32 571 байт).
+[2026-09-27 00:13:28.105] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 324 027, 32 364 байт).
+[2026-09-27 00:13:28.105] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 356 391, 32 364 байт).
+[2026-09-27 00:13:28.105] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 388 755, 32 364 байт).
+[2026-09-27 00:13:28.106] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 421 119, 32 364 байт).
+[2026-09-27 00:13:28.106] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 453 483, 32 364 байт).
+[2026-09-27 00:13:28.106] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 485 847, 32 364 байт).
+[2026-09-27 00:13:28.106] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 518 211, 32 364 байт).
+[2026-09-27 00:13:28.106] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 550 575, 32 364 байт).
+[2026-09-27 00:13:28.106] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 582 939, 32 364 байт).
+[2026-09-27 00:13:28.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 615 303, 32 364 байт).
+[2026-09-27 00:13:28.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 647 667, 32 364 байт).
+[2026-09-27 00:13:28.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 680 031, 32 364 байт).
+[2026-09-27 00:13:28.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 712 395, 32 364 байт).
+[2026-09-27 00:13:28.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 744 759, 32 364 байт).
+[2026-09-27 00:13:28.107] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 777 123, 32 364 байт).
+[2026-09-27 00:13:28.108] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 809 487, 32 364 байт).
+[2026-09-27 00:13:28.110] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 841 851, 32 364 байт).
+[2026-09-27 00:13:28.110] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 874 215, 32 364 байт).
+[2026-09-27 00:13:28.110] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 906 579, 32 364 байт).
+[2026-09-27 00:13:28.110] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 938 943, 32 364 байт).
+[2026-09-27 00:13:28.110] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 971 307, 32 364 байт).
+[2026-09-27 00:13:28.110] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 003 671, 32 364 байт).
+[2026-09-27 00:13:28.110] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 036 035, 32 364 байт).
+[2026-09-27 00:13:28.111] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 068 399, 32 364 байт).
+[2026-09-27 00:13:28.111] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 100 763, 32 364 байт).
+[2026-09-27 00:13:28.111] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 133 127, 32 364 байт).
+[2026-09-27 00:13:28.111] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 165 491, 32 364 байт).
+[2026-09-27 00:13:28.111] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 197 855, 32 364 байт).
+[2026-09-27 00:13:28.111] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 230 219, 32 364 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 262 583, 32 364 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 294 947, 32 364 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 327 311, 12 721 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 340 032, 32 171 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 372 203, 32 364 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 404 567, 32 364 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 436 931, 32 364 байт).
+[2026-09-27 00:13:28.112] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 469 295, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 501 659, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 534 023, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 566 387, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 598 751, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 631 115, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 663 479, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 695 843, 32 364 байт).
+[2026-09-27 00:13:28.113] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 728 207, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 760 571, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 792 935, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 825 299, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 857 663, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 890 027, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 922 391, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 954 755, 32 364 байт).
+[2026-09-27 00:13:28.114] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 987 119, 32 364 байт).
+[2026-09-27 00:13:28.115] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 019 483, 32 364 байт).
+[2026-09-27 00:13:28.115] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 051 847, 32 364 байт).
+[2026-09-27 00:13:28.115] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 084 211, 32 364 байт).
+[2026-09-27 00:13:28.115] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 116 575, 32 364 байт).
+[2026-09-27 00:13:28.115] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 148 939, 32 364 байт).
+[2026-09-27 00:13:28.115] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 181 303, 32 364 байт).
+[2026-09-27 00:13:28.115] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 213 667, 32 364 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 246 031, 32 364 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 278 395, 32 364 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 310 759, 32 364 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 343 123, 32 364 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 375 487, 13 121 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 388 608, 31 771 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 420 379, 32 364 байт).
+[2026-09-27 00:13:28.116] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 452 743, 32 364 байт).
+[2026-09-27 00:13:28.117] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 485 107, 32 364 байт).
+[2026-09-27 00:13:28.117] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 517 471, 32 364 байт).
+[2026-09-27 00:13:28.117] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 549 835, 32 364 байт).
+[2026-09-27 00:13:28.117] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 582 199, 32 364 байт).
+[2026-09-27 00:13:28.117] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 614 563, 32 364 байт).
+[2026-09-27 00:13:28.117] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 646 927, 32 364 байт).
+[2026-09-27 00:13:28.117] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 679 291, 32 364 байт).
+[2026-09-27 00:13:28.118] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 711 655, 32 364 байт).
+[2026-09-27 00:13:28.118] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 744 019, 32 364 байт).
+[2026-09-27 00:13:28.118] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 776 383, 32 364 байт).
+[2026-09-27 00:13:28.118] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 808 747, 32 364 байт).
+[2026-09-27 00:13:28.118] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 841 111, 32 364 байт).
+[2026-09-27 00:13:28.119] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 873 475, 32 364 байт).
+[2026-09-27 00:13:28.119] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 905 839, 32 364 байт).
+[2026-09-27 00:13:28.119] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 938 203, 32 364 байт).
+[2026-09-27 00:13:28.119] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 970 567, 32 364 байт).
+[2026-09-27 00:13:28.119] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 002 931, 32 364 байт).
+[2026-09-27 00:13:28.119] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 035 295, 32 364 байт).
+[2026-09-27 00:13:28.119] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 067 659, 32 364 байт).
+[2026-09-27 00:13:28.120] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 100 023, 32 364 байт).
+[2026-09-27 00:13:28.120] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 132 387, 32 364 байт).
+[2026-09-27 00:13:28.120] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 164 751, 32 364 байт).
+[2026-09-27 00:13:28.120] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 197 115, 32 364 байт).
+[2026-09-27 00:13:28.120] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 229 479, 32 364 байт).
+[2026-09-27 00:13:28.120] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 261 843, 32 364 байт).
+[2026-09-27 00:13:28.120] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 294 207, 32 364 байт).
+[2026-09-27 00:13:28.121] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 326 571, 32 364 байт).
+[2026-09-27 00:13:28.121] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 358 935, 32 364 байт).
+[2026-09-27 00:13:28.121] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 391 299, 32 364 байт).
+[2026-09-27 00:13:28.121] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 423 663, 13 521 байт).
+[2026-09-27 00:13:28.121] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 437 184, 32 415 байт).
+[2026-09-27 00:13:28.121] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 469 599, 32 364 байт).
+[2026-09-27 00:13:28.122] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 501 963, 32 364 байт).
+[2026-09-27 00:13:28.122] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 534 327, 32 364 байт).
+[2026-09-27 00:13:28.122] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 566 691, 32 364 байт).
+[2026-09-27 00:13:28.122] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 599 055, 32 364 байт).
+[2026-09-27 00:13:28.122] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 631 419, 32 364 байт).
+[2026-09-27 00:13:28.122] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 663 783, 32 364 байт).
+[2026-09-27 00:13:28.122] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 696 147, 32 364 байт).
+[2026-09-27 00:13:28.123] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 728 511, 32 364 байт).
+[2026-09-27 00:13:28.123] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 760 875, 4 887 байт).
+[2026-09-27 00:13:28.124] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 97 203, 32 768 байт).
+[2026-09-27 00:13:28.127] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 129 971, 32 368 байт).
+[2026-09-27 00:13:28.130] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 162 339, 32 364 байт).
+[2026-09-27 00:13:28.132] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 194 703, 32 364 байт).
+[2026-09-27 00:13:28.135] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 227 067, 32 364 байт).
+[2026-09-27 00:13:28.137] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 259 431, 2 713 байт).
+[2026-09-27 00:13:28.137] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 262 144, 31 739 байт).
+[2026-09-27 00:13:28.140] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 293 883, 32 364 байт).
+[2026-09-27 00:13:28.143] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 326 247, 32 364 байт).
+[2026-09-27 00:13:28.146] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 358 611, 32 364 байт).
+[2026-09-27 00:13:28.148] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 390 975, 32 364 байт).
+[2026-09-27 00:13:28.151] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 423 339, 32 364 байт).
+[2026-09-27 00:13:28.154] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 455 703, 32 364 байт).
+[2026-09-27 00:13:28.157] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 488 067, 32 364 байт).
+[2026-09-27 00:13:28.159] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 520 431, 32 364 байт).
+[2026-09-27 00:13:28.162] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 552 795, 32 364 байт).
+[2026-09-27 00:13:28.165] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 585 159, 32 364 байт).
+[2026-09-27 00:13:28.167] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 617 523, 32 364 байт).
+[2026-09-27 00:13:28.170] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 649 887, 32 364 байт).
+[2026-09-27 00:13:28.172] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 682 251, 32 364 байт).
+[2026-09-27 00:13:28.175] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 714 615, 32 364 байт).
+[2026-09-27 00:13:28.178] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 746 979, 32 364 байт).
+[2026-09-27 00:13:28.180] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 779 343, 32 364 байт).
+[2026-09-27 00:13:28.183] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 811 707, 32 364 байт).
+[2026-09-27 00:13:28.185] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 844 071, 32 364 байт).
+[2026-09-27 00:13:28.188] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 876 435, 32 364 байт).
+[2026-09-27 00:13:28.190] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 908 799, 32 364 байт).
+[2026-09-27 00:13:28.193] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 941 163, 32 364 байт).
+[2026-09-27 00:13:28.195] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 973 527, 32 364 байт).
+[2026-09-27 00:13:28.197] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 1 005 891, 32 364 байт).
+[2026-09-27 00:13:28.200] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #0 (смещение 1 038 255, 10 321 байт).
+[2026-09-27 00:13:28.201] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 048 576, 32 483 байт).
+[2026-09-27 00:13:28.204] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 081 059, 32 364 байт).
+[2026-09-27 00:13:28.206] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 113 423, 32 364 байт).
+[2026-09-27 00:13:28.209] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 145 787, 32 364 байт).
+[2026-09-27 00:13:28.211] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 178 151, 32 364 байт).
+[2026-09-27 00:13:28.214] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 210 515, 32 364 байт).
+[2026-09-27 00:13:28.216] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 242 879, 32 364 байт).
+[2026-09-27 00:13:28.219] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 275 243, 32 364 байт).
+[2026-09-27 00:13:28.221] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 307 607, 32 364 байт).
+[2026-09-27 00:13:28.224] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 339 971, 32 364 байт).
+[2026-09-27 00:13:28.227] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 372 335, 32 364 байт).
+[2026-09-27 00:13:28.229] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 404 699, 32 364 байт).
+[2026-09-27 00:13:28.232] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 437 063, 32 364 байт).
+[2026-09-27 00:13:28.234] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 469 427, 32 364 байт).
+[2026-09-27 00:13:28.237] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 501 791, 32 364 байт).
+[2026-09-27 00:13:28.239] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 534 155, 32 364 байт).
+[2026-09-27 00:13:28.242] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 566 519, 32 364 байт).
+[2026-09-27 00:13:28.245] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 598 883, 32 364 байт).
+[2026-09-27 00:13:28.248] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 631 247, 32 364 байт).
+[2026-09-27 00:13:28.250] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 663 611, 32 364 байт).
+[2026-09-27 00:13:28.253] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 695 975, 32 364 байт).
+[2026-09-27 00:13:28.256] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 728 339, 32 364 байт).
+[2026-09-27 00:13:28.258] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 760 703, 32 364 байт).
+[2026-09-27 00:13:28.261] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 793 067, 32 364 байт).
+[2026-09-27 00:13:28.264] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 825 431, 32 364 байт).
+[2026-09-27 00:13:28.266] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 857 795, 32 364 байт).
+[2026-09-27 00:13:28.269] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 890 159, 32 364 байт).
+[2026-09-27 00:13:28.271] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 922 523, 32 364 байт).
+[2026-09-27 00:13:28.274] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 954 887, 32 364 байт).
+[2026-09-27 00:13:28.277] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 1 987 251, 32 364 байт).
+[2026-09-27 00:13:28.279] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 2 019 615, 32 364 байт).
+[2026-09-27 00:13:28.282] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 2 051 979, 32 364 байт).
+[2026-09-27 00:13:28.285] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #1 (смещение 2 084 343, 12 809 байт).
+[2026-09-27 00:13:28.286] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 097 152, 32 083 байт).
+[2026-09-27 00:13:28.288] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 129 235, 32 364 байт).
+[2026-09-27 00:13:28.291] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 161 599, 32 364 байт).
+[2026-09-27 00:13:28.294] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 193 963, 32 364 байт).
+[2026-09-27 00:13:28.297] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 226 327, 32 364 байт).
+[2026-09-27 00:13:28.299] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 258 691, 32 364 байт).
+[2026-09-27 00:13:28.302] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 291 055, 32 364 байт).
+[2026-09-27 00:13:28.304] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 323 419, 32 364 байт).
+[2026-09-27 00:13:28.306] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 355 783, 32 364 байт).
+[2026-09-27 00:13:28.309] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 388 147, 32 364 байт).
+[2026-09-27 00:13:28.312] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 420 511, 32 364 байт).
+[2026-09-27 00:13:28.315] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 452 875, 32 364 байт).
+[2026-09-27 00:13:28.317] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 485 239, 32 364 байт).
+[2026-09-27 00:13:28.320] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 517 603, 32 364 байт).
+[2026-09-27 00:13:28.322] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 549 967, 32 364 байт).
+[2026-09-27 00:13:28.325] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 582 331, 32 364 байт).
+[2026-09-27 00:13:28.328] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 614 695, 32 364 байт).
+[2026-09-27 00:13:28.331] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 647 059, 32 364 байт).
+[2026-09-27 00:13:28.333] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 679 423, 32 364 байт).
+[2026-09-27 00:13:28.336] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 711 787, 32 364 байт).
+[2026-09-27 00:13:28.339] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 744 151, 32 364 байт).
+[2026-09-27 00:13:28.342] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 776 515, 32 364 байт).
+[2026-09-27 00:13:28.344] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 808 879, 32 364 байт).
+[2026-09-27 00:13:28.347] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 841 243, 32 364 байт).
+[2026-09-27 00:13:28.350] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 873 607, 32 364 байт).
+[2026-09-27 00:13:28.352] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 905 971, 32 364 байт).
+[2026-09-27 00:13:28.355] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 938 335, 32 364 байт).
+[2026-09-27 00:13:28.358] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 2 970 699, 32 364 байт).
+[2026-09-27 00:13:28.361] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 003 063, 32 364 байт).
+[2026-09-27 00:13:28.363] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 035 427, 32 364 байт).
+[2026-09-27 00:13:28.366] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 067 791, 32 364 байт).
+[2026-09-27 00:13:28.368] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 100 155, 32 364 байт).
+[2026-09-27 00:13:28.373] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #2 (смещение 3 132 519, 13 209 байт).
+[2026-09-27 00:13:28.374] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 145 728, 32 727 байт).
+[2026-09-27 00:13:28.377] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 178 455, 32 364 байт).
+[2026-09-27 00:13:28.380] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 210 819, 32 364 байт).
+[2026-09-27 00:13:28.383] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 243 183, 32 364 байт).
+[2026-09-27 00:13:28.385] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 275 547, 32 364 байт).
+[2026-09-27 00:13:28.388] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 307 911, 32 364 байт).
+[2026-09-27 00:13:28.390] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 340 275, 32 364 байт).
+[2026-09-27 00:13:28.393] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 372 639, 32 364 байт).
+[2026-09-27 00:13:28.395] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 405 003, 32 364 байт).
+[2026-09-27 00:13:28.398] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 437 367, 32 364 байт).
+[2026-09-27 00:13:28.401] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 469 731, 32 364 байт).
+[2026-09-27 00:13:28.403] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 502 095, 32 364 байт).
+[2026-09-27 00:13:28.406] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 534 459, 32 364 байт).
+[2026-09-27 00:13:28.408] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 566 823, 32 364 байт).
+[2026-09-27 00:13:28.411] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 599 187, 32 364 байт).
+[2026-09-27 00:13:28.413] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 631 551, 32 364 байт).
+[2026-09-27 00:13:28.416] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 663 915, 32 364 байт).
+[2026-09-27 00:13:28.418] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 696 279, 32 364 байт).
+[2026-09-27 00:13:28.421] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 728 643, 32 364 байт).
+[2026-09-27 00:13:28.424] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 761 007, 32 364 байт).
+[2026-09-27 00:13:28.426] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 793 371, 32 364 байт).
+[2026-09-27 00:13:28.429] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 825 735, 32 364 байт).
+[2026-09-27 00:13:28.431] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 858 099, 32 364 байт).
+[2026-09-27 00:13:28.434] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 890 463, 32 364 байт).
+[2026-09-27 00:13:28.436] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 922 827, 32 364 байт).
+[2026-09-27 00:13:28.438] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 955 191, 32 364 байт).
+[2026-09-27 00:13:28.441] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 3 987 555, 32 364 байт).
+[2026-09-27 00:13:28.443] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 019 919, 32 364 байт).
+[2026-09-27 00:13:28.446] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 052 283, 32 364 байт).
+[2026-09-27 00:13:28.448] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 084 647, 32 364 байт).
+[2026-09-27 00:13:28.451] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 117 011, 32 364 байт).
+[2026-09-27 00:13:28.453] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 149 375, 32 364 байт).
+[2026-09-27 00:13:28.456] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #3 (смещение 4 181 739, 12 565 байт).
+[2026-09-27 00:13:28.457] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 194 304, 32 327 байт).
+[2026-09-27 00:13:28.460] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 226 631, 32 364 байт).
+[2026-09-27 00:13:28.463] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 258 995, 32 364 байт).
+[2026-09-27 00:13:28.466] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 291 359, 32 364 байт).
+[2026-09-27 00:13:28.469] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 323 723, 32 364 байт).
+[2026-09-27 00:13:28.471] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 356 087, 32 364 байт).
+[2026-09-27 00:13:28.474] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 388 451, 32 364 байт).
+[2026-09-27 00:13:28.477] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 420 815, 32 364 байт).
+[2026-09-27 00:13:28.480] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 453 179, 32 364 байт).
+[2026-09-27 00:13:28.482] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 485 543, 32 364 байт).
+[2026-09-27 00:13:28.485] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 517 907, 32 364 байт).
+[2026-09-27 00:13:28.487] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 550 271, 32 364 байт).
+[2026-09-27 00:13:28.490] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 582 635, 32 364 байт).
+[2026-09-27 00:13:28.492] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 614 999, 32 364 байт).
+[2026-09-27 00:13:28.495] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 647 363, 32 364 байт).
+[2026-09-27 00:13:28.497] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 679 727, 32 364 байт).
+[2026-09-27 00:13:28.500] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 712 091, 32 364 байт).
+[2026-09-27 00:13:28.502] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 744 455, 32 364 байт).
+[2026-09-27 00:13:28.505] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 776 819, 32 364 байт).
+[2026-09-27 00:13:28.508] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 809 183, 32 364 байт).
+[2026-09-27 00:13:28.511] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 841 547, 32 364 байт).
+[2026-09-27 00:13:28.513] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 873 911, 32 364 байт).
+[2026-09-27 00:13:28.516] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 906 275, 32 364 байт).
+[2026-09-27 00:13:28.519] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 938 639, 32 364 байт).
+[2026-09-27 00:13:28.521] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 4 971 003, 32 364 байт).
+[2026-09-27 00:13:28.524] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 003 367, 32 364 байт).
+[2026-09-27 00:13:28.527] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 035 731, 32 364 байт).
+[2026-09-27 00:13:28.529] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 068 095, 32 364 байт).
+[2026-09-27 00:13:28.532] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 100 459, 32 364 байт).
+[2026-09-27 00:13:28.535] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 132 823, 32 364 байт).
+[2026-09-27 00:13:28.538] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 165 187, 32 364 байт).
+[2026-09-27 00:13:28.541] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 197 551, 32 364 байт).
+[2026-09-27 00:13:28.543] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #4 (смещение 5 229 915, 12 965 байт).
+[2026-09-27 00:13:28.545] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 242 880, 31 927 байт).
+[2026-09-27 00:13:28.547] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 274 807, 32 364 байт).
+[2026-09-27 00:13:28.550] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 307 171, 32 364 байт).
+[2026-09-27 00:13:28.552] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 339 535, 32 364 байт).
+[2026-09-27 00:13:28.555] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 371 899, 32 364 байт).
+[2026-09-27 00:13:28.558] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 404 263, 32 364 байт).
+[2026-09-27 00:13:28.561] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 436 627, 32 364 байт).
+[2026-09-27 00:13:28.563] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 468 991, 32 364 байт).
+[2026-09-27 00:13:28.566] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 501 355, 32 364 байт).
+[2026-09-27 00:13:28.568] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 533 719, 32 364 байт).
+[2026-09-27 00:13:28.571] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 566 083, 32 364 байт).
+[2026-09-27 00:13:28.573] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 598 447, 32 364 байт).
+[2026-09-27 00:13:28.576] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 630 811, 32 364 байт).
+[2026-09-27 00:13:28.579] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 663 175, 32 364 байт).
+[2026-09-27 00:13:28.582] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 695 539, 32 364 байт).
+[2026-09-27 00:13:28.584] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 727 903, 32 364 байт).
+[2026-09-27 00:13:28.587] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 760 267, 32 364 байт).
+[2026-09-27 00:13:28.589] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 792 631, 32 364 байт).
+[2026-09-27 00:13:28.592] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 824 995, 32 364 байт).
+[2026-09-27 00:13:28.594] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 857 359, 32 364 байт).
+[2026-09-27 00:13:28.597] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 889 723, 32 364 байт).
+[2026-09-27 00:13:28.599] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 922 087, 32 364 байт).
+[2026-09-27 00:13:28.602] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 954 451, 32 364 байт).
+[2026-09-27 00:13:28.604] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 5 986 815, 32 364 байт).
+[2026-09-27 00:13:28.607] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 019 179, 32 364 байт).
+[2026-09-27 00:13:28.610] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 051 543, 32 364 байт).
+[2026-09-27 00:13:28.613] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 083 907, 32 364 байт).
+[2026-09-27 00:13:28.615] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 116 271, 32 364 байт).
+[2026-09-27 00:13:28.617] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 148 635, 32 364 байт).
+[2026-09-27 00:13:28.620] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 180 999, 32 364 байт).
+[2026-09-27 00:13:28.622] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 213 363, 32 364 байт).
+[2026-09-27 00:13:28.625] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 245 727, 32 364 байт).
+[2026-09-27 00:13:28.627] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #5 (смещение 6 278 091, 13 365 байт).
+[2026-09-27 00:13:28.629] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 291 456, 32 571 байт).
+[2026-09-27 00:13:28.631] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 324 027, 32 364 байт).
+[2026-09-27 00:13:28.634] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 356 391, 32 364 байт).
+[2026-09-27 00:13:28.636] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 388 755, 32 364 байт).
+[2026-09-27 00:13:28.639] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 421 119, 32 364 байт).
+[2026-09-27 00:13:28.641] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 453 483, 32 364 байт).
+[2026-09-27 00:13:28.644] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 485 847, 32 364 байт).
+[2026-09-27 00:13:28.647] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 518 211, 32 364 байт).
+[2026-09-27 00:13:28.649] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 550 575, 32 364 байт).
+[2026-09-27 00:13:28.652] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 582 939, 32 364 байт).
+[2026-09-27 00:13:28.654] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 615 303, 32 364 байт).
+[2026-09-27 00:13:28.657] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 647 667, 32 364 байт).
+[2026-09-27 00:13:28.659] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 680 031, 32 364 байт).
+[2026-09-27 00:13:28.662] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 712 395, 32 364 байт).
+[2026-09-27 00:13:28.664] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 744 759, 32 364 байт).
+[2026-09-27 00:13:28.667] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 777 123, 32 364 байт).
+[2026-09-27 00:13:28.669] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 809 487, 32 364 байт).
+[2026-09-27 00:13:28.672] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 841 851, 32 364 байт).
+[2026-09-27 00:13:28.675] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 874 215, 32 364 байт).
+[2026-09-27 00:13:28.678] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 906 579, 32 364 байт).
+[2026-09-27 00:13:28.681] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 938 943, 32 364 байт).
+[2026-09-27 00:13:28.683] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 6 971 307, 32 364 байт).
+[2026-09-27 00:13:28.686] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 003 671, 32 364 байт).
+[2026-09-27 00:13:28.689] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 036 035, 32 364 байт).
+[2026-09-27 00:13:28.692] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 068 399, 32 364 байт).
+[2026-09-27 00:13:28.694] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 100 763, 32 364 байт).
+[2026-09-27 00:13:28.697] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 133 127, 32 364 байт).
+[2026-09-27 00:13:28.700] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 165 491, 32 364 байт).
+[2026-09-27 00:13:28.702] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 197 855, 32 364 байт).
+[2026-09-27 00:13:28.705] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 230 219, 32 364 байт).
+[2026-09-27 00:13:28.708] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 262 583, 32 364 байт).
+[2026-09-27 00:13:28.710] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 294 947, 32 364 байт).
+[2026-09-27 00:13:28.713] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #6 (смещение 7 327 311, 12 721 байт).
+[2026-09-27 00:13:28.714] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 340 032, 32 171 байт).
+[2026-09-27 00:13:28.717] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 372 203, 32 364 байт).
+[2026-09-27 00:13:28.719] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 404 567, 32 364 байт).
+[2026-09-27 00:13:28.722] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 436 931, 32 364 байт).
+[2026-09-27 00:13:28.725] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 469 295, 32 364 байт).
+[2026-09-27 00:13:28.728] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 501 659, 32 364 байт).
+[2026-09-27 00:13:28.730] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 534 023, 32 364 байт).
+[2026-09-27 00:13:28.733] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 566 387, 32 364 байт).
+[2026-09-27 00:13:28.735] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 598 751, 32 364 байт).
+[2026-09-27 00:13:28.738] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 631 115, 32 364 байт).
+[2026-09-27 00:13:28.741] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 663 479, 32 364 байт).
+[2026-09-27 00:13:28.743] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 695 843, 32 364 байт).
+[2026-09-27 00:13:28.746] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 728 207, 32 364 байт).
+[2026-09-27 00:13:28.748] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 760 571, 32 364 байт).
+[2026-09-27 00:13:28.751] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 792 935, 32 364 байт).
+[2026-09-27 00:13:28.754] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 825 299, 32 364 байт).
+[2026-09-27 00:13:28.757] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 857 663, 32 364 байт).
+[2026-09-27 00:13:28.759] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 890 027, 32 364 байт).
+[2026-09-27 00:13:28.762] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 922 391, 32 364 байт).
+[2026-09-27 00:13:28.764] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 954 755, 32 364 байт).
+[2026-09-27 00:13:28.767] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 7 987 119, 32 364 байт).
+[2026-09-27 00:13:28.770] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 019 483, 32 364 байт).
+[2026-09-27 00:13:28.773] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 051 847, 32 364 байт).
+[2026-09-27 00:13:28.776] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 084 211, 32 364 байт).
+[2026-09-27 00:13:28.778] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 116 575, 32 364 байт).
+[2026-09-27 00:13:28.781] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 148 939, 32 364 байт).
+[2026-09-27 00:13:28.784] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 181 303, 32 364 байт).
+[2026-09-27 00:13:28.787] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 213 667, 32 364 байт).
+[2026-09-27 00:13:28.790] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 246 031, 32 364 байт).
+[2026-09-27 00:13:28.793] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 278 395, 32 364 байт).
+[2026-09-27 00:13:28.796] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 310 759, 32 364 байт).
+[2026-09-27 00:13:28.798] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 343 123, 32 364 байт).
+[2026-09-27 00:13:28.801] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #7 (смещение 8 375 487, 13 121 байт).
+[2026-09-27 00:13:28.802] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 388 608, 31 771 байт).
+[2026-09-27 00:13:28.805] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 420 379, 32 364 байт).
+[2026-09-27 00:13:28.808] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 452 743, 32 364 байт).
+[2026-09-27 00:13:28.811] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 485 107, 32 364 байт).
+[2026-09-27 00:13:28.814] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 517 471, 32 364 байт).
+[2026-09-27 00:13:28.817] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 549 835, 32 364 байт).
+[2026-09-27 00:13:28.819] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 582 199, 32 364 байт).
+[2026-09-27 00:13:28.822] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 614 563, 32 364 байт).
+[2026-09-27 00:13:28.825] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 646 927, 32 364 байт).
+[2026-09-27 00:13:28.827] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 679 291, 32 364 байт).
+[2026-09-27 00:13:28.830] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 711 655, 32 364 байт).
+[2026-09-27 00:13:28.832] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 744 019, 32 364 байт).
+[2026-09-27 00:13:28.835] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 776 383, 32 364 байт).
+[2026-09-27 00:13:28.838] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 808 747, 32 364 байт).
+[2026-09-27 00:13:28.840] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 841 111, 32 364 байт).
+[2026-09-27 00:13:28.843] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 873 475, 32 364 байт).
+[2026-09-27 00:13:28.845] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 905 839, 32 364 байт).
+[2026-09-27 00:13:28.848] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 938 203, 32 364 байт).
+[2026-09-27 00:13:28.851] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 8 970 567, 32 364 байт).
+[2026-09-27 00:13:28.854] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 002 931, 32 364 байт).
+[2026-09-27 00:13:28.856] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 035 295, 32 364 байт).
+[2026-09-27 00:13:28.859] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 067 659, 32 364 байт).
+[2026-09-27 00:13:28.862] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 100 023, 32 364 байт).
+[2026-09-27 00:13:28.864] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 132 387, 32 364 байт).
+[2026-09-27 00:13:28.867] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 164 751, 32 364 байт).
+[2026-09-27 00:13:28.870] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 197 115, 32 364 байт).
+[2026-09-27 00:13:28.873] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 229 479, 32 364 байт).
+[2026-09-27 00:13:28.876] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 261 843, 32 364 байт).
+[2026-09-27 00:13:28.879] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 294 207, 32 364 байт).
+[2026-09-27 00:13:28.881] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 326 571, 32 364 байт).
+[2026-09-27 00:13:28.884] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 358 935, 32 364 байт).
+[2026-09-27 00:13:28.886] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 391 299, 32 364 байт).
+[2026-09-27 00:13:28.889] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #8 (смещение 9 423 663, 13 521 байт).
+[2026-09-27 00:13:28.890] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 437 184, 32 415 байт).
+[2026-09-27 00:13:28.893] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 469 599, 32 364 байт).
+[2026-09-27 00:13:28.896] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 501 963, 32 364 байт).
+[2026-09-27 00:13:28.898] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 534 327, 32 364 байт).
+[2026-09-27 00:13:28.901] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 566 691, 32 364 байт).
+[2026-09-27 00:13:28.904] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 599 055, 32 364 байт).
+[2026-09-27 00:13:28.906] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 631 419, 32 364 байт).
+[2026-09-27 00:13:28.909] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 663 783, 32 364 байт).
+[2026-09-27 00:13:28.913] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 696 147, 32 364 байт).
+[2026-09-27 00:13:28.915] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 728 511, 32 364 байт).
+[2026-09-27 00:13:28.918] [INFO ] [TelegramService] [Cache RAM] Мгновенная отдача из ОЗУ для 'Lady Gaga - Just Dance (feat. Colby O'Donis).mp3' (ID 307): Глобальный Чанк #9 (смещение 9 760 875, 4 887 байт).
+[2026-09-27 00:13:29.492] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-09-27 00:13:29.495] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
