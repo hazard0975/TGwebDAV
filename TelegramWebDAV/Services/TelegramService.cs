@@ -820,12 +820,17 @@ namespace TelegramWebDAV.Services
                 var peer = await GetStoragePeerAsync();
                 var editReq = new TL.Methods.Messages_EditMessage
                 {
+                    flags = TL.Methods.Messages_EditMessage.Flags.has_message,
                     peer = peer,
                     id = messageId,
                     message = newCaption
                 };
                 await _client.Invoke(editReq);
-                AppLogger.Info("TelegramService", $"Подпись сообщения #{messageId} в Telegram обновлена на: '{newCaption}'.");
+                AppLogger.Info("TelegramService", $"Подпись сообщения #{messageId} в Telegram успешно обновлена на: '{newCaption}'.");
+            }
+            catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("MESSAGE_NOT_MODIFIED"))
+            {
+                AppLogger.Debug("TelegramService", $"Подпись сообщения #{messageId} уже актуальна в Telegram ({newCaption}).");
             }
             catch (Exception ex)
             {

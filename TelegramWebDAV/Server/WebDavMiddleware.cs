@@ -660,13 +660,6 @@ namespace TelegramWebDAV.Server
             repository.MoveNode(sourceNode.Id, destParentNode.Id, destName);
             AppLogger.Info("WebDAV", $"Узел '{sourceNode.Name}' успешно перемещен/переименован в '{destName}'.");
 
-            // 1. Если файл уже в Telegram, обновляем подпись сообщения на полный логический путь с версией
-            if (sourceNode.TgMessageId.HasValue && sourceNode.TgMessageId.Value > 1 && telegramService != null)
-            {
-                string fullPathWithVersion = repository.GetNodeFullPathWithVersion(sourceNode.Id);
-                _ = telegramService.UpdateMessageCaptionAsync(sourceNode.TgMessageId.Value, fullPathWithVersion);
-            }
-
             // 2. Если файл переименован из .tmp в аудиоформат, обогащаем аудио-метаданные из настоящего имени файла
             if (AudioMetadataExtractor.IsAudioFile(destName) && string.IsNullOrEmpty(sourceNode.Artist))
             {

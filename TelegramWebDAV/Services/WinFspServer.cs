@@ -712,12 +712,6 @@ namespace TelegramWebDAV.Services
                 node.ParentId = targetParent.Id;
                 AppLogger.Info("WinFsp", $"Переименование/перемещение: '{oldClean}' -> '{newClean}'");
 
-                if (node.TgMessageId.HasValue && node.TgMessageId.Value > 1)
-                {
-                    string fullPathWithVersion = _repository.GetNodeFullPathWithVersion(node.Id);
-                    _ = _telegramService.UpdateMessageCaptionAsync(node.TgMessageId.Value, fullPathWithVersion);
-                }
-
                 return STATUS_SUCCESS;
             }
             catch (Exception ex)
