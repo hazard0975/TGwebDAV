@@ -986,9 +986,9 @@ namespace TelegramWebDAV.Services
 
             long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
             bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
-            bool isHeaderProbe = (offset == 0 && length <= 262144);
-            bool isTailProbe = (actualTotalSize > 524288) && (offset >= actualTotalSize - 524288 || (offset + length >= actualTotalSize && length <= 524288));
-            bool isMetadataProbe = isHeaderProbe || isTailProbe; // Быстрый запрос заголовков или концевых ID3/moov тегов Проводником Windows
+            bool isHeaderProbe = (offset + length <= 524288); // Быстрый запрос заголовков, ID3v2-тегов и обложек Проводником Windows в пределах первых 512 КБ
+            bool isTailProbe = (actualTotalSize > 524288) && (offset >= actualTotalSize - 524288); // Быстрый запрос концевых ID3v1/moov/zip-тегов в хвосте файла
+            bool isMetadataProbe = isHeaderProbe || isTailProbe;
 
             var audit = _networkAudits.GetOrAdd(messageId, _ => new NetworkTransferAudit { FileName = fileName, FileSize = actualTotalSize });
             audit.FileName = fileName;
