@@ -1102,41 +1102,47 @@ namespace TelegramWebDAV.Services
                     await destination.FlushAsync();
                     AppLogger.Info("TelegramService", $"[Cache RAM] Мгновенная отдача из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
 
-                    // Запускаем воркеров на упреждающую прокачку только при приближении к границе 1 МБ блока
-                    // и только если для следующего диапазона ещё не запущена фоновая подкачка (защита от Prefetch Storm)
-                    long currentChunkEnd = ((offset / 1048576) + 1) * 1048576;
-                    long bytesLeftInChunk = currentChunkEnd - (offset + bytesToSend);
+                    // Запускаем воркеров на упреждающую прокачку ТОЛЬКО если следующего 1 МБ блока ещё НЕТ в ОЗУ
+                    long nextChunkOffset = ((offset / 1048576) + 1) * 1048576;
+                    long bytesLeftInChunk = nextChunkOffset - (offset + bytesToSend);
 
-                    if (actualTotalSize > currentChunkEnd && bytesLeftInChunk <= 262144)
+                    if (actualTotalSize > nextChunkOffset && bytesLeftInChunk <= 262144)
                     {
-                        long nextPrefetchOffset = currentChunkEnd;
-                        string prefetchKey = $"{messageId}:{nextPrefetchOffset}";
-
-                        if (_activePoolPrefetches.TryAdd(prefetchKey, true))
+                        // Если следующий чанк уже в кэше — префетч не нужен!
+                        if (!TryGetFromMemoryCache(messageId, nextChunkOffset, out _, out _))
                         {
-                            _ = Task.Run(async () =>
+                            string prefetchKey = $"{messageId}:{nextChunkOffset}";
+                            if (_activePoolPrefetches.TryAdd(prefetchKey, true))
                             {
-                                try
+                                _ = Task.Run(async () =>
                                 {
-                                    var prefetchPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
-                                    await prefetchPool.DownloadToStreamAsync(
-                                        document,
-                                        Stream.Null,
-                                        nextPrefetchOffset,
-                                        Math.Min(3 * 1048576, actualTotalSize - nextPrefetchOffset),
-                                        onChunkReceived: (chunkBytes, chunkOffset) =>
+                                    try
+                                    {
+                                        var prefetchPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
+                                        await prefetchPool.DownloadToStreamAsync(
+                                            document,
+                                            Stream.Null,
+                                            nextChunkOffset,
+                                            Math.Min(3 * 1048576, actualTotalSize - nextChunkOffset),
+                                            onChunkReceived: (chunkBytes, chunkOffset) =>
+                                            {
+                                                EnsureChunkCacheCapacity();
+                                                string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
+                                                _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
+                                            });
+                                    }
+                                    catch { }
+                                    finally
+                                    {
+                                        // Не удаляем ключ сразу, чтобы параллельные системные потоки плеера не запускали повторный пул
+                                        _ = Task.Run(async () =>
                                         {
-                                            EnsureChunkCacheCapacity();
-                                            string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
-                                            _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(5));
+                                            await Task.Delay(3000);
+                                            _activePoolPrefetches.TryRemove(prefetchKey, out _);
                                         });
-                                }
-                                catch { }
-                                finally
-                                {
-                                    _activePoolPrefetches.TryRemove(prefetchKey, out _);
-                                }
-                            });
+                                    }
+                                });
+                            }
                         }
                     }
                     return;
@@ -1205,12 +1211,15 @@ namespace TelegramWebDAV.Services
                 // 1. Проверяем, есть ли уже нужные байты в быстром кэше оперативной памяти
                 if (TryGetFromMemoryCache(messageId, currentPos, out var cachedRaw, out var cachedOffset) && cachedRaw != null)
                 {
-                    // Конвейер Double Buffering: упреждающая загрузка строго следующего 1 блока без перегрузки Telegram API
+                    // Конвейер Double Buffering: упреждающая загрузка строго следующего 1 блока только если его ещё нет в кэше
                     if (actualTotalSize > 0 && !isMetadataProbe && (totalSent > 0 || length > 262144))
                     {
                         long currentBlock = (currentPos / 1048576) * 1048576;
-                        if (currentBlock + 1048576 < actualTotalSize)
-                            TriggerPrefetch(activeClient, location, messageId, currentBlock + 1048576, 1048576);
+                        long nextBlock = currentBlock + 1048576;
+                        if (nextBlock < actualTotalSize && !TryGetFromMemoryCache(messageId, nextBlock, out _, out _))
+                        {
+                            TriggerPrefetch(activeClient, location, messageId, nextBlock, 1048576);
+                        }
                     }
 
                     int available = cachedRaw.Length - cachedOffset;
@@ -1320,11 +1329,11 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                // Конвейер Double Buffering: упреждающая загрузка следующего блока
+                // Конвейер Double Buffering: упреждающая загрузка следующего блока только если его нет в кэше
                 if (baseChunkSize == 1048576 && actualTotalSize > 0 && !isMetadataProbe)
                 {
                     long nextOffset1 = chunkOffset + baseChunkSize;
-                    if (nextOffset1 < actualTotalSize)
+                    if (nextOffset1 < actualTotalSize && !TryGetFromMemoryCache(messageId, nextOffset1, out _, out _))
                         TriggerPrefetch(activeClient, location, messageId, nextOffset1, baseChunkSize);
                 }
 

@@ -271,6 +271,15 @@ namespace TelegramWebDAV.Services
                     }
                 }
             }
+            else
+            {
+                // Если destinationStream == Stream.Null (фоновый префетч), дожидаемся завершения воркеров этого пула
+                try
+                {
+                    await Task.WhenAll(workerTasks);
+                }
+                catch { }
+            }
 
             return true;
         }
