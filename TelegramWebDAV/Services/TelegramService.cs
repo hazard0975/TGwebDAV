@@ -42,7 +42,6 @@ namespace TelegramWebDAV.Services
         private readonly SemaphoreSlim _floodLock = new SemaphoreSlim(1, 1);
         private DateTime _floodWaitUntil = DateTime.MinValue;
         private WTelegram.Client? _client;
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, WTelegram.Client> _workerClientsPool = new();
         private System.Threading.CancellationTokenSource? _queueCts;
 
         // Очередь последовательной загрузки файлов в Telegram (Upload Queue)
@@ -279,11 +278,6 @@ namespace TelegramWebDAV.Services
             _storagePeer = null;
             try { _client?.Dispose(); } catch { }
             _client = null;
-            foreach (var workerClient in _workerClientsPool.Values)
-            {
-                try { workerClient.Dispose(); } catch { }
-            }
-            _workerClientsPool.Clear();
             _ = ConnectAsync();
         }
 
@@ -462,69 +456,13 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Возвращает или создает независимый клиент MTProto со своим TCP-соединением для каждого параллельного воркера.
-        /// Для предотвращения конфликта блокировки файла user.session в Windows воркеры переиспользуют 
-        /// постоянные дочерние сессии через GetClientForDC основного клиента либо изолированное хранилище.
+        /// Возвращает сессию DC основного клиента MTProto для параллельных воркеров пула.
+        /// Протокол MTProto поддерживает мультиплексирование параллельных запросов чанков без повторных файловых блокировок.
         /// </summary>
         public async Task<WTelegram.Client> GetWorkerClientAsync(int workerId, int dcId)
         {
             if (_client == null)
                 throw new InvalidOperationException("Основной клиент Telegram не инициализирован.");
-
-            if (workerId <= 1)
-            {
-                return dcId != 0 ? await _client.GetClientForDC(dcId) : _client;
-            }
-
-            if (_workerClientsPool.TryGetValue(workerId, out var existingClient))
-            {
-                return dcId != 0 ? await existingClient.GetClientForDC(dcId) : existingClient;
-            }
-
-            try
-            {
-                // Для воркеров 2 и 3 клонируем авторизацию из сессии основного клиента без повторного монопольного захвата файла на диске
-                string sessionPath = _currentSettings.Telegram.SessionPath;
-                byte[]? sessionBytes = null;
-                if (File.Exists(sessionPath))
-                {
-                    using (var fs = new FileStream(sessionPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    using (var ms = new MemoryStream())
-                    {
-                        await fs.CopyToAsync(ms);
-                        sessionBytes = ms.ToArray();
-                    }
-                }
-
-                var extraClient = new WTelegram.Client(what =>
-                {
-                    switch (what)
-                    {
-                        case "api_id": return _currentSettings.Telegram.ApiId.ToString();
-                        case "api_hash": return _currentSettings.Telegram.ApiHash;
-                        case "session_key": return sessionBytes != null ? Convert.ToBase64String(sessionBytes) : null;
-                        case "session_pathname": return null; // Запрещаем вторичным воркерам напрямую блокировать user.session на диске
-                        case "phone_number": return _currentSettings.Telegram.PhoneNumber;
-                        default: return null;
-                    }
-                }, sessionStore: sessionBytes != null ? new MemoryStream(sessionBytes) : null);
-
-                string? loginResult = await extraClient.Login(null);
-                if (loginResult == null)
-                {
-                    _workerClientsPool[workerId] = extraClient;
-                    AppLogger.Info("TelegramService", $"[Воркер #{workerId}] Успешно запущен дополнительный независимый TCP-клиент MTProto.");
-                    return dcId != 0 ? await extraClient.GetClientForDC(dcId) : extraClient;
-                }
-                else
-                {
-                    AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Не удалось авторизовать дочерний клиент ({loginResult}), используем основной клиент.");
-                }
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Ошибка инициализации независимого TCP-клиента ({ex.Message}), используем сессию DC основного клиента.");
-            }
 
             return dcId != 0 ? await _client.GetClientForDC(dcId) : _client;
         }
@@ -1128,7 +1066,7 @@ namespace TelegramWebDAV.Services
                     await destination.WriteAsync(ramCachedRaw, ramCachedOffset, bytesToSend);
                     await destination.FlushAsync();
                     audit.AddRamBytes(bytesToSend);
-                    AppLogger.Info("TelegramService", $"[Cache RAM] Мгновенная отдача из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
+                    AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
 
                     if (offset + bytesToSend >= actualTotalSize && audit.LogCompletionOnce())
                     {
@@ -1152,9 +1090,10 @@ namespace TelegramWebDAV.Services
                 TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
             }
 
-            // 2. Для прямого скачивания архивов и больших файлов качаем чанки через MtprotoDownloadWorkerPool напрямую в ОЗУ с заполнением 128 МБ RAM-кэша
+            // 2. Для прямого скачивания архивов и больших файлов качаем чанки через MtprotoDownloadWorkerPool напрямую в ОЗУ с заполнением RAM-кэша
             if (!enableDiskCache && !isSmallFile && !isMetadataProbe && length > 262144)
             {
+                int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
                 bool isFullFileDownload = (offset == 0 && length >= actualTotalSize);
                 var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
                 bool success = await workerPool.DownloadToStreamAsync(
@@ -1167,7 +1106,7 @@ namespace TelegramWebDAV.Services
                         audit.AddNetworkBytes(chunkBytes.Length);
                         EnsureChunkCacheCapacity();
                         string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
-                        _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(10));
+                        _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
 
                         string waitKey = $"{messageId}:{chunkOffset}";
                         if (_inFlightChunkWaiters.TryRemove(waitKey, out var waiter))
@@ -1624,11 +1563,6 @@ namespace TelegramWebDAV.Services
                 _client = null;
             }
             catch { }
-            foreach (var workerClient in _workerClientsPool.Values)
-            {
-                try { workerClient.Dispose(); } catch { }
-            }
-            _workerClientsPool.Clear();
             _floodLock?.Dispose();
             _uploadSemaphore?.Dispose();
         }
