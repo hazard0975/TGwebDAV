@@ -163,7 +163,8 @@ namespace TelegramWebDAV.Services
                         {
                             int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
                             _poolFloodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Все воркеры приостановлены.");
+                            Interlocked.Exchange(ref _pacingDelayMs, Math.Min(500, _pacingDelayMs + 50));
+                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Авто-адаптация пейсинга до {_pacingDelayMs} мс. Все воркеры приостановлены.");
                             await Task.Delay(waitSec * 1000, cancellationToken);
                             chunkQueue.Enqueue(chunk);
                         }
@@ -298,7 +299,8 @@ namespace TelegramWebDAV.Services
                             {
                                 int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
                                 _poolFloodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
-                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Все воркеры приостановлены.");
+                                Interlocked.Exchange(ref _pacingDelayMs, Math.Min(500, _pacingDelayMs + 50));
+                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Авто-адаптация пейсинга до {_pacingDelayMs} мс. Все воркеры приостановлены.");
                                 await Task.Delay(waitSec * 1000, cancellationToken);
                                 chunkQueue.Enqueue(chunk);
                             }
