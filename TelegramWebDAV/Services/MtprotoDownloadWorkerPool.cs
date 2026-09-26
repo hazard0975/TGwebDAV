@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,12 +13,18 @@ namespace TelegramWebDAV.Services
 {
     /// <summary>
     /// Пул параллельных MTProto воркеров для скачивания больших файлов из Telegram (TDLib / Telegram Desktop style).
-    /// Поддерживает как прямую работу через оперативную память (Pure RAM Stream), так и запись в локальный кэш при включении.
+    /// Поддерживает автоматический пейсинг вызовов (профилактику FLOOD_WAIT), нумерацию воркеров в логах 
+    /// и детализацию производительности каждого чанка.
     /// </summary>
     public class MtprotoDownloadWorkerPool
     {
         private readonly Client _mainClient;
         private readonly int _workerCount;
+        private DateTime _poolFloodWaitUntil = DateTime.MinValue;
+
+        // Глобальный семафор пейсинга вызовов Upload_GetFile для предотвращения залповых всплесков
+        private static readonly SemaphoreSlim _pacingLock = new SemaphoreSlim(1, 1);
+        private static DateTime _lastRequestUtc = DateTime.MinValue;
 
         public MtprotoDownloadWorkerPool(Client mainClient, int workerCount = 3)
         {
@@ -27,9 +34,44 @@ namespace TelegramWebDAV.Services
 
         public class DownloadChunkTask
         {
+            public int ChunkIndex { get; set; }
             public long ChunkOffset { get; set; }
             public int RequestLimit { get; set; }
             public int RetryCount { get; set; }
+        }
+
+        /// <summary>
+        /// Гарантирует микро-интервал между запросами Upload_GetFile (пейсинг 65 мс)
+        /// и соблюдает единую паузу пула при возникновении FLOOD_WAIT.
+        /// </summary>
+        private async Task PaceRequestAsync(int workerId, CancellationToken cancellationToken)
+        {
+            // 1. Если активна общесистемная пауза FLOOD_WAIT — выжидаем её
+            if (_poolFloodWaitUntil > DateTime.UtcNow)
+            {
+                var waitTime = _poolFloodWaitUntil - DateTime.UtcNow;
+                if (waitTime.TotalMilliseconds > 0)
+                {
+                    AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Пауза из-за активного FLOOD_WAIT ({waitTime.TotalSeconds:F1} сек)...");
+                    await Task.Delay(waitTime, cancellationToken);
+                }
+            }
+
+            // 2. Гарантируем интервал в 65 мс между запусками вызовов к Telegram API
+            await _pacingLock.WaitAsync(cancellationToken);
+            try
+            {
+                var elapsed = (DateTime.UtcNow - _lastRequestUtc).TotalMilliseconds;
+                if (elapsed < 65)
+                {
+                    await Task.Delay((int)(65 - elapsed), cancellationToken);
+                }
+                _lastRequestUtc = DateTime.UtcNow;
+            }
+            finally
+            {
+                _pacingLock.Release();
+            }
         }
 
         /// <summary>
@@ -54,11 +96,13 @@ namespace TelegramWebDAV.Services
 
             long currentOffset = offset;
             long remaining = length;
+            int index = 0;
             while (remaining > 0)
             {
                 int limit = (int)Math.Min(chunkSize, remaining);
                 chunkTasks.Add(new DownloadChunkTask
                 {
+                    ChunkIndex = index++,
                     ChunkOffset = currentOffset,
                     RequestLimit = limit
                 });
@@ -74,7 +118,7 @@ namespace TelegramWebDAV.Services
 
             long totalDownloadedBytes = 0;
 
-            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Параллельное скачивание {length:N0} байт (со смещения {offset:N0}) через {actualWorkers} воркеров в ОЗУ...");
+            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Старт скачивания {length:N0} байт (со смещения {offset:N0}) через {actualWorkers} воркеров MTProto...");
 
             for (int w = 0; w < actualWorkers; w++)
             {
@@ -90,7 +134,14 @@ namespace TelegramWebDAV.Services
 
                         try
                         {
+                            await PaceRequestAsync(workerId, cancellationToken);
+
+                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}, размер {chunk.RequestLimit / 1024} КБ)...");
+                            var sw = Stopwatch.StartNew();
+
                             var fileBase = await workerClient.Upload_GetFile(location, chunk.ChunkOffset, chunk.RequestLimit, precise: true);
+                            sw.Stop();
+
                             if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                             {
                                 downloadedChunks[chunk.ChunkOffset] = uploadFile.bytes;
@@ -98,6 +149,8 @@ namespace TelegramWebDAV.Services
 
                                 long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
                                 onProgress?.Invoke(currentTotal, length);
+
+                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Успешно получен чанк #{chunk.ChunkIndex} ({uploadFile.bytes.Length / 1024} КБ за {sw.ElapsedMilliseconds} мс).");
                             }
                             else if (chunk.RetryCount < 3)
                             {
@@ -105,22 +158,23 @@ namespace TelegramWebDAV.Services
                                 chunkQueue.Enqueue(chunk);
                             }
                         }
-                        catch (RpcException rpcEx) when (rpcEx.Code == 420)
+                        catch (RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
                         {
                             int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Stream Worker #{workerId}] FLOOD_WAIT {waitSec} сек...");
+                            _poolFloodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
+                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Все воркеры приостановлены.");
                             await Task.Delay(waitSec * 1000, cancellationToken);
                             chunkQueue.Enqueue(chunk);
                         }
                         catch (Exception ex)
                         {
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Stream Worker #{workerId}] Ошибка чанка {chunk.ChunkOffset}: {ex.Message}");
+                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}): {ex.Message}");
                             if (chunk.RetryCount < 3)
                             {
                                 chunk.RetryCount++;
                                 chunkQueue.Enqueue(chunk);
                             }
-                            await Task.Delay(500, cancellationToken);
+                            await Task.Delay(300, cancellationToken);
                         }
                     }
                 }, cancellationToken);
@@ -166,15 +220,17 @@ namespace TelegramWebDAV.Services
             long totalSize = document.size;
             if (totalSize <= 0) return false;
 
-            int chunkSize = 1048576; // 1 МБ на чанк (официальный размер блока TDLib)
+            int chunkSize = 1048576; // 1 МБ на чанк
             var chunkQueue = new ConcurrentQueue<DownloadChunkTask>();
 
             long offset = 0;
+            int index = 0;
             while (offset < totalSize)
             {
                 int limit = (int)Math.Min(chunkSize, totalSize - offset);
                 chunkQueue.Enqueue(new DownloadChunkTask
                 {
+                    ChunkIndex = index++,
                     ChunkOffset = offset,
                     RequestLimit = limit
                 });
@@ -193,7 +249,6 @@ namespace TelegramWebDAV.Services
             using (var fileStream = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite, 4096, useAsync: true))
             using (SafeFileHandle handle = fileStream.SafeFileHandle)
             {
-                // Заранее резервируем размер файла на диске для исключения фрагментации
                 fileStream.SetLength(totalSize);
 
                 int actualWorkers = Math.Min(_workerCount, chunkQueue.Count);
@@ -215,13 +270,22 @@ namespace TelegramWebDAV.Services
 
                             try
                             {
+                                await PaceRequestAsync(workerId, cancellationToken);
+
+                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] [Диск] Запрос чанка #{chunk.ChunkIndex} ({chunk.RequestLimit / 1024} КБ)...");
+                                var sw = Stopwatch.StartNew();
+
                                 var fileBase = await workerClient.Upload_GetFile(location, chunk.ChunkOffset, chunk.RequestLimit, precise: true);
+                                sw.Stop();
+
                                 if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                                 {
                                     await RandomAccess.WriteAsync(handle, uploadFile.bytes, chunk.ChunkOffset, cancellationToken);
 
                                     long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
                                     onProgress?.Invoke(currentTotal, totalSize);
+
+                                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] [Диск] Сохранен чанк #{chunk.ChunkIndex} ({uploadFile.bytes.Length / 1024} КБ за {sw.ElapsedMilliseconds} мс).");
                                 }
                                 else if (chunk.RetryCount < 3)
                                 {
@@ -232,19 +296,20 @@ namespace TelegramWebDAV.Services
                             catch (RpcException rpcEx) when (rpcEx.Code == 420)
                             {
                                 int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
-                                AppLogger.Warn("MtprotoWorkerPool", $"[Disk Worker #{workerId}] FLOOD_WAIT {waitSec} сек...");
+                                _poolFloodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
+                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Все воркеры приостановлены.");
                                 await Task.Delay(waitSec * 1000, cancellationToken);
                                 chunkQueue.Enqueue(chunk);
                             }
                             catch (Exception ex)
                             {
-                                AppLogger.Warn("MtprotoWorkerPool", $"[Disk Worker #{workerId}] Ошибка чанка {chunk.ChunkOffset}: {ex.Message}");
+                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{chunk.ChunkIndex}: {ex.Message}");
                                 if (chunk.RetryCount < 3)
                                 {
                                     chunk.RetryCount++;
                                     chunkQueue.Enqueue(chunk);
                                 }
-                                await Task.Delay(500, cancellationToken);
+                                await Task.Delay(300, cancellationToken);
                             }
                         }
                     }, cancellationToken);

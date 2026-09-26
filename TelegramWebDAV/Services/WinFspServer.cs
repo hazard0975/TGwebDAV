@@ -485,6 +485,7 @@ namespace TelegramWebDAV.Services
             bool isDir = (createOptions & FILE_DIRECTORY_FILE) != 0;
             if (isDir)
             {
+                bool existed = _repository.GetNodeByPath(cleanPath) != null;
                 var dirNode = _repository.EnsureDirectoryPathExists(cleanPath);
                 if (dirNode == null)
                 {
@@ -499,7 +500,14 @@ namespace TelegramWebDAV.Services
                 fileDesc = new FspNodeContext(dirNode);
                 FillFileInfo(dirNode, out fileInfo);
                 normalizedName = fileName;
-                AppLogger.Info("WinFsp", $"Создан каталог: '{cleanPath}' (ID {dirNode.Id})");
+                if (existed)
+                {
+                    AppLogger.Info("WinFsp", $"Открыт каталог: '{cleanPath}' (ID {dirNode.Id})");
+                }
+                else
+                {
+                    AppLogger.Info("WinFsp", $"Создан новый каталог: '{cleanPath}' (ID {dirNode.Id})");
+                }
                 return STATUS_SUCCESS;
             }
             else
