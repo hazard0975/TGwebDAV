@@ -79,7 +79,9 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Потоковое скачивание диапазона байт строго через ОЗУ (Pure RAM Mode) без записи на дисковый накопитель.
-        /// Воркеры качают чанки параллельно в оперативную память, заполняя кольцевой RAM-кэш и сразу отдавая данные в поток.
+        /// Воркеры качают чанки параллельно в оперативную память, строго выравнивая запросы по сетке 1 МБ (1048576 байт),
+        /// что гарантирует совместимость со спецификацией Telegram MTProto (защита от RpcError 400 OFFSET_INVALID)
+        /// и оптимальное заполнение общего RAM-кэша.
         /// </summary>
         public async Task<bool> DownloadToStreamAsync(
             Document document,
@@ -94,49 +96,56 @@ namespace TelegramWebDAV.Services
             long totalSize = document.size > 0 ? document.size : offset + length;
             if (length <= 0) return true;
 
-            int chunkSize = 1048576; // 1 МБ чанк
+            const int chunkSize = 1048576; // 1 МБ чанк — стандарт Telegram MTProto
+
+            long requestedEnd = Math.Min(totalSize, offset + length);
+            int startChunkIndex = (int)(offset / chunkSize);
+            int endChunkIndex = (int)((requestedEnd - 1) / chunkSize);
+
             var requestedChunkTasks = new List<DownloadChunkTask>();
             var allChunkTasks = new List<DownloadChunkTask>();
 
-            long currentOffset = offset;
-            long remaining = length;
-            while (remaining > 0)
+            for (int chunkIdx = startChunkIndex; chunkIdx <= endChunkIndex; chunkIdx++)
             {
-                int limit = (int)Math.Min(chunkSize, remaining);
+                long chunkStart = (long)chunkIdx * chunkSize;
+                int requestLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
+
                 var task = new DownloadChunkTask
                 {
-                    ChunkIndex = (int)(currentOffset / chunkSize),
-                    ChunkOffset = currentOffset,
-                    RequestLimit = limit
+                    ChunkIndex = chunkIdx,
+                    ChunkOffset = chunkStart,
+                    RequestLimit = requestLimit
                 };
                 requestedChunkTasks.Add(task);
                 allChunkTasks.Add(task);
-                currentOffset += limit;
-                remaining -= limit;
             }
 
-            // Гарантируем параллелизм всех 3 воркеров: если запрошено меньше 3 МБ, расширяем очередь упреждающими чанками
-            while (allChunkTasks.Count < _workerCount && currentOffset < totalSize)
+            // Гарантируем параллелизм всех 3 воркеров: если запрошено меньше 3 чанков, расширяем очередь упреждающими чанками
+            int nextPrefetchChunk = endChunkIndex + 1;
+            while (allChunkTasks.Count < _workerCount && ((long)nextPrefetchChunk * chunkSize) < totalSize)
             {
-                int limit = (int)Math.Min(chunkSize, totalSize - currentOffset);
+                long chunkStart = (long)nextPrefetchChunk * chunkSize;
+                int requestLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
+
                 allChunkTasks.Add(new DownloadChunkTask
                 {
-                    ChunkIndex = (int)(currentOffset / chunkSize),
-                    ChunkOffset = currentOffset,
-                    RequestLimit = limit
+                    ChunkIndex = nextPrefetchChunk,
+                    ChunkOffset = chunkStart,
+                    RequestLimit = requestLimit
                 });
-                currentOffset += limit;
+                nextPrefetchChunk++;
             }
 
             var chunkQueue = new ConcurrentQueue<DownloadChunkTask>(allChunkTasks);
             var downloadedChunks = new ConcurrentDictionary<long, byte[]>();
+            var failedChunks = new ConcurrentDictionary<long, bool>();
 
             int actualWorkers = Math.Min(_workerCount, chunkQueue.Count);
             Task[] workerTasks = new Task[actualWorkers];
 
             long totalDownloadedBytes = 0;
 
-            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Старт скачивания {length:N0} байт (со смещения {offset:N0}, чанки #{requestedChunkTasks[0].ChunkIndex}..#{allChunkTasks[allChunkTasks.Count - 1].ChunkIndex}) через {actualWorkers} параллельных воркеров MTProto...");
+            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Старт скачивания {length:N0} байт (диапазон {offset:N0}..{requestedEnd:N0}, чанки #{requestedChunkTasks[0].ChunkIndex}..#{allChunkTasks[allChunkTasks.Count - 1].ChunkIndex}) через {actualWorkers} параллельных воркеров MTProto...");
 
             for (int w = 0; w < actualWorkers; w++)
             {
@@ -177,6 +186,11 @@ namespace TelegramWebDAV.Services
                                 chunk.RetryCount++;
                                 chunkQueue.Enqueue(chunk);
                             }
+                            else
+                            {
+                                failedChunks[chunk.ChunkOffset] = true;
+                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Исчерпаны попытки для Чанка #{chunk.ChunkIndex} (смещение {chunk.ChunkOffset:N0}).");
+                            }
                         }
                         catch (RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
                         {
@@ -195,35 +209,65 @@ namespace TelegramWebDAV.Services
                                 chunk.RetryCount++;
                                 chunkQueue.Enqueue(chunk);
                             }
+                            else
+                            {
+                                failedChunks[chunk.ChunkOffset] = true;
+                            }
                             await Task.Delay(300, cancellationToken);
                         }
                     }
                 }, cancellationToken);
             }
 
-            // Вывод запрошенных чанков в destinationStream (если destinationStream задан)
+            // Вывод запрошенных байт в destinationStream (если destinationStream задан)
             if (destinationStream != null && destinationStream != Stream.Null)
             {
+                long currentFilePos = offset;
+                long bytesRemaining = length;
+
                 foreach (var task in requestedChunkTasks)
                 {
+                    if (bytesRemaining <= 0) break;
+
                     byte[]? chunkBytes = null;
                     while (!downloadedChunks.TryGetValue(task.ChunkOffset, out chunkBytes))
                     {
                         if (cancellationToken.IsCancellationRequested) return false;
+                        if (failedChunks.ContainsKey(task.ChunkOffset))
+                        {
+                            AppLogger.Warn("MtprotoWorkerPool", $"Чанк #{task.ChunkIndex} не был загружен после всех попыток. Прерывание RAM-стриминга.");
+                            return false;
+                        }
                         await Task.Delay(10, cancellationToken);
                     }
 
-                    if (chunkBytes == null) continue;
+                    if (chunkBytes == null || chunkBytes.Length == 0) continue;
 
-                    try
+                    // Вычисляем срез внутри скачанного 1 МБ блока
+                    int sliceOffset = (int)(currentFilePos - task.ChunkOffset);
+                    if (sliceOffset < 0 || sliceOffset >= chunkBytes.Length)
                     {
-                        await destinationStream.WriteAsync(chunkBytes, 0, chunkBytes.Length, cancellationToken);
-                        await destinationStream.FlushAsync(cancellationToken);
+                        sliceOffset = 0;
                     }
-                    catch (Exception ex)
+
+                    int availableInChunk = chunkBytes.Length - sliceOffset;
+                    int bytesToWrite = (int)Math.Min(availableInChunk, bytesRemaining);
+
+                    if (bytesToWrite > 0)
                     {
-                        AppLogger.Debug("MtprotoWorkerPool", $"Клиент прервал RAM-стриминг: {ex.Message}");
-                        return false;
+                        try
+                        {
+                            await destinationStream.WriteAsync(chunkBytes, sliceOffset, bytesToWrite, cancellationToken);
+                            await destinationStream.FlushAsync(cancellationToken);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Debug("MtprotoWorkerPool", $"Клиент прервал RAM-стриминг: {ex.Message}");
+                            return false;
+                        }
+
+                        currentFilePos += bytesToWrite;
+                        bytesRemaining -= bytesToWrite;
                     }
                 }
             }
