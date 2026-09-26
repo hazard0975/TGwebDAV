@@ -108,15 +108,12 @@ namespace TelegramWebDAV.Services
             for (int chunkIdx = startChunkIndex; chunkIdx <= endChunkIndex; chunkIdx++)
             {
                 long chunkStart = (long)chunkIdx * chunkSize;
-                int rawLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
-                // Telegram MTProto требует, чтобы limit был строго кратен 4 КБ (4096 байт)
-                int requestLimit = Math.Min(chunkSize, Math.Max(4096, ((rawLimit + 4095) / 4096) * 4096));
 
                 var task = new DownloadChunkTask
                 {
                     ChunkIndex = chunkIdx,
                     ChunkOffset = chunkStart,
-                    RequestLimit = requestLimit
+                    RequestLimit = chunkSize // По спецификации MTProto limit обязан быть делителем 1 МБ (1048576)
                 };
                 requestedChunkTasks.Add(task);
                 allChunkTasks.Add(task);
@@ -127,15 +124,12 @@ namespace TelegramWebDAV.Services
             while (allChunkTasks.Count < _workerCount && ((long)nextPrefetchChunk * chunkSize) < totalSize)
             {
                 long chunkStart = (long)nextPrefetchChunk * chunkSize;
-                int rawLimit = (int)Math.Min(chunkSize, totalSize - chunkStart);
-                // Telegram MTProto требует, чтобы limit был строго кратен 4 КБ (4096 байт)
-                int requestLimit = Math.Min(chunkSize, Math.Max(4096, ((rawLimit + 4095) / 4096) * 4096));
 
                 allChunkTasks.Add(new DownloadChunkTask
                 {
                     ChunkIndex = nextPrefetchChunk,
                     ChunkOffset = chunkStart,
-                    RequestLimit = requestLimit
+                    RequestLimit = chunkSize
                 });
                 nextPrefetchChunk++;
             }
@@ -307,17 +301,13 @@ namespace TelegramWebDAV.Services
             long offset = 0;
             while (offset < totalSize)
             {
-                int rawLimit = (int)Math.Min(chunkSize, totalSize - offset);
-                // Telegram MTProto требует, чтобы limit был строго кратен 4 КБ (4096 байт)
-                int requestLimit = Math.Min(chunkSize, Math.Max(4096, ((rawLimit + 4095) / 4096) * 4096));
-
                 chunkQueue.Enqueue(new DownloadChunkTask
                 {
                     ChunkIndex = (int)(offset / chunkSize),
                     ChunkOffset = offset,
-                    RequestLimit = requestLimit
+                    RequestLimit = chunkSize // По спецификации MTProto limit обязан быть делителем 1 МБ (1048576)
                 });
-                offset += rawLimit;
+                offset += chunkSize;
             }
 
             long totalDownloadedBytes = 0;
