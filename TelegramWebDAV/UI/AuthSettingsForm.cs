@@ -38,6 +38,9 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkAutoShowPopup = null!;
         private CheckBox _chkEnableDiskCache = null!;
         private NumericUpDown _numMemoryCacheMb = null!;
+        private NumericUpDown _numChunkTtlMinutes = null!;
+        private NumericUpDown _numFullTrackMaxMb = null!;
+        private NumericUpDown _numStreamingWindowMb = null!;
 
         // Telegram Tab
         private Label _lblStatus = null!;
@@ -194,7 +197,7 @@ namespace TelegramWebDAV.UI
                 Margin = new Padding(0, 5, 0, 5)
             };
 
-            var pnlMemCache = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 10) };
+            var pnlMemCache = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
             pnlMemCache.Controls.Add(new Label { Text = "Буфер кэша в ОЗУ (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
             _numMemoryCacheMb = new NumericUpDown
             {
@@ -204,6 +207,39 @@ namespace TelegramWebDAV.UI
                 Width = 100
             };
             pnlMemCache.Controls.Add(_numMemoryCacheMb);
+
+            var pnlChunkTtl = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
+            pnlChunkTtl.Controls.Add(new Label { Text = "Время жизни кэша в ОЗУ (мин):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _numChunkTtlMinutes = new NumericUpDown
+            {
+                Minimum = 1,
+                Maximum = 120, // До 2 часов
+                Value = Math.Max(1, Math.Min(120, _settings.Server.ChunkMemoryCacheTtlMinutes > 0 ? _settings.Server.ChunkMemoryCacheTtlMinutes : 10)),
+                Width = 100
+            };
+            pnlChunkTtl.Controls.Add(_numChunkTtlMinutes);
+
+            var pnlFullTrack = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
+            pnlFullTrack.Controls.Add(new Label { Text = "Качать трек целиком до (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _numFullTrackMaxMb = new NumericUpDown
+            {
+                Minimum = 10,
+                Maximum = 500, // До 500 МБ
+                Value = Math.Max(10, Math.Min(500, _settings.Server.FullTrackPrefetchMaxFileSizeMb > 0 ? _settings.Server.FullTrackPrefetchMaxFileSizeMb : 70)),
+                Width = 100
+            };
+            pnlFullTrack.Controls.Add(_numFullTrackMaxMb);
+
+            var pnlStreamWindow = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 10) };
+            pnlStreamWindow.Controls.Add(new Label { Text = "Окно стриминга для больших файлов (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _numStreamingWindowMb = new NumericUpDown
+            {
+                Minimum = 5,
+                Maximum = 200, // До 200 МБ
+                Value = Math.Max(5, Math.Min(200, _settings.Server.StreamingPrefetchWindowMb > 0 ? _settings.Server.StreamingPrefetchWindowMb : 20)),
+                Width = 100
+            };
+            pnlStreamWindow.Controls.Add(_numStreamingWindowMb);
 
             var btnSaveGeneral = new Button
             {
@@ -215,7 +251,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkEnableDiskCache, pnlMemCache, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkEnableDiskCache, pnlMemCache, pnlChunkTtl, pnlFullTrack, pnlStreamWindow, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
@@ -546,6 +582,9 @@ namespace TelegramWebDAV.UI
             _settings.Server.AutoShowUploadPopup = _chkAutoShowPopup.Checked;
             _settings.Server.EnableDiskReadCache = _chkEnableDiskCache.Checked;
             _settings.Server.MemoryCacheSizeMb = (int)_numMemoryCacheMb.Value;
+            _settings.Server.ChunkMemoryCacheTtlMinutes = (int)_numChunkTtlMinutes.Value;
+            _settings.Server.FullTrackPrefetchMaxFileSizeMb = (int)_numFullTrackMaxMb.Value;
+            _settings.Server.StreamingPrefetchWindowMb = (int)_numStreamingWindowMb.Value;
 
             if (_chkContextMenu.Checked)
             {

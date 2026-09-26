@@ -400,6 +400,7 @@ namespace TelegramWebDAV.Services
         {
             AppLogger.Info("TelegramService", "Проверка сессии и подключение к Telegram...");
             _currentSettings = _configManager.Load();
+            AppLogger.Info("TelegramService", $"[Streaming Config] RAM Кэш: {_currentSettings.Server.MemoryCacheSizeMb} МБ (TTL: {_currentSettings.Server.ChunkMemoryCacheTtlMinutes} мин) | Автовыкачка треков до: {_currentSettings.Server.FullTrackPrefetchMaxFileSizeMb} МБ | Окно стриминга: {_currentSettings.Server.StreamingPrefetchWindowMb} МБ | Дисковый кэш: {(_currentSettings.Server.EnableDiskReadCache ? "ВКЛ" : "ВЫКЛ (100% RAM)")}");
             
             if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
             {
@@ -1322,7 +1323,8 @@ namespace TelegramWebDAV.Services
                     raw = uploadFile.bytes;
                     audit.AddNetworkBytes(raw.Length);
                     EnsureChunkCacheCapacity();
-                    _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(10));
+                    int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
+                    _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
                     AppLogger.Info("TelegramService", $"[MTProto] Получен чанк для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length:N0} байт, сохранен в RAM кэш.");
 
                     if (_inFlightChunkWaiters.TryRemove(inFlightDirectKey, out var waiter))
@@ -1419,11 +1421,18 @@ namespace TelegramWebDAV.Services
             {
                 try
                 {
-                    // Для аудио и небольших файлов (<= 70 МБ) качаем весь трек целиком до 100%
-                    // Для очень больших файлов (> 70 МБ) держим буфер упреждения 20 МБ вперед
-                    long maxPrefetchLimit = actualTotalSize <= 73400320
+                    int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
+                    int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 70;
+                    int windowMb = _configManager?.CurrentSettings?.Server?.StreamingPrefetchWindowMb ?? 20;
+
+                    long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
+                    long windowBytes = (long)windowMb * 1024 * 1024;
+
+                    // Для аудио и небольших файлов (<= fullTrackMaxMb) качаем весь трек целиком до 100%
+                    // Для очень больших файлов (> fullTrackMaxMb) держим буфер упреждения windowMb вперед
+                    long maxPrefetchLimit = actualTotalSize <= fullTrackMaxBytes
                         ? actualTotalSize
-                        : Math.Min(actualTotalSize, currentReadOffset + 20971520);
+                        : Math.Min(actualTotalSize, currentReadOffset + windowBytes);
 
                     var missingChunks = new List<long>();
                     long scanOffset = 0;
@@ -1462,7 +1471,7 @@ namespace TelegramWebDAV.Services
                             audit.AddNetworkBytes(chunkBytes.Length);
                             EnsureChunkCacheCapacity();
                             string ramKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
-                            _chunkMemoryCache[ramKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(10));
+                            _chunkMemoryCache[ramKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
 
                             string waitKey = $"{messageId}:{chunkOffset}";
                             if (_inFlightChunkWaiters.TryRemove(waitKey, out var waiter))
