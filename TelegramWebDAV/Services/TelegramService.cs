@@ -192,6 +192,11 @@ namespace TelegramWebDAV.Services
         public event Action<string, long, long>? OnDownloadProgress;
 
         /// <summary>
+        /// Событие запроса метаданных / тегов файла из Telegram.
+        /// </summary>
+        public event Action<string, long, long>? OnMetadataProgress;
+
+        /// <summary>
         /// Событие кэширования отдельных чанков / метаданных / тегов файла в ОЗУ.
         /// </summary>
         public event Action<string, long, long>? OnChunkCached;
@@ -1032,7 +1037,10 @@ namespace TelegramWebDAV.Services
                         if (!isMetadataProbe && (isFullFileDownload || transferred > 524288))
                             OnDownloadProgress?.Invoke(fileName, offset + transferred, actualTotalSize);
                         else
+                        {
+                            OnMetadataProgress?.Invoke(fileName, transferred, actualTotalSize);
                             OnChunkCached?.Invoke(fileName, transferred, actualTotalSize);
+                        }
                     });
 
                 if (success)
@@ -1106,6 +1114,7 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
+                        OnMetadataProgress?.Invoke(fileName, totalSent, actualTotalSize);
                         OnChunkCached?.Invoke(fileName, totalSent, actualTotalSize);
                     }
                     continue;
@@ -1226,6 +1235,7 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
+                        OnMetadataProgress?.Invoke(fileName, totalSent, actualTotalSize);
                         OnChunkCached?.Invoke(fileName, totalSent, actualTotalSize);
                     }
 

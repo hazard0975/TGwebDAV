@@ -39,7 +39,7 @@ namespace TelegramWebDAV.UI
         private bool _isTransferring = false;
         private bool _isFinalizing = false;
         private bool _isCompleted = false;
-        private bool _isChunkCaching = false;
+        private bool _isMetadata = false;
         private DateTime _lastSpeedCalcTime = DateTime.UtcNow;
         private long _lastSpeedBytes = 0;
         private double _bytesPerSecond = 0;
@@ -83,6 +83,7 @@ namespace TelegramWebDAV.UI
                     _hideCheckTimer.Stop();
                     _isCompleted = false;
                     _isFinalizing = false;
+                    _isMetadata = false;
                     _currentFileName = string.Empty;
                     Hide();
                     AppLogger.Info("TrayProgressOverlay", "Оверлей успешно скрыт по завершению таймаута.");
@@ -125,7 +126,7 @@ namespace TelegramWebDAV.UI
             }
 
             _direction = direction;
-            _isChunkCaching = false;
+            _isMetadata = false;
 
             // При смене файла сбрасываем счетчик, иначе гарантируем монотонный рост (защита от сетевого джиттера)
             if (_currentFileName != fileName)
@@ -182,11 +183,11 @@ namespace TelegramWebDAV.UI
             Update(); // Принудительно запускаем перерисовку очереди WM_PAINT
         }
 
-        public void UpdateChunkProgress(string fileName, long current, long total)
+        public void UpdateMetadataProgress(string fileName, long current, long total)
         {
             if (_syncContext != null && SynchronizationContext.Current != _syncContext)
             {
-                _syncContext.Post(_ => UpdateChunkProgress(fileName, current, total), null);
+                _syncContext.Post(_ => UpdateMetadataProgress(fileName, current, total), null);
                 return;
             }
 
@@ -196,7 +197,7 @@ namespace TelegramWebDAV.UI
             }
 
             _direction = TransferDirection.Download;
-            _isChunkCaching = true;
+            _isMetadata = true;
             _currentFileName = fileName;
             _currentBytes = current;
             _totalBytes = total;
@@ -207,7 +208,7 @@ namespace TelegramWebDAV.UI
 
             if (!Visible)
             {
-                AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса [Кэширование в RAM] для {fileName} ({current}/{total})");
+                AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса [Запрос метаданных] для {fileName} ({current}/{total})");
                 PositionNearTray(useMouse: false);
                 Show();
                 _updateTimer.Start();
@@ -217,6 +218,8 @@ namespace TelegramWebDAV.UI
             Invalidate();
             Update();
         }
+
+        public void UpdateChunkProgress(string fileName, long current, long total) => UpdateMetadataProgress(fileName, current, total);
 
         public void CompleteTransfer(string fileName, TransferDirection direction = TransferDirection.Upload)
         {
@@ -360,7 +363,14 @@ namespace TelegramWebDAV.UI
                 string header;
                 if (_isCompleted)
                 {
-                    header = _direction == TransferDirection.Download ? "СКАЧИВАНИЕ ЗАВЕРШЕНО" : "ЗАГРУЗКА ЗАВЕРШЕНА";
+                    if (_isMetadata)
+                    {
+                        header = "МЕТАДАННЫЕ ПОЛУЧЕНЫ";
+                    }
+                    else
+                    {
+                        header = _direction == TransferDirection.Download ? "СКАЧИВАНИЕ ЗАВЕРШЕНО" : "ЗАГРУЗКА ЗАВЕРШЕНА";
+                    }
                 }
                 else if (_queueCount > 1)
                 {
@@ -368,9 +378,9 @@ namespace TelegramWebDAV.UI
                         ? $"СКАЧИВАНИЕ ИЗ TELEGRAM (в очереди: {_queueCount})" 
                         : $"ОТПРАВКА В TELEGRAM (в очереди: {_queueCount})";
                 }
-                else if (_isChunkCaching)
+                else if (_isMetadata)
                 {
-                    header = "КЭШИРОВАНИЕ В RAM";
+                    header = "ЗАПРОС МЕТАДАННЫХ";
                 }
                 else if (_isFinalizing)
                 {
@@ -407,6 +417,10 @@ namespace TelegramWebDAV.UI
             {
                 percent = 100;
             }
+            else if (_isMetadata)
+            {
+                percent = _totalBytes > 0 ? Math.Max(20, (int)Math.Min(100, (_currentBytes * 100) / Math.Min(_totalBytes, 262144))) : 50;
+            }
             else if (_totalBytes > 0)
             {
                 percent = (int)Math.Min(100, Math.Max(0, (_currentBytes * 100) / _totalBytes));
@@ -425,13 +439,24 @@ namespace TelegramWebDAV.UI
                 int fillWidth = Math.Max(6, (barWidth * percent) / 100);
                 using (var fillPath = GetRoundedRect(new Rectangle(barX, barY, fillWidth, barHeight), 4))
                 {
-                    Color startColor = _direction == TransferDirection.Download 
-                        ? Color.FromArgb(245, 158, 11)  // Amber 500
-                        : Color.FromArgb(34, 197, 94);   // Green Emerald 500
+                    Color startColor;
+                    Color endColor;
 
-                    Color endColor = _direction == TransferDirection.Download
-                        ? Color.FromArgb(251, 191, 36)  // Amber 400
-                        : Color.FromArgb(56, 189, 248);  // Sky 400
+                    if (_isMetadata)
+                    {
+                        startColor = Color.FromArgb(14, 165, 233); // Sky 500
+                        endColor = Color.FromArgb(56, 189, 248);   // Sky 400
+                    }
+                    else if (_direction == TransferDirection.Download)
+                    {
+                        startColor = Color.FromArgb(245, 158, 11); // Amber 500
+                        endColor = Color.FromArgb(251, 191, 36);   // Amber 400
+                    }
+                    else
+                    {
+                        startColor = Color.FromArgb(34, 197, 94);  // Green Emerald 500
+                        endColor = Color.FromArgb(56, 189, 248);   // Sky 400
+                    }
 
                     using (var fillBrush = new LinearGradientBrush(
                         new Rectangle(barX, barY, barWidth, barHeight),
@@ -451,9 +476,20 @@ namespace TelegramWebDAV.UI
                 string stats;
                 if (_isCompleted)
                 {
-                    stats = _direction == TransferDirection.Download 
-                        ? "Файл успешно получен из Telegram ✔" 
-                        : "Файл успешно сохранен в Telegram ✔";
+                    if (_isMetadata)
+                    {
+                        stats = "Свойства файла успешно получены ✔";
+                    }
+                    else
+                    {
+                        stats = _direction == TransferDirection.Download 
+                            ? "Файл успешно получен из Telegram ✔" 
+                            : "Файл успешно сохранен в Telegram ✔";
+                    }
+                }
+                else if (_isMetadata)
+                {
+                    stats = $"Чтение свойств и тегов... ({FormatBytes(_currentBytes)})";
                 }
                 else if (_isFinalizing)
                 {
