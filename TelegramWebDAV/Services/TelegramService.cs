@@ -986,7 +986,9 @@ namespace TelegramWebDAV.Services
 
             long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
             bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
-            bool isMetadataProbe = length <= 262144 && offset == 0; // Быстрый запрос заголовков Проводником Windows
+            bool isHeaderProbe = (offset == 0 && length <= 262144);
+            bool isTailProbe = (actualTotalSize > 524288) && (offset >= actualTotalSize - 524288 || (offset + length >= actualTotalSize && length <= 524288));
+            bool isMetadataProbe = isHeaderProbe || isTailProbe; // Быстрый запрос заголовков или концевых ID3/moov тегов Проводником Windows
 
             var audit = _networkAudits.GetOrAdd(messageId, _ => new NetworkTransferAudit { FileName = fileName, FileSize = actualTotalSize });
             audit.FileName = fileName;
@@ -1068,13 +1070,17 @@ namespace TelegramWebDAV.Services
                     audit.AddRamBytes(bytesToSend);
                     AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
 
-                    if (offset + bytesToSend >= actualTotalSize && audit.LogCompletionOnce())
+                    bool isFullRead = (offset == 0 && length >= actualTotalSize) || (audit.RamBytes + audit.NetworkBytes >= actualTotalSize * 0.95 && offset + bytesToSend >= actualTotalSize);
+                    if (!isMetadataProbe && isFullRead && audit.LogCompletionOnce())
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
 
-                    // Запускаем непрерывный фоновый конвейер скачивания оставшихся чанков файла
-                    TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
+                    // Запускаем непрерывный фоновый конвейер скачивания оставшихся чанков файла только при реальном воспроизведении/скачивании
+                    if (!isMetadataProbe)
+                    {
+                        TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
+                    }
                     return;
                 }
                 catch (Exception ex)
@@ -1334,7 +1340,8 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            if (!isSmallFile && !isMetadataProbe && totalSent >= 524288 && currentPos >= actualTotalSize && audit.LogCompletionOnce())
+            bool isFullTransfer = (offset == 0 && length >= actualTotalSize) || (totalSent >= actualTotalSize * 0.9);
+            if (!isSmallFile && !isMetadataProbe && isFullTransfer && currentPos >= actualTotalSize && audit.LogCompletionOnce())
             {
                 OnDownloadCompleted?.Invoke(fileName);
             }
