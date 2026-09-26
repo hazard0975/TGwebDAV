@@ -42,6 +42,7 @@ namespace TelegramWebDAV.Services
         private readonly SemaphoreSlim _floodLock = new SemaphoreSlim(1, 1);
         private DateTime _floodWaitUntil = DateTime.MinValue;
         private WTelegram.Client? _client;
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, WTelegram.Client> _workerClientsPool = new();
         private System.Threading.CancellationTokenSource? _queueCts;
 
         // Очередь последовательной загрузки файлов в Telegram (Upload Queue)
@@ -273,8 +274,13 @@ namespace TelegramWebDAV.Services
             _currentSettings.Telegram.ApiId = apiId;
             _currentSettings.Telegram.ApiHash = apiHash;
             _storagePeer = null;
-            _client?.Dispose();
+            try { _client?.Dispose(); } catch { }
             _client = null;
+            foreach (var workerClient in _workerClientsPool.Values)
+            {
+                try { workerClient.Dispose(); } catch { }
+            }
+            _workerClientsPool.Clear();
             _ = ConnectAsync();
         }
 
@@ -449,6 +455,66 @@ namespace TelegramWebDAV.Services
                     default: return null;
                 }
             });
+        }
+
+        /// <summary>
+        /// Возвращает или создает независимый клиент MTProto со своим TCP-соединением для каждого параллельного воркера.
+        /// </summary>
+        public async Task<WTelegram.Client> GetWorkerClientAsync(int workerId, int dcId)
+        {
+            WTelegram.Client targetClient;
+
+            if (workerId <= 1 || _client == null)
+            {
+                targetClient = _client!;
+            }
+            else if (_workerClientsPool.TryGetValue(workerId, out var existingClient))
+            {
+                targetClient = existingClient;
+            }
+            else
+            {
+                try
+                {
+                    string sessionPath = _currentSettings.Telegram.SessionPath;
+                    var extraClient = new WTelegram.Client(what =>
+                    {
+                        switch (what)
+                        {
+                            case "api_id": return _currentSettings.Telegram.ApiId.ToString();
+                            case "api_hash": return _currentSettings.Telegram.ApiHash;
+                            case "session_pathname": return sessionPath;
+                            case "phone_number": return _currentSettings.Telegram.PhoneNumber;
+                            default: return null;
+                        }
+                    });
+
+                    string? loginResult = await extraClient.Login(null);
+                    if (loginResult == null)
+                    {
+                        _workerClientsPool[workerId] = extraClient;
+                        targetClient = extraClient;
+                        AppLogger.Info("TelegramService", $"[Воркер #{workerId}] Успешно запущен дополнительный независимый TCP-клиент MTProto.");
+                    }
+                    else
+                    {
+                        AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Не удалось авторизовать дочерний клиент ({loginResult}), используем основной.");
+                        targetClient = _client!;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Warn("TelegramService", $"[Воркер #{workerId}] Ошибка инициализации независимого TCP-клиента: {ex.Message}. Используем основной.");
+                    targetClient = _client!;
+                }
+            }
+
+            if (dcId != 0 && targetClient != null)
+            {
+                return await targetClient.GetClientForDC(dcId);
+            }
+
+            return targetClient ?? _client!;
         }
 
         private void HandleWTelegramResult(string? result)
@@ -986,7 +1052,7 @@ namespace TelegramWebDAV.Services
                     if (!File.Exists(cacheFilePath))
                     {
                         AppLogger.Info("TelegramService", $"[Disk Cache Mode] Скачивание файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт) воркерами в дисковый кэш...");
-                        var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3);
+                        var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
                         bool success = await workerPool.DownloadFileAsync(
                             document,
                             cacheFilePath,
@@ -1020,7 +1086,7 @@ namespace TelegramWebDAV.Services
             if (!enableDiskCache && !isSmallFile && !isMetadataProbe && length > 262144)
             {
                 bool isFullFileDownload = (offset == 0 && length >= actualTotalSize);
-                var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3);
+                var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
                 bool success = await workerPool.DownloadToStreamAsync(
                     document,
                     destination,
@@ -1358,6 +1424,11 @@ namespace TelegramWebDAV.Services
                 _client = null;
             }
             catch { }
+            foreach (var workerClient in _workerClientsPool.Values)
+            {
+                try { workerClient.Dispose(); } catch { }
+            }
+            _workerClientsPool.Clear();
             _floodLock?.Dispose();
             _uploadSemaphore?.Dispose();
         }

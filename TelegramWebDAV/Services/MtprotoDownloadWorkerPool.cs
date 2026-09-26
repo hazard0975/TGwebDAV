@@ -19,6 +19,7 @@ namespace TelegramWebDAV.Services
     public class MtprotoDownloadWorkerPool
     {
         private readonly Client _mainClient;
+        private readonly Func<int, int, Task<Client>>? _clientProvider;
         private readonly int _workerCount;
         private DateTime _poolFloodWaitUntil = DateTime.MinValue;
 
@@ -27,10 +28,11 @@ namespace TelegramWebDAV.Services
         private static DateTime _lastRequestUtc = DateTime.MinValue;
         private static int _pacingDelayMs = 200; // Начинаем с плавного темпа 200 мс (~5 МБ/с без блокировок)
 
-        public MtprotoDownloadWorkerPool(Client mainClient, int workerCount = 3)
+        public MtprotoDownloadWorkerPool(Client mainClient, int workerCount = 3, Func<int, int, Task<Client>>? clientProvider = null)
         {
             _mainClient = mainClient ?? throw new ArgumentNullException(nameof(mainClient));
             _workerCount = Math.Max(1, workerCount);
+            _clientProvider = clientProvider;
         }
 
         public class DownloadChunkTask
@@ -126,7 +128,9 @@ namespace TelegramWebDAV.Services
                 int workerId = w + 1;
                 workerTasks[w] = Task.Run(async () =>
                 {
-                    var workerClient = document.dc_id != 0 ? await _mainClient.GetClientForDC(document.dc_id) : _mainClient;
+                    var workerClient = _clientProvider != null
+                        ? await _clientProvider(workerId, document.dc_id)
+                        : (document.dc_id != 0 ? await _mainClient.GetClientForDC(document.dc_id) : _mainClient);
                     var location = document.ToFileLocation();
 
                     while (chunkQueue.TryDequeue(out var chunk))
@@ -263,7 +267,9 @@ namespace TelegramWebDAV.Services
                     int workerId = w + 1;
                     workerTasks[w] = Task.Run(async () =>
                     {
-                        var workerClient = document.dc_id != 0 ? await _mainClient.GetClientForDC(document.dc_id) : _mainClient;
+                        var workerClient = _clientProvider != null
+                            ? await _clientProvider(workerId, document.dc_id)
+                            : (document.dc_id != 0 ? await _mainClient.GetClientForDC(document.dc_id) : _mainClient);
                         var location = document.ToFileLocation();
 
                         while (chunkQueue.TryDequeue(out var chunk))
