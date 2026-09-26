@@ -22,9 +22,10 @@ namespace TelegramWebDAV.Services
         private readonly int _workerCount;
         private DateTime _poolFloodWaitUntil = DateTime.MinValue;
 
-        // Глобальный семафор пейсинга вызовов Upload_GetFile для предотвращения залповых всплесков
+        // Глобальный семафор и динамическая задержка пейсинга вызовов Upload_GetFile для предотвращения FLOOD_WAIT
         private static readonly SemaphoreSlim _pacingLock = new SemaphoreSlim(1, 1);
         private static DateTime _lastRequestUtc = DateTime.MinValue;
+        private static int _pacingDelayMs = 200; // Начинаем с плавного темпа 200 мс (~5 МБ/с без блокировок)
 
         public MtprotoDownloadWorkerPool(Client mainClient, int workerCount = 3)
         {
@@ -41,7 +42,7 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Гарантирует микро-интервал между запросами Upload_GetFile (пейсинг 65 мс)
+        /// Гарантирует микро-интервал между запросами Upload_GetFile (пейсинг 200 мс)
         /// и соблюдает единую паузу пула при возникновении FLOOD_WAIT.
         /// </summary>
         private async Task PaceRequestAsync(int workerId, CancellationToken cancellationToken)
@@ -57,14 +58,14 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            // 2. Гарантируем интервал в 65 мс между запусками вызовов к Telegram API
+            // 2. Гарантируем минимальный интервал между запусками вызовов к Telegram API
             await _pacingLock.WaitAsync(cancellationToken);
             try
             {
                 var elapsed = (DateTime.UtcNow - _lastRequestUtc).TotalMilliseconds;
-                if (elapsed < 65)
+                if (elapsed < _pacingDelayMs)
                 {
-                    await Task.Delay((int)(65 - elapsed), cancellationToken);
+                    await Task.Delay((int)(_pacingDelayMs - elapsed), cancellationToken);
                 }
                 _lastRequestUtc = DateTime.UtcNow;
             }
