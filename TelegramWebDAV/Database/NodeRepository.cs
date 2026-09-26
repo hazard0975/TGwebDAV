@@ -638,6 +638,9 @@ namespace TelegramWebDAV.Database
                     throw;
                 }
             }
+
+            // Автоматически ставим в стойкую очередь SQLite все файлы перемещаемого/переименовываемого поддерева
+            EnqueueCaptionUpdatesForSubtree(nodeId);
         }
 
         private void UpdateChildrenDeletedStateRecursive(SqliteConnection connection, SqliteTransaction transaction, int parentId, int isDeletedVal)
@@ -1081,5 +1084,133 @@ namespace TelegramWebDAV.Database
                 return total;
             }
         }
+
+        /// <summary>
+        /// Помещает в стойкую очередь SQLite все файлы указанного поддерева для фонового обновления подписей в Telegram.
+        /// Гарантирует устойчивость к выключению ПК или перезапуску приложения.
+        /// </summary>
+        public void EnqueueCaptionUpdatesForSubtree(int nodeId)
+        {
+            var filesToUpdate = new List<Node>();
+            GetFilesRecursive(nodeId, filesToUpdate);
+
+            if (filesToUpdate.Count == 0) return;
+
+            using (var connection = _dbManager.GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    foreach (var file in filesToUpdate)
+                    {
+                        if (file.TgMessageId.HasValue && file.TgMessageId.Value > 1)
+                        {
+                            string newCaption = GetNodeFullPathWithVersion(file.Id);
+                            using (var cmd = connection.CreateCommand())
+                            {
+                                cmd.Transaction = transaction;
+                                cmd.CommandText = @"
+                                    INSERT INTO pending_caption_updates (node_id, tg_message_id, new_caption)
+                                    VALUES (@nodeId, @tgMessageId, @newCaption)
+                                    ON CONFLICT(node_id) DO UPDATE SET
+                                        tg_message_id = excluded.tg_message_id,
+                                        new_caption = excluded.new_caption,
+                                        status = 0;
+                                ";
+                                cmd.Parameters.AddWithValue("@nodeId", file.Id);
+                                cmd.Parameters.AddWithValue("@tgMessageId", file.TgMessageId.Value);
+                                cmd.Parameters.AddWithValue("@newCaption", newCaption);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                    transaction.Commit();
+                    AppLogger.Info("Database", $"Поставлено в фоновую очередь обновление подписей Telegram для {filesToUpdate.Count} файлов.");
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    AppLogger.Warn("Database", $"Ошибка при добавлении подписей в очередь: {ex.Message}");
+                }
+            }
+        }
+
+        private void GetFilesRecursive(int parentId, List<Node> result)
+        {
+            var node = GetNodeById(parentId);
+            if (node == null) return;
+
+            if (!node.IsDir)
+            {
+                result.Add(node);
+                return;
+            }
+
+            var children = GetChildren(parentId);
+            foreach (var child in children)
+            {
+                if (child.IsDir)
+                {
+                    GetFilesRecursive(child.Id, result);
+                }
+                else
+                {
+                    result.Add(child);
+                }
+            }
+        }
+
+        public PendingCaptionItem? GetNextPendingCaptionUpdate()
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT id, node_id, tg_message_id, new_caption FROM pending_caption_updates ORDER BY id ASC LIMIT 1;";
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new PendingCaptionItem
+                        {
+                            Id = reader.GetInt32(0),
+                            NodeId = reader.GetInt32(1),
+                            TgMessageId = reader.GetInt32(2),
+                            NewCaption = reader.GetString(3)
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        public void RemovePendingCaptionUpdate(int id)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "DELETE FROM pending_caption_updates WHERE id = @id;";
+                command.Parameters.AddWithValue("@id", id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public int GetPendingCaptionCount()
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT COUNT(*) FROM pending_caption_updates;";
+                var result = command.ExecuteScalar();
+                return result != null ? Convert.ToInt32(result) : 0;
+            }
+        }
+    }
+
+    public class PendingCaptionItem
+    {
+        public int Id { get; set; }
+        public int NodeId { get; set; }
+        public int TgMessageId { get; set; }
+        public string NewCaption { get; set; } = string.Empty;
     }
 }

@@ -329,8 +329,16 @@ namespace TelegramWebDAV.Server
             {
                 if (isResumableChunk)
                 {
+                    // Вычисляем полный путь с версией для подписи в Telegram
+                    int nextVersion = repository.GetNextVersionForFile(parentNode.Id, name);
+                    string parentFullPath = repository.GetNodeFullPath(parentNode.Id);
+                    if (parentFullPath == "/") parentFullPath = "";
+                    string fileExt = Path.GetExtension(name);
+                    string nameNoExt = Path.GetFileNameWithoutExtension(name);
+                    string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
+
                     // Загружаем чанк в Telegram
-                    int? tgMessageId = await telegramService.UploadFileChunkAsync(context.Request.InputStream, name, offset, totalSize);
+                    int? tgMessageId = await telegramService.UploadFileChunkAsync(context.Request.InputStream, name, offset, totalSize, caption: fullPathWithVersion);
                     
                     // Обновляем позицию докачки и статус в SQLite
                     repository.UpdateUploadProgress(parentNode.Id, name, offset + contentLength, totalSize, tgMessageId);

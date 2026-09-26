@@ -90,7 +90,7 @@ namespace TelegramWebDAV
                 AppLogger.Info("Program", $"База данных SQLite инициализирована по пути: {settings.Database.Path}");
 
                 // 3. Инициализация сервиса Telegram (WTelegramClient)
-                var telegramService = new TelegramService(configManager);
+                var telegramService = new TelegramService(configManager, repository);
                 await telegramService.ConnectAsync();
 
                 // 4. Запуск встроенного WebDAV сервера на порту 37000 (или из конфига)

@@ -115,10 +115,35 @@ CREATE INDEX IF NOT EXISTS idx_nodes_parent_id ON nodes(parent_id);
 CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
 CREATE INDEX IF NOT EXISTS idx_nodes_is_deleted ON nodes(is_deleted);
 CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_id);
+
+CREATE TABLE IF NOT EXISTS pending_caption_updates (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    node_id INTEGER NOT NULL UNIQUE,
+    tg_message_id INTEGER NOT NULL,
+    new_caption TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status INTEGER NOT NULL DEFAULT 0
+);
 ";
 
         private void EnsureColumnsExist(SqliteConnection connection)
         {
+            // Гарантируем наличие таблицы pending_caption_updates в старых БД
+            using (var createTableCmd = connection.CreateCommand())
+            {
+                createTableCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS pending_caption_updates (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        node_id INTEGER NOT NULL UNIQUE,
+                        tg_message_id INTEGER NOT NULL,
+                        new_caption TEXT NOT NULL,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        status INTEGER NOT NULL DEFAULT 0
+                    );
+                ";
+                createTableCmd.ExecuteNonQuery();
+            }
+
             var existingColumns = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
             using (var command = connection.CreateCommand())
             {

@@ -711,6 +711,13 @@ namespace TelegramWebDAV.Services
                 node.Name = newName;
                 node.ParentId = targetParent.Id;
                 AppLogger.Info("WinFsp", $"Переименование/перемещение: '{oldClean}' -> '{newClean}'");
+
+                if (node.TgMessageId.HasValue && node.TgMessageId.Value > 1)
+                {
+                    string fullPathWithVersion = _repository.GetNodeFullPathWithVersion(node.Id);
+                    _ = _telegramService.UpdateMessageCaptionAsync(node.TgMessageId.Value, fullPathWithVersion);
+                }
+
                 return STATUS_SUCCESS;
             }
             catch (Exception ex)
@@ -747,14 +754,21 @@ namespace TelegramWebDAV.Services
                 int parentId = node.ParentId ?? 1;
                 string nodeName = node.Name;
 
+                int nextVersion = _repository.GetNextVersionForFile(parentId, nodeName);
+                string parentPath = _repository.GetNodeFullPath(parentId);
+                if (parentPath == "/") parentPath = "";
+                string ext = Path.GetExtension(nodeName);
+                string nameNoExt = Path.GetFileNameWithoutExtension(nodeName);
+                string fullPathWithVersion = $"{parentPath}/{nameNoExt}_v{nextVersion}{ext}";
+
                 // Отправляем в Telegram в фоновом потоке, не блокируя ядро Windows
                 _ = Task.Run(async () =>
                 {
                     try
                     {
-                        AppLogger.Info("WinFsp", $"Начало фоновой отправки файла '{nodeName}' ({finalLength} байт) в Telegram...");
+                        AppLogger.Info("WinFsp", $"Начало фоновой отправки файла '{nodeName}' ({finalLength} байт) в Telegram (подпись: '{fullPathWithVersion}')...");
                         using var fs = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                        int? msgId = await _telegramService.UploadFileAsync(fs, nodeName, finalLength);
+                        int? msgId = await _telegramService.UploadFileAsync(fs, nodeName, finalLength, caption: fullPathWithVersion);
                         if (msgId.HasValue)
                         {
                             _repository.CreateOrUpdateFile(parentId, nodeName, finalLength, msgId.Value);

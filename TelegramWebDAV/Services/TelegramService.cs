@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TelegramWebDAV.Config;
+using TelegramWebDAV.Database;
 using TelegramWebDAV.Models;
 using TL;
 
@@ -36,10 +37,12 @@ namespace TelegramWebDAV.Services
     public class TelegramService : IDisposable
     {
         private readonly ConfigManager _configManager;
+        private NodeRepository? _repository;
         private AppSettings _currentSettings;
         private readonly SemaphoreSlim _floodLock = new SemaphoreSlim(1, 1);
         private DateTime _floodWaitUntil = DateTime.MinValue;
         private WTelegram.Client? _client;
+        private System.Threading.CancellationTokenSource? _queueCts;
 
         // Очередь последовательной загрузки файлов в Telegram (Upload Queue)
         // Предотвращает конкуренцию за полосу пропускания, мерцание оверлея и FLOOD_WAIT
@@ -198,10 +201,63 @@ namespace TelegramWebDAV.Services
         /// </summary>
         public event Action<string>? OnDownloadCompleted;
 
-        public TelegramService(ConfigManager configManager)
+        public TelegramService(ConfigManager configManager, NodeRepository? repository = null)
         {
             _configManager = configManager;
+            _repository = repository;
             _currentSettings = _configManager.Load();
+            StartCaptionQueueWorker();
+        }
+
+        public void SetRepository(NodeRepository repository)
+        {
+            _repository = repository;
+            StartCaptionQueueWorker();
+        }
+
+        private void StartCaptionQueueWorker()
+        {
+            if (_queueCts != null) return;
+            _queueCts = new System.Threading.CancellationTokenSource();
+            Task.Run(() => ProcessCaptionQueueAsync(_queueCts.Token));
+        }
+
+        private async Task ProcessCaptionQueueAsync(System.Threading.CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    if (IsAuthorized && _client != null && _repository != null)
+                    {
+                        var item = _repository.GetNextPendingCaptionUpdate();
+                        if (item != null)
+                        {
+                            await EnsureFloodWaitDelayAsync();
+                            await UpdateMessageCaptionAsync(item.TgMessageId, item.NewCaption);
+                            _repository.RemovePendingCaptionUpdate(item.Id);
+                            await Task.Delay(120, token); // ~8 файлов в секунду: ровно, плавно, без лимитов Telegram
+                            continue;
+                        }
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                {
+                    AppLogger.Warn("TelegramService", $"FloodWait при фоновом обновлении подписей: пауза {rpcEx.X} секунд...");
+                    await Task.Delay(Math.Max(5000, rpcEx.X * 1000), token);
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("TelegramService", $"Ошибка обработки фоновой очереди подписей: {ex.Message}");
+                    await Task.Delay(2000, token);
+                }
+
+                await Task.Delay(1000, token);
+            }
         }
 
         private TL.InputPeer? _storagePeer;
@@ -579,7 +635,7 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Надежная загрузка чанка с поддержкой докачки и отправкой собранного файла в канал Telegram по завершении.
         /// </summary>
-        public async Task<int?> UploadFileChunkAsync(Stream source, string fileName, long offset, long totalSize)
+        public async Task<int?> UploadFileChunkAsync(Stream source, string fileName, long offset, long totalSize, string? caption = null)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -615,7 +671,7 @@ namespace TelegramWebDAV.Services
                 {
                     using (var completeStream = File.OpenRead(tempFilePath))
                     {
-                        int? messageId = await UploadFileAsync(completeStream, fileName);
+                        int? messageId = await UploadFileAsync(completeStream, fileName, caption: caption);
                         return messageId;
                     }
                 }
