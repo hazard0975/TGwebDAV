@@ -1124,6 +1124,12 @@ namespace TelegramWebDAV.Services
                     audit.AddRamBytes(bytesToSend);
                     AppLogger.Info("TelegramService", $"[Cache RAM] Мгновенная отдача из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
 
+                    if (offset + bytesToSend >= actualTotalSize)
+                    {
+                        audit.LogCompletionOnce();
+                        OnDownloadCompleted?.Invoke(fileName);
+                    }
+
                     // Запускаем воркеров на упреждающую прокачку ТОЛЬКО если следующего 1 МБ блока ещё НЕТ в ОЗУ
                     long nextChunkOffset = ((offset / 1048576) + 1) * 1048576;
                     long bytesLeftInChunk = nextChunkOffset - (offset + bytesToSend);
@@ -1131,18 +1137,17 @@ namespace TelegramWebDAV.Services
                     if (actualTotalSize > nextChunkOffset && bytesLeftInChunk <= 262144)
                     {
                         var chunksNeeded = new List<long>();
-                        for (int i = 0; i < 3; i++)
+                        long scanOffset = nextChunkOffset;
+                        while (chunksNeeded.Count < 3 && scanOffset < actualTotalSize)
                         {
-                            long cOffset = nextChunkOffset + ((long)i * 1048576);
-                            if (cOffset >= actualTotalSize) break;
-
-                            string cKey = $"{messageId}:{cOffset}";
-                            if (!TryGetFromMemoryCache(messageId, cOffset, out _, out _) &&
+                            string cKey = $"{messageId}:{scanOffset}";
+                            if (!TryGetFromMemoryCache(messageId, scanOffset, out _, out _) &&
                                 !_inFlightChunkWaiters.ContainsKey(cKey) &&
                                 _activePoolPrefetches.TryAdd(cKey, true))
                             {
-                                chunksNeeded.Add(cOffset);
+                                chunksNeeded.Add(scanOffset);
                             }
+                            scanOffset += 1048576;
                         }
 
                         if (chunksNeeded.Count > 0)

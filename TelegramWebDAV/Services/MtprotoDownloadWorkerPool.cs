@@ -144,7 +144,18 @@ namespace TelegramWebDAV.Services
 
             long totalDownloadedBytes = 0;
 
-            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Старт скачивания {length:N0} байт (диапазон {offset:N0}..{requestedEnd:N0}, чанки #{requestedChunkTasks[0].ChunkIndex}..#{allChunkTasks[allChunkTasks.Count - 1].ChunkIndex}) через {actualWorkers} параллельных воркеров MTProto...");
+            string workerDesc = actualWorkers switch
+            {
+                1 => "1 воркер",
+                2 or 3 or 4 => $"{actualWorkers} параллельных воркера",
+                _ => $"{actualWorkers} параллельных воркеров"
+            };
+
+            string chunkRangeDesc = requestedChunkTasks[0].ChunkIndex == allChunkTasks[allChunkTasks.Count - 1].ChunkIndex
+                ? $"чанк #{requestedChunkTasks[0].ChunkIndex}"
+                : $"чанки #{requestedChunkTasks[0].ChunkIndex}..#{allChunkTasks[allChunkTasks.Count - 1].ChunkIndex}";
+
+            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Старт скачивания {length:N0} байт (диапазон {offset:N0}..{requestedEnd:N0}, {chunkRangeDesc}) через {workerDesc} MTProto...");
 
             for (int w = 0; w < actualWorkers; w++)
             {
