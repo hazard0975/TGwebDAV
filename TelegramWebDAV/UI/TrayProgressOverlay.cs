@@ -191,8 +191,12 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
-            // Если передано более 512 КБ, это гарантированно реальное чтение/копирование файла, а не быстрый просмотр тегов
-            if (current > 524288)
+            // Для аудиофайлов чтение тегов (заголовок + хвост moov/id3) может достигать ~1.5 МБ, для остальных файлов — 512 КБ
+            string ext = Path.GetExtension(fileName).ToLowerInvariant();
+            bool isMedia = ext is ".mp3" or ".flac" or ".wav" or ".m4a" or ".ogg" or ".ape" or ".wma" or ".aac" or ".opus";
+            long metadataLimit = isMedia ? 1572864 : 524288;
+
+            if (current > metadataLimit)
             {
                 UpdateProgress(fileName, current, total, TransferDirection.Download);
                 return;

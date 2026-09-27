@@ -993,10 +993,10 @@ namespace TelegramWebDAV.Services
             audit.FileName = fileName;
             audit.FileSize = actualTotalSize;
 
-            long totalFileTransferred = audit.RamBytes + audit.NetworkBytes;
-            bool isHeaderProbe = isMediaFile && (offset + length <= 524288) && (totalFileTransferred <= 524288);
-            bool isTailProbe = isMediaFile && (actualTotalSize > 524288) && (offset >= actualTotalSize - 524288) && (totalFileTransferred <= 524288);
-            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && totalFileTransferred <= 524288;
+            long totalNetworkBytes = audit.NetworkBytes;
+            bool isHeaderProbe = isMediaFile && (offset + length <= 524288) && (totalNetworkBytes <= 1572864);
+            bool isTailProbe = isMediaFile && (actualTotalSize > 524288) && (offset >= actualTotalSize - 1048576) && (totalNetworkBytes <= 1572864);
+            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && isMediaFile && (totalNetworkBytes <= 1572864);
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1081,7 +1081,7 @@ namespace TelegramWebDAV.Services
                     }
 
                     // Запускаем непрерывный фоновый конвейер скачивания оставшихся чанков файла только при реальном воспроизведении/скачивании
-                    if (!isMetadataProbe)
+                    if (!isMetadataProbe && !isTailProbe)
                     {
                         TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
                     }
@@ -1095,7 +1095,7 @@ namespace TelegramWebDAV.Services
             }
 
             // Для аудио/файлов запускаем непрерывный фоновый конвейер воркеров MTProto
-            if (!enableDiskCache && !isSmallFile && !isMetadataProbe)
+            if (!enableDiskCache && !isSmallFile && !isMetadataProbe && !isTailProbe)
             {
                 TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
             }
