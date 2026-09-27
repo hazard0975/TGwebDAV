@@ -1282,7 +1282,8 @@ namespace TelegramWebDAV.Services
                     await EnsureFloodWaitDelayAsync();
                     try
                     {
-                        AppLogger.Info("TelegramService", $"[MTProto] Запрос чанка для '{fileName}' (ID {messageId}): смещение {chunkOffset:N0}, размер {requestLimit:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт)...");
+                        int globalChunkIdx = (int)(chunkOffset / 1048576);
+                        AppLogger.Info("TelegramService", $"[MTProto] Запрос чанка #{globalChunkIdx}/{audit.TotalChunks} для '{fileName}' (ID {messageId}): смещение {chunkOffset:N0}, размер {requestLimit / 1024} КБ...");
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
@@ -1323,7 +1324,7 @@ namespace TelegramWebDAV.Services
                     EnsureChunkCacheCapacity();
                     int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
                     _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
-                    AppLogger.Info("TelegramService", $"[MTProto] Получен чанк для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length:N0} байт, сохранен в RAM кэш. Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
+                    AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{(int)(chunkOffset / 1048576)}/{audit.TotalChunks} для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length / 1024} КБ. Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
 
                     if (_inFlightChunkWaiters.TryRemove(inFlightDirectKey, out var waiter))
                     {
