@@ -1033,9 +1033,9 @@ namespace TelegramWebDAV.Services
 
             long totalNetworkBytes = audit.NetworkBytes;
             long metadataLimit = isMediaFile ? 1572864 : 524288;
-            bool isHeaderProbe = isMediaFile && (offset + length <= 524288) && (totalNetworkBytes <= metadataLimit);
+            bool isHeaderProbe = (offset + length <= metadataLimit) && (totalNetworkBytes <= metadataLimit);
             bool isTailProbe = isMediaFile && (actualTotalSize > 524288) && (offset >= actualTotalSize - 1048576) && (totalNetworkBytes <= metadataLimit);
-            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && isMediaFile && (totalNetworkBytes <= metadataLimit);
+            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && (totalNetworkBytes <= metadataLimit);
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)

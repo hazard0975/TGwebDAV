@@ -232,6 +232,28 @@ namespace TelegramWebDAV.UI
 
         public void UpdateChunkProgress(string fileName, long current, long total) => UpdateMetadataProgress(fileName, current, total);
 
+        public void CompleteMetadata(string fileName)
+        {
+            if (_syncContext != null && SynchronizationContext.Current != _syncContext)
+            {
+                _syncContext.Post(_ => CompleteMetadata(fileName), null);
+                return;
+            }
+
+            AppLogger.Info("TrayProgressOverlay", $"CompleteMetadata вызван для '{fileName}'. Запуск _completionTimer...");
+            _direction = TransferDirection.Download;
+            _isTransferring = false;
+            _isFinalizing = false;
+            _isMetadata = true;
+            _isCompleted = true;
+            _bytesPerSecond = 0;
+            Invalidate();
+            Update();
+
+            _completionTimer.Stop();
+            _completionTimer.Start();
+        }
+
         public void CompleteTransfer(string fileName, TransferDirection direction = TransferDirection.Upload)
         {
             if (_syncContext != null && SynchronizationContext.Current != _syncContext)
@@ -244,6 +266,7 @@ namespace TelegramWebDAV.UI
             _direction = direction;
             _isTransferring = false;
             _isFinalizing = false;
+            _isMetadata = false; // При полном скачивании файла сбрасываем флаг метаданных
             _isCompleted = true;
             _bytesPerSecond = 0;
             Invalidate();
@@ -321,8 +344,20 @@ namespace TelegramWebDAV.UI
             {
                 if (!_completionTimer.Enabled)
                 {
-                    AppLogger.Info("TrayProgressOverlay", $"Таймаут неактивности передачи ({secondsSinceProgress:F1} сек). Запуск скрытия оверлея...");
-                    CompleteTransfer(_currentFileName, _direction);
+                    AppLogger.Info("TrayProgressOverlay", $"Таймаут неактивности передачи ({secondsSinceProgress:F1} сек).");
+                    if (_isMetadata)
+                    {
+                        CompleteMetadata(_currentFileName);
+                    }
+                    else
+                    {
+                        // Если это была неполная передача (не 100% скачивание), просто убираем оверлей без фейкового «СКАЧИВАНИЕ ЗАВЕРШЕНО»
+                        _isTransferring = false;
+                        _isFinalizing = false;
+                        _updateTimer.Stop();
+                        _hideCheckTimer.Stop();
+                        Hide();
+                    }
                 }
                 return;
             }
