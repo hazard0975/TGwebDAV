@@ -146,7 +146,8 @@ namespace TelegramWebDAV.UI
             _isCompleted = false;
             _lastProgressUpdateTime = DateTime.UtcNow;
 
-            if (total > 0 && current >= total)
+            long metadataLimit = 1572864;
+            if (total > metadataLimit && current >= total)
             {
                 _isFinalizing = true;
                 _bytesPerSecond = 0;
