@@ -191,6 +191,13 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
+            // Если передано более 512 КБ, это гарантированно реальное чтение/копирование файла, а не быстрый просмотр тегов
+            if (current > 524288)
+            {
+                UpdateProgress(fileName, current, total, TransferDirection.Download);
+                return;
+            }
+
             if (_completionTimer.Enabled)
             {
                 _completionTimer.Stop();

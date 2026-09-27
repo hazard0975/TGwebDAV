@@ -986,13 +986,17 @@ namespace TelegramWebDAV.Services
 
             long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
             bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
-            bool isHeaderProbe = (offset + length <= 524288); // Быстрый запрос заголовков, ID3v2-тегов и обложек Проводником Windows в пределах первых 512 КБ
-            bool isTailProbe = (actualTotalSize > 524288) && (offset >= actualTotalSize - 524288); // Быстрый запрос концевых ID3v1/moov/zip-тегов в хвосте файла
-            bool isMetadataProbe = isHeaderProbe || isTailProbe;
+            string ext = Path.GetExtension(fileName).ToLowerInvariant();
+            bool isMediaFile = ext is ".mp3" or ".flac" or ".wav" or ".m4a" or ".ogg" or ".ape" or ".wma" or ".aac" or ".opus";
 
             var audit = _networkAudits.GetOrAdd(messageId, _ => new NetworkTransferAudit { FileName = fileName, FileSize = actualTotalSize });
             audit.FileName = fileName;
             audit.FileSize = actualTotalSize;
+
+            long totalFileTransferred = audit.RamBytes + audit.NetworkBytes;
+            bool isHeaderProbe = isMediaFile && (offset + length <= 524288) && (totalFileTransferred <= 524288);
+            bool isTailProbe = isMediaFile && (actualTotalSize > 524288) && (offset >= actualTotalSize - 524288) && (totalFileTransferred <= 524288);
+            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && totalFileTransferred <= 524288;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1122,8 +1126,9 @@ namespace TelegramWebDAV.Services
                     },
                     onProgress: (transferred, total) =>
                     {
-                        if (!isMetadataProbe && (isFullFileDownload || transferred > 524288))
-                            OnDownloadProgress?.Invoke(fileName, offset + transferred, actualTotalSize);
+                        long currentTransferred = offset + transferred;
+                        if (!isMetadataProbe || currentTransferred > 524288)
+                            OnDownloadProgress?.Invoke(fileName, currentTransferred, actualTotalSize);
                         else
                         {
                             OnMetadataProgress?.Invoke(fileName, transferred, actualTotalSize);
@@ -1134,7 +1139,7 @@ namespace TelegramWebDAV.Services
 
                 if (success)
                 {
-                    if (!isMetadataProbe && isFullFileDownload && audit.LogCompletionOnce())
+                    if (isFullFileDownload && audit.LogCompletionOnce())
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
@@ -1190,9 +1195,10 @@ namespace TelegramWebDAV.Services
                     AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из памяти RAM '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%).");
 
                     // Уведомление о прогрессе вызываем в зависимости от типа чтения и переданного объёма
-                    bool isFullDownload = (offset == 0 && length >= actualTotalSize) || (totalSent >= actualTotalSize - 65536 && offset <= 262144);
+                    long currentTotalProgress = Math.Max(currentPos, audit.RamBytes + audit.NetworkBytes);
+                    bool isFullDownload = (offset == 0 && length >= actualTotalSize) || (currentTotalProgress >= actualTotalSize - 65536) || (currentPos >= actualTotalSize);
 
-                    if (!isMetadataProbe && (isFullDownload || totalSent > 524288))
+                    if (!isMetadataProbe || currentTotalProgress > 524288 || currentPos > 524288)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                         if (isFullDownload && currentPos >= actualTotalSize && audit.LogCompletionOnce())
@@ -1202,8 +1208,8 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        OnMetadataProgress?.Invoke(fileName, totalSent, actualTotalSize);
-                        OnChunkCached?.Invoke(fileName, totalSent, actualTotalSize);
+                        OnMetadataProgress?.Invoke(fileName, currentTotalProgress, actualTotalSize);
+                        OnChunkCached?.Invoke(fileName, currentTotalProgress, actualTotalSize);
                     }
                     continue;
                 }
@@ -1312,9 +1318,10 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    bool isFullDownload = (offset == 0 && length >= actualTotalSize) || (totalSent >= actualTotalSize - 65536 && offset <= 262144);
+                    long currentTotalProgress = Math.Max(currentPos, audit.RamBytes + audit.NetworkBytes);
+                    bool isFullDownload = (offset == 0 && length >= actualTotalSize) || (currentTotalProgress >= actualTotalSize - 65536) || (currentPos >= actualTotalSize);
 
-                    if (!isMetadataProbe && (isFullDownload || totalSent > 524288))
+                    if (!isMetadataProbe || currentTotalProgress > 524288 || currentPos > 524288)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                         if (isFullDownload && currentPos >= actualTotalSize && audit.LogCompletionOnce())
@@ -1324,8 +1331,8 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        OnMetadataProgress?.Invoke(fileName, totalSent, actualTotalSize);
-                        OnChunkCached?.Invoke(fileName, totalSent, actualTotalSize);
+                        OnMetadataProgress?.Invoke(fileName, currentTotalProgress, actualTotalSize);
+                        OnChunkCached?.Invoke(fileName, currentTotalProgress, actualTotalSize);
                     }
 
                     // Если Telegram вернул меньше данных, чем requestLimit — достигнут конец файла
@@ -1373,6 +1380,9 @@ namespace TelegramWebDAV.Services
 
                     long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
                     long windowBytes = (long)windowMb * 1024 * 1024;
+
+                    string ext = Path.GetExtension(fileName).ToLowerInvariant();
+                    bool isMediaFile = ext is ".mp3" or ".flac" or ".wav" or ".m4a" or ".ogg" or ".ape" or ".wma" or ".aac" or ".opus";
 
                     // Для аудио и небольших файлов (<= fullTrackMaxMb) качаем весь трек целиком до 100%
                     // Для очень больших файлов (> fullTrackMaxMb) держим буфер упреждения windowMb вперед
@@ -1429,10 +1439,23 @@ namespace TelegramWebDAV.Services
                         },
                         onProgress: (transferred, total) =>
                         {
-                            OnMetadataProgress?.Invoke(fileName, transferred, actualTotalSize);
+                            long totalFileTransferred = audit.RamBytes + audit.NetworkBytes;
+                            if (totalFileTransferred > 524288 || transferred > 524288 || !isMediaFile)
+                            {
+                                OnDownloadProgress?.Invoke(fileName, prefetchStart + transferred, actualTotalSize);
+                            }
+                            else
+                            {
+                                OnMetadataProgress?.Invoke(fileName, transferred, actualTotalSize);
+                            }
                         },
                         existingChunkProvider: cOff => TryGetFromMemoryCache(messageId, cOff, out var d, out _) ? d : null,
                         cancellationToken: cts.Token);
+
+                    if (prefetchStart + prefetchLength >= actualTotalSize && audit.LogCompletionOnce())
+                    {
+                        OnDownloadCompleted?.Invoke(fileName);
+                    }
                 }
                 catch (OperationCanceledException) { }
                 catch (Exception ex)
