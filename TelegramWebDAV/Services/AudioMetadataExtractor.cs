@@ -80,6 +80,15 @@ namespace TelegramWebDAV.Services
                     string effectiveFileName = !string.IsNullOrWhiteSpace(originalFileName) ? originalFileName : filePath;
                     result.AudioFormat = Path.GetExtension(effectiveFileName)?.ToLowerInvariant();
 
+                    // Если ATL подставил имя локального файла вместо реального тега ID3
+                    string fileNoExt = Path.GetFileNameWithoutExtension(filePath);
+                    if (!string.IsNullOrEmpty(result.Title) && 
+                        (result.Title.Equals(fileNoExt, StringComparison.OrdinalIgnoreCase) || 
+                         result.Title.Equals(Path.GetFileName(filePath), StringComparison.OrdinalIgnoreCase)))
+                    {
+                        result.Title = null;
+                    }
+
                     if (track.EmbeddedPictures != null && track.EmbeddedPictures.Count > 0)
                     {
                         var pic = track.EmbeddedPictures[0];

@@ -809,9 +809,9 @@ namespace TelegramWebDAV.Services
                     else
                     {
                         // Резервный случай для потоков неизвестного размера (Chunked Transfer без Content-Length)
-                        string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Buffer");
-                        Directory.CreateDirectory(tempDir);
-                        tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid()}_{effectiveFileName}");
+                        string subDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Buffer", Guid.NewGuid().ToString("N"));
+                        Directory.CreateDirectory(subDir);
+                        tempFilePath = Path.Combine(subDir, effectiveFileName);
                         
                         AppLogger.Info("TelegramService", $"Поток без заголовка длины. Буферизация во временный файл: {tempFilePath}");
                         using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
@@ -953,7 +953,16 @@ namespace TelegramWebDAV.Services
                 if (tempFilePath != null)
                 {
                     try { uploadStream.Dispose(); } catch { }
-                    try { File.Delete(tempFilePath); } catch { }
+                    try 
+                    { 
+                        if (File.Exists(tempFilePath)) File.Delete(tempFilePath); 
+                        string? parentDir = Path.GetDirectoryName(tempFilePath);
+                        if (!string.IsNullOrEmpty(parentDir) && Directory.Exists(parentDir))
+                        {
+                            Directory.Delete(parentDir, true);
+                        }
+                    } 
+                    catch { }
                 }
                 else if (uploadStream != source)
                 {

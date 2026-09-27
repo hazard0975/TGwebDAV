@@ -523,9 +523,9 @@ namespace TelegramWebDAV.Services
                     return NT_STATUS_UNSUCCESSFUL;
                 }
 
-                string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_FspUploads");
-                Directory.CreateDirectory(tempDir);
-                string tempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid():N}_{itemName}");
+                string subDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_FspUploads", Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(subDir);
+                string tempFilePath = Path.Combine(subDir, itemName);
                 var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
 
                 var ctx = new FspNodeContext(node)
@@ -587,9 +587,9 @@ namespace TelegramWebDAV.Services
 
             if (ctx.TempFileStream == null)
             {
-                string tempDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_FspUploads");
-                Directory.CreateDirectory(tempDir);
-                ctx.TempFilePath = Path.Combine(tempDir, $"{Guid.NewGuid():N}_{node.Name}");
+                string subDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_FspUploads", Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(subDir);
+                ctx.TempFilePath = Path.Combine(subDir, node.Name);
                 ctx.TempFileStream = new FileStream(ctx.TempFilePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite);
             }
 
@@ -789,7 +789,16 @@ namespace TelegramWebDAV.Services
                     }
                     finally
                     {
-                        try { File.Delete(tempPath); } catch { }
+                        try 
+                        { 
+                            if (File.Exists(tempPath)) File.Delete(tempPath); 
+                            string? parentDir = Path.GetDirectoryName(tempPath);
+                            if (!string.IsNullOrEmpty(parentDir) && Directory.Exists(parentDir))
+                            {
+                                Directory.Delete(parentDir, true);
+                            }
+                        } 
+                        catch { }
                     }
                 });
             }
@@ -983,7 +992,16 @@ namespace TelegramWebDAV.Services
                 }
                 if (TempFilePath != null && File.Exists(TempFilePath))
                 {
-                    try { File.Delete(TempFilePath); } catch { }
+                    try 
+                    { 
+                        File.Delete(TempFilePath); 
+                        string? parentDir = Path.GetDirectoryName(TempFilePath);
+                        if (!string.IsNullOrEmpty(parentDir) && Directory.Exists(parentDir))
+                        {
+                            Directory.Delete(parentDir, true);
+                        }
+                    } 
+                    catch { }
                     TempFilePath = null;
                 }
             }
