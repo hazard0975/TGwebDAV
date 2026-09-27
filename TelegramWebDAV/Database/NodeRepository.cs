@@ -711,7 +711,7 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Создание или перезапись файла с поддержкой версионирования, метаданных и сохранения оригинальных дат
         /// </summary>
-        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null, DateTime? lastModified = null, DateTime? creationDate = null)
+        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null, DateTime? lastModified = null, DateTime? creationDate = null, VideoMetadataResult? videoMetadata = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
@@ -757,7 +757,7 @@ namespace TelegramWebDAV.Database
                             {
                                 updateCmd.Parameters.AddWithValue("@updatedAt", lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
                             }
-                            AddMetadataParameters(updateCmd, metadata, inlineBytes);
+                            AddMetadataParameters(updateCmd, metadata, videoMetadata, inlineBytes);
                             updateCmd.ExecuteNonQuery();
                         }
                         return;
@@ -816,7 +816,7 @@ namespace TelegramWebDAV.Database
                                 ? lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                                 : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                             
-                            AddMetadataParameters(insertCmd, metadata, inlineBytes);
+                            AddMetadataParameters(insertCmd, metadata, videoMetadata, inlineBytes);
                             insertCmd.ExecuteNonQuery();
                         }
 
@@ -858,15 +858,30 @@ namespace TelegramWebDAV.Database
                             ? lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                             : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                         
-                        AddMetadataParameters(command, metadata, inlineBytes);
+                        AddMetadataParameters(command, metadata, videoMetadata, inlineBytes);
                         command.ExecuteNonQuery();
                     }
                 }
             }
         }
 
-        private void AddMetadataParameters(SqliteCommand command, AudioMetadataResult? metadata, byte[]? inlineBytes = null)
+        private void AddMetadataParameters(SqliteCommand command, AudioMetadataResult? metadata, VideoMetadataResult? videoMetadata = null, byte[]? inlineBytes = null)
         {
+            if (videoMetadata != null)
+            {
+                command.Parameters.AddWithValue("@artist", DBNull.Value);
+                command.Parameters.AddWithValue("@title", DBNull.Value);
+                command.Parameters.AddWithValue("@album", DBNull.Value);
+                command.Parameters.AddWithValue("@year", DBNull.Value);
+                command.Parameters.AddWithValue("@genre", "Video");
+                command.Parameters.AddWithValue("@trackNumber", DBNull.Value);
+                command.Parameters.AddWithValue("@duration", videoMetadata.DurationSeconds > 0 ? videoMetadata.DurationSeconds : DBNull.Value);
+                command.Parameters.AddWithValue("@bitrate", DBNull.Value);
+                command.Parameters.AddWithValue("@headerCache", DBNull.Value);
+                command.Parameters.AddWithValue("@albumCover", (object?)videoMetadata.Thumbnail ?? DBNull.Value);
+                return;
+            }
+
             command.Parameters.AddWithValue("@artist", (object?)metadata?.Artist ?? DBNull.Value);
             command.Parameters.AddWithValue("@title", (object?)metadata?.Title ?? DBNull.Value);
             command.Parameters.AddWithValue("@album", (object?)metadata?.Album ?? DBNull.Value);

@@ -729,14 +729,26 @@ namespace TelegramWebDAV.Services
                 try
                 {
                     AudioMetadataResult? chunkAudioMeta = null;
+                    VideoMetadataResult? chunkVideoMeta = null;
+
                     if (AudioMetadataExtractor.IsPotentialAudio(fileName))
                     {
                         chunkAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempFilePath, fileName);
                     }
+                    else if (VideoMetadataExtractor.IsPotentialVideo(fileName))
+                    {
+                        chunkVideoMeta = VideoMetadataExtractor.ExtractFromFile(tempFilePath, fileName);
+                    }
 
                     using (var completeStream = File.OpenRead(tempFilePath))
                     {
-                        int? messageId = await UploadFileAsync(completeStream, fileName, caption: caption, audioMeta: chunkAudioMeta);
+                        int? messageId = await UploadFileAsync(
+                            completeStream, 
+                            fileName, 
+                            caption: caption, 
+                            audioMeta: chunkAudioMeta, 
+                            videoMeta: chunkVideoMeta
+                        );
                         return messageId;
                     }
                 }
@@ -752,7 +764,7 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Потоковая прямая загрузка файла в приватный канал-хранилище через WTelegramClient.
         /// Обеспечивает TCP Flow Control (обратное давление) для синхронизации шкалы прогресса в Проводнике Windows.
-        /// Для аудиофайлов автоматически формирует InputMediaUploadedDocument с атрибутами стриминга (DocumentAttributeAudio) и обложкой (thumb).
+        /// Для аудио- и видеофайлов автоматически формирует InputMediaUploadedDocument с атрибутами стриминга (DocumentAttributeAudio / DocumentAttributeVideo) и обложкой (thumb).
         /// Возвращает реальный ID сообщения из Telegram, либо null если файл пустой.
         /// </summary>
         public async Task<int?> UploadFileAsync(
@@ -761,7 +773,8 @@ namespace TelegramWebDAV.Services
             long length = -1, 
             string? displayFileName = null, 
             string? caption = null,
-            AudioMetadataResult? audioMeta = null)
+            AudioMetadataResult? audioMeta = null,
+            VideoMetadataResult? videoMeta = null)
         {
             Interlocked.Increment(ref _pendingUploadsCount);
             await _uploadSemaphore.WaitAsync();
@@ -842,6 +855,7 @@ namespace TelegramWebDAV.Services
                 AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' загружен в MTProto, финализация сообщения в канале (подпись: '{effectiveCaption}')...");
                 
                 bool isAudio = AudioMetadataExtractor.IsAudioFile(effectiveFileName);
+                bool isVideo = VideoMetadataExtractor.IsVideoFile(effectiveFileName);
                 TL.Message? message = null;
 
                 if (isAudio)
@@ -900,6 +914,62 @@ namespace TelegramWebDAV.Services
                         catch (Exception ex)
                         {
                             AppLogger.Warn("TelegramService", $"Не удалось загрузить обложку альбома для '{effectiveFileName}': {ex.Message}");
+                        }
+                    }
+
+                    var mediaDoc = new TL.InputMediaUploadedDocument(inputFile, mimeType, attributes);
+                    if (thumbFile != null)
+                    {
+                        mediaDoc.thumb = thumbFile;
+                        mediaDoc.flags |= TL.InputMediaUploadedDocument.Flags.has_thumb;
+                    }
+
+                    try
+                    {
+                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
+                    }
+                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
+                    {
+                        AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
+                        InvalidateStoragePeer();
+                        peer = await GetStoragePeerAsync();
+                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
+                    }
+                }
+                else if (isVideo)
+                {
+                    string mimeType = VideoMetadataExtractor.GetVideoMimeType(effectiveFileName);
+                    int duration = videoMeta?.DurationSeconds ?? 0;
+                    int width = (videoMeta != null && videoMeta.Width > 0) ? videoMeta.Width : 1280;
+                    int height = (videoMeta != null && videoMeta.Height > 0) ? videoMeta.Height : 720;
+
+                    var videoFlags = TL.DocumentAttributeVideo.Flags.supports_streaming;
+                    var videoAttr = new TL.DocumentAttributeVideo
+                    {
+                        duration = duration,
+                        w = width,
+                        h = height,
+                        flags = videoFlags
+                    };
+
+                    var fileNameAttr = new TL.DocumentAttributeFilename
+                    {
+                        file_name = effectiveFileName
+                    };
+
+                    var attributes = new TL.DocumentAttribute[] { fileNameAttr, videoAttr };
+
+                    TL.InputFileBase? thumbFile = null;
+                    if (videoMeta?.Thumbnail != null && videoMeta.Thumbnail.Length > 0)
+                    {
+                        try
+                        {
+                            using var thumbMs = new MemoryStream(videoMeta.Thumbnail, false);
+                            thumbFile = await _client.UploadFileAsync(thumbMs, "thumb.jpg");
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Warn("TelegramService", $"Не удалось загрузить обложку видео для '{effectiveFileName}': {ex.Message}");
                         }
                     }
 

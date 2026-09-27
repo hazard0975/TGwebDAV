@@ -357,8 +357,9 @@ namespace TelegramWebDAV.Server
                 }
                 else
                 {
-                    // Проверяем, является ли загружаемый файл аудио (включая временные файлы .tmp софта бэкапа)
+                    // Проверяем, является ли загружаемый файл аудио или видео (включая временные файлы .tmp софта бэкапа)
                     AudioMetadataResult? audioMeta = null;
+                    VideoMetadataResult? videoMeta = null;
                     Stream uploadStream = context.Request.InputStream;
                     long uploadLength = contentLength;
                     byte[]? audioHeaderBuffer = null;
@@ -448,7 +449,7 @@ namespace TelegramWebDAV.Server
                             string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
 
                             // Прямая потоковая загрузка в Telegram с сохранением TCP Flow Control для Проводника
-                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion, audioMeta: audioMeta);
+                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion, audioMeta: audioMeta, videoMeta: videoMeta);
                         }
                         
                         DateTime? headerLastModified = null;
@@ -467,7 +468,7 @@ namespace TelegramWebDAV.Server
                         }
 
                         // Записываем инфу в базу с метаданными и встроенными байтами при необходимости
-                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes, headerLastModified);
+                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes, headerLastModified, videoMetadata: videoMeta);
 
                         context.Response.StatusCode = (int)HttpStatusCode.Created;
                     }

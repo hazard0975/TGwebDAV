@@ -770,16 +770,36 @@ namespace TelegramWebDAV.Services
                     {
                         AppLogger.Info("WinFsp", $"Начало фоновой отправки файла '{nodeName}' ({finalLength} байт) в Telegram (подпись: '{fullPathWithVersion}')...");
                         AudioMetadataResult? fspAudioMeta = null;
+                        VideoMetadataResult? fspVideoMeta = null;
+
                         if (AudioMetadataExtractor.IsPotentialAudio(nodeName))
                         {
                             fspAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempPath, nodeName);
                         }
+                        else if (VideoMetadataExtractor.IsPotentialVideo(nodeName))
+                        {
+                            fspVideoMeta = VideoMetadataExtractor.ExtractFromFile(tempPath, nodeName);
+                        }
 
                         using var fs = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                        int? msgId = await _telegramService.UploadFileAsync(fs, nodeName, finalLength, caption: fullPathWithVersion, audioMeta: fspAudioMeta);
+                        int? msgId = await _telegramService.UploadFileAsync(
+                            fs, 
+                            nodeName, 
+                            finalLength, 
+                            caption: fullPathWithVersion, 
+                            audioMeta: fspAudioMeta, 
+                            videoMeta: fspVideoMeta
+                        );
                         if (msgId.HasValue)
                         {
-                            _repository.CreateOrUpdateFile(parentId, nodeName, finalLength, msgId.Value, metadata: fspAudioMeta);
+                            _repository.CreateOrUpdateFile(
+                                parentId, 
+                                nodeName, 
+                                finalLength, 
+                                msgId.Value, 
+                                metadata: fspAudioMeta, 
+                                videoMetadata: fspVideoMeta
+                            );
                             AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {msgId.Value}).");
                         }
                     }
