@@ -1,13 +1,14 @@
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using TelegramWebDAV.Models;
 
 namespace TelegramWebDAV.Services
 {
     /// <summary>
     /// Парсер метаданных видео (длительность, ширина, высота) и генератор превью-кадров (thumbnails)
-    /// с использованием ATL.NET, Windows Shell API (IShellItemImageFactory) и встроенного парсера MP4 атомов.
+    /// с использованием ATL.NET, Windows Shell API (IShellItemImageFactory / IShellItem2) и fallback парсеров.
     /// </summary>
     public static class VideoMetadataExtractor
     {
@@ -51,6 +52,7 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Извлекает метаданные видео (длительность, ширина, высота, превью) из локального файла.
+        /// Превью гарантированно масштабируется под требования Telegram (до 320x320 пикселей, JPEG).
         /// </summary>
         public static VideoMetadataResult ExtractFromFile(string filePath, string? originalFileName = null)
         {
@@ -61,7 +63,7 @@ namespace TelegramWebDAV.Services
                 return result;
             }
 
-            // Шаг 1: Чтение встроенных тегов и постеров через ATL.NET
+            // Шаг 1: Чтение встроенных тегов и вшитых постеров через ATL.NET
             try
             {
                 var track = new ATL.Track(filePath);
@@ -75,7 +77,11 @@ namespace TelegramWebDAV.Services
                     var pic = track.EmbeddedPictures[0];
                     if (pic.PictureData != null && pic.PictureData.Length > 0)
                     {
-                        result.Thumbnail = pic.PictureData;
+                        result.Thumbnail = NormalizeThumbnailForTelegram(pic.PictureData);
+                        if (result.Thumbnail != null)
+                        {
+                            AppLogger.Info("VideoMetadataExtractor", $"Найдена встроенная обложка/постер в '{Path.GetFileName(filePath)}' ({result.Thumbnail.Length} байт)");
+                        }
                     }
                 }
             }
@@ -89,11 +95,11 @@ namespace TelegramWebDAV.Services
             {
                 try
                 {
-                    ExtractWindowsShellMetadata(filePath, result);
+                    ExtractWindowsShellMetadataWithApartment(filePath, result);
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Debug("VideoMetadataExtractor", $"Windows Shell чтение '{filePath}': {ex.Message}");
+                    AppLogger.Warn("VideoMetadataExtractor", $"Windows Shell ошибка извлечения для '{filePath}': {ex.Message}");
                 }
             }
 
@@ -128,6 +134,12 @@ namespace TelegramWebDAV.Services
         }
 
         #region Windows Shell Interop
+
+        [DllImport("ole32.dll")]
+        private static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
+
+        [DllImport("ole32.dll")]
+        private static extern void CoUninitialize();
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
         private static extern void SHCreateItemFromParsingName(
@@ -205,9 +217,44 @@ namespace TelegramWebDAV.Services
             SIIGBF_SCALEUP = 0x100
         }
 
-        private static void ExtractWindowsShellMetadata(string filePath, VideoMetadataResult result)
+        private const uint COINIT_APARTMENTTHREADED = 0x2;
+
+        /// <summary>
+        /// Выполняет извлечение через Windows Shell в STA-потоке с гарантированной инициализацией COM.
+        /// </summary>
+        private static void ExtractWindowsShellMetadataWithApartment(string filePath, VideoMetadataResult result)
         {
-            // 1. Попытка чтения свойств видео через IShellItem2
+            // IShellItemImageFactory наиболее надежно работает в STA-потоках
+            var thread = new Thread(() =>
+            {
+                int coInitHr = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
+                try
+                {
+                    ExtractWindowsShellMetadataCore(filePath, result);
+                }
+                finally
+                {
+                    if (coInitHr >= 0)
+                    {
+                        CoUninitialize();
+                    }
+                }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+
+            // Ждем завершения генерации до 4 секунд, чтобы не блокировать отправку
+            if (!thread.Join(4000))
+            {
+                AppLogger.Warn("VideoMetadataExtractor", $"Таймаут генерации Shell превью для '{Path.GetFileName(filePath)}'");
+            }
+        }
+
+        private static void ExtractWindowsShellMetadataCore(string filePath, VideoMetadataResult result)
+        {
+            // 1. Чтение свойств видео через IShellItem2
             try
             {
                 var shellItem2Guid = new Guid("7e9fb0d3-919f-4307-ab2e-9b1860310c93");
@@ -248,9 +295,12 @@ namespace TelegramWebDAV.Services
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("VideoMetadataExtractor", $"IShellItem2 чтение '{filePath}': {ex.Message}");
+            }
 
-            // 2. Генерация превью-кадра через IShellItemImageFactory
+            // 2. Генерация превью-кадра через IShellItemImageFactory (если не было встроенного постера)
             if (result.Thumbnail == null)
             {
                 try
@@ -262,10 +312,11 @@ namespace TelegramWebDAV.Services
                         try
                         {
                             var factory = (IShellItemImageFactory)Marshal.GetObjectForIUnknown(factoryPtr);
-                            // Запрашиваем превью 640x360
+                            // Важно: размер 320x320 (требование Telegram для thumbs) и флаги без ограничения кэша!
+                            // SIIGBF_RESIZETOFIT декодирует реальный стоп-кадр на лету
                             int hr = factory.GetImage(
-                                new SIZE(640, 360), 
-                                SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_BIGGERSIZEOK | SIIGBF.SIIGBF_THUMBNAILONLY, 
+                                new SIZE(320, 320), 
+                                SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_BIGGERSIZEOK, 
                                 out IntPtr hBitmap
                             );
 
@@ -280,14 +331,17 @@ namespace TelegramWebDAV.Services
                                         result.Height = bmp.Height;
                                     }
 
-                                    using var ms = new MemoryStream();
-                                    bmp.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                                    result.Thumbnail = ms.ToArray();
+                                    result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
+                                    AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell для '{Path.GetFileName(filePath)}' ({result.Thumbnail?.Length} байт)");
                                 }
                                 finally
                                 {
                                     DeleteObject(hBitmap);
                                 }
+                            }
+                            else
+                            {
+                                AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
                             }
                         }
                         finally
@@ -296,8 +350,97 @@ namespace TelegramWebDAV.Services
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory ошибка '{filePath}': {ex.Message}");
+                }
             }
+        }
+
+        #endregion
+
+        #region Thumbnail Processing for Telegram
+
+        /// <summary>
+        /// Приводит картинку к допустимым лимитам Telegram: размер до maxW x maxH, формат JPEG.
+        /// </summary>
+        private static byte[]? NormalizeThumbnailForTelegram(byte[] rawBytes)
+        {
+            try
+            {
+                using var ms = new MemoryStream(rawBytes);
+                using var originalBmp = System.Drawing.Image.FromStream(ms);
+                return ResizeBitmapToTelegramJpeg(originalBmp, 320, 320);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private static byte[]? ResizeBitmapToTelegramJpeg(System.Drawing.Image img, int maxW, int maxH)
+        {
+            try
+            {
+                int origW = img.Width;
+                int origH = img.Height;
+
+                if (origW <= 0 || origH <= 0) return null;
+
+                // Вычисляем масштаб с сохранением соотношения сторон
+                double ratioW = (double)maxW / origW;
+                double ratioH = (double)maxH / origH;
+                double ratio = Math.Min(ratioW, ratioH);
+
+                if (ratio > 1.0) ratio = 1.0; // Не растягиваем мелкие картинки
+
+                int newW = Math.Max(1, (int)(origW * ratio));
+                int newH = Math.Max(1, (int)(origH * ratio));
+
+                using var resized = new System.Drawing.Bitmap(newW, newH);
+                using (var g = System.Drawing.Graphics.FromImage(resized))
+                {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    g.DrawImage(img, 0, 0, newW, newH);
+                }
+
+                using var outMs = new MemoryStream();
+                // Кодируем в чистый JPEG со стандартным сжатием (качество 85)
+                var encoder = GetEncoder(System.Drawing.Imaging.ImageFormat.Jpeg);
+                if (encoder != null)
+                {
+                    using var encoderParams = new System.Drawing.Imaging.EncoderParameters(1);
+                    encoderParams.Param[0] = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 85L);
+                    resized.Save(outMs, encoder, encoderParams);
+                }
+                else
+                {
+                    resized.Save(outMs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
+
+                return outMs.ToArray();
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("VideoMetadataExtractor", $"Ошибка сжатия превью: {ex.Message}");
+                return null;
+            }
+        }
+
+        private static System.Drawing.Imaging.ImageCodecInfo? GetEncoder(System.Drawing.Imaging.ImageFormat format)
+        {
+            var codecs = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders();
+            foreach (var codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
 
         #endregion

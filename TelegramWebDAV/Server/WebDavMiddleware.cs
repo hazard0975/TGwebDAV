@@ -468,7 +468,7 @@ namespace TelegramWebDAV.Server
                         }
 
                         // Записываем инфу в базу с метаданными и встроенными байтами при необходимости
-                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes, headerLastModified, videoMetadata: videoMeta);
+                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes, headerLastModified);
 
                         context.Response.StatusCode = (int)HttpStatusCode.Created;
                     }

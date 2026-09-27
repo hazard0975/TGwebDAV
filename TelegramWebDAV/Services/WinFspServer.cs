@@ -797,8 +797,7 @@ namespace TelegramWebDAV.Services
                                 nodeName, 
                                 finalLength, 
                                 msgId.Value, 
-                                metadata: fspAudioMeta, 
-                                videoMetadata: fspVideoMeta
+                                metadata: fspAudioMeta
                             );
                             AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {msgId.Value}).");
                         }
