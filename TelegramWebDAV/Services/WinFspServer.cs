@@ -769,11 +769,17 @@ namespace TelegramWebDAV.Services
                     try
                     {
                         AppLogger.Info("WinFsp", $"Начало фоновой отправки файла '{nodeName}' ({finalLength} байт) в Telegram (подпись: '{fullPathWithVersion}')...");
+                        AudioMetadataResult? fspAudioMeta = null;
+                        if (AudioMetadataExtractor.IsPotentialAudio(nodeName))
+                        {
+                            fspAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempPath);
+                        }
+
                         using var fs = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                        int? msgId = await _telegramService.UploadFileAsync(fs, nodeName, finalLength, caption: fullPathWithVersion);
+                        int? msgId = await _telegramService.UploadFileAsync(fs, nodeName, finalLength, caption: fullPathWithVersion, audioMeta: fspAudioMeta);
                         if (msgId.HasValue)
                         {
-                            _repository.CreateOrUpdateFile(parentId, nodeName, finalLength, msgId.Value);
+                            _repository.CreateOrUpdateFile(parentId, nodeName, finalLength, msgId.Value, metadata: fspAudioMeta);
                             AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {msgId.Value}).");
                         }
                     }

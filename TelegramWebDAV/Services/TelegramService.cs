@@ -728,9 +728,15 @@ namespace TelegramWebDAV.Services
                 AppLogger.Info("TelegramService", $"Все чанки файла '{fileName}' получены. Загрузка в канал Telegram...");
                 try
                 {
+                    AudioMetadataResult? chunkAudioMeta = null;
+                    if (AudioMetadataExtractor.IsPotentialAudio(fileName))
+                    {
+                        chunkAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempFilePath);
+                    }
+
                     using (var completeStream = File.OpenRead(tempFilePath))
                     {
-                        int? messageId = await UploadFileAsync(completeStream, fileName, caption: caption);
+                        int? messageId = await UploadFileAsync(completeStream, fileName, caption: caption, audioMeta: chunkAudioMeta);
                         return messageId;
                     }
                 }
@@ -746,9 +752,16 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Потоковая прямая загрузка файла в приватный канал-хранилище через WTelegramClient.
         /// Обеспечивает TCP Flow Control (обратное давление) для синхронизации шкалы прогресса в Проводнике Windows.
+        /// Для аудиофайлов автоматически формирует InputMediaUploadedDocument с атрибутами стриминга (DocumentAttributeAudio) и обложкой (thumb).
         /// Возвращает реальный ID сообщения из Telegram, либо null если файл пустой.
         /// </summary>
-        public async Task<int?> UploadFileAsync(Stream source, string fileName, long length = -1, string? displayFileName = null, string? caption = null)
+        public async Task<int?> UploadFileAsync(
+            Stream source, 
+            string fileName, 
+            long length = -1, 
+            string? displayFileName = null, 
+            string? caption = null,
+            AudioMetadataResult? audioMeta = null)
         {
             Interlocked.Increment(ref _pendingUploadsCount);
             await _uploadSemaphore.WaitAsync();
@@ -827,17 +840,101 @@ namespace TelegramWebDAV.Services
                 );
 
                 AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' загружен в MTProto, финализация сообщения в канале (подпись: '{effectiveCaption}')...");
+                
+                bool isAudio = AudioMetadataExtractor.IsAudioFile(effectiveFileName);
                 TL.Message? message = null;
-                try
+
+                if (isAudio)
                 {
-                    message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                    string ext = Path.GetExtension(effectiveFileName).ToLowerInvariant();
+                    string mimeType = ext switch
+                    {
+                        ".mp3" => "audio/mpeg",
+                        ".flac" => "audio/flac",
+                        ".m4a" => "audio/mp4",
+                        ".ogg" => "audio/ogg",
+                        ".wav" => "audio/x-wav",
+                        ".aac" => "audio/aac",
+                        ".opus" => "audio/opus",
+                        ".wma" => "audio/x-ms-wma",
+                        _ => "audio/mpeg"
+                    };
+
+                    string title = !string.IsNullOrWhiteSpace(audioMeta?.Title)
+                        ? audioMeta.Title
+                        : Path.GetFileNameWithoutExtension(effectiveFileName);
+                    string? performer = !string.IsNullOrWhiteSpace(audioMeta?.Artist)
+                        ? audioMeta.Artist
+                        : null;
+                    int duration = audioMeta?.DurationSeconds ?? 0;
+
+                    var audioFlags = TL.DocumentAttributeAudio.Flags.has_title;
+                    if (!string.IsNullOrEmpty(performer))
+                    {
+                        audioFlags |= TL.DocumentAttributeAudio.Flags.has_performer;
+                    }
+
+                    var audioAttr = new TL.DocumentAttributeAudio
+                    {
+                        duration = duration > 0 ? duration : 0,
+                        title = title,
+                        performer = performer ?? string.Empty,
+                        flags = audioFlags
+                    };
+
+                    var fileNameAttr = new TL.DocumentAttributeFilename
+                    {
+                        file_name = effectiveFileName
+                    };
+
+                    var attributes = new TL.DocumentAttribute[] { fileNameAttr, audioAttr };
+
+                    TL.InputFileBase? thumbFile = null;
+                    if (audioMeta?.AlbumCover != null && audioMeta.AlbumCover.Length > 0)
+                    {
+                        try
+                        {
+                            using var thumbMs = new MemoryStream(audioMeta.AlbumCover, false);
+                            thumbFile = await _client.UploadFileAsync(thumbMs, "thumb.jpg");
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Warn("TelegramService", $"Не удалось загрузить обложку альбома для '{effectiveFileName}': {ex.Message}");
+                        }
+                    }
+
+                    var mediaDoc = new TL.InputMediaUploadedDocument(inputFile, mimeType, attributes);
+                    if (thumbFile != null)
+                    {
+                        mediaDoc.thumb = thumbFile;
+                        mediaDoc.flags |= TL.InputMediaUploadedDocument.Flags.has_thumb;
+                    }
+
+                    try
+                    {
+                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
+                    }
+                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
+                    {
+                        AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
+                        InvalidateStoragePeer();
+                        peer = await GetStoragePeerAsync();
+                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
+                    }
                 }
-                catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
+                else
                 {
-                    AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
-                    InvalidateStoragePeer();
-                    peer = await GetStoragePeerAsync();
-                    message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                    try
+                    {
+                        message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                    }
+                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
+                    {
+                        AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
+                        InvalidateStoragePeer();
+                        peer = await GetStoragePeerAsync();
+                        message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                    }
                 }
 
                 if (message != null)

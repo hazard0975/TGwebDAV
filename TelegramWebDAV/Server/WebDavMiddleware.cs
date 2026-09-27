@@ -448,7 +448,7 @@ namespace TelegramWebDAV.Server
                             string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
 
                             // Прямая потоковая загрузка в Telegram с сохранением TCP Flow Control для Проводника
-                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion);
+                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion, audioMeta: audioMeta);
                         }
                         
                         DateTime? headerLastModified = null;

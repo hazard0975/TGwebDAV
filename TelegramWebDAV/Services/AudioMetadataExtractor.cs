@@ -11,13 +11,13 @@ namespace TelegramWebDAV.Services
     /// </summary>
     public static class AudioMetadataExtractor
     {
-        public const int HeaderCacheSize = 131072; // 128 KB
+        public const int HeaderCacheSize = 262144; // 256 KB для надежного чтения ID3v2 тегов и обложки альбома (APIC)
 
         public static bool IsAudioFile(string fileName)
         {
             if (string.IsNullOrEmpty(fileName)) return false;
             string ext = Path.GetExtension(fileName).ToLowerInvariant();
-            return ext == ".mp3" || ext == ".flac" || ext == ".m4a" || ext == ".ogg" || ext == ".wav" || ext == ".aac" || ext == ".wma";
+            return ext == ".mp3" || ext == ".flac" || ext == ".m4a" || ext == ".ogg" || ext == ".wav" || ext == ".aac" || ext == ".opus" || ext == ".wma";
         }
 
         public static bool IsPotentialAudio(string fileName)
@@ -61,7 +61,49 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Извлекает кэш первых 128 КБ заголовка и парсит аудио-теги
+        /// Извлекает метаданные и обложку из локального файла с помощью библиотеки ATL.
+        /// </summary>
+        public static AudioMetadataResult ExtractFromFile(string filePath)
+        {
+            var result = new AudioMetadataResult();
+            try
+            {
+                if (File.Exists(filePath))
+                {
+                    var track = new ATL.Track(filePath);
+                    result.Title = !string.IsNullOrWhiteSpace(track.Title) ? track.Title.Trim() : null;
+                    result.Artist = !string.IsNullOrWhiteSpace(track.Artist) ? track.Artist.Trim() : null;
+                    result.Album = !string.IsNullOrWhiteSpace(track.Album) ? track.Album.Trim() : null;
+                    result.Year = track.Year > 0 ? track.Year : null;
+                    result.DurationSeconds = track.Duration > 0 ? track.Duration : null;
+                    result.Bitrate = track.Bitrate > 0 ? track.Bitrate : null;
+                    result.AudioFormat = Path.GetExtension(filePath)?.ToLowerInvariant();
+
+                    if (track.EmbeddedPictures != null && track.EmbeddedPictures.Count > 0)
+                    {
+                        var pic = track.EmbeddedPictures[0];
+                        if (pic.PictureData != null && pic.PictureData.Length > 0)
+                        {
+                            result.AlbumCover = pic.PictureData;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("AudioMetadataExtractor", $"ATL чтение файла '{filePath}': {ex.Message}");
+            }
+
+            if (string.IsNullOrEmpty(result.Title))
+            {
+                InferFromFileName(Path.GetFileName(filePath), result);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Извлекает кэш первых 256 КБ заголовка и парсит аудио-теги
         /// </summary>
         public static AudioMetadataResult ExtractFromStream(Stream stream, string fileName)
         {
@@ -83,14 +125,14 @@ namespace TelegramWebDAV.Services
                 {
                     result.AudioFormat = DetectAudioFormat(headerBuffer, readBytes);
 
-                    // Базовый эвристический парсинг ID3v2 (первые 3 байта 'ID3')
+                    // Базовый парсинг ID3v2 (первые 3 байта 'ID3')
                     if (readBytes >= 10 && headerBuffer[0] == 0x49 && headerBuffer[1] == 0x44 && headerBuffer[2] == 0x33)
                     {
                         ParseId3v2Header(headerBuffer, readBytes, result, fileName);
                     }
                     else
                     {
-                        // Резервный парсинг имени файла: "Artist - Title.mp3" (если это не .tmp)
+                        // Если тегов нет, берем имя файла без расширения
                         InferFromFileName(fileName, result);
                     }
                 }
@@ -107,7 +149,7 @@ namespace TelegramWebDAV.Services
         private static void ParseId3v2Header(byte[] buffer, int length, AudioMetadataResult result, string fileName)
         {
             result.Bitrate = 320; // kbps default for HQ
-            result.DurationSeconds = 210; // ~3.5 min default
+            result.DurationSeconds = 0; // Определяется точнее или оставляется 0 для нативного подсчета клиентом
             result.AudioFormat = ".mp3";
 
             try
@@ -149,7 +191,43 @@ namespace TelegramWebDAV.Services
                     }
 
                     int dataOffset = pos + 10;
-                    if (frameSize > 1)
+                    if (frameId == "APIC" && result.AlbumCover == null && frameSize > 10)
+                    {
+                        try
+                        {
+                            byte apicEncoding = buffer[dataOffset];
+                            int p = dataOffset + 1;
+                            while (p < dataOffset + frameSize && buffer[p] != 0) p++;
+                            if (p < dataOffset + frameSize)
+                            {
+                                p++; // пропускаем 0 байт mime типа
+                                if (p < dataOffset + frameSize)
+                                {
+                                    p++; // пропускаем байт типа картинки (0x03 front cover и т.д.)
+                                    if (apicEncoding == 1 || apicEncoding == 2)
+                                    {
+                                        while (p + 1 < dataOffset + frameSize && !(buffer[p] == 0 && buffer[p + 1] == 0)) p += 2;
+                                        p += 2;
+                                    }
+                                    else
+                                    {
+                                        while (p < dataOffset + frameSize && buffer[p] != 0) p++;
+                                        p++;
+                                    }
+
+                                    int imgLen = (dataOffset + frameSize) - p;
+                                    if (imgLen > 100 && p + imgLen <= length)
+                                    {
+                                        byte[] cover = new byte[imgLen];
+                                        Buffer.BlockCopy(buffer, p, cover, 0, imgLen);
+                                        result.AlbumCover = cover;
+                                    }
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                    else if (frameSize > 1)
                     {
                         byte encodingByte = buffer[dataOffset];
                         string textVal = DecodeId3Text(buffer, dataOffset + 1, frameSize - 1, encodingByte);
@@ -180,6 +258,10 @@ namespace TelegramWebDAV.Services
                                 case "TCON":
                                     result.Genre = textVal;
                                     break;
+                                case "TLEN":
+                                    if (int.TryParse(textVal, out int ms) && ms > 0)
+                                        result.DurationSeconds = ms / 1000;
+                                    break;
                             }
                         }
                     }
@@ -192,7 +274,7 @@ namespace TelegramWebDAV.Services
                 // При ошибке парсинга фреймов оставляем то, что успели распарсить
             }
 
-            // Если теги не прочитались и имя не временное, пробуем вывести из имени
+            // Если название не прочиталось из тегов, берем имя файла
             if (string.IsNullOrEmpty(result.Title))
             {
                 InferFromFileName(fileName, result);
@@ -242,21 +324,10 @@ namespace TelegramWebDAV.Services
                 return;
             }
 
-            if (nameWithoutExt.Contains(" - "))
-            {
-                var parts = nameWithoutExt.Split(new[] { " - " }, 2, StringSplitOptions.None);
-                result.Artist = parts[0].Trim();
-                result.Title = parts[1].Trim();
-            }
-            else
-            {
-                result.Title = nameWithoutExt;
-                result.Artist = "Unknown Artist";
-            }
-            result.Album = "Telegram Cloud Music";
-            result.Year = DateTime.Now.Year;
-            result.Genre = "Soundtrack";
-            result.TrackNumber = 1;
+            // Если теги в файле отсутствуют, используем чистое имя файла без расширения
+            result.Title = nameWithoutExt;
+            result.Artist = null;
+            result.Album = null;
         }
     }
 
