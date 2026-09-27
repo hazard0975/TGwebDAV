@@ -184,7 +184,7 @@ namespace TelegramWebDAV.Services
                                 onChunkReceived?.Invoke(existingBytes, chunk.ChunkOffset);
                                 long currentTotal = Interlocked.Add(ref totalDownloadedBytes, existingBytes.Length);
                                 onProgress?.Invoke(currentTotal, length);
-                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0}) уже имеется в RAM, сетевой запрос пропущен.");
+                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б) уже имеется в RAM, сетевой запрос пропущен.");
                                 continue;
                             }
                         }
@@ -193,7 +193,8 @@ namespace TelegramWebDAV.Services
                         {
                             await PaceRequestAsync(workerId, cancellationToken);
 
-                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос Глобального Чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0}, размер {chunk.RequestLimit / 1024} КБ)...");
+                            string probeTag = chunk.RequestLimit < 1048576 ? " [Зонд метаданных]" : "";
+                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б, размер {chunk.RequestLimit:N0} б){probeTag}...");
                             var sw = Stopwatch.StartNew();
 
                             var fileBase = await workerClient.Upload_GetFile(location, chunk.ChunkOffset, chunk.RequestLimit, precise: true);
@@ -207,7 +208,12 @@ namespace TelegramWebDAV.Services
                                 long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
                                 onProgress?.Invoke(currentTotal, length);
 
-                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Успешно получен Глобальный Чанк #{chunk.ChunkIndex}/{totalFileChunks} ({uploadFile.bytes.Length / 1024} КБ за {sw.ElapsedMilliseconds} мс).");
+                                int receivedLen = uploadFile.bytes.Length;
+                                string chunkTag = receivedLen < chunk.RequestLimit
+                                    ? $" [{receivedLen:N0} б из {chunk.RequestLimit:N0} б, Хвост EOF]"
+                                    : " [Полный]";
+
+                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{chunk.ChunkIndex}/{totalFileChunks} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
                             }
                             else if (chunk.RetryCount < 3)
                             {
@@ -217,7 +223,7 @@ namespace TelegramWebDAV.Services
                             else
                             {
                                 failedChunks[chunk.ChunkOffset] = true;
-                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Исчерпаны попытки для Чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0}).");
+                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Исчерпаны попытки для Чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б).");
                             }
                         }
                         catch (RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
@@ -231,7 +237,7 @@ namespace TelegramWebDAV.Services
                         }
                         catch (Exception ex)
                         {
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка Глобального Чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0}): {ex.Message}");
+                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б): {ex.Message}");
                             if (chunk.RetryCount < 3)
                             {
                                 chunk.RetryCount++;
