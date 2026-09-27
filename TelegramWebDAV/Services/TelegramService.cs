@@ -73,11 +73,49 @@ namespace TelegramWebDAV.Services
             private long _ramBytesDelivered;
             private int _completionLogged;
 
+            private readonly System.Collections.Concurrent.ConcurrentDictionary<int, bool> _receivedChunkIndexes = new();
+
+            public int TotalChunks => FileSize > 0 ? (int)Math.Ceiling((double)FileSize / 1048576.0) : 1;
+            public int ReceivedChunksCount => _receivedChunkIndexes.Count;
+
             public void AddNetworkBytes(long bytes) => Interlocked.Add(ref _networkBytesDownloaded, bytes);
             public void AddRamBytes(long bytes) => Interlocked.Add(ref _ramBytesDelivered, bytes);
 
             public long NetworkBytes => Interlocked.Read(ref _networkBytesDownloaded);
             public long RamBytes => Interlocked.Read(ref _ramBytesDelivered);
+
+            /// <summary>
+            /// Помечает диапазон байт как полученный (вычисляя все перекрываемые 1 МБ чанки).
+            /// Возвращает true, если получены ВСЕ чанки файла (100% загрузка).
+            /// </summary>
+            public bool MarkRangeReceived(long offset, long length)
+            {
+                if (FileSize <= 0) return true;
+                if (length <= 0) return IsAllChunksReceived();
+
+                int total = TotalChunks;
+                long endPos = Math.Min(FileSize, offset + length);
+                if (endPos <= offset) return IsAllChunksReceived();
+
+                int startChunk = (int)(offset / 1048576);
+                int endChunk = (int)((endPos - 1) / 1048576);
+
+                for (int i = startChunk; i <= endChunk && i < total; i++)
+                {
+                    if (i >= 0)
+                    {
+                        _receivedChunkIndexes.TryAdd(i, true);
+                    }
+                }
+
+                return IsAllChunksReceived();
+            }
+
+            public bool IsAllChunksReceived()
+            {
+                if (FileSize <= 0) return true;
+                return _receivedChunkIndexes.Count >= TotalChunks;
+            }
 
             public bool LogCompletionOnce()
             {
@@ -994,9 +1032,10 @@ namespace TelegramWebDAV.Services
             audit.FileSize = actualTotalSize;
 
             long totalNetworkBytes = audit.NetworkBytes;
-            bool isHeaderProbe = isMediaFile && (offset + length <= 524288) && (totalNetworkBytes <= 1572864);
-            bool isTailProbe = isMediaFile && (actualTotalSize > 524288) && (offset >= actualTotalSize - 1048576) && (totalNetworkBytes <= 1572864);
-            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && isMediaFile && (totalNetworkBytes <= 1572864);
+            long metadataLimit = isMediaFile ? 1572864 : 524288;
+            bool isHeaderProbe = isMediaFile && (offset + length <= 524288) && (totalNetworkBytes <= metadataLimit);
+            bool isTailProbe = isMediaFile && (actualTotalSize > 524288) && (offset >= actualTotalSize - 1048576) && (totalNetworkBytes <= metadataLimit);
+            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && isMediaFile && (totalNetworkBytes <= metadataLimit);
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1022,7 +1061,8 @@ namespace TelegramWebDAV.Services
                         {
                             AppLogger.Info("TelegramService", $"[Disk Cache Mode] Файл '{fileName}' (ID {messageId}) успешно сохранен в кэш.");
                             audit.AddNetworkBytes(new FileInfo(cacheFilePath).Length);
-                            if (audit.LogCompletionOnce())
+                            audit.MarkRangeReceived(0, actualTotalSize);
+                            if (!isMetadataProbe && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
                             {
                                 OnDownloadCompleted?.Invoke(fileName);
                             }
@@ -1072,10 +1112,10 @@ namespace TelegramWebDAV.Services
                     await destination.WriteAsync(ramCachedRaw, ramCachedOffset, bytesToSend);
                     await destination.FlushAsync();
                     audit.AddRamBytes(bytesToSend);
-                    AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт).");
+                    bool allReceived = audit.MarkRangeReceived(offset, bytesToSend);
+                    AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт). Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
 
-                    bool isFullRead = (offset == 0 && length >= actualTotalSize) || (audit.RamBytes + audit.NetworkBytes >= actualTotalSize * 0.95 && offset + bytesToSend >= actualTotalSize);
-                    if (!isMetadataProbe && isFullRead && audit.LogCompletionOnce())
+                    if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
@@ -1104,7 +1144,6 @@ namespace TelegramWebDAV.Services
             if (!enableDiskCache && !isSmallFile && !isMetadataProbe && length > 262144)
             {
                 int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
-                bool isFullFileDownload = (offset == 0 && length >= actualTotalSize);
                 var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
                 bool success = await workerPool.DownloadToStreamAsync(
                     document,
@@ -1114,6 +1153,7 @@ namespace TelegramWebDAV.Services
                     onChunkReceived: (chunkBytes, chunkOffset) =>
                     {
                         audit.AddNetworkBytes(chunkBytes.Length);
+                        bool allReceived = audit.MarkRangeReceived(chunkOffset, chunkBytes.Length);
                         EnsureChunkCacheCapacity();
                         string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
                         _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
@@ -1123,11 +1163,16 @@ namespace TelegramWebDAV.Services
                         {
                             waiter.TrySetResult(chunkBytes);
                         }
+
+                        if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
+                        {
+                            OnDownloadCompleted?.Invoke(fileName);
+                        }
                     },
                     onProgress: (transferred, total) =>
                     {
                         long currentTransferred = offset + transferred;
-                        if (!isMetadataProbe || currentTransferred > 524288)
+                        if (!isMetadataProbe || currentTransferred > metadataLimit)
                             OnDownloadProgress?.Invoke(fileName, currentTransferred, actualTotalSize);
                         else
                         {
@@ -1139,7 +1184,7 @@ namespace TelegramWebDAV.Services
 
                 if (success)
                 {
-                    if (isFullFileDownload && audit.LogCompletionOnce())
+                    if (!isMetadataProbe && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
@@ -1192,16 +1237,17 @@ namespace TelegramWebDAV.Services
                     totalSent += toSend;
                     audit.AddRamBytes(toSend);
 
-                    AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из памяти RAM '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%).");
+                    bool allReceived = audit.MarkRangeReceived(currentPos - toSend, toSend);
+
+                    AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из памяти RAM '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
 
                     // Уведомление о прогрессе вызываем в зависимости от типа чтения и переданного объёма
-                    long currentTotalProgress = Math.Max(currentPos, audit.RamBytes + audit.NetworkBytes);
-                    bool isFullDownload = (offset == 0 && length >= actualTotalSize) || (currentTotalProgress >= actualTotalSize - 65536) || (currentPos >= actualTotalSize);
+                    long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
 
-                    if (!isMetadataProbe || currentTotalProgress > 524288 || currentPos > 524288)
+                    if (!isMetadataProbe || currentTotalProgress > metadataLimit || currentPos > metadataLimit)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
-                        if (isFullDownload && currentPos >= actualTotalSize && audit.LogCompletionOnce())
+                        if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
                         {
                             OnDownloadCompleted?.Invoke(fileName);
                         }
@@ -1273,14 +1319,20 @@ namespace TelegramWebDAV.Services
                 {
                     raw = uploadFile.bytes;
                     audit.AddNetworkBytes(raw.Length);
+                    bool allReceived = audit.MarkRangeReceived(chunkOffset, raw.Length);
                     EnsureChunkCacheCapacity();
                     int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
                     _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
-                    AppLogger.Info("TelegramService", $"[MTProto] Получен чанк для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length:N0} байт, сохранен в RAM кэш.");
+                    AppLogger.Info("TelegramService", $"[MTProto] Получен чанк для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length:N0} байт, сохранен в RAM кэш. Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
 
                     if (_inFlightChunkWaiters.TryRemove(inFlightDirectKey, out var waiter))
                     {
                         waiter.TrySetResult(raw);
+                    }
+
+                    if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
+                    {
+                        OnDownloadCompleted?.Invoke(fileName);
                     }
                 }
                 else
@@ -1318,16 +1370,11 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    long currentTotalProgress = Math.Max(currentPos, audit.RamBytes + audit.NetworkBytes);
-                    bool isFullDownload = (offset == 0 && length >= actualTotalSize) || (currentTotalProgress >= actualTotalSize - 65536) || (currentPos >= actualTotalSize);
+                    long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
 
-                    if (!isMetadataProbe || currentTotalProgress > 524288 || currentPos > 524288)
+                    if (!isMetadataProbe || currentTotalProgress > metadataLimit || currentPos > metadataLimit)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
-                        if (isFullDownload && currentPos >= actualTotalSize && audit.LogCompletionOnce())
-                        {
-                            OnDownloadCompleted?.Invoke(fileName);
-                        }
                     }
                     else
                     {
@@ -1347,8 +1394,7 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            bool isFullTransfer = (offset == 0 && length >= actualTotalSize) || (totalSent >= actualTotalSize * 0.9);
-            if (!isSmallFile && !isMetadataProbe && isFullTransfer && currentPos >= actualTotalSize && audit.LogCompletionOnce())
+            if (!isSmallFile && !isMetadataProbe && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
             {
                 OnDownloadCompleted?.Invoke(fileName);
             }
@@ -1425,6 +1471,7 @@ namespace TelegramWebDAV.Services
                         onChunkReceived: (chunkBytes, chunkOffset) =>
                         {
                             audit.AddNetworkBytes(chunkBytes.Length);
+                            bool allReceived = audit.MarkRangeReceived(chunkOffset, chunkBytes.Length);
                             EnsureChunkCacheCapacity();
                             string ramKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
                             _chunkMemoryCache[ramKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
@@ -1436,6 +1483,11 @@ namespace TelegramWebDAV.Services
                             }
 
                             OnChunkCached?.Invoke(fileName, chunkOffset + chunkBytes.Length, actualTotalSize);
+
+                            if (allReceived && audit.LogCompletionOnce())
+                            {
+                                OnDownloadCompleted?.Invoke(fileName);
+                            }
                         },
                         onProgress: (transferred, total) =>
                         {
@@ -1452,7 +1504,7 @@ namespace TelegramWebDAV.Services
                         existingChunkProvider: cOff => TryGetFromMemoryCache(messageId, cOff, out var d, out _) ? d : null,
                         cancellationToken: cts.Token);
 
-                    if (prefetchStart + prefetchLength >= actualTotalSize && audit.LogCompletionOnce())
+                    if (audit.IsAllChunksReceived() && audit.LogCompletionOnce())
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
