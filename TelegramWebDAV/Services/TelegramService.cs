@@ -731,7 +731,7 @@ namespace TelegramWebDAV.Services
                     AudioMetadataResult? chunkAudioMeta = null;
                     if (AudioMetadataExtractor.IsPotentialAudio(fileName))
                     {
-                        chunkAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempFilePath);
+                        chunkAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempFilePath, fileName);
                     }
 
                     using (var completeStream = File.OpenRead(tempFilePath))

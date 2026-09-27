@@ -63,7 +63,7 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Извлекает метаданные и обложку из локального файла с помощью библиотеки ATL.
         /// </summary>
-        public static AudioMetadataResult ExtractFromFile(string filePath)
+        public static AudioMetadataResult ExtractFromFile(string filePath, string? originalFileName = null)
         {
             var result = new AudioMetadataResult();
             try
@@ -77,7 +77,8 @@ namespace TelegramWebDAV.Services
                     result.Year = track.Year > 0 ? track.Year : null;
                     result.DurationSeconds = track.Duration > 0 ? track.Duration : null;
                     result.Bitrate = track.Bitrate > 0 ? track.Bitrate : null;
-                    result.AudioFormat = Path.GetExtension(filePath)?.ToLowerInvariant();
+                    string effectiveFileName = !string.IsNullOrWhiteSpace(originalFileName) ? originalFileName : filePath;
+                    result.AudioFormat = Path.GetExtension(effectiveFileName)?.ToLowerInvariant();
 
                     if (track.EmbeddedPictures != null && track.EmbeddedPictures.Count > 0)
                     {
@@ -96,7 +97,10 @@ namespace TelegramWebDAV.Services
 
             if (string.IsNullOrEmpty(result.Title))
             {
-                InferFromFileName(Path.GetFileName(filePath), result);
+                string nameForInference = !string.IsNullOrWhiteSpace(originalFileName) 
+                    ? originalFileName 
+                    : Path.GetFileName(filePath);
+                InferFromFileName(nameForInference, result);
             }
 
             return result;

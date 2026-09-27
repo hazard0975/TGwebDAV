@@ -772,7 +772,7 @@ namespace TelegramWebDAV.Services
                         AudioMetadataResult? fspAudioMeta = null;
                         if (AudioMetadataExtractor.IsPotentialAudio(nodeName))
                         {
-                            fspAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempPath);
+                            fspAudioMeta = AudioMetadataExtractor.ExtractFromFile(tempPath, nodeName);
                         }
 
                         using var fs = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
