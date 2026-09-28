@@ -395,12 +395,12 @@ namespace TelegramWebDAV.Services
                     return;
                 }
 
-                // 1. Включаем первый видеопоток через псевдо-индекс
-                reader.SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, true);
+                // 1. Отключаем все потоки, чтобы чисто включить нужный видеопоток
+                reader.SetStreamSelection(MF_SOURCE_READER_ALL_STREAMS, false);
 
-                // 2. Ищем явный индекс видеопотока
+                // 2. Ищем явный индекс видеопотока (0..5)
                 int videoStreamIndex = -1;
-                for (int s = 0; s < 10; s++)
+                for (int s = 0; s < 6; s++)
                 {
                     int hrNat = reader.GetNativeMediaType(s, 0, out IMFMediaType natType);
                     if (hrNat == 0 && natType != null)
@@ -415,14 +415,9 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                if (videoStreamIndex == -1)
-                {
-                    videoStreamIndex = MF_SOURCE_READER_FIRST_VIDEO_STREAM;
-                }
-                else
-                {
-                    reader.SetStreamSelection(videoStreamIndex, true);
-                }
+                int[] streamIndices = videoStreamIndex >= 0 
+                    ? new[] { videoStreamIndex, 0, 1 } 
+                    : new[] { 0, 1, MF_SOURCE_READER_FIRST_VIDEO_STREAM };
 
                 // Пробуем целевые медиатипы:
                 // 1. NV12 — нативный аппаратный формат декодеров GPU (DirectX Video Acceleration)
@@ -430,37 +425,15 @@ namespace TelegramWebDAV.Services
                 // 3. YUY2 — запасной формат
                 Guid chosenSubtype = MFVideoFormat_NV12;
                 bool isFormatSet = false;
-
-                int[] streamIndices = videoStreamIndex >= 0 
-                    ? new[] { videoStreamIndex, MF_SOURCE_READER_FIRST_VIDEO_STREAM } 
-                    : new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM };
+                int targetStreamIndex = videoStreamIndex >= 0 ? videoStreamIndex : 0;
 
                 Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
-                int targetStreamIndex = videoStreamIndex >= 0 ? videoStreamIndex : MF_SOURCE_READER_FIRST_VIDEO_STREAM;
 
                 foreach (var sIdx in streamIndices)
                 {
                     foreach (var subtype in candidateSubtypes)
                     {
-                        // 1. Пробуем получить нативный тип медиапотока и установить в него нужный Subtype
-                        IMFMediaType? baseType = null;
-                        int hrGetNative = reader.GetNativeMediaType(sIdx, 0, out baseType);
-                        if (hrGetNative == 0 && baseType != null)
-                        {
-                            baseType.SetGUID(MF_MT_SUBTYPE, subtype);
-                            int hrSetNative = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, baseType);
-                            if (hrSetNative == 0)
-                            {
-                                chosenSubtype = subtype;
-                                targetStreamIndex = sIdx;
-                                isFormatSet = true;
-                                Marshal.ReleaseComObject(baseType);
-                                break;
-                            }
-                            Marshal.ReleaseComObject(baseType);
-                        }
-
-                        // 2. Создаем чистый MediaType с MajorType и Subtype (без лишних атрибутов, чтобы ридер сам вывел геометрию)
+                        // Создаем чистый MediaType с MajorType и Subtype (без чужих H264 атрибутов)
                         int hrCreate = MFCreateMediaType(out mediaType);
                         if (hrCreate == 0 && mediaType != null)
                         {
@@ -470,6 +443,7 @@ namespace TelegramWebDAV.Services
                             int hrSetType = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, mediaType);
                             if (hrSetType == 0)
                             {
+                                reader.SetStreamSelection(sIdx, true);
                                 chosenSubtype = subtype;
                                 targetStreamIndex = sIdx;
                                 isFormatSet = true;
@@ -479,6 +453,9 @@ namespace TelegramWebDAV.Services
                             {
                                 AppLogger.Debug("VideoMetadataExtractor", $"SetCurrentMediaType(stream={sIdx}, subtype={subtype}) вернул hr = 0x{hrSetType:X8}");
                             }
+
+                            Marshal.ReleaseComObject(mediaType);
+                            mediaType = null;
                         }
                     }
 
@@ -624,7 +601,7 @@ namespace TelegramWebDAV.Services
                     {
                         try
                         {
-                            // Определяем точный шаг строки (Stride) видеокарты напрямую из реального буфера
+                            // Определяем точный шаг строки (Stride) видеокарты напрямую
                             int stride = 0;
                             if (currentType != null)
                             {
@@ -633,31 +610,13 @@ namespace TelegramWebDAV.Services
                             }
                             if (stride <= 0)
                             {
-                                if (chosenSubtype == MFVideoFormat_NV12 && curLength > 0 && frameHeight > 0)
-                                {
-                                    // Для NV12: curLength = stride * height * 1.5
-                                    int derivedStride = (int)(curLength / (frameHeight * 1.5));
-                                    if (derivedStride >= frameWidth)
-                                    {
-                                        stride = derivedStride;
-                                    }
-                                }
-                                else if (chosenSubtype == MFVideoFormat_RGB32 && curLength > 0 && frameHeight > 0)
-                                {
-                                    int derivedStride = (int)(curLength / frameHeight);
-                                    if (derivedStride >= frameWidth * 4)
-                                    {
-                                        stride = derivedStride;
-                                    }
-                                }
-                            }
-                            if (stride <= 0)
-                            {
                                 uint fourCC = BitConverter.ToUInt32(chosenSubtype.ToByteArray(), 0);
                                 int hrStride = MFGetStrideForBitmapInfoHeader(fourCC, frameWidth, out stride);
                                 if (hrStride != 0 || stride <= 0)
                                 {
-                                    stride = (frameWidth + 15) & ~15;
+                                    stride = chosenSubtype == MFVideoFormat_RGB32 
+                                        ? frameWidth * 4 
+                                        : (chosenSubtype == MFVideoFormat_YUY2 ? ((frameWidth * 2 + 3) & ~3) : ((frameWidth + 15) & ~15));
                                 }
                             }
 
@@ -719,21 +678,35 @@ namespace TelegramWebDAV.Services
 
             if (subtype == MFVideoFormat_RGB32)
             {
-                int stride = srcStride > 0 ? srcStride : width * 4;
+                int absStride = Math.Abs(srcStride > 0 ? srcStride : width * 4);
                 var bmp = new System.Drawing.Bitmap(
                     width,
                     height,
-                    stride,
+                    absStride,
                     System.Drawing.Imaging.PixelFormat.Format32bppRgb,
                     pBuffer);
-                bmp.RotateFlip(System.Drawing.RotateFlipType.RotateNoneFlipY);
+                // В Media Foundation отрицательный шаг означает bottom-up (DIB), положительный — top-down
+                if (srcStride < 0)
+                {
+                    bmp.RotateFlip(System.Drawing.RotateFlipType.RotateNoneFlipY);
+                }
                 return bmp;
             }
 
             if (subtype == MFVideoFormat_NV12)
             {
-                // NV12: Y-плоскость (stride * height байт), затем UV-плоскость (stride * height / 2 байт)
-                int stride = srcStride > 0 ? srcStride : width;
+                // NV12: Y-плоскость (stride * sliceHeight байт), затем UV-плоскость (stride * sliceHeight / 2 байт)
+                int stride = srcStride > 0 ? srcStride : ((width + 15) & ~15);
+                int sliceHeight = height;
+                if (length > 0 && stride > 0)
+                {
+                    int derivedSlice = (int)(length / (stride * 1.5));
+                    if (derivedSlice >= height)
+                    {
+                        sliceHeight = derivedSlice;
+                    }
+                }
+
                 int expectedLen = stride * height * 3 / 2;
                 if (length < expectedLen) return null;
 
@@ -747,7 +720,7 @@ namespace TelegramWebDAV.Services
                 {
                     byte* pSrc = (byte*)pBuffer.ToPointer();
                     byte* pY = pSrc;
-                    byte* pUV = pSrc + (stride * height);
+                    byte* pUV = pSrc + (stride * sliceHeight);
                     byte* pDst = (byte*)bmpData.Scan0.ToPointer();
                     int dstStride = bmpData.Stride;
 
