@@ -78,7 +78,19 @@
   - Реализовано получение нативного типа от декодера через `reader.GetNativeMediaType(streamIndex, 0, out baseType)` с последующей заменой `MF_MT_SUBTYPE` (таким образом сохраняются все реальные видео-атрибуты файла).
   - Добавлен двухэтапный перебор дескриптора потока: сначала символический `MF_SOURCE_READER_FIRST_VIDEO_STREAM`, затем явный индекс видеопотока `0`.
 
-#### Итерация 1.5.4: Нативная C# конвертация NV12/YUY2 в растр RGB
+#### Итерация 1.5.4: Ошибки `0xC00D5212` (MF_E_TOPO_CODEC_NOT_FOUND) и `InvalidCastException` в ReadSample
+* **Что делали:** Вызывали `ReadSample` с маршалингом выходного параметра напрямую в `out IMFSample ppSample` и передавали `IMFAttributes` через нетипизированный указатель.
+* **Ошибки:**
+  1. `System.InvalidCastException: Specified cast is not valid` в CLR `InterfaceMarshaler.ConvertToManaged`.
+  2. `0xC00D5212` / `0xC00D36B4`: декодер не мог согласовать подтип RGB32 для сжатых H.264 потоков.
+* **Root Cause:**
+  1. Выходной параметр `ppSample` в `ReadSample` может содержать промежуточные COM-объекты или кастоваться некорректно через жесткую декларацию C# интерфейса.
+  2. В `IMFSourceReader` по умолчанию отключен видеопроцессор преобразования форматов цвета. Без включенного `MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING` декодер требует явного кодека для вывода RGB.
+* **Решение:**
+  - Типизированный вызов `attributes.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1)` при создании ридера (включает системный аппаратный преобразователь цвета Windows Video Processor).
+  - В `ReadSample` параметр объявлен как `out IntPtr pSample` с безопасным приведением через `Marshal.GetObjectForIUnknown(pSample)` и освобождением `Marshal.Release(pSample)`.
+
+#### Итерация 1.5.5: Нативная C# конвертация NV12/YUY2 в растр RGB
 * **Что делали:** Полученный от Media Foundation буфер сэмплов `NV12` преобразуется в `System.Drawing.Bitmap` (или `SKBitmap`) с помощью прямого доступа к памяти (`Bitmap.LockBits` + unsafe pointers).
 * **Формула цвета (ITU-R BT.601):**
   $$\begin{aligned}

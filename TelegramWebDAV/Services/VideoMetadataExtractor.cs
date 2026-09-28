@@ -156,18 +156,12 @@ namespace TelegramWebDAV.Services
         private static extern int MFCreateMediaType([Out] out IMFMediaType ppMFType);
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
-        private static extern int MFCreateAttributes([Out] out IntPtr ppMFAttributes, [In] uint cInitialSize);
-
-        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        private delegate int IMFAttributesSetUINT32Delegate(
-            IntPtr pThis,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
-            uint unValue);
+        private static extern int MFCreateAttributes([Out] out IMFAttributes ppMFAttributes, [In] uint cInitialSize);
 
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
-            [In] IntPtr pAttributes,
+            [In] IMFAttributes? pAttributes,
             [Out] out IMFSourceReader ppSourceReader);
 
         [ComImport]
@@ -218,7 +212,7 @@ namespace TelegramWebDAV.Services
             [PreserveSig] int GetCurrentMediaType([In] int dwStreamIndex, [Out] out IMFMediaType ppMediaType);
             [PreserveSig] int SetCurrentMediaType([In] int dwStreamIndex, [In] IntPtr pdwReserved, [In] IMFMediaType pMediaType);
             [PreserveSig] int SetCurrentPosition([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat, [In] ref PropVariant varPosition);
-            [PreserveSig] int ReadSample([In] int dwStreamIndex, [In] int dwControlFlags, [Out] out int pdwActualStreamIndex, [Out] out int pdwStreamFlags, [Out] out long pllTimestamp, [Out] out IMFSample ppSample);
+            [PreserveSig] int ReadSample([In] int dwStreamIndex, [In] int dwControlFlags, [Out] out int pdwActualStreamIndex, [Out] out int pdwStreamFlags, [Out] out long pllTimestamp, [Out] out IntPtr ppSample);
             [PreserveSig] int Flush([In] int dwStreamIndex);
             [PreserveSig] int GetServiceForStream([In] int dwStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out] out IntPtr ppvObject);
             [PreserveSig] int GetPresentationAttribute([In] int dwStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidAttribute, [Out] out PropVariant pvarAttribute);
@@ -341,10 +335,10 @@ namespace TelegramWebDAV.Services
         private static void ExtractThumbnailViaMediaFoundation(string filePath, VideoMetadataResult result)
         {
             IMFAttributes? attributes = null;
-            IntPtr pAttributes = IntPtr.Zero;
             IMFSourceReader? reader = null;
             IMFMediaType? mediaType = null;
             IMFMediaType? currentType = null;
+            IntPtr pSample = IntPtr.Zero;
             IMFSample? sample = null;
             IMFMediaBuffer? buffer = null;
             IntPtr pBuffer = IntPtr.Zero;
@@ -359,29 +353,17 @@ namespace TelegramWebDAV.Services
             try
             {
                 // Включаем видео-процессинг (автоматическое декодирование H.264/MPEG4 в RGB32)
-                int hrAttr = MFCreateAttributes(out pAttributes, 1);
-                if (hrAttr == 0 && pAttributes != IntPtr.Zero)
+                int hrAttr = MFCreateAttributes(out attributes, 1);
+                if (hrAttr == 0 && attributes != null)
                 {
-                    try
+                    int hrProc = attributes.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                    if (hrProc != 0)
                     {
-                        // В COM-интерфейсе IMFAttributes метод SetUINT32 находится по индексу 21 в VTable
-                        // (3 метода IUnknown + 18 предшествующих методов IMFAttributes)
-                        IntPtr vtable = Marshal.ReadIntPtr(pAttributes);
-                        IntPtr pSetUINT32 = Marshal.ReadIntPtr(vtable, 21 * IntPtr.Size);
-                        var setUINT32Func = Marshal.GetDelegateForFunctionPointer<IMFAttributesSetUINT32Delegate>(pSetUINT32);
-                        int hrProc = setUINT32Func(pAttributes, MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
-                        if (hrProc != 0)
-                        {
-                            AppLogger.Debug("VideoMetadataExtractor", $"IMFAttributes.SetUINT32 вернул hr = 0x{hrProc:X8}");
-                        }
-                    }
-                    catch (Exception exAttr)
-                    {
-                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось вызвать SetUINT32 через vtable: {exAttr.Message}");
+                        AppLogger.Debug("VideoMetadataExtractor", $"IMFAttributes.SetUINT32 вернул hr = 0x{hrProc:X8}");
                     }
                 }
 
-                int hrReader = MFCreateSourceReaderFromURL(filePath, pAttributes, out reader);
+                int hrReader = MFCreateSourceReaderFromURL(filePath, attributes, out reader);
                 if (hrReader != 0 || reader == null)
                 {
                     AppLogger.Warn("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
@@ -478,7 +460,7 @@ namespace TelegramWebDAV.Services
                         out int streamIndex,
                         out int streamFlags,
                         out long timestamp,
-                        out sample);
+                        out pSample);
 
                     if (hrSample != 0)
                     {
@@ -491,8 +473,16 @@ namespace TelegramWebDAV.Services
                         break;
                     }
 
-                    if (sample != null)
+                    if (pSample != IntPtr.Zero)
                     {
+                        try
+                        {
+                            sample = (IMFSample)Marshal.GetObjectForIUnknown(pSample);
+                        }
+                        catch (Exception exCast)
+                        {
+                            AppLogger.Debug("VideoMetadataExtractor", $"Ошибка маршалинга IMFSample: {exCast.Message}");
+                        }
                         break;
                     }
                 }
@@ -554,7 +544,7 @@ namespace TelegramWebDAV.Services
             }
             finally
             {
-                if (pAttributes != IntPtr.Zero) Marshal.Release(pAttributes);
+                if (pSample != IntPtr.Zero) Marshal.Release(pSample);
                 if (buffer != null && Marshal.IsComObject(buffer)) Marshal.ReleaseComObject(buffer);
                 if (sample != null && Marshal.IsComObject(sample)) Marshal.ReleaseComObject(sample);
                 if (currentType != null && Marshal.IsComObject(currentType)) Marshal.ReleaseComObject(currentType);
