@@ -155,11 +155,17 @@ namespace TelegramWebDAV.Services
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFCreateMediaType([Out] out IMFMediaType ppMFType);
 
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        private static extern int MFCreateAttributes([Out] out IntPtr ppMFAttributes, [In] uint cInitialSize);
+
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
             [In] IntPtr pAttributes,
             [Out] out IMFSourceReader ppSourceReader);
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int AttributesSetUINT32Delegate(IntPtr pThis, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, uint unValue);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
         private delegate int ConvertToContiguousBufferDelegate(IntPtr pThis, out IntPtr ppBuffer);
@@ -340,13 +346,11 @@ namespace TelegramWebDAV.Services
 
         private static void ExtractThumbnailViaMediaFoundation(string filePath, VideoMetadataResult result)
         {
-            IMFAttributes? attributes = null;
+            IntPtr pAttributes = IntPtr.Zero;
             IMFSourceReader? reader = null;
             IMFMediaType? mediaType = null;
             IMFMediaType? currentType = null;
             IntPtr pSample = IntPtr.Zero;
-            IMFSample? sample = null;
-            IMFMediaBuffer? buffer = null;
             IntPtr pBuffer = IntPtr.Zero;
 
             int hrMf = MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET);
@@ -358,25 +362,48 @@ namespace TelegramWebDAV.Services
 
             try
             {
-                int hrReader = MFCreateSourceReaderFromURL(filePath, IntPtr.Zero, out reader);
+                // Включаем встроенный видеопроцессор преобразования форматов цвета (Windows Video Processor)
+                int hrAttr = MFCreateAttributes(out pAttributes, 1);
+                if (hrAttr == 0 && pAttributes != IntPtr.Zero)
+                {
+                    try
+                    {
+                        // В IMFAttributes VTable:
+                        // IUnknown: 0 (QueryInterface), 1 (AddRef), 2 (Release)
+                        // IMFAttributes: GetItem, GetItemType, CompareItem, Compare, GetUINT32, GetUINT64, GetDouble,
+                        // GetGUID, GetStringLength, GetString, GetAllocatedString, GetBlobSize, GetBlob, GetAllocatedBlob,
+                        // GetUnknown, SetItem, DeleteItem, DeleteAllItems -> слот 19 = SetUINT32
+                        IntPtr attrVTable = Marshal.ReadIntPtr(pAttributes);
+                        IntPtr pSetUINT32 = Marshal.ReadIntPtr(attrVTable, 19 * IntPtr.Size);
+                        var setUINT32Func = Marshal.GetDelegateForFunctionPointer<AttributesSetUINT32Delegate>(pSetUINT32);
+                        setUINT32Func(pAttributes, MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                    }
+                    catch (Exception exAttr)
+                    {
+                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось установить MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING: {exAttr.Message}");
+                    }
+                }
+
+                int hrReader = MFCreateSourceReaderFromURL(filePath, pAttributes, out reader);
                 if (hrReader != 0 || reader == null)
                 {
                     AppLogger.Warn("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
-                // Включаем первый видеопоток
+                // Включаем видеопоток
+                reader.SetStreamSelection(0, true);
                 reader.SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, true);
 
-                // Пробуем целевой медиатип: сначала RGB32, если не поддерживается — NV12 (родной для аппаратных декодеров Windows), затем YUY2
-                Guid chosenSubtype = MFVideoFormat_RGB32;
+                // Пробуем целевой медиатип: сначала NV12 (родной для аппаратных декодеров), затем RGB32, затем YUY2
+                Guid chosenSubtype = MFVideoFormat_NV12;
                 bool isFormatSet = false;
 
-                // Для надежности пробуем как символический индекс MF_SOURCE_READER_FIRST_VIDEO_STREAM, так и явный индекс 0
-                int[] streamIndices = new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0 };
-                Guid[] candidateSubtypes = new[] { MFVideoFormat_RGB32, MFVideoFormat_NV12, MFVideoFormat_YUY2 };
+                // Для надежности сначала пробуем явный индекс 0, затем символический MF_SOURCE_READER_FIRST_VIDEO_STREAM
+                int[] streamIndices = new[] { 0, MF_SOURCE_READER_FIRST_VIDEO_STREAM };
+                Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
 
-                int targetStreamIndex = MF_SOURCE_READER_FIRST_VIDEO_STREAM;
+                int targetStreamIndex = 0;
 
                 foreach (var sIdx in streamIndices)
                 {
@@ -578,12 +605,10 @@ namespace TelegramWebDAV.Services
             finally
             {
                 if (pSample != IntPtr.Zero) Marshal.Release(pSample);
-                if (buffer != null && Marshal.IsComObject(buffer)) Marshal.ReleaseComObject(buffer);
-                if (sample != null && Marshal.IsComObject(sample)) Marshal.ReleaseComObject(sample);
                 if (currentType != null && Marshal.IsComObject(currentType)) Marshal.ReleaseComObject(currentType);
                 if (mediaType != null && Marshal.IsComObject(mediaType)) Marshal.ReleaseComObject(mediaType);
                 if (reader != null && Marshal.IsComObject(reader)) Marshal.ReleaseComObject(reader);
-                if (attributes != null && Marshal.IsComObject(attributes)) Marshal.ReleaseComObject(attributes);
+                if (pAttributes != IntPtr.Zero) Marshal.Release(pAttributes);
 
                 try { MFShutdown(); } catch { }
             }
