@@ -1224,7 +1224,7 @@ namespace TelegramWebDAV.Services
                                     int hrThumb = thumbProv.GetThumbnail(320, out hBitmap, out _);
                                     if (hrThumb == 0 && hBitmap != IntPtr.Zero)
                                     {
-                                        AppLogger.Info("VideoMetadataExtractor", $"Успешно получен стоп-кадр через IThumbnailProvider ({clsidStr})");
+                                        AppLogger.Debug("VideoMetadataExtractor", $"Успешно получен HBITMAP через IThumbnailProvider ({clsidStr}) для '{Path.GetFileName(filePath)}'");
                                         break;
                                     }
                                     else
@@ -1295,7 +1295,7 @@ namespace TelegramWebDAV.Services
                             result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
                             if (result.Thumbnail != null)
                             {
-                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) ({result.Thumbnail.Length} байт, {bmp.Width}x{bmp.Height})");
+                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для '{Path.GetFileName(filePath)}' ({result.Thumbnail.Length} байт, {bmp.Width}x{bmp.Height})");
 
                                 try
                                 {
