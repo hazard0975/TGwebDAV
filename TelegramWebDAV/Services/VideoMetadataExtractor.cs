@@ -156,6 +156,9 @@ namespace TelegramWebDAV.Services
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFCreateAttributes([Out] out IntPtr ppMFAttributes, [In] uint cInitialSize);
 
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        private static extern int MFSetAttributeUINT32([In] IntPtr pAttributes, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] uint unValue);
+
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
@@ -354,14 +357,10 @@ namespace TelegramWebDAV.Services
                 int hrAttr = MFCreateAttributes(out pAttributes, 1);
                 if (hrAttr == 0 && pAttributes != IntPtr.Zero)
                 {
-                    try
+                    int hrProc = MFSetAttributeUINT32(pAttributes, MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                    if (hrProc != 0)
                     {
-                        attributes = Marshal.GetObjectForIUnknown(pAttributes) as IMFAttributes;
-                        attributes?.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
-                    }
-                    catch (Exception attrEx)
-                    {
-                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось применить IMFAttributes: {attrEx.Message}");
+                        AppLogger.Debug("VideoMetadataExtractor", $"MFSetAttributeUINT32 вернул hr = 0x{hrProc:X8}");
                     }
                 }
 
