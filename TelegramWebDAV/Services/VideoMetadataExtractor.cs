@@ -140,6 +140,7 @@ namespace TelegramWebDAV.Services
         private static readonly Guid MF_MT_MAJOR_TYPE = new Guid("48eba18e-f827-4970-b477-5da46946468f");
         private static readonly Guid MF_MT_SUBTYPE = new Guid("f7e34c9a-42e8-4714-b74b-cb29d72c35e5");
         private static readonly Guid MF_MT_FRAME_SIZE = new Guid("1652c33d-d6b2-4012-b834-2202217e0959");
+        private static readonly Guid MF_MT_DEFAULT_STRIDE = new Guid("644fd020-497d-4e44-ab84-dc729a4e4dc1");
         private static readonly Guid MFMediaType_Video = new Guid("73646976-0000-0010-8000-00aa00389b71");
         private static readonly Guid MFVideoFormat_RGB32 = new Guid("00000016-0000-0010-8000-00aa00389b71");
         private static readonly Guid MFVideoFormat_NV12 = new Guid("3231564e-0000-0010-8000-00aa00389b71");
@@ -151,6 +152,9 @@ namespace TelegramWebDAV.Services
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFShutdown();
+
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        private static extern int MFGetStrideForBitmapInfoHeader(uint format, int dwWidth, out int pStride);
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFCreateMediaType([Out] out IMFMediaType ppMFType);
@@ -368,15 +372,15 @@ namespace TelegramWebDAV.Services
                 {
                     try
                     {
-                        // В IMFAttributes VTable:
-                        // IUnknown: 0 (QueryInterface), 1 (AddRef), 2 (Release)
-                        // IMFAttributes: GetItem, GetItemType, CompareItem, Compare, GetUINT32, GetUINT64, GetDouble,
-                        // GetGUID, GetStringLength, GetString, GetAllocatedString, GetBlobSize, GetBlob, GetAllocatedBlob,
-                        // GetUnknown, SetItem, DeleteItem, DeleteAllItems -> слот 19 = SetUINT32
-                        IntPtr attrVTable = Marshal.ReadIntPtr(pAttributes);
-                        IntPtr pSetUINT32 = Marshal.ReadIntPtr(attrVTable, 19 * IntPtr.Size);
-                        var setUINT32Func = Marshal.GetDelegateForFunctionPointer<AttributesSetUINT32Delegate>(pSetUINT32);
-                        setUINT32Func(pAttributes, MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                        var attrObj = Marshal.GetObjectForIUnknown(pAttributes) as IMFAttributes;
+                        if (attrObj != null)
+                        {
+                            int hrSetAttr = attrObj.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                            if (hrSetAttr != 0)
+                            {
+                                AppLogger.Debug("VideoMetadataExtractor", $"IMFAttributes.SetUINT32 вернул hr = 0x{hrSetAttr:X8}");
+                            }
+                        }
                     }
                     catch (Exception exAttr)
                     {
@@ -520,8 +524,22 @@ namespace TelegramWebDAV.Services
                     frameHeight = result.Height > 0 ? result.Height : 360;
                 }
 
-                // Читаем первый видеокадр
-                for (int attempt = 0; attempt < 10; attempt++)
+                // Пытаемся перемотать на 2 секунды вперед (20 000 000 * 100ns), чтобы взять живой кадр клипа вместо черного экрана
+                try
+                {
+                    var varPos = new PropVariant { vt = 20 /* VT_I8 */, hVal = 20_000_000L };
+                    int hrPos = reader.SetCurrentPosition(Guid.Empty, ref varPos);
+                    if (hrPos != 0)
+                    {
+                        // Если видео короче 2 секунд, пробуем перемотать на 0.5 секунды
+                        varPos.hVal = 5_000_000L;
+                        reader.SetCurrentPosition(Guid.Empty, ref varPos);
+                    }
+                }
+                catch { }
+
+                // Читаем видеокадр
+                for (int attempt = 0; attempt < 15; attempt++)
                 {
                     int hrSample = reader.ReadSample(
                         targetStreamIndex,
@@ -592,13 +610,30 @@ namespace TelegramWebDAV.Services
                     {
                         try
                         {
-                            using System.Drawing.Bitmap? bmp = CreateBitmapFromBuffer(pBuffer, (int)curLength, frameWidth, frameHeight, chosenSubtype);
+                            // Определяем точный шаг строки (Stride) видеокарты, чтобы не было диагональных искажений и зеленых полос
+                            int stride = 0;
+                            if (currentType != null)
+                            {
+                                currentType.GetUINT32(MF_MT_DEFAULT_STRIDE, out uint uStride);
+                                stride = (int)uStride;
+                            }
+                            if (stride <= 0)
+                            {
+                                int hrStride = MFGetStrideForBitmapInfoHeader((uint)chosenSubtype.Data1, frameWidth, out stride);
+                                if (hrStride != 0 || stride <= 0)
+                                {
+                                    // Обычное выравнивание видеокарт DirectX: по границе 16 байт
+                                    stride = (frameWidth + 15) & ~15;
+                                }
+                            }
+
+                            using System.Drawing.Bitmap? bmp = CreateBitmapFromBuffer(pBuffer, (int)curLength, frameWidth, frameHeight, stride, chosenSubtype);
                             if (bmp != null)
                             {
                                 result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
                                 if (result.Thumbnail != null)
                                 {
-                                    AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Media Foundation ({result.Thumbnail.Length} байт, {frameWidth}x{frameHeight}, формат: {(chosenSubtype == MFVideoFormat_RGB32 ? "RGB32" : chosenSubtype == MFVideoFormat_NV12 ? "NV12" : "YUY2")})");
+                                    AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Media Foundation ({result.Thumbnail.Length} байт, {frameWidth}x{frameHeight}, stride={stride}, формат: {(chosenSubtype == MFVideoFormat_RGB32 ? "RGB32" : chosenSubtype == MFVideoFormat_NV12 ? "NV12" : "YUY2")})");
 
                                     try
                                     {
@@ -644,13 +679,13 @@ namespace TelegramWebDAV.Services
             }
         }
 
-        private static unsafe System.Drawing.Bitmap? CreateBitmapFromBuffer(IntPtr pBuffer, int length, int width, int height, Guid subtype)
+        private static unsafe System.Drawing.Bitmap? CreateBitmapFromBuffer(IntPtr pBuffer, int length, int width, int height, int srcStride, Guid subtype)
         {
             if (pBuffer == IntPtr.Zero || width <= 0 || height <= 0) return null;
 
             if (subtype == MFVideoFormat_RGB32)
             {
-                int stride = width * 4;
+                int stride = srcStride > 0 ? srcStride : width * 4;
                 var bmp = new System.Drawing.Bitmap(
                     width,
                     height,
@@ -663,8 +698,9 @@ namespace TelegramWebDAV.Services
 
             if (subtype == MFVideoFormat_NV12)
             {
-                // NV12: Y-плоскость (width * height байт), затем UV-плоскость (width * height / 2 байт)
-                int expectedLen = width * height * 3 / 2;
+                // NV12: Y-плоскость (stride * height байт), затем UV-плоскость (stride * height / 2 байт)
+                int stride = srcStride > 0 ? srcStride : width;
+                int expectedLen = stride * height * 3 / 2;
                 if (length < expectedLen) return null;
 
                 var bmp = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
@@ -677,21 +713,22 @@ namespace TelegramWebDAV.Services
                 {
                     byte* pSrc = (byte*)pBuffer.ToPointer();
                     byte* pY = pSrc;
-                    byte* pUV = pSrc + (width * height);
+                    byte* pUV = pSrc + (stride * height);
                     byte* pDst = (byte*)bmpData.Scan0.ToPointer();
                     int dstStride = bmpData.Stride;
 
                     for (int y = 0; y < height; y++)
                     {
                         byte* rowDst = pDst + (y * dstStride);
-                        int uvRowOffset = (y / 2) * width;
+                        byte* rowY = pY + (y * stride);
+                        byte* rowUV = pUV + ((y / 2) * stride);
 
                         for (int x = 0; x < width; x++)
                         {
-                            int yVal = pY[y * width + x];
-                            int uvIdx = uvRowOffset + (x & ~1);
-                            int uVal = pUV[uvIdx] - 128;
-                            int vVal = pUV[uvIdx + 1] - 128;
+                            int yVal = rowY[x];
+                            int uvIdx = (x & ~1);
+                            int uVal = rowUV[uvIdx] - 128;
+                            int vVal = rowUV[uvIdx + 1] - 128;
 
                             int r = yVal + (int)(1.402f * vVal);
                             int g = yVal - (int)(0.344136f * uVal + 0.714136f * vVal);
@@ -715,7 +752,8 @@ namespace TelegramWebDAV.Services
             if (subtype == MFVideoFormat_YUY2)
             {
                 // YUY2: каждые 4 байта содержат 2 пикселя (Y0, U0, Y1, V0)
-                int expectedLen = width * height * 2;
+                int stride = srcStride > 0 ? srcStride : width * 2;
+                int expectedLen = stride * height;
                 if (length < expectedLen) return null;
 
                 var bmp = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
@@ -732,7 +770,7 @@ namespace TelegramWebDAV.Services
 
                     for (int y = 0; y < height; y++)
                     {
-                        byte* rowSrc = pSrc + (y * width * 2);
+                        byte* rowSrc = pSrc + (y * stride);
                         byte* rowDst = pDst + (y * dstStride);
 
                         for (int x = 0; x < width; x += 2)
