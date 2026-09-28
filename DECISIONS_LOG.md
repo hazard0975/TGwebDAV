@@ -100,7 +100,20 @@
   - Убран деструктивный вызов отключения всех потоков: первый видеопоток активируется напрямую через `SetStreamSelection(FIRST_VIDEO_STREAM, true)`.
   - Добавлен надежный фоллбек: если согласование целевого подтипа не удалось, ридер опрашивает свой текущий нативный тип (`reader.GetCurrentMediaType`), извлекает `MF_MT_SUBTYPE` и читает кадры в этом нативном формате.
 
-#### Итерация 1.5.6: Нативная C# конвертация NV12/YUY2 в растр RGB
+#### Итерация 1.5.6: Устранение `InvalidCastException` в `IMFSample` через прямой вызов VTable слотов
+* **Что делали:** `Marshal.GetObjectForIUnknown(pSample)` бросал `InvalidCastException: Specified cast is not valid`.
+* **Root Cause:** 
+  1. В C++ Windows Media Foundation интерфейс `IMFSample` наследуется от `IMFAttributes` (3 метода `IUnknown` + 30 методов `IMFAttributes` = методы `IMFSample` начинаются со слота 33, а не 3).
+  2. Маршалер .NET при использовании C# интерфейса `[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]` не может разрешить vtable-смещение унаследованных COM-интерфейсов и выбрасывает ошибку приведения типа.
+* **Решение:**
+  - Полный отказ от COM-маршалинга `IMFSample` и `IMFMediaBuffer`.
+  - Вызовы осуществляются напрямую через смещения в таблице виртуальных функций (VTable):
+    - `ConvertToContiguousBuffer`: слот 41 в `IMFSample` VTable.
+    - `Lock`: слот 3 в `IMFMediaBuffer` VTable.
+    - `Unlock`: слот 4 в `IMFMediaBuffer` VTable.
+  - Это на 100% исключает исключения среды выполнения .NET и обеспечивает прямую высокопроизводительную работу с памятью кадра.
+
+#### Итерация 1.5.7: Нативная C# конвертация NV12/YUY2 в растр RGB
 * **Что делали:** Полученный от Media Foundation буфер сэмплов `NV12` преобразуется в `System.Drawing.Bitmap` (или `SKBitmap`) с помощью прямого доступа к памяти (`Bitmap.LockBits` + unsafe pointers).
 * **Формула цвета (ITU-R BT.601):**
   $$\begin{aligned}

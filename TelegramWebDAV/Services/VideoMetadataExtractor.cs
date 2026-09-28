@@ -161,6 +161,15 @@ namespace TelegramWebDAV.Services
             [In] IntPtr pAttributes,
             [Out] out IMFSourceReader ppSourceReader);
 
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int ConvertToContiguousBufferDelegate(IntPtr pThis, out IntPtr ppBuffer);
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int MediaBufferLockDelegate(IntPtr pThis, out IntPtr ppbBuffer, out uint pcbMaxLength, out uint pcbCurrentLength);
+
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int MediaBufferUnlockDelegate(IntPtr pThis);
+
         [ComImport]
         [Guid("2cd2d921-b4e6-4a3b-9915-88a391e9e045")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
@@ -478,33 +487,50 @@ namespace TelegramWebDAV.Services
 
                     if (pSample != IntPtr.Zero)
                     {
-                        try
-                        {
-                            sample = (IMFSample)Marshal.GetObjectForIUnknown(pSample);
-                        }
-                        catch (Exception exCast)
-                        {
-                            AppLogger.Debug("VideoMetadataExtractor", $"Ошибка маршалинга IMFSample: {exCast.Message}");
-                        }
                         break;
                     }
                 }
 
-                if (sample == null)
+                IntPtr pMediaBuffer = IntPtr.Zero;
+                if (pSample != IntPtr.Zero)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"Media Foundation не вернул семпл кадра для '{Path.GetFileName(filePath)}'");
+                    try
+                    {
+                        // В COM-интерфейсе IMFSample (наследует IMFAttributes: 3 IUnknown + 30 IMFAttributes = 33):
+                        // ConvertToContiguousBuffer находится по индексу 41 в VTable
+                        IntPtr sampleVTable = Marshal.ReadIntPtr(pSample);
+                        IntPtr pConvertToContiguousBuffer = Marshal.ReadIntPtr(sampleVTable, 41 * IntPtr.Size);
+                        var convertFunc = Marshal.GetDelegateForFunctionPointer<ConvertToContiguousBufferDelegate>(pConvertToContiguousBuffer);
+                        int hrBuf = convertFunc(pSample, out pMediaBuffer);
+
+                        if (hrBuf != 0 || pMediaBuffer == IntPtr.Zero)
+                        {
+                            AppLogger.Debug("VideoMetadataExtractor", $"ConvertToContiguousBuffer вернул hr = 0x{hrBuf:X8}");
+                        }
+                    }
+                    catch (Exception exBuf)
+                    {
+                        AppLogger.Debug("VideoMetadataExtractor", $"Ошибка вызова ConvertToContiguousBuffer: {exBuf.Message}");
+                    }
+                }
+
+                if (pMediaBuffer == IntPtr.Zero)
+                {
+                    AppLogger.Warn("VideoMetadataExtractor", $"Media Foundation не вернул буфер кадра для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
-                int hrContig = sample.ConvertToContiguousBuffer(out buffer);
-                if (hrContig != 0 || buffer == null)
+                try
                 {
-                    sample.GetBufferByIndex(0, out buffer);
-                }
+                    // В COM-интерфейсе IMFMediaBuffer (наследует IUnknown: 3 метода):
+                    // Lock находится по индексу 3 в VTable, Unlock по индексу 4
+                    IntPtr bufferVTable = Marshal.ReadIntPtr(pMediaBuffer);
+                    IntPtr pLock = Marshal.ReadIntPtr(bufferVTable, 3 * IntPtr.Size);
+                    IntPtr pUnlock = Marshal.ReadIntPtr(bufferVTable, 4 * IntPtr.Size);
+                    var lockFunc = Marshal.GetDelegateForFunctionPointer<MediaBufferLockDelegate>(pLock);
+                    var unlockFunc = Marshal.GetDelegateForFunctionPointer<MediaBufferUnlockDelegate>(pUnlock);
 
-                if (buffer != null)
-                {
-                    int hrLock = buffer.Lock(out pBuffer, out uint maxLength, out uint curLength);
+                    int hrLock = lockFunc(pMediaBuffer, out pBuffer, out uint maxLength, out uint curLength);
                     if (hrLock == 0 && pBuffer != IntPtr.Zero)
                     {
                         try
@@ -532,13 +558,17 @@ namespace TelegramWebDAV.Services
                         }
                         finally
                         {
-                            buffer.Unlock();
+                            unlockFunc(pMediaBuffer);
                         }
                     }
                     else
                     {
                         AppLogger.Warn("VideoMetadataExtractor", $"IMFMediaBuffer.Lock вернул hr = 0x{hrLock:X8}");
                     }
+                }
+                finally
+                {
+                    Marshal.Release(pMediaBuffer);
                 }
             }
             catch (Exception ex)
