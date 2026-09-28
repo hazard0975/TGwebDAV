@@ -228,6 +228,7 @@ namespace TelegramWebDAV.Services
         }
 
         private const uint CLSCTX_INPROC_SERVER = 0x1;
+        private const uint CLSCTX_LOCAL_SERVER = 0x4;
         private const uint COINIT_APARTMENTTHREADED = 0x2;
 
         private static void ExtractThumbnailViaShellCache(string filePath, VideoMetadataResult result)
@@ -244,12 +245,14 @@ namespace TelegramWebDAV.Services
                     int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem, out pShellItem);
                     if (hrItem != 0 || pShellItem == IntPtr.Zero)
                     {
+                        AppLogger.Warn("VideoMetadataExtractor", $"SHCreateItemFromParsingName вернул hr = 0x{hrItem:X8} для '{Path.GetFileName(filePath)}'");
                         return;
                     }
 
-                    int hrCache = CoCreateInstance(CLSID_LocalThumbnailCache, IntPtr.Zero, CLSCTX_INPROC_SERVER, IID_IThumbnailCache, out pCache);
+                    int hrCache = CoCreateInstance(CLSID_LocalThumbnailCache, IntPtr.Zero, CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER, IID_IThumbnailCache, out pCache);
                     if (hrCache != 0 || pCache == IntPtr.Zero)
                     {
+                        AppLogger.Warn("VideoMetadataExtractor", $"CoCreateInstance(LocalThumbnailCache) вернул hr = 0x{hrCache:X8}");
                         return;
                     }
 
@@ -275,6 +278,18 @@ namespace TelegramWebDAV.Services
                                 if (result.Thumbnail != null)
                                 {
                                     AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Thumbnail Cache ({result.Thumbnail.Length} байт)");
+
+                                    // Сохраняем в Temp для наглядной проверки
+                                    try
+                                    {
+                                        string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
+                                        File.WriteAllBytes(thumbPath, result.Thumbnail);
+                                        AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
+                                    }
+                                    catch (Exception saveEx)
+                                    {
+                                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось сохранить превью на диск: {saveEx.Message}");
+                                    }
                                 }
                             }
                             finally
@@ -285,12 +300,12 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        AppLogger.Debug("VideoMetadataExtractor", $"IThumbnailCache.GetThumbnail вернул hr = 0x{hrThumb:X8} для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Warn("VideoMetadataExtractor", $"IThumbnailCache.GetThumbnail вернул hr = 0x{hrThumb:X8} для '{Path.GetFileName(filePath)}'");
                     }
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Debug("VideoMetadataExtractor", $"ExtractThumbnailViaShellCache ошибка: {ex.Message}");
+                    AppLogger.Warn("VideoMetadataExtractor", $"ExtractThumbnailViaShellCache ошибка: {ex.Message}");
                 }
                 finally
                 {
