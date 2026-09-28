@@ -159,7 +159,7 @@ namespace TelegramWebDAV.Services
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
-            [In] IMFAttributes? pAttributes,
+            [In] IntPtr pAttributes,
             [Out] out IMFSourceReader ppSourceReader);
 
         [ComImport]
@@ -333,6 +333,7 @@ namespace TelegramWebDAV.Services
         private static void ExtractThumbnailViaMediaFoundation(string filePath, VideoMetadataResult result)
         {
             IMFAttributes? attributes = null;
+            IntPtr pAttributes = IntPtr.Zero;
             IMFSourceReader? reader = null;
             IMFMediaType? mediaType = null;
             IMFMediaType? currentType = null;
@@ -354,9 +355,10 @@ namespace TelegramWebDAV.Services
                 if (hrAttr == 0 && attributes != null)
                 {
                     attributes.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                    pAttributes = Marshal.GetIUnknownForObject(attributes);
                 }
 
-                int hrReader = MFCreateSourceReaderFromURL(filePath, attributes, out reader);
+                int hrReader = MFCreateSourceReaderFromURL(filePath, pAttributes, out reader);
                 if (hrReader != 0 || reader == null)
                 {
                     AppLogger.Warn("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
@@ -492,10 +494,11 @@ namespace TelegramWebDAV.Services
             }
             catch (Exception ex)
             {
-                AppLogger.Warn("VideoMetadataExtractor", $"ExtractThumbnailViaMediaFoundation ошибка: {ex.Message}");
+                AppLogger.Warn("VideoMetadataExtractor", $"ExtractThumbnailViaMediaFoundation ошибка: {ex}");
             }
             finally
             {
+                if (pAttributes != IntPtr.Zero) Marshal.Release(pAttributes);
                 if (buffer != null && Marshal.IsComObject(buffer)) Marshal.ReleaseComObject(buffer);
                 if (sample != null && Marshal.IsComObject(sample)) Marshal.ReleaseComObject(sample);
                 if (currentType != null && Marshal.IsComObject(currentType)) Marshal.ReleaseComObject(currentType);
