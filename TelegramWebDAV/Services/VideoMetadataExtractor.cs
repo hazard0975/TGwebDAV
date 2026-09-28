@@ -426,8 +426,8 @@ namespace TelegramWebDAV.Services
                 bool isFormatSet = false;
 
                 int[] streamIndices = videoStreamIndex >= 0 
-                    ? new[] { videoStreamIndex, 0, 1, MF_SOURCE_READER_FIRST_VIDEO_STREAM } 
-                    : new[] { 0, 1, MF_SOURCE_READER_FIRST_VIDEO_STREAM };
+                    ? (videoStreamIndex == 0 ? new[] { 0, 1 } : new[] { videoStreamIndex, 0, 1 })
+                    : new[] { 0, 1 };
 
                 Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
 
@@ -435,9 +435,47 @@ namespace TelegramWebDAV.Services
                 {
                     reader.SetStreamSelection(sIdx, true);
 
+                    // Шаг 1: Перебираем все нативные выходные медиатипы, предлагаемые декодером для данного потока
+                    for (int m = 0; m < 50; m++)
+                    {
+                        IMFMediaType? offeredType = null;
+                        int hrOffered = reader.GetNativeMediaType(sIdx, m, out offeredType);
+                        if (hrOffered != 0 || offeredType == null) break;
+
+                        try
+                        {
+                            if (offeredType.GetGUID(MF_MT_SUBTYPE, out Guid offeredSubtype) == 0)
+                            {
+                                foreach (var prefSubtype in candidateSubtypes)
+                                {
+                                    if (offeredSubtype == prefSubtype)
+                                    {
+                                        int hrSetOffered = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, offeredType);
+                                        if (hrSetOffered == 0)
+                                        {
+                                            chosenSubtype = prefSubtype;
+                                            targetStreamIndex = sIdx;
+                                            isFormatSet = true;
+                                            AppLogger.Debug("VideoMetadataExtractor", $"Согласован нативный медиатип декодера: {prefSubtype} (stream={sIdx}, typeIndex={m})");
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            Marshal.ReleaseComObject(offeredType);
+                        }
+
+                        if (isFormatSet) break;
+                    }
+
+                    if (isFormatSet) break;
+
+                    // Шаг 2: Если прямой нативный тип не выбран, пробуем чистый медиатип
                     foreach (var subtype in candidateSubtypes)
                     {
-                        // Вариант А: Создаем чистый MediaType с MajorType и Subtype (без принудительной геометрии кадра, чтобы Source Reader сам вывел нативное разрешение)
                         int hrCreate = MFCreateMediaType(out mediaType);
                         if (hrCreate == 0 && mediaType != null)
                         {
@@ -461,7 +499,7 @@ namespace TelegramWebDAV.Services
                             mediaType = null;
                         }
 
-                        // Вариант Б: Модифицируем нативный MediaType
+                        // Шаг 3: Пробуем базовый нативный тип
                         IMFMediaType? baseType = null;
                         int hrGetNative = reader.GetNativeMediaType(sIdx, 0, out baseType);
                         if (hrGetNative == 0 && baseType != null)
