@@ -156,8 +156,11 @@ namespace TelegramWebDAV.Services
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFCreateAttributes([Out] out IntPtr ppMFAttributes, [In] uint cInitialSize);
 
-        [DllImport("mfplat.dll", ExactSpelling = true)]
-        private static extern int MFSetAttributeUINT32([In] IntPtr pAttributes, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] uint unValue);
+        [UnmanagedFunctionPointer(CallingConvention.StdCall)]
+        private delegate int IMFAttributesSetUINT32Delegate(
+            IntPtr pThis,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey,
+            uint unValue);
 
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
@@ -357,10 +360,22 @@ namespace TelegramWebDAV.Services
                 int hrAttr = MFCreateAttributes(out pAttributes, 1);
                 if (hrAttr == 0 && pAttributes != IntPtr.Zero)
                 {
-                    int hrProc = MFSetAttributeUINT32(pAttributes, MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
-                    if (hrProc != 0)
+                    try
                     {
-                        AppLogger.Debug("VideoMetadataExtractor", $"MFSetAttributeUINT32 вернул hr = 0x{hrProc:X8}");
+                        // В COM-интерфейсе IMFAttributes метод SetUINT32 находится по индексу 21 в VTable
+                        // (3 метода IUnknown + 18 предшествующих методов IMFAttributes)
+                        IntPtr vtable = Marshal.ReadIntPtr(pAttributes);
+                        IntPtr pSetUINT32 = Marshal.ReadIntPtr(vtable, 21 * IntPtr.Size);
+                        var setUINT32Func = Marshal.GetDelegateForFunctionPointer<IMFAttributesSetUINT32Delegate>(pSetUINT32);
+                        int hrProc = setUINT32Func(pAttributes, MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                        if (hrProc != 0)
+                        {
+                            AppLogger.Debug("VideoMetadataExtractor", $"IMFAttributes.SetUINT32 вернул hr = 0x{hrProc:X8}");
+                        }
+                    }
+                    catch (Exception exAttr)
+                    {
+                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось вызвать SetUINT32 через vtable: {exAttr.Message}");
                     }
                 }
 
