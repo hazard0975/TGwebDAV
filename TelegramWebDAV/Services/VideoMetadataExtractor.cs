@@ -155,13 +155,10 @@ namespace TelegramWebDAV.Services
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFCreateMediaType([Out] out IMFMediaType ppMFType);
 
-        [DllImport("mfplat.dll", ExactSpelling = true)]
-        private static extern int MFCreateAttributes([Out] out IMFAttributes ppMFAttributes, [In] uint cInitialSize);
-
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
-            [In] IMFAttributes? pAttributes,
+            [In] IntPtr pAttributes,
             [Out] out IMFSourceReader ppSourceReader);
 
         [ComImport]
@@ -352,26 +349,14 @@ namespace TelegramWebDAV.Services
 
             try
             {
-                // Включаем видео-процессинг (автоматическое декодирование H.264/MPEG4 в RGB32)
-                int hrAttr = MFCreateAttributes(out attributes, 1);
-                if (hrAttr == 0 && attributes != null)
-                {
-                    int hrProc = attributes.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
-                    if (hrProc != 0)
-                    {
-                        AppLogger.Debug("VideoMetadataExtractor", $"IMFAttributes.SetUINT32 вернул hr = 0x{hrProc:X8}");
-                    }
-                }
-
-                int hrReader = MFCreateSourceReaderFromURL(filePath, attributes, out reader);
+                int hrReader = MFCreateSourceReaderFromURL(filePath, IntPtr.Zero, out reader);
                 if (hrReader != 0 || reader == null)
                 {
                     AppLogger.Warn("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
-                // Отключаем все потоки (аудио и т.д.) и включаем только первый видеопоток
-                reader.SetStreamSelection(MF_SOURCE_READER_ALL_STREAMS, false);
+                // Включаем первый видеопоток
                 reader.SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, true);
 
                 // Пробуем целевой медиатип: сначала RGB32, если не поддерживается — NV12 (родной для аппаратных декодеров Windows), затем YUY2
@@ -429,16 +414,34 @@ namespace TelegramWebDAV.Services
 
                 if (!isFormatSet)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"Не удалось согласовать видеоформат (RGB32/NV12/YUY2) для '{Path.GetFileName(filePath)}'");
+                    // Если явный тип не согласован, используем текущий нативный тип декодера
+                    int hrCurr = reader.GetCurrentMediaType(targetStreamIndex, out currentType);
+                    if (hrCurr == 0 && currentType != null)
+                    {
+                        if (currentType.GetGUID(MF_MT_SUBTYPE, out Guid sub) == 0)
+                        {
+                            chosenSubtype = sub;
+                            isFormatSet = true;
+                            AppLogger.Debug("VideoMetadataExtractor", $"Используется текущий медиатип ридера: {chosenSubtype}");
+                        }
+                    }
+                }
+
+                if (!isFormatSet)
+                {
+                    AppLogger.Warn("VideoMetadataExtractor", $"Не удалось согласовать видеоформат для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
                 // Читаем фактический медиатип, чтобы узнать разрешение кадра
-                int hrGetType = reader.GetCurrentMediaType(targetStreamIndex, out currentType);
-                if (hrGetType != 0 || currentType == null)
+                if (currentType == null)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"GetCurrentMediaType вернул hr = 0x{hrGetType:X8}");
-                    return;
+                    int hrGetType = reader.GetCurrentMediaType(targetStreamIndex, out currentType);
+                    if (hrGetType != 0 || currentType == null)
+                    {
+                        AppLogger.Warn("VideoMetadataExtractor", $"GetCurrentMediaType вернул hr = 0x{hrGetType:X8}");
+                        return;
+                    }
                 }
 
                 int hrSize = currentType.GetUINT64(MF_MT_FRAME_SIZE, out ulong packedSize);

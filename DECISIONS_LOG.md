@@ -90,7 +90,17 @@
   - Типизированный вызов `attributes.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1)` при создании ридера (включает системный аппаратный преобразователь цвета Windows Video Processor).
   - В `ReadSample` параметр объявлен как `out IntPtr pSample` с безопасным приведением через `Marshal.GetObjectForIUnknown(pSample)` и освобождением `Marshal.Release(pSample)`.
 
-#### Итерация 1.5.5: Нативная C# конвертация NV12/YUY2 в растр RGB
+#### Итерация 1.5.5: Отказ от `MFCreateAttributes` и автоматический фоллбек на текущий медиатип
+* **Что делали:** В `MFCreateAttributes` происходил `InvalidCastException` из-за несоответствия COM-маршалинга `IMFAttributes` в .NET рантайме.
+* **Root Cause:**
+  1. `MFCreateAttributes` в `mfplat.dll` не гарантирует точного соответствия декларации интерфейса в .NET при маршалинге через P/Invoke.
+  2. Вызов `reader.SetStreamSelection(ALL_STREAMS, false)` деактивировал декодеры видео в некоторых сборках Windows Media Foundation.
+* **Решение:**
+  - `MFCreateSourceReaderFromURL` вызывается напрямую с `IntPtr.Zero` (атрибуты необязательны для декодирования видеопотока).
+  - Убран деструктивный вызов отключения всех потоков: первый видеопоток активируется напрямую через `SetStreamSelection(FIRST_VIDEO_STREAM, true)`.
+  - Добавлен надежный фоллбек: если согласование целевого подтипа не удалось, ридер опрашивает свой текущий нативный тип (`reader.GetCurrentMediaType`), извлекает `MF_MT_SUBTYPE` и читает кадры в этом нативном формате.
+
+#### Итерация 1.5.6: Нативная C# конвертация NV12/YUY2 в растр RGB
 * **Что делали:** Полученный от Media Foundation буфер сэмплов `NV12` преобразуется в `System.Drawing.Bitmap` (или `SKBitmap`) с помощью прямого доступа к памяти (`Bitmap.LockBits` + unsafe pointers).
 * **Формула цвета (ITU-R BT.601):**
   $$\begin{aligned}
