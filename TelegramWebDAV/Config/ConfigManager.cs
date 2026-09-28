@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Text.Json;
+using TelegramWebDAV.Services;
 
 namespace TelegramWebDAV.Config
 {
@@ -28,12 +29,16 @@ namespace TelegramWebDAV.Config
                 try
                 {
                     string json = File.ReadAllText(_configPath);
-                    return JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
+                    var settings = JsonSerializer.Deserialize<AppSettings>(json) ?? new AppSettings();
+                    AppLogger.ApplySettings(settings.Logging);
+                    return settings;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Ошибка чтения конфигурации: {ex.Message}");
-                    return new AppSettings();
+                    var fallback = new AppSettings();
+                    AppLogger.ApplySettings(fallback.Logging);
+                    return fallback;
                 }
             }
         }
@@ -52,6 +57,7 @@ namespace TelegramWebDAV.Config
         {
             try
             {
+                AppLogger.ApplySettings(settings.Logging);
                 var options = new JsonSerializerOptions { WriteIndented = true };
                 string json = JsonSerializer.Serialize(settings, options);
                 File.WriteAllText(_configPath, json);

@@ -14,6 +14,7 @@ namespace TelegramWebDAV.Config
         public TelegramSettings Telegram { get; set; } = new TelegramSettings();
         public ServerSettings Server { get; set; } = new ServerSettings();
         public DatabaseSettings Database { get; set; } = new DatabaseSettings();
+        public LoggingSettings Logging { get; set; } = new LoggingSettings();
 
         // Обратная совместимость
         public WebDavSettings WebDav => new WebDavSettings
@@ -75,5 +76,16 @@ namespace TelegramWebDAV.Config
         public string DriveLetter { get; set; } = "Z:";
         public string DriveName { get; set; } = "Telegram Drive";
         public bool AutoMountOnStartup { get; set; } = true;
+    }
+
+    public class LoggingSettings
+    {
+        public bool EnableDebug { get; set; } = false;
+        public bool EnableInfo { get; set; } = true;
+        public bool EnableWarn { get; set; } = true;
+        public bool EnableError { get; set; } = true;
+
+        public int MaxLogFileSizeMb { get; set; } = 5;
+        public int MaxArchivedFiles { get; set; } = 3;
     }
 }

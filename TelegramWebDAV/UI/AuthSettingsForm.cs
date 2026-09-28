@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using TelegramWebDAV.Config;
 using TelegramWebDAV.Services;
@@ -56,6 +57,16 @@ namespace TelegramWebDAV.UI
         // Registry Tab
         private Label _lblRegStatus = null!;
         private Button _btnApplyRegFix = null!;
+
+        // Logs Tab
+        private TabPage _tabLogs = null!;
+        private CheckBox _chkLogDebug = null!;
+        private CheckBox _chkLogInfo = null!;
+        private CheckBox _chkLogWarn = null!;
+        private CheckBox _chkLogError = null!;
+        private NumericUpDown _numMaxLogMb = null!;
+        private NumericUpDown _numMaxLogFiles = null!;
+        private Label _lblLogStats = null!;
 
         public AuthSettingsForm(ConfigManager configManager, TelegramService telegramService)
         {
@@ -437,7 +448,224 @@ namespace TelegramWebDAV.UI
             pnlReg.Controls.AddRange(new Control[] { _lblRegStatus, lblRegCurrentState, _btnApplyRegFix });
             _tabRegistry.Controls.Add(pnlReg);
 
-            _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry });
+            // === Вкладка 4: Логирование ===
+            _tabLogs = new TabPage("Логирование");
+            var pnlLogs = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                Padding = new Padding(15),
+                AutoScroll = true
+            };
+
+            var lblLogLevelsTitle = new Label
+            {
+                Text = "Уровни логирования (какие сообщения записывать в файл):",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 8)
+            };
+
+            _chkLogDebug = new CheckBox
+            {
+                Text = "Debug — подробная техническая отладка (COM-интерфейсы, внутренние вызовы)",
+                Checked = _settings.Logging.EnableDebug,
+                AutoSize = true,
+                Margin = new Padding(10, 0, 0, 5)
+            };
+
+            _chkLogInfo = new CheckBox
+            {
+                Text = "Info — стандартные информационные события (файлы, загрузки, запуски)",
+                Checked = _settings.Logging.EnableInfo,
+                AutoSize = true,
+                Margin = new Padding(10, 0, 0, 5)
+            };
+
+            _chkLogWarn = new CheckBox
+            {
+                Text = "Warn — предупреждения и некритичные отклонения",
+                Checked = _settings.Logging.EnableWarn,
+                AutoSize = true,
+                Margin = new Padding(10, 0, 0, 5)
+            };
+
+            _chkLogError = new CheckBox
+            {
+                Text = "Error — ошибки приложения и сбои операций",
+                Checked = _settings.Logging.EnableError,
+                AutoSize = true,
+                Margin = new Padding(10, 0, 0, 15)
+            };
+
+            var lblRotTitle = new Label
+            {
+                Text = "Параметры хранения и ротации лог-файлов:",
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                AutoSize = true,
+                Margin = new Padding(0, 10, 0, 8)
+            };
+
+            var pnlMaxLogMb = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 5) };
+            pnlMaxLogMb.Controls.Add(new Label { Text = "Максимальный размер одного файла лога (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _numMaxLogMb = new NumericUpDown
+            {
+                Minimum = 1,
+                Maximum = 50,
+                Value = Math.Clamp(_settings.Logging.MaxLogFileSizeMb > 0 ? _settings.Logging.MaxLogFileSizeMb : 5, 1, 50),
+                Width = 100
+            };
+            pnlMaxLogMb.Controls.Add(_numMaxLogMb);
+
+            var pnlMaxFiles = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 0, 0, 15) };
+            pnlMaxFiles.Controls.Add(new Label { Text = "Количество хранящихся архивных файлов:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
+            _numMaxLogFiles = new NumericUpDown
+            {
+                Minimum = 1,
+                Maximum = 10,
+                Value = Math.Clamp(_settings.Logging.MaxArchivedFiles > 0 ? _settings.Logging.MaxArchivedFiles : 3, 1, 10),
+                Width = 100
+            };
+            pnlMaxFiles.Controls.Add(_numMaxLogFiles);
+
+            _lblLogStats = new Label
+            {
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 15),
+                Font = new Font("Segoe UI", 8.5F, FontStyle.Regular)
+            };
+
+            Action updateLogStats = () =>
+            {
+                try
+                {
+                    string logPath = AppLogger.CurrentLogFilePath;
+                    long mainSize = File.Exists(logPath) ? new FileInfo(logPath).Length : 0;
+                    long archiveTotal = 0;
+                    int archiveCount = 0;
+                    for (int i = 1; i <= 10; i++)
+                    {
+                        string arch = Path.Combine(AppLogger.LogDirectory, $"app.{i}.log");
+                        if (File.Exists(arch))
+                        {
+                            archiveCount++;
+                            archiveTotal += new FileInfo(arch).Length;
+                        }
+                    }
+                    double mainMb = mainSize / (1024.0 * 1024.0);
+                    double totalMb = (mainSize + archiveTotal) / (1024.0 * 1024.0);
+                    _lblLogStats.Text = $"Текущий файл: {Path.GetFileName(logPath)} ({mainMb:F2} МБ)\n" +
+                                       $"Архивы ротации: {archiveCount} файлов (всего логи занимают {totalMb:F2} МБ)\n" +
+                                       $"Папка: {AppLogger.LogDirectory}";
+                }
+                catch
+                {
+                    _lblLogStats.Text = $"Папка логов: {AppLogger.LogDirectory}";
+                }
+            };
+            updateLogStats();
+
+            var pnlLogActions = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 5, 0, 15) };
+
+            var btnOpenLogDir = new Button
+            {
+                Text = "📁 Открыть папку с логами",
+                AutoSize = true,
+                Padding = new Padding(8, 4, 8, 4),
+                Margin = new Padding(0, 0, 10, 0)
+            };
+            btnOpenLogDir.Click += (s, e) =>
+            {
+                try
+                {
+                    Directory.CreateDirectory(AppLogger.LogDirectory);
+                    System.Diagnostics.Process.Start("explorer.exe", AppLogger.LogDirectory);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не удалось открыть папку: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
+            var btnOpenLogFile = new Button
+            {
+                Text = "📄 Открыть app.log",
+                AutoSize = true,
+                Padding = new Padding(8, 4, 8, 4),
+                Margin = new Padding(0, 0, 10, 0)
+            };
+            btnOpenLogFile.Click += (s, e) =>
+            {
+                try
+                {
+                    if (File.Exists(AppLogger.CurrentLogFilePath))
+                    {
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = AppLogger.CurrentLogFilePath,
+                            UseShellExecute = true
+                        });
+                    }
+                    else
+                    {
+                        MessageBox.Show("Файл app.log пока еще не создан.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не удалось открыть файл лога: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
+            var btnClearLogs = new Button
+            {
+                Text = "🗑 Очистить все логи",
+                AutoSize = true,
+                Padding = new Padding(8, 4, 8, 4),
+                ForeColor = Color.DarkRed
+            };
+            btnClearLogs.Click += (s, e) =>
+            {
+                if (MessageBox.Show("Вы действительно хотите очистить текущий лог и все его архивы?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    AppLogger.ClearLogs();
+                    updateLogStats();
+                    MessageBox.Show("Все логи успешно очищены!", "Логирование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            };
+
+            pnlLogActions.Controls.AddRange(new Control[] { btnOpenLogDir, btnOpenLogFile, btnClearLogs });
+
+            var btnSaveLogs = new Button
+            {
+                Text = "Сохранить настройки логов",
+                AutoSize = true,
+                Padding = new Padding(10, 5, 10, 5),
+                Margin = new Padding(0, 10, 0, 0)
+            };
+            btnSaveLogs.Click += (s, e) =>
+            {
+                _settings.Logging.EnableDebug = _chkLogDebug.Checked;
+                _settings.Logging.EnableInfo = _chkLogInfo.Checked;
+                _settings.Logging.EnableWarn = _chkLogWarn.Checked;
+                _settings.Logging.EnableError = _chkLogError.Checked;
+                _settings.Logging.MaxLogFileSizeMb = (int)_numMaxLogMb.Value;
+                _settings.Logging.MaxArchivedFiles = (int)_numMaxLogFiles.Value;
+
+                _configManager.Save(_settings);
+                updateLogStats();
+                MessageBox.Show("Настройки логирования успешно сохранены!", "Логирование", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            };
+
+            pnlLogs.Controls.AddRange(new Control[] {
+                lblLogLevelsTitle, _chkLogDebug, _chkLogInfo, _chkLogWarn, _chkLogError,
+                lblRotTitle, pnlMaxLogMb, pnlMaxFiles,
+                _lblLogStats, pnlLogActions, btnSaveLogs
+            });
+            _tabLogs.Controls.Add(pnlLogs);
+
+            _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry, _tabLogs });
             this.Controls.Add(_tabControl);
         }
 

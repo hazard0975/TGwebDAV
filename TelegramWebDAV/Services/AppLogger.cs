@@ -22,8 +22,13 @@ namespace TelegramWebDAV.Services
     /// </summary>
     public static class AppLogger
     {
-        public const long MaxFileSizeBytes = 5 * 1024 * 1024; // 5 MB
-        public const int MaxArchivedFiles = 3;
+        public static bool EnableDebug { get; set; } = false;
+        public static bool EnableInfo { get; set; } = true;
+        public static bool EnableWarn { get; set; } = true;
+        public static bool EnableError { get; set; } = true;
+
+        public static long MaxFileSizeBytes { get; set; } = 5 * 1024 * 1024; // 5 MB
+        public static int MaxArchivedFiles { get; set; } = 3;
         
         public static string LogDirectory { get; }
         public static string CurrentLogFilePath { get; }
@@ -81,6 +86,41 @@ namespace TelegramWebDAV.Services
             Info("AppLogger", $"Инициализирован файловый логгер. Путь: {CurrentLogFilePath} (лимит {MaxFileSizeBytes / 1024 / 1024} МБ, ротация до {MaxArchivedFiles} файлов).");
         }
 
+        public static void ApplySettings(TelegramWebDAV.Config.LoggingSettings settings)
+        {
+            if (settings == null) return;
+            EnableDebug = settings.EnableDebug;
+            EnableInfo = settings.EnableInfo;
+            EnableWarn = settings.EnableWarn;
+            EnableError = settings.EnableError;
+            MaxFileSizeBytes = Math.Max(1, settings.MaxLogFileSizeMb) * 1024L * 1024L;
+            MaxArchivedFiles = Math.Clamp(settings.MaxArchivedFiles, 1, 10);
+        }
+
+        public static void ClearLogs()
+        {
+            try
+            {
+                if (File.Exists(CurrentLogFilePath))
+                {
+                    File.WriteAllText(CurrentLogFilePath, string.Empty);
+                }
+                for (int i = 1; i <= 10; i++)
+                {
+                    string archive = Path.Combine(LogDirectory, $"app.{i}.log");
+                    if (File.Exists(archive))
+                    {
+                        try { File.Delete(archive); } catch { }
+                    }
+                }
+                Info("AppLogger", "Логи успешно очищены по запросу пользователя.");
+            }
+            catch (Exception ex)
+            {
+                Error("AppLogger", "Ошибка при очистке логов", ex);
+            }
+        }
+
         public static void Debug(string category, string message) => Log(LogLevel.Debug, category, message);
         public static void Info(string category, string message) => Log(LogLevel.Info, category, message);
         public static void Warn(string category, string message, Exception? ex = null) => 
@@ -90,6 +130,11 @@ namespace TelegramWebDAV.Services
 
         public static void Log(LogLevel level, string category, string message)
         {
+            if (level == LogLevel.Debug && !EnableDebug) return;
+            if (level == LogLevel.Info && !EnableInfo) return;
+            if (level == LogLevel.Warn && !EnableWarn) return;
+            if (level == LogLevel.Error && !EnableError) return;
+
             string timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
             string sanitized = Sanitize(message);
             string formatted = $"[{timestamp}] [{level.ToString().ToUpperInvariant(),-5}] [{category}] {sanitized}";
