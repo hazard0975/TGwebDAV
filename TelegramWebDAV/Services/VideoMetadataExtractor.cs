@@ -142,6 +142,8 @@ namespace TelegramWebDAV.Services
         private static readonly Guid MF_MT_FRAME_SIZE = new Guid("1652c33d-d6b2-4012-b834-2202217e0959");
         private static readonly Guid MFMediaType_Video = new Guid("73646976-0000-0010-8000-00aa00389b71");
         private static readonly Guid MFVideoFormat_RGB32 = new Guid("00000016-0000-0010-8000-00aa00389b71");
+        private static readonly Guid MFVideoFormat_NV12 = new Guid("3231564e-0000-0010-8000-00aa00389b71");
+        private static readonly Guid MFVideoFormat_YUY2 = new Guid("32595559-0000-0010-8000-00aa00389b71");
         private static readonly Guid MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING = new Guid("fb394f3d-ccf1-42ee-bbb3-f9b845d5681d");
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
@@ -390,21 +392,36 @@ namespace TelegramWebDAV.Services
                 reader.SetStreamSelection(MF_SOURCE_READER_ALL_STREAMS, false);
                 reader.SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, true);
 
-                // Создаем целевой медиатип: RGB32
-                int hrCreateType = MFCreateMediaType(out mediaType);
-                if (hrCreateType != 0 || mediaType == null)
+                // Пробуем целевой медиатип: сначала RGB32, если не поддерживается — NV12 (родной для аппаратных декодеров Windows), затем YUY2
+                Guid chosenSubtype = MFVideoFormat_RGB32;
+                bool isFormatSet = false;
+
+                Guid[] candidateSubtypes = new[] { MFVideoFormat_RGB32, MFVideoFormat_NV12, MFVideoFormat_YUY2 };
+                foreach (var subtype in candidateSubtypes)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"MFCreateMediaType вернул hr = 0x{hrCreateType:X8}");
-                    return;
+                    int hrCreateType = MFCreateMediaType(out mediaType);
+                    if (hrCreateType == 0 && mediaType != null)
+                    {
+                        mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
+                        mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
+
+                        int hrSetType = reader.SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, IntPtr.Zero, mediaType);
+                        if (hrSetType == 0)
+                        {
+                            chosenSubtype = subtype;
+                            isFormatSet = true;
+                            break;
+                        }
+                        else
+                        {
+                            AppLogger.Debug("VideoMetadataExtractor", $"SetCurrentMediaType({subtype}) вернул hr = 0x{hrSetType:X8}");
+                        }
+                    }
                 }
 
-                mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
-                mediaType.SetGUID(MF_MT_SUBTYPE, MFVideoFormat_RGB32);
-
-                int hrSetType = reader.SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, IntPtr.Zero, mediaType);
-                if (hrSetType != 0)
+                if (!isFormatSet)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"SetCurrentMediaType(RGB32) вернул hr = 0x{hrSetType:X8}");
+                    AppLogger.Warn("VideoMetadataExtractor", $"Не удалось согласовать видеоформат (RGB32/NV12/YUY2) для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
@@ -473,32 +490,24 @@ namespace TelegramWebDAV.Services
                     {
                         try
                         {
-                            int stride = frameWidth * 4;
-                            using var bmp = new System.Drawing.Bitmap(
-                                frameWidth,
-                                frameHeight,
-                                stride,
-                                System.Drawing.Imaging.PixelFormat.Format32bppRgb,
-                                pBuffer);
-
-                            // В Windows DIB буферы растра часто идут снизу вверх (bottom-up),
-                            // поэтому проверяем и переворачиваем изображение
-                            bmp.RotateFlip(System.Drawing.RotateFlipType.RotateNoneFlipY);
-
-                            result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
-                            if (result.Thumbnail != null)
+                            using System.Drawing.Bitmap? bmp = CreateBitmapFromBuffer(pBuffer, (int)curLength, frameWidth, frameHeight, chosenSubtype);
+                            if (bmp != null)
                             {
-                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Media Foundation ({result.Thumbnail.Length} байт, {frameWidth}x{frameHeight})");
+                                result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
+                                if (result.Thumbnail != null)
+                                {
+                                    AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Media Foundation ({result.Thumbnail.Length} байт, {frameWidth}x{frameHeight}, формат: {(chosenSubtype == MFVideoFormat_RGB32 ? "RGB32" : chosenSubtype == MFVideoFormat_NV12 ? "NV12" : "YUY2")})");
 
-                                try
-                                {
-                                    string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
-                                    File.WriteAllBytes(thumbPath, result.Thumbnail);
-                                    AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
-                                }
-                                catch (Exception saveEx)
-                                {
-                                    AppLogger.Debug("VideoMetadataExtractor", $"Не удалось сохранить превью на диск: {saveEx.Message}");
+                                    try
+                                    {
+                                        string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
+                                        File.WriteAllBytes(thumbPath, result.Thumbnail);
+                                        AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
+                                    }
+                                    catch (Exception saveEx)
+                                    {
+                                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось сохранить превью на диск: {saveEx.Message}");
+                                    }
                                 }
                             }
                         }
@@ -529,6 +538,140 @@ namespace TelegramWebDAV.Services
 
                 try { MFShutdown(); } catch { }
             }
+        }
+
+        private static unsafe System.Drawing.Bitmap? CreateBitmapFromBuffer(IntPtr pBuffer, int length, int width, int height, Guid subtype)
+        {
+            if (pBuffer == IntPtr.Zero || width <= 0 || height <= 0) return null;
+
+            if (subtype == MFVideoFormat_RGB32)
+            {
+                int stride = width * 4;
+                var bmp = new System.Drawing.Bitmap(
+                    width,
+                    height,
+                    stride,
+                    System.Drawing.Imaging.PixelFormat.Format32bppRgb,
+                    pBuffer);
+                bmp.RotateFlip(System.Drawing.RotateFlipType.RotateNoneFlipY);
+                return bmp;
+            }
+
+            if (subtype == MFVideoFormat_NV12)
+            {
+                // NV12: Y-плоскость (width * height байт), затем UV-плоскость (width * height / 2 байт)
+                int expectedLen = width * height * 3 / 2;
+                if (length < expectedLen) return null;
+
+                var bmp = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                var bmpData = bmp.LockBits(
+                    new System.Drawing.Rectangle(0, 0, width, height),
+                    System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                    System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+
+                try
+                {
+                    byte* pSrc = (byte*)pBuffer.ToPointer();
+                    byte* pY = pSrc;
+                    byte* pUV = pSrc + (width * height);
+                    byte* pDst = (byte*)bmpData.Scan0.ToPointer();
+                    int dstStride = bmpData.Stride;
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        byte* rowDst = pDst + (y * dstStride);
+                        int uvRowOffset = (y / 2) * width;
+
+                        for (int x = 0; x < width; x++)
+                        {
+                            int yVal = pY[y * width + x];
+                            int uvIdx = uvRowOffset + (x & ~1);
+                            int uVal = pUV[uvIdx] - 128;
+                            int vVal = pUV[uvIdx + 1] - 128;
+
+                            int r = yVal + (int)(1.402f * vVal);
+                            int g = yVal - (int)(0.344136f * uVal + 0.714136f * vVal);
+                            int b = yVal + (int)(1.772f * uVal);
+
+                            rowDst[x * 4 + 0] = (byte)Math.Clamp(b, 0, 255); // Blue
+                            rowDst[x * 4 + 1] = (byte)Math.Clamp(g, 0, 255); // Green
+                            rowDst[x * 4 + 2] = (byte)Math.Clamp(r, 0, 255); // Red
+                            rowDst[x * 4 + 3] = 255;                         // Alpha
+                        }
+                    }
+                }
+                finally
+                {
+                    bmp.UnlockBits(bmpData);
+                }
+
+                return bmp;
+            }
+
+            if (subtype == MFVideoFormat_YUY2)
+            {
+                // YUY2: каждые 4 байта содержат 2 пикселя (Y0, U0, Y1, V0)
+                int expectedLen = width * height * 2;
+                if (length < expectedLen) return null;
+
+                var bmp = new System.Drawing.Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+                var bmpData = bmp.LockBits(
+                    new System.Drawing.Rectangle(0, 0, width, height),
+                    System.Drawing.Imaging.ImageLockMode.WriteOnly,
+                    System.Drawing.Imaging.PixelFormat.Format32bppRgb);
+
+                try
+                {
+                    byte* pSrc = (byte*)pBuffer.ToPointer();
+                    byte* pDst = (byte*)bmpData.Scan0.ToPointer();
+                    int dstStride = bmpData.Stride;
+
+                    for (int y = 0; y < height; y++)
+                    {
+                        byte* rowSrc = pSrc + (y * width * 2);
+                        byte* rowDst = pDst + (y * dstStride);
+
+                        for (int x = 0; x < width; x += 2)
+                        {
+                            int y0 = rowSrc[x * 2 + 0];
+                            int u0 = rowSrc[x * 2 + 1] - 128;
+                            int y1 = rowSrc[x * 2 + 2];
+                            int v0 = rowSrc[x * 2 + 3] - 128;
+
+                            // Pixel 1
+                            int r0 = y0 + (int)(1.402f * v0);
+                            int g0 = y0 - (int)(0.344136f * u0 + 0.714136f * v0);
+                            int b0 = y0 + (int)(1.772f * u0);
+
+                            rowDst[x * 4 + 0] = (byte)Math.Clamp(b0, 0, 255);
+                            rowDst[x * 4 + 1] = (byte)Math.Clamp(g0, 0, 255);
+                            rowDst[x * 4 + 2] = (byte)Math.Clamp(r0, 0, 255);
+                            rowDst[x * 4 + 3] = 255;
+
+                            // Pixel 2
+                            if (x + 1 < width)
+                            {
+                                int r1 = y1 + (int)(1.402f * v0);
+                                int g1 = y1 - (int)(0.344136f * u0 + 0.714136f * v0);
+                                int b1 = y1 + (int)(1.772f * u0);
+
+                                rowDst[(x + 1) * 4 + 0] = (byte)Math.Clamp(b1, 0, 255);
+                                rowDst[(x + 1) * 4 + 1] = (byte)Math.Clamp(g1, 0, 255);
+                                rowDst[(x + 1) * 4 + 2] = (byte)Math.Clamp(r1, 0, 255);
+                                rowDst[(x + 1) * 4 + 3] = 255;
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    bmp.UnlockBits(bmpData);
+                }
+
+                return bmp;
+            }
+
+            return null;
         }
 
         #endregion
