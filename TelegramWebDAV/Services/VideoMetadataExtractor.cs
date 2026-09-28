@@ -395,10 +395,10 @@ namespace TelegramWebDAV.Services
                     return;
                 }
 
-                // 1. Сначала отключаем все потоки
-                reader.SetStreamSelection(MF_SOURCE_READER_ALL_STREAMS, false);
+                // 1. Включаем первый видеопоток через псевдо-индекс
+                reader.SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, true);
 
-                // 2. Ищем поток, у которого MajorType == MFMediaType_Video
+                // 2. Ищем явный индекс видеопотока
                 int videoStreamIndex = -1;
                 for (int s = 0; s < 10; s++)
                 {
@@ -413,45 +413,51 @@ namespace TelegramWebDAV.Services
                         }
                         Marshal.ReleaseComObject(natType);
                     }
-                    else
-                    {
-                        // Потоки закончились
-                        break;
-                    }
                 }
 
                 if (videoStreamIndex == -1)
                 {
                     videoStreamIndex = MF_SOURCE_READER_FIRST_VIDEO_STREAM;
                 }
+                else
+                {
+                    reader.SetStreamSelection(videoStreamIndex, true);
+                }
 
-                // Включаем найденный видеопоток
-                reader.SetStreamSelection(videoStreamIndex, true);
-
-                // Пробуем целевой медиатип: сначала NV12 (родной для аппаратных декодеров), затем RGB32, затем YUY2
-                Guid chosenSubtype = MFVideoFormat_NV12;
+                // Пробуем целевые медиатипы:
+                // 1. RGB32 — гарантированный формат Windows Video Processor (MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING)
+                // 2. NV12 — нативный аппаратный формат декодеров GPU
+                // 3. YUY2 — запасной формат
+                Guid chosenSubtype = MFVideoFormat_RGB32;
                 bool isFormatSet = false;
 
-                // Важно: в SetCurrentMediaType передаем СТРОГО реальный индекс видеопотока,
-                // чтобы исключить ошибку топологии MF_E_TOPO_CODEC_NOT_FOUND (0xC00D5212)
                 int[] streamIndices = videoStreamIndex >= 0 
                     ? new[] { videoStreamIndex, MF_SOURCE_READER_FIRST_VIDEO_STREAM } 
                     : new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM };
 
-                Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
+                Guid[] candidateSubtypes = new[] { MFVideoFormat_RGB32, MFVideoFormat_NV12, MFVideoFormat_YUY2 };
                 int targetStreamIndex = videoStreamIndex >= 0 ? videoStreamIndex : MF_SOURCE_READER_FIRST_VIDEO_STREAM;
+
+                ulong packedResolution = 0;
+                if (result.Width > 0 && result.Height > 0)
+                {
+                    packedResolution = ((ulong)(uint)result.Width << 32) | (ulong)(uint)result.Height;
+                }
 
                 foreach (var sIdx in streamIndices)
                 {
                     foreach (var subtype in candidateSubtypes)
                     {
-                        // 1. Сначала пробуем установить чистый MediaType (MajorType=Video, Subtype=Subtype)
-                        // Windows Video Processor автоматически подберет геометрию и частоту кадров из исходного потока
+                        // 1. Создаем чистый MediaType с указанием MajorType, Subtype и геометрией кадра
                         int hrCreate = MFCreateMediaType(out mediaType);
                         if (hrCreate == 0 && mediaType != null)
                         {
                             mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
                             mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
+                            if (packedResolution != 0)
+                            {
+                                mediaType.SetUINT64(MF_MT_FRAME_SIZE, packedResolution);
+                            }
 
                             int hrSetType = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, mediaType);
                             if (hrSetType == 0)
@@ -467,7 +473,7 @@ namespace TelegramWebDAV.Services
                             }
                         }
 
-                        // 2. Если не получилось, пробуем клонировать нативный медиатип и подменить ему Subtype
+                        // 2. Пробуем получить нативный тип и применить подтип
                         IMFMediaType? baseType = null;
                         int hrGetNative = reader.GetNativeMediaType(sIdx, 0, out baseType);
                         if (hrGetNative == 0 && baseType != null)
