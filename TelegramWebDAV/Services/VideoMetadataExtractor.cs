@@ -391,19 +391,49 @@ namespace TelegramWebDAV.Services
                     return;
                 }
 
-                // Включаем видеопоток
-                reader.SetStreamSelection(0, true);
-                reader.SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, true);
+                // 1. Сначала отключаем все потоки
+                reader.SetStreamSelection(MF_SOURCE_READER_ALL_STREAMS, false);
+
+                // 2. Ищем поток, у которого MajorType == MFMediaType_Video
+                int videoStreamIndex = -1;
+                for (int s = 0; s < 10; s++)
+                {
+                    int hrNat = reader.GetNativeMediaType(s, 0, out IMFMediaType natType);
+                    if (hrNat == 0 && natType != null)
+                    {
+                        if (natType.GetGUID(MF_MT_MAJOR_TYPE, out Guid major) == 0 && major == MFMediaType_Video)
+                        {
+                            videoStreamIndex = s;
+                            Marshal.ReleaseComObject(natType);
+                            break;
+                        }
+                        Marshal.ReleaseComObject(natType);
+                    }
+                    else
+                    {
+                        // Потоки закончились
+                        break;
+                    }
+                }
+
+                if (videoStreamIndex == -1)
+                {
+                    videoStreamIndex = MF_SOURCE_READER_FIRST_VIDEO_STREAM;
+                }
+
+                // Включаем найденный видеопоток
+                reader.SetStreamSelection(videoStreamIndex, true);
 
                 // Пробуем целевой медиатип: сначала NV12 (родной для аппаратных декодеров), затем RGB32, затем YUY2
                 Guid chosenSubtype = MFVideoFormat_NV12;
                 bool isFormatSet = false;
 
-                // Для надежности сначала пробуем явный индекс 0, затем символический MF_SOURCE_READER_FIRST_VIDEO_STREAM
-                int[] streamIndices = new[] { 0, MF_SOURCE_READER_FIRST_VIDEO_STREAM };
-                Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
+                int[] streamIndices = videoStreamIndex == MF_SOURCE_READER_FIRST_VIDEO_STREAM
+                    ? new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM }
+                    : new[] { videoStreamIndex, MF_SOURCE_READER_FIRST_VIDEO_STREAM };
 
-                int targetStreamIndex = 0;
+                Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
+                int targetStreamIndex = videoStreamIndex;
 
                 foreach (var sIdx in streamIndices)
                 {
