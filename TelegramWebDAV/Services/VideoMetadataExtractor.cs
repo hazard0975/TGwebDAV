@@ -142,7 +142,7 @@ namespace TelegramWebDAV.Services
         private static readonly Guid MF_MT_FRAME_SIZE = new Guid("1652c33d-d6b2-4012-b834-2202217e0959");
         private static readonly Guid MFMediaType_Video = new Guid("73646976-0000-0010-8000-00aa00389b71");
         private static readonly Guid MFVideoFormat_RGB32 = new Guid("00000016-0000-0010-8000-00aa00389b71");
-        private static readonly Guid MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING = new Guid("fb394f3d-cc51-42ec-897f-1adc6381ec32");
+        private static readonly Guid MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING = new Guid("fb394f3d-ccf1-42ee-bbb3-f9b845d5681d");
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFStartup(uint version, uint dwFlags);
@@ -154,7 +154,7 @@ namespace TelegramWebDAV.Services
         private static extern int MFCreateMediaType([Out] out IMFMediaType ppMFType);
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
-        private static extern int MFCreateAttributes([Out] out IMFAttributes ppMFAttributes, [In] uint cInitialSize);
+        private static extern int MFCreateAttributes([Out] out IntPtr ppMFAttributes, [In] uint cInitialSize);
 
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
@@ -351,11 +351,18 @@ namespace TelegramWebDAV.Services
             try
             {
                 // Включаем видео-процессинг (автоматическое декодирование H.264/MPEG4 в RGB32)
-                int hrAttr = MFCreateAttributes(out attributes, 1);
-                if (hrAttr == 0 && attributes != null)
+                int hrAttr = MFCreateAttributes(out pAttributes, 1);
+                if (hrAttr == 0 && pAttributes != IntPtr.Zero)
                 {
-                    attributes.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
-                    pAttributes = Marshal.GetIUnknownForObject(attributes);
+                    try
+                    {
+                        attributes = Marshal.GetObjectForIUnknown(pAttributes) as IMFAttributes;
+                        attributes?.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                    }
+                    catch (Exception attrEx)
+                    {
+                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось применить IMFAttributes: {attrEx.Message}");
+                    }
                 }
 
                 int hrReader = MFCreateSourceReaderFromURL(filePath, pAttributes, out reader);
