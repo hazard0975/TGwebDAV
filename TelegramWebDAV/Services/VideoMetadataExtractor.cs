@@ -141,16 +141,19 @@ namespace TelegramWebDAV.Services
         [DllImport("ole32.dll")]
         private static extern void CoUninitialize();
 
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = false)]
-        private static extern void SHCreateItemFromParsingName(
-            [In] string pszPath,
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
+        private static extern int SHCreateItemFromParsingName(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
             [In] IntPtr pbc,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [Out] out IntPtr ppv);
+            [Out, MarshalAs(UnmanagedType.Interface)] out object ppv);
 
         [DllImport("gdi32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteObject(IntPtr hObject);
+
+        private static readonly Guid IID_IShellItem2 = new Guid("7e9fb0d3-919f-4307-ab2e-9b1860310c93");
+        private static readonly Guid IID_IShellItemImageFactory = new Guid("bcc18b79-ba16-442f-80c4-8a59c07c4ffc");
 
         [ComImport]
         [Guid("bcc18b79-ba16-442f-80c4-8a59c07c4ffc")]
@@ -257,41 +260,31 @@ namespace TelegramWebDAV.Services
             // 1. Чтение свойств видео через IShellItem2
             try
             {
-                var shellItem2Guid = new Guid("7e9fb0d3-919f-4307-ab2e-9b1860310c93");
-                SHCreateItemFromParsingName(filePath, IntPtr.Zero, shellItem2Guid, out IntPtr shellItemPtr);
-                if (shellItemPtr != IntPtr.Zero)
+                int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem2, out object rawShellItem);
+                if (hrItem == 0 && rawShellItem is IShellItem2 shellItem)
                 {
-                    try
+                    // PKEY_Video_FrameWidth: {64440490-4C87-11D1-A264-00A0C91FED73}, 3
+                    var keyWidth = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
+                    if (shellItem.GetUInt32(ref keyWidth, out uint w) == 0 && w > 0)
                     {
-                        var shellItem = (IShellItem2)Marshal.GetObjectForIUnknown(shellItemPtr);
-
-                        // PKEY_Video_FrameWidth: {64440490-4C87-11D1-A264-00A0C91FED73}, 3
-                        var keyWidth = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
-                        if (shellItem.GetUInt32(ref keyWidth, out uint w) == 0 && w > 0)
-                        {
-                            result.Width = (int)w;
-                        }
-
-                        // PKEY_Video_FrameHeight: {64440490-4C87-11D1-A264-00A0C91FED73}, 4
-                        var keyHeight = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 4);
-                        if (shellItem.GetUInt32(ref keyHeight, out uint h) == 0 && h > 0)
-                        {
-                            result.Height = (int)h;
-                        }
-
-                        // PKEY_Media_Duration: {64440490-4C87-11D1-A264-00A0C91FED73}, 3 (100-нс единицы)
-                        if (result.DurationSeconds <= 0)
-                        {
-                            var keyDuration = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
-                            if (shellItem.GetUInt64(ref keyDuration, out ulong dur100ns) == 0 && dur100ns > 0)
-                            {
-                                result.DurationSeconds = (int)(dur100ns / 10000000UL);
-                            }
-                        }
+                        result.Width = (int)w;
                     }
-                    finally
+
+                    // PKEY_Video_FrameHeight: {64440490-4C87-11D1-A264-00A0C91FED73}, 4
+                    var keyHeight = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 4);
+                    if (shellItem.GetUInt32(ref keyHeight, out uint h) == 0 && h > 0)
                     {
-                        Marshal.Release(shellItemPtr);
+                        result.Height = (int)h;
+                    }
+
+                    // PKEY_Media_Duration: {64440490-4C87-11D1-A264-00A0C91FED73}, 3 (100-нс единицы)
+                    if (result.DurationSeconds <= 0)
+                    {
+                        var keyDuration = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
+                        if (shellItem.GetUInt64(ref keyDuration, out ulong dur100ns) == 0 && dur100ns > 0)
+                        {
+                            result.DurationSeconds = (int)(dur100ns / 10000000UL);
+                        }
                     }
                 }
             }
@@ -305,49 +298,44 @@ namespace TelegramWebDAV.Services
             {
                 try
                 {
-                    var factoryGuid = new Guid("bcc18b79-ba16-442f-80c4-8a59c07c4ffc");
-                    SHCreateItemFromParsingName(filePath, IntPtr.Zero, factoryGuid, out IntPtr factoryPtr);
-                    if (factoryPtr != IntPtr.Zero)
+                    int hrFactory = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItemImageFactory, out object rawFactory);
+                    if (hrFactory == 0 && rawFactory is IShellItemImageFactory factory)
                     {
-                        try
+                        // Важно: размер 320x320 (требование Telegram для thumbs) и флаги без ограничения кэша!
+                        // SIIGBF_RESIZETOFIT декодирует реальный стоп-кадр на лету
+                        int hr = factory.GetImage(
+                            new SIZE(320, 320), 
+                            SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_BIGGERSIZEOK, 
+                            out IntPtr hBitmap
+                        );
+
+                        if (hr == 0 && hBitmap != IntPtr.Zero)
                         {
-                            var factory = (IShellItemImageFactory)Marshal.GetObjectForIUnknown(factoryPtr);
-                            // Важно: размер 320x320 (требование Telegram для thumbs) и флаги без ограничения кэша!
-                            // SIIGBF_RESIZETOFIT декодирует реальный стоп-кадр на лету
-                            int hr = factory.GetImage(
-                                new SIZE(320, 320), 
-                                SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_BIGGERSIZEOK, 
-                                out IntPtr hBitmap
-                            );
-
-                            if (hr == 0 && hBitmap != IntPtr.Zero)
+                            try
                             {
-                                try
+                                using var bmp = System.Drawing.Image.FromHbitmap(hBitmap);
+                                if (result.Width <= 0 || result.Height <= 0)
                                 {
-                                    using var bmp = System.Drawing.Image.FromHbitmap(hBitmap);
-                                    if (result.Width <= 0 || result.Height <= 0)
-                                    {
-                                        result.Width = bmp.Width;
-                                        result.Height = bmp.Height;
-                                    }
+                                    result.Width = bmp.Width;
+                                    result.Height = bmp.Height;
+                                }
 
-                                    result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
-                                    AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell для '{Path.GetFileName(filePath)}' ({result.Thumbnail?.Length} байт)");
-                                }
-                                finally
-                                {
-                                    DeleteObject(hBitmap);
-                                }
+                                result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
+                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell для '{Path.GetFileName(filePath)}' ({result.Thumbnail?.Length} байт)");
                             }
-                            else
+                            finally
                             {
-                                AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
+                                DeleteObject(hBitmap);
                             }
                         }
-                        finally
+                        else
                         {
-                            Marshal.Release(factoryPtr);
+                            AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
                         }
+                    }
+                    else
+                    {
+                        AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItemImageFactory) вернул hr = 0x{hrFactory:X8} для '{Path.GetFileName(filePath)}'");
                     }
                 }
                 catch (Exception ex)
