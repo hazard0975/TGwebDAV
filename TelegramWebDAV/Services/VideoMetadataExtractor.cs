@@ -1047,6 +1047,14 @@ namespace TelegramWebDAV.Services
         }
 
         [ComImport]
+        [Guid("b824b49d-22ac-4161-ac8a-9916e8fa3f7f")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IInitializeWithStream
+        {
+            [PreserveSig] int Initialize([In] System.Runtime.InteropServices.ComTypes.IStream pstream, [In] uint grfMode);
+        }
+
+        [ComImport]
         [Guid("7f738814-ad42-11d9-ba98-005056c00008")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         private interface IInitializeWithItem
@@ -1062,6 +1070,15 @@ namespace TelegramWebDAV.Services
             [PreserveSig]
             int GetThumbnail([In] uint cx, [Out] out IntPtr phbmp, [Out] out uint pdwAlpha);
         }
+
+        [DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, PreserveSig = true)]
+        private static extern int SHCreateStreamOnFileEx(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszFile,
+            [In] uint grfMode,
+            [In] uint dwAttributes,
+            [In] bool fCreate,
+            [In] IntPtr pstmTemplate,
+            [Out] out System.Runtime.InteropServices.ComTypes.IStream ppstm);
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         private static extern int SHCreateItemFromParsingName(
@@ -1135,69 +1152,105 @@ namespace TelegramWebDAV.Services
                 try
                 {
                     string ext = Path.GetExtension(filePath).ToLowerInvariant();
-                    string? clsidStr = GetThumbnailHandlerClsidForExtension(ext);
-                    if (string.IsNullOrEmpty(clsidStr))
+                    string? regClsid = GetThumbnailHandlerClsidForExtension(ext);
+
+                    // Список кандидатов COM-обработчиков:
+                    // 1. Icaros Thumbnail Provider (K-Lite Codec Pack - поддерживает любые форматы, включая AV1)
+                    // 2. Зарегистрированный в реестре для этого расширения (если отличается)
+                    // 3. Icaros Secondary Provider
+                    var candidateClsids = new System.Collections.Generic.List<string>
                     {
-                        // Стандартный CLSID Icaros Thumbnail Provider (K-Lite Codec Pack)
-                        clsidStr = "{49E17978-2C26-4444-9FA8-1F19F2BE1D52}";
+                        "{49E17978-2C26-4444-9FA8-1F19F2BE1D52}", // Icaros (K-Lite)
+                        "{9BD09B0E-561A-4224-B1F2-2E54B7F1B1FF}"  // Icaros 2
+                    };
+
+                    if (!string.IsNullOrEmpty(regClsid) && !System.Linq.Enumerable.Contains(candidateClsids, regClsid, StringComparer.OrdinalIgnoreCase))
+                    {
+                        candidateClsids.Insert(0, regClsid); // Сначала пробуем зарегистрированный
                     }
 
-                    // Вариант 1 (Приоритетный): Прямое создание зарегистрированного IThumbnailProvider из реестра (K-Lite / Icaros)
-                    if (!string.IsNullOrEmpty(clsidStr) && Guid.TryParse(clsidStr, out Guid handlerClsid))
+                    // Создаём read-only поток IStream без эксклюзивных блокировок
+                    System.Runtime.InteropServices.ComTypes.IStream? pStream = null;
+                    try
                     {
+                        const uint STGM_READ = 0x00000000;
+                        const uint STGM_SHARE_DENY_NONE = 0x00000040;
+                        SHCreateStreamOnFileEx(filePath, STGM_READ | STGM_SHARE_DENY_NONE, 0x80 /* FILE_ATTRIBUTE_NORMAL */, false, IntPtr.Zero, out pStream);
+                    }
+                    catch { }
+
+                    foreach (var clsidStr in candidateClsids)
+                    {
+                        if (hBitmap != IntPtr.Zero) break;
+                        if (!Guid.TryParse(clsidStr, out Guid handlerClsid)) continue;
+
                         try
                         {
                             var comType = Type.GetTypeFromCLSID(handlerClsid);
-                            if (comType != null)
-                            {
-                                object? instance = Activator.CreateInstance(comType);
-                                if (instance != null)
-                                {
-                                    try
-                                    {
-                                        int hrInit = -1;
-                                        if (instance is IInitializeWithFile initFile)
-                                        {
-                                            hrInit = initFile.Initialize(filePath, 0); // STGM_READ
-                                        }
-                                        else if (instance is IInitializeWithItem initItem)
-                                        {
-                                            Guid iidItem = IID_IShellItem;
-                                            if (SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iidItem, out IntPtr pItem) == 0 && pItem != IntPtr.Zero)
-                                            {
-                                                try { hrInit = initItem.Initialize(pItem, 0); }
-                                                finally { Marshal.Release(pItem); }
-                                            }
-                                        }
+                            if (comType == null) continue;
 
-                                        if (hrInit == 0 && instance is IThumbnailProvider thumbProv)
-                                        {
-                                            int hrThumb = thumbProv.GetThumbnail(320, out hBitmap, out _);
-                                            if (hrThumb == 0 && hBitmap != IntPtr.Zero)
-                                            {
-                                                AppLogger.Info("VideoMetadataExtractor", $"Успешно получен стоп-кадр через IThumbnailProvider (K-Lite {clsidStr})");
-                                            }
-                                            else
-                                            {
-                                                AppLogger.Debug("VideoMetadataExtractor", $"IThumbnailProvider.GetThumbnail вернул hr = 0x{hrThumb:X8} ({clsidStr})");
-                                            }
-                                        }
-                                        else
-                                        {
-                                            AppLogger.Debug("VideoMetadataExtractor", $"IInitializeWithFile.Initialize вернул hr = 0x{hrInit:X8} ({clsidStr})");
-                                        }
-                                    }
-                                    finally
+                            object? instance = Activator.CreateInstance(comType);
+                            if (instance == null) continue;
+
+                            try
+                            {
+                                int hrInit = -1;
+
+                                // 1. Пробуем инициализировать через IInitializeWithStream
+                                if (pStream != null && instance is IInitializeWithStream initStream)
+                                {
+                                    hrInit = initStream.Initialize(pStream, 0);
+                                }
+
+                                // 2. Пробуем инициализировать через IInitializeWithFile
+                                if (hrInit != 0 && instance is IInitializeWithFile initFile)
+                                {
+                                    hrInit = initFile.Initialize(filePath, 0);
+                                }
+
+                                // 3. Пробуем инициализировать через IInitializeWithItem
+                                if (hrInit != 0 && instance is IInitializeWithItem initItem)
+                                {
+                                    Guid iidItem = IID_IShellItem;
+                                    if (SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iidItem, out IntPtr pItem) == 0 && pItem != IntPtr.Zero)
                                     {
-                                        try { Marshal.ReleaseComObject(instance); } catch { }
+                                        try { hrInit = initItem.Initialize(pItem, 0); }
+                                        finally { Marshal.Release(pItem); }
                                     }
                                 }
+
+                                if (hrInit == 0 && instance is IThumbnailProvider thumbProv)
+                                {
+                                    int hrThumb = thumbProv.GetThumbnail(320, out hBitmap, out _);
+                                    if (hrThumb == 0 && hBitmap != IntPtr.Zero)
+                                    {
+                                        AppLogger.Info("VideoMetadataExtractor", $"Успешно получен стоп-кадр через IThumbnailProvider ({clsidStr})");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        AppLogger.Debug("VideoMetadataExtractor", $"IThumbnailProvider.GetThumbnail вернул hr = 0x{hrThumb:X8} ({clsidStr})");
+                                    }
+                                }
+                                else
+                                {
+                                    AppLogger.Debug("VideoMetadataExtractor", $"Инициализация ({clsidStr}) вернула hr = 0x{hrInit:X8}");
+                                }
+                            }
+                            finally
+                            {
+                                try { Marshal.ReleaseComObject(instance); } catch { }
                             }
                         }
-                        catch (Exception exDirect)
+                        catch (Exception exHandler)
                         {
-                            AppLogger.Debug("VideoMetadataExtractor", $"Ошибка прямого вызова IThumbnailProvider ({clsidStr}): {exDirect.Message}");
+                            AppLogger.Debug("VideoMetadataExtractor", $"Обработчик ({clsidStr}) вызвал исключение: {exHandler.Message}");
                         }
+                    }
+
+                    if (pStream != null)
+                    {
+                        try { Marshal.ReleaseComObject(pStream); } catch { }
                     }
 
                     // Вариант 2: Если прямой вызов не вернул hBitmap, запрашиваем через SHCreateItemFromParsingName
