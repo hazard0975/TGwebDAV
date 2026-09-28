@@ -99,16 +99,16 @@ namespace TelegramWebDAV.Services
                 AppLogger.Debug("VideoMetadataExtractor", $"ATL чтение '{filePath}': {ex.Message}");
             }
 
-            // Шаг 3: Если превью нет, извлекаем его через системный Windows Thumbnail Cache
+            // Шаг 3: Если превью нет, извлекаем его через системный Windows Media Foundation (IMFSourceReader)
             if (result.Thumbnail == null && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 try
                 {
-                    ExtractThumbnailViaShellCache(filePath, result);
+                    ExtractThumbnailViaMediaFoundation(filePath, result);
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Debug("VideoMetadataExtractor", $"Windows Shell превью ошибка '{filePath}': {ex.Message}");
+                    AppLogger.Debug("VideoMetadataExtractor", $"Media Foundation превью ошибка '{filePath}': {ex.Message}");
                 }
             }
 
@@ -129,107 +129,290 @@ namespace TelegramWebDAV.Services
             return result;
         }
 
-        #region Windows Shell IThumbnailProvider Interop
+        #region Windows Media Foundation Interop
 
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
-        private static extern int SHCreateItemFromParsingName(
-            [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
-            [In] IntPtr pbc,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [Out, MarshalAs(UnmanagedType.Interface)] out IShellItem ppv);
+        private const uint MF_VERSION = 0x00020070;
+        private const uint MFSTARTUP_NOSOCKET = 0x1;
+        private const int MF_SOURCE_READER_FIRST_VIDEO_STREAM = -2; // 0xFFFFFFFE
+        private const int MF_SOURCE_READER_FLAG_ENDOFSTREAM = 0x00000001;
 
-        [DllImport("ole32.dll")]
-        private static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
+        private static readonly Guid MF_MT_MAJOR_TYPE = new Guid("48eba18e-f827-4970-b477-5da46946468f");
+        private static readonly Guid MF_MT_SUBTYPE = new Guid("f7e34c9a-42e8-4714-b74b-cb29d72c35e5");
+        private static readonly Guid MF_MT_FRAME_SIZE = new Guid("1652c33d-d6b2-4012-b834-2202217e0959");
+        private static readonly Guid MFMediaType_Video = new Guid("73646976-0000-0010-8000-00aa00389b71");
+        private static readonly Guid MFVideoFormat_RGB32 = new Guid("00000016-0000-0010-8000-00aa00389b71");
 
-        [DllImport("ole32.dll")]
-        private static extern void CoUninitialize();
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        private static extern int MFStartup(uint version, uint dwFlags);
 
-        [DllImport("gdi32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool DeleteObject(IntPtr hObject);
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        private static extern int MFShutdown();
 
-        private static readonly Guid IID_IShellItem = new Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe");
-        private static readonly Guid BHID_ThumbnailHandler = new Guid("7b0ffd17-11ee-4014-87cc-c68e7ca7c78f");
-        private static readonly Guid IID_IThumbnailProvider = new Guid("e357fcc7-4295-4576-b01f-234630154e96");
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        private static extern int MFCreateMediaType([Out] out IMFMediaType ppMFType);
+
+        [DllImport("mfreadwrite.dll", ExactSpelling = true)]
+        private static extern int MFCreateSourceReaderFromURL(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
+            [In] IntPtr pAttributes,
+            [Out] out IMFSourceReader ppSourceReader);
 
         [ComImport]
-        [Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe")]
+        [Guid("70ae66f2-c809-4e4f-8915-bdcb406b7993")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IShellItem
+        private interface IMFSourceReader
         {
-            [PreserveSig]
-            int BindToHandler(
-                [In] IntPtr pbc,
-                [In, MarshalAs(UnmanagedType.LPStruct)] Guid bhid,
-                [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-                [Out, MarshalAs(UnmanagedType.Interface)] out object ppv);
-
-            [PreserveSig]
-            int GetParent([Out, MarshalAs(UnmanagedType.Interface)] out IShellItem ppsi);
-
-            [PreserveSig]
-            int GetDisplayName([In] uint sigdnName, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
-
-            [PreserveSig]
-            int GetAttributes([In] uint sfgaoMask, [Out] out uint psfgaoAttribs);
-
-            [PreserveSig]
-            int Compare([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, [In] uint hint, [Out] out int piOrder);
+            [PreserveSig] int GetStreamSelection([In] int dwStreamIndex, [Out, MarshalAs(UnmanagedType.Bool)] out bool pfSelected);
+            [PreserveSig] int SetStreamSelection([In] int dwStreamIndex, [In, MarshalAs(UnmanagedType.Bool)] bool fSelected);
+            [PreserveSig] int GetNativeMediaType([In] int dwStreamIndex, [In] int dwMediaTypeIndex, [Out] out IMFMediaType ppMediaType);
+            [PreserveSig] int GetCurrentMediaType([In] int dwStreamIndex, [Out] out IMFMediaType ppMediaType);
+            [PreserveSig] int SetCurrentMediaType([In] int dwStreamIndex, [In] IntPtr pdwReserved, [In] IMFMediaType pMediaType);
+            [PreserveSig] int SetCurrentPosition([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidTimeFormat, [In] ref PropVariant varPosition);
+            [PreserveSig] int ReadSample([In] int dwStreamIndex, [In] int dwControlFlags, [Out] out int pdwActualStreamIndex, [Out] out int pdwStreamFlags, [Out] out long pllTimestamp, [Out] out IMFSample ppSample);
+            [PreserveSig] int Flush([In] int dwStreamIndex);
+            [PreserveSig] int GetServiceForStream([In] int dwStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidService, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out] out IntPtr ppvObject);
+            [PreserveSig] int GetPresentationAttribute([In] int dwStreamIndex, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidAttribute, [Out] out PropVariant pvarAttribute);
         }
 
         [ComImport]
-        [Guid("e357fcc7-4295-4576-b01f-234630154e96")]
+        [Guid("44ae0fa8-ea31-4109-8d2e-4cae4997c555")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IThumbnailProvider
+        private interface IMFMediaType
         {
-            [PreserveSig]
-            int GetThumbnail(
-                [In] uint cx,
-                [Out] out IntPtr phbmp,
-                [Out] out uint pdwAlpha);
+            [PreserveSig] int GetItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, Out] IntPtr pValue);
+            [PreserveSig] int GetItemType([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out int pType);
+            [PreserveSig] int CompareItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr Value, [Out, MarshalAs(UnmanagedType.Bool)] out bool pbResult);
+            [PreserveSig] int Compare([In] IntPtr pTheirs, [In] int MatchType, [Out, MarshalAs(UnmanagedType.Bool)] out bool pbResult);
+            [PreserveSig] int GetUINT32([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint punValue);
+            [PreserveSig] int GetUINT64([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out ulong punValue);
+            [PreserveSig] int GetDouble([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out double pfValue);
+            [PreserveSig] int GetGUID([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out Guid pguidValue);
+            [PreserveSig] int GetStringLength([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint pcchLength);
+            [PreserveSig] int GetString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pwszValue, [In] uint cchBufSize, [Out] out uint pcchLength);
+            [PreserveSig] int GetAllocatedString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue, [Out] out uint pcchLength);
+            [PreserveSig] int GetBlobSize([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint pcbBlobSize);
+            [PreserveSig] int GetBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] byte[] pBuf, [In] uint cbBufSize, [Out] out uint pcbBlobSize);
+            [PreserveSig] int GetAllocatedBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out IntPtr ppBuf, [Out] out uint pcbSize);
+            [PreserveSig] int GetUnknown([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out] out IntPtr ppv);
+            [PreserveSig] int SetItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr Value);
+            [PreserveSig] int DeleteItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey);
+            [PreserveSig] int DeleteAllItems();
+            [PreserveSig] int SetUINT32([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] uint unValue);
+            [PreserveSig] int SetUINT64([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] ulong unValue);
+            [PreserveSig] int SetDouble([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] double fValue);
+            [PreserveSig] int SetGUID([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue);
+            [PreserveSig] int SetString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue);
+            [PreserveSig] int SetBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] byte[] pBuf, [In] uint cbBufSize);
+            [PreserveSig] int SetUnknown([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr pUnknown);
+            [PreserveSig] int LockStore();
+            [PreserveSig] int UnlockStore();
+            [PreserveSig] int GetCount([Out] out uint pcItems);
+            [PreserveSig] int GetItemByIndex([In] uint unIndex, [Out] out Guid pguidKey, [In, Out] IntPtr pValue);
+            [PreserveSig] int CopyAllItems([In] IntPtr pDest);
+            // IMFMediaType specific
+            [PreserveSig] int GetMajorType([Out] out Guid pguidMajorType);
+            [PreserveSig] int IsCompressedFormat([Out, MarshalAs(UnmanagedType.Bool)] out bool pfCompressed);
+            [PreserveSig] int IsEqual([In] IMFMediaType pIMediaType, [Out] out uint pdwFlags);
+            [PreserveSig] int GetRepresentation([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidRepresentation, [Out] out IntPtr ppvRepresentation);
+            [PreserveSig] int FreeRepresentation([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidRepresentation, [In] IntPtr pvRepresentation);
         }
 
-        private const uint COINIT_APARTMENTTHREADED = 0x2;
-
-        private static void ExtractThumbnailViaShellCache(string filePath, VideoMetadataResult result)
+        [ComImport]
+        [Guid("c40a0074-b93a-4d80-ae8c-5a1c634f58e4")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IMFSample
         {
-            var thread = new Thread(() =>
+            [PreserveSig] int GetItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, Out] IntPtr pValue);
+            [PreserveSig] int GetItemType([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out int pType);
+            [PreserveSig] int CompareItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr Value, [Out, MarshalAs(UnmanagedType.Bool)] out bool pbResult);
+            [PreserveSig] int Compare([In] IntPtr pTheirs, [In] int MatchType, [Out, MarshalAs(UnmanagedType.Bool)] out bool pbResult);
+            [PreserveSig] int GetUINT32([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint punValue);
+            [PreserveSig] int GetUINT64([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out ulong punValue);
+            [PreserveSig] int GetDouble([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out double pfValue);
+            [PreserveSig] int GetGUID([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out Guid pguidValue);
+            [PreserveSig] int GetStringLength([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint pcchLength);
+            [PreserveSig] int GetString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pwszValue, [In] uint cchBufSize, [Out] out uint pcchLength);
+            [PreserveSig] int GetAllocatedString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue, [Out] out uint pcchLength);
+            [PreserveSig] int GetBlobSize([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint pcbBlobSize);
+            [PreserveSig] int GetBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] byte[] pBuf, [In] uint cbBufSize, [Out] out uint pcbBlobSize);
+            [PreserveSig] int GetAllocatedBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out IntPtr ppBuf, [Out] out uint pcbSize);
+            [PreserveSig] int GetUnknown([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out] out IntPtr ppv);
+            [PreserveSig] int SetItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr Value);
+            [PreserveSig] int DeleteItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey);
+            [PreserveSig] int DeleteAllItems();
+            [PreserveSig] int SetUINT32([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] uint unValue);
+            [PreserveSig] int SetUINT64([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] ulong unValue);
+            [PreserveSig] int SetDouble([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] double fValue);
+            [PreserveSig] int SetGUID([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue);
+            [PreserveSig] int SetString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue);
+            [PreserveSig] int SetBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] byte[] pBuf, [In] uint cbBufSize);
+            [PreserveSig] int SetUnknown([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr pUnknown);
+            [PreserveSig] int LockStore();
+            [PreserveSig] int UnlockStore();
+            [PreserveSig] int GetCount([Out] out uint pcItems);
+            [PreserveSig] int GetItemByIndex([In] uint unIndex, [Out] out Guid pguidKey, [In, Out] IntPtr pValue);
+            [PreserveSig] int CopyAllItems([In] IntPtr pDest);
+            // IMFSample specific
+            [PreserveSig] int GetSampleFlags([Out] out uint pdwSampleFlags);
+            [PreserveSig] int SetSampleFlags([In] uint dwSampleFlags);
+            [PreserveSig] int GetSampleTime([Out] out long phnsSampleTime);
+            [PreserveSig] int SetSampleTime([In] long hnsSampleTime);
+            [PreserveSig] int GetSampleDuration([Out] out long phnsSampleDuration);
+            [PreserveSig] int SetSampleDuration([In] long hnsSampleDuration);
+            [PreserveSig] int GetBufferCount([Out] out uint pdwBufferCount);
+            [PreserveSig] int GetBufferByIndex([In] uint dwIndex, [Out] out IMFMediaBuffer ppBuffer);
+            [PreserveSig] int ConvertToContiguousBuffer([Out] out IMFMediaBuffer ppBuffer);
+            [PreserveSig] int AddBuffer([In] IMFMediaBuffer pBuffer);
+            [PreserveSig] int RemoveBufferByIndex([In] uint dwIndex);
+            [PreserveSig] int RemoveAllBuffers();
+            [PreserveSig] int GetTotalLength([Out] out uint pcbTotalLength);
+            [PreserveSig] int CopyToBuffer([In] IMFMediaBuffer pBuffer);
+        }
+
+        [ComImport]
+        [Guid("045db593-0721-4d87-bb4e-67832e01e0d8")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IMFMediaBuffer
+        {
+            [PreserveSig] int Lock([Out] out IntPtr ppbBuffer, [Out] out uint pcbMaxLength, [Out] out uint pcbCurrentLength);
+            [PreserveSig] int Unlock();
+            [PreserveSig] int GetCurrentLength([Out] out uint pcbCurrentLength);
+            [PreserveSig] int SetCurrentLength([In] uint cbCurrentLength);
+            [PreserveSig] int GetMaxLength([Out] out uint pcbMaxLength);
+        }
+
+        [StructLayout(LayoutKind.Explicit, Size = 16)]
+        private struct PropVariant
+        {
+            [FieldOffset(0)] public ushort vt;
+            [FieldOffset(8)] public long hVal;
+        }
+
+        private static void ExtractThumbnailViaMediaFoundation(string filePath, VideoMetadataResult result)
+        {
+            IMFSourceReader? reader = null;
+            IMFMediaType? mediaType = null;
+            IMFMediaType? currentType = null;
+            IMFSample? sample = null;
+            IMFMediaBuffer? buffer = null;
+            IntPtr pBuffer = IntPtr.Zero;
+
+            int hrMf = MFStartup(MF_VERSION, MFSTARTUP_NOSOCKET);
+            if (hrMf != 0)
             {
-                int hrCo = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
-                IShellItem? shellItem = null;
-                IThumbnailProvider? thumbProvider = null;
-                IntPtr hBitmap = IntPtr.Zero;
+                AppLogger.Warn("VideoMetadataExtractor", $"MFStartup вернул hr = 0x{hrMf:X8}");
+                return;
+            }
 
-                try
+            try
+            {
+                int hrReader = MFCreateSourceReaderFromURL(filePath, IntPtr.Zero, out reader);
+                if (hrReader != 0 || reader == null)
                 {
-                    int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem, out shellItem);
-                    if (hrItem != 0 || shellItem == null)
+                    AppLogger.Warn("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
+                    return;
+                }
+
+                // Создаем целевой медиатип: RGB32
+                int hrCreateType = MFCreateMediaType(out mediaType);
+                if (hrCreateType != 0 || mediaType == null)
+                {
+                    AppLogger.Warn("VideoMetadataExtractor", $"MFCreateMediaType вернул hr = 0x{hrCreateType:X8}");
+                    return;
+                }
+
+                mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
+                mediaType.SetGUID(MF_MT_SUBTYPE, MFVideoFormat_RGB32);
+
+                int hrSetType = reader.SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, IntPtr.Zero, mediaType);
+                if (hrSetType != 0)
+                {
+                    AppLogger.Warn("VideoMetadataExtractor", $"SetCurrentMediaType(RGB32) вернул hr = 0x{hrSetType:X8}");
+                    return;
+                }
+
+                // Читаем фактический медиатип, чтобы узнать разрешение кадра
+                int hrGetType = reader.GetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, out currentType);
+                if (hrGetType != 0 || currentType == null)
+                {
+                    AppLogger.Warn("VideoMetadataExtractor", $"GetCurrentMediaType вернул hr = 0x{hrGetType:X8}");
+                    return;
+                }
+
+                int hrSize = currentType.GetUINT64(MF_MT_FRAME_SIZE, out ulong packedSize);
+                int frameWidth = hrSize == 0 ? (int)(packedSize >> 32) : result.Width;
+                int frameHeight = hrSize == 0 ? (int)(packedSize & 0xFFFFFFFF) : result.Height;
+
+                if (frameWidth <= 0 || frameHeight <= 0)
+                {
+                    frameWidth = result.Width > 0 ? result.Width : 640;
+                    frameHeight = result.Height > 0 ? result.Height : 360;
+                }
+
+                // Читаем первый видеокадр
+                for (int attempt = 0; attempt < 10; attempt++)
+                {
+                    int hrSample = reader.ReadSample(
+                        MF_SOURCE_READER_FIRST_VIDEO_STREAM,
+                        0,
+                        out int streamIndex,
+                        out int streamFlags,
+                        out long timestamp,
+                        out sample);
+
+                    if (hrSample != 0)
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItem) вернул hr = 0x{hrItem:X8} для '{Path.GetFileName(filePath)}'");
-                        return;
+                        AppLogger.Warn("VideoMetadataExtractor", $"ReadSample вернул hr = 0x{hrSample:X8}");
+                        break;
                     }
 
-                    int hrBind = shellItem.BindToHandler(IntPtr.Zero, BHID_ThumbnailHandler, IID_IThumbnailProvider, out object rawProvider);
-                    if (hrBind != 0 || rawProvider == null)
+                    if ((streamFlags & MF_SOURCE_READER_FLAG_ENDOFSTREAM) != 0)
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"BindToHandler(BHID_ThumbnailHandler) вернул hr = 0x{hrBind:X8} для '{Path.GetFileName(filePath)}'");
-                        return;
+                        break;
                     }
 
-                    thumbProvider = (IThumbnailProvider)rawProvider;
-                    int hrThumb = thumbProvider.GetThumbnail(320, out hBitmap, out uint pdwAlpha);
+                    if (sample != null)
+                    {
+                        break;
+                    }
+                }
 
-                    if (hrThumb == 0 && hBitmap != IntPtr.Zero)
+                if (sample == null)
+                {
+                    AppLogger.Warn("VideoMetadataExtractor", $"Media Foundation не вернул семпл кадра для '{Path.GetFileName(filePath)}'");
+                    return;
+                }
+
+                int hrContig = sample.ConvertToContiguousBuffer(out buffer);
+                if (hrContig != 0 || buffer == null)
+                {
+                    sample.GetBufferByIndex(0, out buffer);
+                }
+
+                if (buffer != null)
+                {
+                    int hrLock = buffer.Lock(out pBuffer, out uint maxLength, out uint curLength);
+                    if (hrLock == 0 && pBuffer != IntPtr.Zero)
                     {
                         try
                         {
-                            using var bmp = System.Drawing.Image.FromHbitmap(hBitmap);
+                            int stride = frameWidth * 4;
+                            using var bmp = new System.Drawing.Bitmap(
+                                frameWidth,
+                                frameHeight,
+                                stride,
+                                System.Drawing.Imaging.PixelFormat.Format32bppRgb,
+                                pBuffer);
+
+                            // В Windows DIB буферы растра часто идут снизу вверх (bottom-up),
+                            // поэтому проверяем и переворачиваем изображение
+                            bmp.RotateFlip(System.Drawing.RotateFlipType.RotateNoneFlipY);
+
                             result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
                             if (result.Thumbnail != null)
                             {
-                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через IThumbnailProvider ({result.Thumbnail.Length} байт)");
+                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Media Foundation ({result.Thumbnail.Length} байт, {frameWidth}x{frameHeight})");
 
-                                // Сохраняем в Temp для наглядной проверки
                                 try
                                 {
                                     string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
@@ -244,40 +427,28 @@ namespace TelegramWebDAV.Services
                         }
                         finally
                         {
-                            DeleteObject(hBitmap);
+                            buffer.Unlock();
                         }
                     }
                     else
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"IThumbnailProvider.GetThumbnail вернул hr = 0x{hrThumb:X8} для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Warn("VideoMetadataExtractor", $"IMFMediaBuffer.Lock вернул hr = 0x{hrLock:X8}");
                     }
                 }
-                catch (Exception ex)
-                {
-                    AppLogger.Warn("VideoMetadataExtractor", $"ExtractThumbnailViaShellCache ошибка: {ex.Message}");
-                }
-                finally
-                {
-                    if (thumbProvider != null && Marshal.IsComObject(thumbProvider))
-                    {
-                        Marshal.ReleaseComObject(thumbProvider);
-                    }
-                    if (shellItem != null && Marshal.IsComObject(shellItem))
-                    {
-                        Marshal.ReleaseComObject(shellItem);
-                    }
-                    if (hrCo >= 0) CoUninitialize();
-                }
-            });
-
-            thread.SetApartmentState(ApartmentState.STA);
-            thread.IsBackground = true;
-            thread.Start();
-
-            // Лимит ожидания генерации превью - 3 секунды, чтобы не задерживать отправку
-            if (!thread.Join(3000))
+            }
+            catch (Exception ex)
             {
-                AppLogger.Warn("VideoMetadataExtractor", $"Таймаут Windows Shell превью для '{Path.GetFileName(filePath)}'");
+                AppLogger.Warn("VideoMetadataExtractor", $"ExtractThumbnailViaMediaFoundation ошибка: {ex.Message}");
+            }
+            finally
+            {
+                if (buffer != null && Marshal.IsComObject(buffer)) Marshal.ReleaseComObject(buffer);
+                if (sample != null && Marshal.IsComObject(sample)) Marshal.ReleaseComObject(sample);
+                if (currentType != null && Marshal.IsComObject(currentType)) Marshal.ReleaseComObject(currentType);
+                if (mediaType != null && Marshal.IsComObject(mediaType)) Marshal.ReleaseComObject(mediaType);
+                if (reader != null && Marshal.IsComObject(reader)) Marshal.ReleaseComObject(reader);
+
+                try { MFShutdown(); } catch { }
             }
         }
 
