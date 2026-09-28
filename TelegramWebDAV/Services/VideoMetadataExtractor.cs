@@ -8,7 +8,7 @@ namespace TelegramWebDAV.Services
 {
     /// <summary>
     /// Парсер метаданных видео (длительность, ширина, высота) и генератор превью-кадров (thumbnails)
-    /// с использованием ATL.NET, Windows Shell API (IShellItemImageFactory / IShellItem2) и fallback парсеров.
+    /// с использованием ATL.NET, Windows Shell API (IShellItem -> IShellItemImageFactory / IShellItem2) и fallback парсеров.
     /// </summary>
     public static class VideoMetadataExtractor
     {
@@ -90,7 +90,7 @@ namespace TelegramWebDAV.Services
                 AppLogger.Debug("VideoMetadataExtractor", $"ATL чтение '{filePath}': {ex.Message}");
             }
 
-            // Шаг 2: Windows Shell API (IShellItemImageFactory для превью и IShellItem2 для разрешения)
+            // Шаг 2: Windows Shell API (IShellItem -> IShellItemImageFactory для превью и IShellItem2 для разрешения)
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 try
@@ -152,8 +152,20 @@ namespace TelegramWebDAV.Services
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteObject(IntPtr hObject);
 
-        private static readonly Guid IID_IShellItem2 = new Guid("7e9fb0d3-919f-4307-ab2e-9b1860310c93");
-        private static readonly Guid IID_IShellItemImageFactory = new Guid("bcc18b79-ba16-442f-80c4-8a59c07c4ffc");
+        // IShellItem IID: {43826d1e-e718-42ee-bc55-a1e261c37bfe}
+        private static readonly Guid IID_IShellItem = new Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe");
+
+        [ComImport]
+        [Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IShellItem
+        {
+            [PreserveSig] int BindToHandler(IntPtr pbc, ref Guid bhid, ref Guid riid, out IntPtr ppv);
+            [PreserveSig] int GetParent(out IntPtr ppsi);
+            [PreserveSig] int GetDisplayName(uint sigdnName, out IntPtr ppszName);
+            [PreserveSig] int GetAttributes(uint sfgaoMask, out uint psfgaoAttribs);
+            [PreserveSig] int Compare(IntPtr psi, uint hint, out int piOrder);
+        }
 
         [ComImport]
         [Guid("bcc18b79-ba16-442f-80c4-8a59c07c4ffc")]
@@ -170,13 +182,13 @@ namespace TelegramWebDAV.Services
         [ComImport]
         [Guid("7e9fb0d3-919f-4307-ab2e-9b1860310c93")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IShellItem2
+        private interface IShellItem2 : IShellItem
         {
-            [PreserveSig] int BindToHandler(IntPtr pbc, ref Guid bhid, ref Guid riid, out IntPtr ppv);
-            [PreserveSig] int GetParent(out IntPtr ppsi);
-            [PreserveSig] int GetDisplayName(uint sigdnName, out IntPtr ppszName);
-            [PreserveSig] int GetAttributes(uint sfgaoMask, out uint psfgaoAttribs);
-            [PreserveSig] int Compare(IntPtr psi, uint hint, out int piOrder);
+            [PreserveSig] new int BindToHandler(IntPtr pbc, ref Guid bhid, ref Guid riid, out IntPtr ppv);
+            [PreserveSig] new int GetParent(out IntPtr ppsi);
+            [PreserveSig] new int GetDisplayName(uint sigdnName, out IntPtr ppszName);
+            [PreserveSig] new int GetAttributes(uint sfgaoMask, out uint psfgaoAttribs);
+            [PreserveSig] new int Compare(IntPtr psi, uint hint, out int piOrder);
             [PreserveSig] int GetPropertyStore(int flags, ref Guid riid, out IntPtr ppv);
             [PreserveSig] int GetPropertyStoreWithCredentials(int flags, IntPtr pbc, ref Guid riid, out IntPtr ppv);
             [PreserveSig] int GetProperty(ref PROPERTYKEY key, out IntPtr pv);
@@ -257,22 +269,30 @@ namespace TelegramWebDAV.Services
 
         private static void ExtractWindowsShellMetadataCore(string filePath, VideoMetadataResult result)
         {
+            // В Windows Shell SHCreateItemFromParsingName ВСЕГДА вызывается с IID_IShellItem,
+            // а уже затем полученный объект опрашивается на IShellItemImageFactory и IShellItem2!
+            int hr = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem, out object rawShellItem);
+            if (hr != 0 || rawShellItem == null)
+            {
+                AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItem) вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
+                return;
+            }
+
             // 1. Чтение свойств видео через IShellItem2
             try
             {
-                int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem2, out object rawShellItem);
-                if (hrItem == 0 && rawShellItem is IShellItem2 shellItem)
+                if (rawShellItem is IShellItem2 shellItem2)
                 {
                     // PKEY_Video_FrameWidth: {64440490-4C87-11D1-A264-00A0C91FED73}, 3
                     var keyWidth = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
-                    if (shellItem.GetUInt32(ref keyWidth, out uint w) == 0 && w > 0)
+                    if (shellItem2.GetUInt32(ref keyWidth, out uint w) == 0 && w > 0)
                     {
                         result.Width = (int)w;
                     }
 
                     // PKEY_Video_FrameHeight: {64440490-4C87-11D1-A264-00A0C91FED73}, 4
                     var keyHeight = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 4);
-                    if (shellItem.GetUInt32(ref keyHeight, out uint h) == 0 && h > 0)
+                    if (shellItem2.GetUInt32(ref keyHeight, out uint h) == 0 && h > 0)
                     {
                         result.Height = (int)h;
                     }
@@ -281,7 +301,7 @@ namespace TelegramWebDAV.Services
                     if (result.DurationSeconds <= 0)
                     {
                         var keyDuration = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
-                        if (shellItem.GetUInt64(ref keyDuration, out ulong dur100ns) == 0 && dur100ns > 0)
+                        if (shellItem2.GetUInt64(ref keyDuration, out ulong dur100ns) == 0 && dur100ns > 0)
                         {
                             result.DurationSeconds = (int)(dur100ns / 10000000UL);
                         }
@@ -298,18 +318,27 @@ namespace TelegramWebDAV.Services
             {
                 try
                 {
-                    int hrFactory = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItemImageFactory, out object rawFactory);
-                    if (hrFactory == 0 && rawFactory is IShellItemImageFactory factory)
+                    if (rawShellItem is IShellItemImageFactory factory)
                     {
-                        // Важно: размер 320x320 (требование Telegram для thumbs) и флаги без ограничения кэша!
-                        // SIIGBF_RESIZETOFIT декодирует реальный стоп-кадр на лету
-                        int hr = factory.GetImage(
+                        // Важно: размер 320x320 (требование Telegram для thumbs)
+                        // Сначала пробуем запросить чистый стоп-кадр (RESIZETOFIT)
+                        int hrImage = factory.GetImage(
                             new SIZE(320, 320), 
                             SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_BIGGERSIZEOK, 
                             out IntPtr hBitmap
                         );
 
-                        if (hr == 0 && hBitmap != IntPtr.Zero)
+                        // Если не вернулся, пробуем флаг SCALEUP
+                        if (hrImage != 0 || hBitmap == IntPtr.Zero)
+                        {
+                            hrImage = factory.GetImage(
+                                new SIZE(320, 320), 
+                                SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_SCALEUP, 
+                                out hBitmap
+                            );
+                        }
+
+                        if (hrImage == 0 && hBitmap != IntPtr.Zero)
                         {
                             try
                             {
@@ -330,12 +359,12 @@ namespace TelegramWebDAV.Services
                         }
                         else
                         {
-                            AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
+                            AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hrImage:X8} для '{Path.GetFileName(filePath)}'");
                         }
                     }
                     else
                     {
-                        AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItemImageFactory) вернул hr = 0x{hrFactory:X8} для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Debug("VideoMetadataExtractor", $"Объект IShellItem не поддерживает IShellItemImageFactory для '{Path.GetFileName(filePath)}'");
                     }
                 }
                 catch (Exception ex)
