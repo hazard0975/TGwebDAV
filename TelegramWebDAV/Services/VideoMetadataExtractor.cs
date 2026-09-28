@@ -129,22 +129,14 @@ namespace TelegramWebDAV.Services
             return result;
         }
 
-        #region Windows Shell IThumbnailCache Interop
+        #region Windows Shell IShellItemImageFactory Interop
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
         private static extern int SHCreateItemFromParsingName(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
             [In] IntPtr pbc,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [Out] out IntPtr ppv);
-
-        [DllImport("ole32.dll", PreserveSig = true)]
-        private static extern int CoCreateInstance(
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid rclsid,
-            [In] IntPtr pUnkOuter,
-            [In] uint dwClsContext,
-            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [Out] out IntPtr ppv);
+            [Out, MarshalAs(UnmanagedType.Interface)] out IShellItemImageFactory ppv);
 
         [DllImport("ole32.dll")]
         private static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
@@ -156,35 +148,18 @@ namespace TelegramWebDAV.Services
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteObject(IntPtr hObject);
 
-        private static readonly Guid CLSID_LocalThumbnailCache = new Guid("4db340b0-44e6-4279-8800-47e9e514f04c");
-        private static readonly Guid IID_IThumbnailCache = new Guid("F676C1B6-0243-47B4-BECE-332BA7DE72A6");
-        private static readonly Guid IID_IShellItem = new Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe");
+        private static readonly Guid IID_IShellItemImageFactory = new Guid("bcc18b79-ba16-442f-80c4-8a59c07c463b");
 
         [ComImport]
-        [Guid("F676C1B6-0243-47B4-BECE-332BA7DE72A6")]
+        [Guid("bcc18b79-ba16-442f-80c4-8a59c07c463b")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IThumbnailCache
+        private interface IShellItemImageFactory
         {
             [PreserveSig]
-            int GetThumbnail(
-                [In] IntPtr pShellItem,
-                [In] uint cxyRequestedThumbSize,
-                [In] WTS_FLAGS flags,
-                [Out] out IntPtr ppvThumb,
-                [Out] out WTS_CACHEFLAGS pOutFlags,
-                [Out] out WTS_THUMBNAILID pThumbnailID);
-        }
-
-        [ComImport]
-        [Guid("E357FCC7-4295-4576-B01F-234630154E96")]
-        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface ISharedBitmap
-        {
-            [PreserveSig] int GetSharedBitmap([Out] out IntPtr phbm);
-            [PreserveSig] int GetSize([Out] out SIZE pSize);
-            [PreserveSig] int GetFormat([Out] out WTS_ALPHATYPE pat);
-            [PreserveSig] int InitializeBitmap([In] IntPtr hbm, [In] WTS_ALPHATYPE wtsAT);
-            [PreserveSig] int Detach([Out] out IntPtr phbm);
+            int GetImage(
+                [In, MarshalAs(UnmanagedType.Struct)] SIZE size,
+                [In] SIIGBF flags,
+                [Out] out IntPtr phbm);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -194,41 +169,21 @@ namespace TelegramWebDAV.Services
             public int cy;
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct WTS_THUMBNAILID
-        {
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public byte[] rgbKey;
-        }
-
         [Flags]
-        private enum WTS_FLAGS : uint
+        private enum SIIGBF
         {
-            WTS_EXTRACT = 0x00000000,
-            WTS_INCACHEONLY = 0x00000001,
-            WTS_FASTEXTRACT = 0x00000002,
-            WTS_FORCEEXTRACTION = 0x00000004,
-            WTS_SLOWRECLAIM = 0x00000008,
-            WTS_EXTRACTINPROC = 0x00000100
+            SIIGBF_RESIZETOFIT = 0x00000000,
+            SIIGBF_BIGGERSIZEOK = 0x00000001,
+            SIIGBF_MEMORYONLY = 0x00000002,
+            SIIGBF_ICONONLY = 0x00000004,
+            SIIGBF_THUMBNAILONLY = 0x00000008,
+            SIIGBF_INCACHEONLY = 0x00000010,
+            SIIGBF_CROPTOSQUARE = 0x00000020,
+            SIIGBF_WIDETHUMBNAILS = 0x00000040,
+            SIIGBF_ICONBACKGROUND = 0x00000080,
+            SIIGBF_SCALEUP = 0x00000100
         }
 
-        [Flags]
-        private enum WTS_CACHEFLAGS : uint
-        {
-            WTS_DEFAULT = 0x00000000,
-            WTS_LOWQUALITY = 0x00000001,
-            WTS_CACHED = 0x00000002
-        }
-
-        private enum WTS_ALPHATYPE
-        {
-            WTSAT_UNKNOWN = 0,
-            WTSAT_RGB = 1,
-            WTSAT_ARGB = 2
-        }
-
-        private const uint CLSCTX_INPROC_SERVER = 0x1;
-        private const uint CLSCTX_LOCAL_SERVER = 0x4;
         private const uint COINIT_APARTMENTTHREADED = 0x2;
 
         private static void ExtractThumbnailViaShellCache(string filePath, VideoMetadataResult result)
@@ -236,71 +191,58 @@ namespace TelegramWebDAV.Services
             var thread = new Thread(() =>
             {
                 int hrCo = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
-                IntPtr pShellItem = IntPtr.Zero;
-                IntPtr pCache = IntPtr.Zero;
-                IntPtr pSharedBitmap = IntPtr.Zero;
+                IShellItemImageFactory? factory = null;
+                IntPtr hBitmap = IntPtr.Zero;
 
                 try
                 {
-                    int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem, out pShellItem);
-                    if (hrItem != 0 || pShellItem == IntPtr.Zero)
+                    int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItemImageFactory, out factory);
+                    if (hrItem != 0 || factory == null)
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"SHCreateItemFromParsingName вернул hr = 0x{hrItem:X8} для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Warn("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItemImageFactory) вернул hr = 0x{hrItem:X8} для '{Path.GetFileName(filePath)}'");
                         return;
                     }
 
-                    int hrCache = CoCreateInstance(CLSID_LocalThumbnailCache, IntPtr.Zero, CLSCTX_INPROC_SERVER | CLSCTX_LOCAL_SERVER, IID_IThumbnailCache, out pCache);
-                    if (hrCache != 0 || pCache == IntPtr.Zero)
+                    var size = new SIZE { cx = 320, cy = 320 };
+                    // Сначала пробуем получить эскиз с флагом BIGGERSIZEOK
+                    int hrImage = factory.GetImage(size, SIIGBF.SIIGBF_BIGGERSIZEOK | SIIGBF.SIIGBF_RESIZETOFIT, out hBitmap);
+                    if (hrImage != 0 || hBitmap == IntPtr.Zero)
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"CoCreateInstance(LocalThumbnailCache) вернул hr = 0x{hrCache:X8}");
-                        return;
+                        // Пробуем без флагов
+                        hrImage = factory.GetImage(size, SIIGBF.SIIGBF_RESIZETOFIT, out hBitmap);
                     }
 
-                    var cache = (IThumbnailCache)Marshal.GetObjectForIUnknown(pCache);
-                    int hrThumb = cache.GetThumbnail(
-                        pShellItem,
-                        320,
-                        WTS_FLAGS.WTS_EXTRACT | WTS_FLAGS.WTS_FORCEEXTRACTION,
-                        out pSharedBitmap,
-                        out var outFlags,
-                        out var thumbId
-                    );
-
-                    if (hrThumb == 0 && pSharedBitmap != IntPtr.Zero)
+                    if (hrImage == 0 && hBitmap != IntPtr.Zero)
                     {
-                        var sharedBitmap = (ISharedBitmap)Marshal.GetObjectForIUnknown(pSharedBitmap);
-                        if (sharedBitmap.GetSharedBitmap(out IntPtr hBitmap) == 0 && hBitmap != IntPtr.Zero)
+                        try
                         {
-                            try
+                            using var bmp = System.Drawing.Image.FromHbitmap(hBitmap);
+                            result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
+                            if (result.Thumbnail != null)
                             {
-                                using var bmp = System.Drawing.Image.FromHbitmap(hBitmap);
-                                result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
-                                if (result.Thumbnail != null)
-                                {
-                                    AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Thumbnail Cache ({result.Thumbnail.Length} байт)");
+                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через IShellItemImageFactory ({result.Thumbnail.Length} байт)");
 
-                                    // Сохраняем в Temp для наглядной проверки
-                                    try
-                                    {
-                                        string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
-                                        File.WriteAllBytes(thumbPath, result.Thumbnail);
-                                        AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
-                                    }
-                                    catch (Exception saveEx)
-                                    {
-                                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось сохранить превью на диск: {saveEx.Message}");
-                                    }
+                                // Сохраняем в Temp для наглядной проверки
+                                try
+                                {
+                                    string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
+                                    File.WriteAllBytes(thumbPath, result.Thumbnail);
+                                    AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
+                                }
+                                catch (Exception saveEx)
+                                {
+                                    AppLogger.Debug("VideoMetadataExtractor", $"Не удалось сохранить превью на диск: {saveEx.Message}");
                                 }
                             }
-                            finally
-                            {
-                                DeleteObject(hBitmap);
-                            }
+                        }
+                        finally
+                        {
+                            DeleteObject(hBitmap);
                         }
                     }
                     else
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"IThumbnailCache.GetThumbnail вернул hr = 0x{hrThumb:X8} для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Warn("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hrImage:X8} для '{Path.GetFileName(filePath)}'");
                     }
                 }
                 catch (Exception ex)
@@ -309,9 +251,10 @@ namespace TelegramWebDAV.Services
                 }
                 finally
                 {
-                    if (pSharedBitmap != IntPtr.Zero) Marshal.Release(pSharedBitmap);
-                    if (pCache != IntPtr.Zero) Marshal.Release(pCache);
-                    if (pShellItem != IntPtr.Zero) Marshal.Release(pShellItem);
+                    if (factory != null && Marshal.IsComObject(factory))
+                    {
+                        Marshal.ReleaseComObject(factory);
+                    }
                     if (hrCo >= 0) CoUninitialize();
                 }
             });
