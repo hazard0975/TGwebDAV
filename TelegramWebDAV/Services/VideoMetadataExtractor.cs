@@ -134,6 +134,7 @@ namespace TelegramWebDAV.Services
         private const uint MF_VERSION = 0x00020070;
         private const uint MFSTARTUP_NOSOCKET = 0x1;
         private const int MF_SOURCE_READER_FIRST_VIDEO_STREAM = -2; // 0xFFFFFFFE
+        private const int MF_SOURCE_READER_ALL_STREAMS = -3; // 0xFFFFFFFD
         private const int MF_SOURCE_READER_FLAG_ENDOFSTREAM = 0x00000001;
 
         private static readonly Guid MF_MT_MAJOR_TYPE = new Guid("48eba18e-f827-4970-b477-5da46946468f");
@@ -141,6 +142,7 @@ namespace TelegramWebDAV.Services
         private static readonly Guid MF_MT_FRAME_SIZE = new Guid("1652c33d-d6b2-4012-b834-2202217e0959");
         private static readonly Guid MFMediaType_Video = new Guid("73646976-0000-0010-8000-00aa00389b71");
         private static readonly Guid MFVideoFormat_RGB32 = new Guid("00000016-0000-0010-8000-00aa00389b71");
+        private static readonly Guid MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING = new Guid("fb394f3d-cc51-42ec-897f-1adc6381ec32");
 
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFStartup(uint version, uint dwFlags);
@@ -151,11 +153,51 @@ namespace TelegramWebDAV.Services
         [DllImport("mfplat.dll", ExactSpelling = true)]
         private static extern int MFCreateMediaType([Out] out IMFMediaType ppMFType);
 
+        [DllImport("mfplat.dll", ExactSpelling = true)]
+        private static extern int MFCreateAttributes([Out] out IMFAttributes ppMFAttributes, [In] uint cInitialSize);
+
         [DllImport("mfreadwrite.dll", ExactSpelling = true)]
         private static extern int MFCreateSourceReaderFromURL(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pwszURL,
-            [In] IntPtr pAttributes,
+            [In] IMFAttributes? pAttributes,
             [Out] out IMFSourceReader ppSourceReader);
+
+        [ComImport]
+        [Guid("2cd2d921-b4e6-4a3b-9915-88a391e9e045")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IMFAttributes
+        {
+            [PreserveSig] int GetItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, Out] IntPtr pValue);
+            [PreserveSig] int GetItemType([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out int pType);
+            [PreserveSig] int CompareItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr Value, [Out, MarshalAs(UnmanagedType.Bool)] out bool pbResult);
+            [PreserveSig] int Compare([In] IntPtr pTheirs, [In] int MatchType, [Out, MarshalAs(UnmanagedType.Bool)] out bool pbResult);
+            [PreserveSig] int GetUINT32([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint punValue);
+            [PreserveSig] int GetUINT64([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out ulong punValue);
+            [PreserveSig] int GetDouble([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out double pfValue);
+            [PreserveSig] int GetGUID([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out Guid pguidValue);
+            [PreserveSig] int GetStringLength([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint pcchLength);
+            [PreserveSig] int GetString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] System.Text.StringBuilder pwszValue, [In] uint cchBufSize, [Out] out uint pcchLength);
+            [PreserveSig] int GetAllocatedString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppwszValue, [Out] out uint pcchLength);
+            [PreserveSig] int GetBlobSize([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out uint pcbBlobSize);
+            [PreserveSig] int GetBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] byte[] pBuf, [In] uint cbBufSize, [Out] out uint pcbBlobSize);
+            [PreserveSig] int GetAllocatedBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [Out] out IntPtr ppBuf, [Out] out uint pcbSize);
+            [PreserveSig] int GetUnknown([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out] out IntPtr ppv);
+            [PreserveSig] int SetItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr Value);
+            [PreserveSig] int DeleteItem([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey);
+            [PreserveSig] int DeleteAllItems();
+            [PreserveSig] int SetUINT32([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] uint unValue);
+            [PreserveSig] int SetUINT64([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] ulong unValue);
+            [PreserveSig] int SetDouble([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] double fValue);
+            [PreserveSig] int SetGUID([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPStruct)] Guid guidValue);
+            [PreserveSig] int SetString([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In, MarshalAs(UnmanagedType.LPWStr)] string wszValue);
+            [PreserveSig] int SetBlob([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] byte[] pBuf, [In] uint cbBufSize);
+            [PreserveSig] int SetUnknown([In, MarshalAs(UnmanagedType.LPStruct)] Guid guidKey, [In] IntPtr pUnknown);
+            [PreserveSig] int LockStore();
+            [PreserveSig] int UnlockStore();
+            [PreserveSig] int GetCount([Out] out uint pcItems);
+            [PreserveSig] int GetItemByIndex([In] uint unIndex, [Out] out Guid pguidKey, [In, Out] IntPtr pValue);
+            [PreserveSig] int CopyAllItems([In] IntPtr pDest);
+        }
 
         [ComImport]
         [Guid("70ae66f2-c809-4e4f-8915-bdcb406b7993")]
@@ -290,6 +332,7 @@ namespace TelegramWebDAV.Services
 
         private static void ExtractThumbnailViaMediaFoundation(string filePath, VideoMetadataResult result)
         {
+            IMFAttributes? attributes = null;
             IMFSourceReader? reader = null;
             IMFMediaType? mediaType = null;
             IMFMediaType? currentType = null;
@@ -306,12 +349,23 @@ namespace TelegramWebDAV.Services
 
             try
             {
-                int hrReader = MFCreateSourceReaderFromURL(filePath, IntPtr.Zero, out reader);
+                // Включаем видео-процессинг (автоматическое декодирование H.264/MPEG4 в RGB32)
+                int hrAttr = MFCreateAttributes(out attributes, 1);
+                if (hrAttr == 0 && attributes != null)
+                {
+                    attributes.SetUINT32(MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING, 1);
+                }
+
+                int hrReader = MFCreateSourceReaderFromURL(filePath, attributes, out reader);
                 if (hrReader != 0 || reader == null)
                 {
                     AppLogger.Warn("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
                     return;
                 }
+
+                // Отключаем все потоки (аудио и т.д.) и включаем только первый видеопоток
+                reader.SetStreamSelection(MF_SOURCE_READER_ALL_STREAMS, false);
+                reader.SetStreamSelection(MF_SOURCE_READER_FIRST_VIDEO_STREAM, true);
 
                 // Создаем целевой медиатип: RGB32
                 int hrCreateType = MFCreateMediaType(out mediaType);
@@ -447,6 +501,7 @@ namespace TelegramWebDAV.Services
                 if (currentType != null && Marshal.IsComObject(currentType)) Marshal.ReleaseComObject(currentType);
                 if (mediaType != null && Marshal.IsComObject(mediaType)) Marshal.ReleaseComObject(mediaType);
                 if (reader != null && Marshal.IsComObject(reader)) Marshal.ReleaseComObject(reader);
+                if (attributes != null && Marshal.IsComObject(attributes)) Marshal.ReleaseComObject(attributes);
 
                 try { MFShutdown(); } catch { }
             }
