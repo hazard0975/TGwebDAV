@@ -425,55 +425,24 @@ namespace TelegramWebDAV.Services
                 }
 
                 // Пробуем целевые медиатипы:
-                // 1. RGB32 — гарантированный формат Windows Video Processor (MF_SOURCE_READER_ENABLE_VIDEO_PROCESSING)
-                // 2. NV12 — нативный аппаратный формат декодеров GPU
+                // 1. NV12 — нативный аппаратный формат декодеров GPU (DirectX Video Acceleration)
+                // 2. RGB32 — формат несжатого кадра
                 // 3. YUY2 — запасной формат
-                Guid chosenSubtype = MFVideoFormat_RGB32;
+                Guid chosenSubtype = MFVideoFormat_NV12;
                 bool isFormatSet = false;
 
                 int[] streamIndices = videoStreamIndex >= 0 
                     ? new[] { videoStreamIndex, MF_SOURCE_READER_FIRST_VIDEO_STREAM } 
                     : new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM };
 
-                Guid[] candidateSubtypes = new[] { MFVideoFormat_RGB32, MFVideoFormat_NV12, MFVideoFormat_YUY2 };
+                Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
                 int targetStreamIndex = videoStreamIndex >= 0 ? videoStreamIndex : MF_SOURCE_READER_FIRST_VIDEO_STREAM;
-
-                ulong packedResolution = 0;
-                if (result.Width > 0 && result.Height > 0)
-                {
-                    packedResolution = ((ulong)(uint)result.Width << 32) | (ulong)(uint)result.Height;
-                }
 
                 foreach (var sIdx in streamIndices)
                 {
                     foreach (var subtype in candidateSubtypes)
                     {
-                        // 1. Создаем чистый MediaType с указанием MajorType, Subtype и геометрией кадра
-                        int hrCreate = MFCreateMediaType(out mediaType);
-                        if (hrCreate == 0 && mediaType != null)
-                        {
-                            mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
-                            mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
-                            if (packedResolution != 0)
-                            {
-                                mediaType.SetUINT64(MF_MT_FRAME_SIZE, packedResolution);
-                            }
-
-                            int hrSetType = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, mediaType);
-                            if (hrSetType == 0)
-                            {
-                                chosenSubtype = subtype;
-                                targetStreamIndex = sIdx;
-                                isFormatSet = true;
-                                break;
-                            }
-                            else
-                            {
-                                AppLogger.Debug("VideoMetadataExtractor", $"SetCurrentMediaType(stream={sIdx}, subtype={subtype}) вернул hr = 0x{hrSetType:X8}");
-                            }
-                        }
-
-                        // 2. Пробуем получить нативный тип и применить подтип
+                        // 1. Пробуем получить нативный тип медиапотока и установить в него нужный Subtype
                         IMFMediaType? baseType = null;
                         int hrGetNative = reader.GetNativeMediaType(sIdx, 0, out baseType);
                         if (hrGetNative == 0 && baseType != null)
@@ -490,6 +459,27 @@ namespace TelegramWebDAV.Services
                             }
                             Marshal.ReleaseComObject(baseType);
                         }
+
+                        // 2. Создаем чистый MediaType с MajorType и Subtype (без лишних атрибутов, чтобы ридер сам вывел геометрию)
+                        int hrCreate = MFCreateMediaType(out mediaType);
+                        if (hrCreate == 0 && mediaType != null)
+                        {
+                            mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
+                            mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
+
+                            int hrSetType = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, mediaType);
+                            if (hrSetType == 0)
+                            {
+                                chosenSubtype = subtype;
+                                targetStreamIndex = sIdx;
+                                isFormatSet = true;
+                                break;
+                            }
+                            else
+                            {
+                                AppLogger.Debug("VideoMetadataExtractor", $"SetCurrentMediaType(stream={sIdx}, subtype={subtype}) вернул hr = 0x{hrSetType:X8}");
+                            }
+                        }
                     }
 
                     if (isFormatSet) break;
@@ -497,22 +487,26 @@ namespace TelegramWebDAV.Services
 
                 if (!isFormatSet)
                 {
-                    // Если явный тип не согласован, используем текущий нативный тип декодера
+                    // Если явный тип не согласован, пробуем использовать текущий тип декодера
                     int hrCurr = reader.GetCurrentMediaType(targetStreamIndex, out currentType);
                     if (hrCurr == 0 && currentType != null)
                     {
                         if (currentType.GetGUID(MF_MT_SUBTYPE, out Guid sub) == 0)
                         {
-                            chosenSubtype = sub;
-                            isFormatSet = true;
-                            AppLogger.Debug("VideoMetadataExtractor", $"Используется текущий медиатип ридера: {chosenSubtype}");
+                            // Если текущий подтип является несжатым видео
+                            if (sub == MFVideoFormat_NV12 || sub == MFVideoFormat_RGB32 || sub == MFVideoFormat_YUY2)
+                            {
+                                chosenSubtype = sub;
+                                isFormatSet = true;
+                                AppLogger.Debug("VideoMetadataExtractor", $"Используется текущий медиатип ридера: {chosenSubtype}");
+                            }
                         }
                     }
                 }
 
                 if (!isFormatSet)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"Не удалось согласовать видеоформат для '{Path.GetFileName(filePath)}'");
+                    AppLogger.Warn("VideoMetadataExtractor", $"Не удалось согласовать видеоформат (RGB32/NV12/YUY2) для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
@@ -537,22 +531,29 @@ namespace TelegramWebDAV.Services
                     frameHeight = result.Height > 0 ? result.Height : 360;
                 }
 
-                // Пытаемся перемотать на 2 секунды вперед (20 000 000 * 100ns), чтобы взять живой кадр клипа вместо черного экрана
+                // Перематываем на 15 секунд вперед (150 000 000 * 100ns), чтобы взять активный кадр ролика вместо заставки / черного экрана
                 try
                 {
-                    var varPos = new PropVariant { vt = 20 /* VT_I8 */, hVal = 20_000_000L };
+                    long targetSeekTime = 150_000_000L; // 15.0 сек
+                    if (result.DurationSeconds > 0 && result.DurationSeconds < 20)
+                    {
+                        // Если видео короче 20 сек, перематываем на середину видео
+                        targetSeekTime = (long)(result.DurationSeconds / 2.0 * 10_000_000L);
+                    }
+
+                    var varPos = new PropVariant { vt = 20 /* VT_I8 */, hVal = targetSeekTime };
                     int hrPos = reader.SetCurrentPosition(Guid.Empty, ref varPos);
                     if (hrPos != 0)
                     {
-                        // Если видео короче 2 секунд, пробуем перемотать на 0.5 секунды
-                        varPos.hVal = 5_000_000L;
+                        // Если видео короткое, пробуем перемотать на 1 секунду
+                        varPos.hVal = 10_000_000L;
                         reader.SetCurrentPosition(Guid.Empty, ref varPos);
                     }
                 }
                 catch { }
 
                 // Читаем видеокадр
-                for (int attempt = 0; attempt < 15; attempt++)
+                for (int attempt = 0; attempt < 25; attempt++)
                 {
                     int hrSample = reader.ReadSample(
                         targetStreamIndex,
@@ -623,7 +624,7 @@ namespace TelegramWebDAV.Services
                     {
                         try
                         {
-                            // Определяем точный шаг строки (Stride) видеокарты, чтобы не было диагональных искажений и зеленых полос
+                            // Определяем точный шаг строки (Stride) видеокарты напрямую из реального буфера
                             int stride = 0;
                             if (currentType != null)
                             {
@@ -632,11 +633,30 @@ namespace TelegramWebDAV.Services
                             }
                             if (stride <= 0)
                             {
+                                if (chosenSubtype == MFVideoFormat_NV12 && curLength > 0 && frameHeight > 0)
+                                {
+                                    // Для NV12: curLength = stride * height * 1.5
+                                    int derivedStride = (int)(curLength / (frameHeight * 1.5));
+                                    if (derivedStride >= frameWidth)
+                                    {
+                                        stride = derivedStride;
+                                    }
+                                }
+                                else if (chosenSubtype == MFVideoFormat_RGB32 && curLength > 0 && frameHeight > 0)
+                                {
+                                    int derivedStride = (int)(curLength / frameHeight);
+                                    if (derivedStride >= frameWidth * 4)
+                                    {
+                                        stride = derivedStride;
+                                    }
+                                }
+                            }
+                            if (stride <= 0)
+                            {
                                 uint fourCC = BitConverter.ToUInt32(chosenSubtype.ToByteArray(), 0);
                                 int hrStride = MFGetStrideForBitmapInfoHeader(fourCC, frameWidth, out stride);
                                 if (hrStride != 0 || stride <= 0)
                                 {
-                                    // Обычное выравнивание видеокарт DirectX: по границе 16 байт
                                     stride = (frameWidth + 15) & ~15;
                                 }
                             }
