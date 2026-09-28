@@ -1015,6 +1015,18 @@ namespace TelegramWebDAV.Services
         }
 
         [ComImport]
+        [Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IShellItem
+        {
+            [PreserveSig] int BindToHandler([In] IntPtr pbc, [In, MarshalAs(UnmanagedType.LPStruct)] Guid bhid, [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid, [Out] out IntPtr ppv);
+            [PreserveSig] int GetParent([Out] out IShellItem ppsi);
+            [PreserveSig] int GetDisplayName([In] uint sigdnName, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
+            [PreserveSig] int GetAttributes([In] uint sfgaoMask, [Out] out uint psfgaoAttribs);
+            [PreserveSig] int Compare([In] IShellItem psi, [In] uint hint, [Out] out int piOrder);
+        }
+
+        [ComImport]
         [Guid("bcc18b79-ba16-442f-80c4-8a59c07c425e")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         private interface IShellItemImageFactory
@@ -1024,6 +1036,15 @@ namespace TelegramWebDAV.Services
                 [In, MarshalAs(UnmanagedType.Struct)] SIZE size,
                 [In] SIIGBF flags,
                 [Out] out IntPtr phbm);
+        }
+
+        [ComImport]
+        [Guid("e357fccd-a995-4576-b01f-234630154e96")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IThumbnailProvider
+        {
+            [PreserveSig]
+            int GetThumbnail([In] uint cx, [Out] out IntPtr phbmp, [Out] out uint pdwAlpha);
         }
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
@@ -1037,82 +1058,119 @@ namespace TelegramWebDAV.Services
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteObject(IntPtr hObject);
 
-        private static readonly Guid IID_IShellItemImageFactory = new Guid("bcc18b79-ba16-442f-80c4-8a59c07c425e");
+        private static readonly Guid IID_IShellItem = new Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe");
+        private static readonly Guid BHID_ThumbnailHandler = new Guid("7b0e7d7a-156c-4000-95d9-47860433e508");
+        private static readonly Guid IID_IThumbnailProvider = new Guid("e357fccd-a995-4576-b01f-234630154e96");
 
         private static void ExtractThumbnailViaShellItem(string filePath, VideoMetadataResult result)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return;
 
-            IntPtr pFactory = IntPtr.Zero;
-            IntPtr hBitmap = IntPtr.Zero;
-            try
+            var thread = new Thread(() =>
             {
-                Guid iid = IID_IShellItemImageFactory;
-                int hr = SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iid, out pFactory);
-                if (hr != 0 || pFactory == IntPtr.Zero)
+                IntPtr pShellItem = IntPtr.Zero;
+                IntPtr hBitmap = IntPtr.Zero;
+                try
                 {
-                    AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
-                    return;
-                }
-
-                var factory = Marshal.GetObjectForIUnknown(pFactory) as IShellItemImageFactory;
-                if (factory == null)
-                    return;
-
-                // Запрашиваем превью 320x320 (K-Lite / Icaros / Windows Shell отдаст превью видео)
-                var size = new SIZE(320, 320);
-                int hrImg = factory.GetImage(size, SIIGBF.SIIGBF_THUMBNAILONLY | SIIGBF.SIIGBF_BIGGERSIZEOK, out hBitmap);
-                if (hrImg != 0 || hBitmap == IntPtr.Zero)
-                {
-                    hrImg = factory.GetImage(size, SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_SCALEUP, out hBitmap);
-                }
-
-                if (hrImg == 0 && hBitmap != IntPtr.Zero)
-                {
-                    using (var bmp = System.Drawing.Image.FromHbitmap(hBitmap))
+                    Guid iidItem = IID_IShellItem;
+                    int hr = SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iidItem, out pShellItem);
+                    if (hr != 0 || pShellItem == IntPtr.Zero)
                     {
-                        result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
-                        if (result.Thumbnail != null)
-                        {
-                            AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) ({result.Thumbnail.Length} байт, {bmp.Width}x{bmp.Height})");
+                        AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
+                        return;
+                    }
 
-                            try
-                            {
-                                string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
-                                File.WriteAllBytes(thumbPath, result.Thumbnail);
-                                AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
-                            }
-                            catch { }
-                        }
+                    var shellItem = Marshal.GetObjectForIUnknown(pShellItem) as IShellItem;
 
-                        if (result.Width <= 0 || result.Height <= 0)
+                    // Вариант 1: Запрос через IShellItemImageFactory
+                    if (shellItem is IShellItemImageFactory factory)
+                    {
+                        var size = new SIZE(320, 320);
+                        int hrImg = factory.GetImage(size, SIIGBF.SIIGBF_THUMBNAILONLY | SIIGBF.SIIGBF_BIGGERSIZEOK, out hBitmap);
+                        if (hrImg != 0 || hBitmap == IntPtr.Zero)
                         {
-                            result.Width = bmp.Width;
-                            result.Height = bmp.Height;
+                            hrImg = factory.GetImage(size, SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_SCALEUP, out hBitmap);
                         }
                     }
+
+                    // Вариант 2: Если IShellItemImageFactory не вернул дескриптор, запрашиваем IThumbnailProvider напрямую (Icaros / K-Lite / Shell handler)
+                    if (hBitmap == IntPtr.Zero && shellItem != null)
+                    {
+                        IntPtr pThumbProv = IntPtr.Zero;
+                        try
+                        {
+                            int hrBind = shellItem.BindToHandler(IntPtr.Zero, BHID_ThumbnailHandler, IID_IThumbnailProvider, out pThumbProv);
+                            if (hrBind == 0 && pThumbProv != IntPtr.Zero)
+                            {
+                                var thumbProv = Marshal.GetObjectForIUnknown(pThumbProv) as IThumbnailProvider;
+                                if (thumbProv != null)
+                                {
+                                    thumbProv.GetThumbnail(320, out hBitmap, out _);
+                                }
+                            }
+                        }
+                        catch { }
+                        finally
+                        {
+                            if (pThumbProv != IntPtr.Zero)
+                            {
+                                try { Marshal.Release(pThumbProv); } catch { }
+                            }
+                        }
+                    }
+
+                    if (hBitmap != IntPtr.Zero)
+                    {
+                        using (var bmp = System.Drawing.Image.FromHbitmap(hBitmap))
+                        {
+                            result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
+                            if (result.Thumbnail != null)
+                            {
+                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) ({result.Thumbnail.Length} байт, {bmp.Width}x{bmp.Height})");
+
+                                try
+                                {
+                                    string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
+                                    File.WriteAllBytes(thumbPath, result.Thumbnail);
+                                    AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
+                                }
+                                catch { }
+                            }
+
+                            if (result.Width <= 0 || result.Height <= 0)
+                            {
+                                result.Width = bmp.Width;
+                                result.Height = bmp.Height;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось получить hBitmap через Shell/K-Lite для '{Path.GetFileName(filePath)}'");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hrImg:X8} для '{Path.GetFileName(filePath)}'");
+                    AppLogger.Debug("VideoMetadataExtractor", $"Ошибка Shell Thumbnail: {ex.Message}");
                 }
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Debug("VideoMetadataExtractor", $"Ошибка Shell Thumbnail: {ex.Message}");
-            }
-            finally
-            {
-                if (hBitmap != IntPtr.Zero)
+                finally
                 {
-                    try { DeleteObject(hBitmap); } catch { }
+                    if (hBitmap != IntPtr.Zero)
+                    {
+                        try { DeleteObject(hBitmap); } catch { }
+                    }
+                    if (pShellItem != IntPtr.Zero)
+                    {
+                        try { Marshal.Release(pShellItem); } catch { }
+                    }
                 }
-                if (pFactory != IntPtr.Zero)
-                {
-                    try { Marshal.Release(pFactory); } catch { }
-                }
-            }
+            });
+
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.IsBackground = true;
+            thread.Start();
+            thread.Join(4000);
         }
 
         #endregion
