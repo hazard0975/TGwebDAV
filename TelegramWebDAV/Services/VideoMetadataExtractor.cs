@@ -1039,6 +1039,22 @@ namespace TelegramWebDAV.Services
         }
 
         [ComImport]
+        [Guid("b7d14566-0509-4cce-a714-da8a879bb607")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IInitializeWithFile
+        {
+            [PreserveSig] int Initialize([In, MarshalAs(UnmanagedType.LPWStr)] string pszFilePath, [In] uint grfMode);
+        }
+
+        [ComImport]
+        [Guid("7f738814-ad42-11d9-ba98-005056c00008")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IInitializeWithItem
+        {
+            [PreserveSig] int Initialize([In] IntPtr psi, [In] uint grfMode);
+        }
+
+        [ComImport]
         [Guid("e357fccd-a995-4576-b01f-234630154e96")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
         private interface IThumbnailProvider
@@ -1069,6 +1085,44 @@ namespace TelegramWebDAV.Services
         private static readonly Guid BHID_ThumbnailHandler = new Guid("7b0e7d7a-156c-4000-95d9-47860433e508");
         private static readonly Guid IID_IThumbnailProvider = new Guid("e357fccd-a995-4576-b01f-234630154e96");
 
+        private static string? GetThumbnailHandlerClsidForExtension(string ext)
+        {
+            if (string.IsNullOrEmpty(ext)) return null;
+            if (!ext.StartsWith(".")) ext = "." + ext;
+
+            try
+            {
+                // 1. HKCR\SystemFileAssociations\<ext>\ShellEx\{e357fccd-a995-4576-b01f-234630154e96}
+                using (var key = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey($@"SystemFileAssociations\{ext}\ShellEx\{{e357fccd-a995-4576-b01f-234630154e96}}"))
+                {
+                    var val = key?.GetValue(null) as string;
+                    if (!string.IsNullOrEmpty(val)) return val;
+                }
+
+                // 2. HKCR\<ext>\ShellEx\{e357fccd-a995-4576-b01f-234630154e96}
+                using (var key = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey($@"{ext}\ShellEx\{{e357fccd-a995-4576-b01f-234630154e96}}"))
+                {
+                    var val = key?.GetValue(null) as string;
+                    if (!string.IsNullOrEmpty(val)) return val;
+                }
+
+                // 3. HKCR\<ProgID>\ShellEx\{e357fccd-a995-4576-b01f-234630154e96}
+                using (var extKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey(ext))
+                {
+                    var progId = extKey?.GetValue(null) as string;
+                    if (!string.IsNullOrEmpty(progId))
+                    {
+                        using var progKey = Microsoft.Win32.Registry.ClassesRoot.OpenSubKey($@"{progId}\ShellEx\{{e357fccd-a995-4576-b01f-234630154e96}}");
+                        var val = progKey?.GetValue(null) as string;
+                        if (!string.IsNullOrEmpty(val)) return val;
+                    }
+                }
+            }
+            catch { }
+
+            return null;
+        }
+
         private static void ExtractThumbnailViaShellItem(string filePath, VideoMetadataResult result)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -1077,82 +1131,107 @@ namespace TelegramWebDAV.Services
             var thread = new Thread(() =>
             {
                 int hrOle = OleInitialize(IntPtr.Zero);
-                IntPtr pShellItem = IntPtr.Zero;
-                IntPtr pFactory = IntPtr.Zero;
                 IntPtr hBitmap = IntPtr.Zero;
                 try
                 {
-                    Guid iidItem = IID_IShellItem;
-                    int hr = SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iidItem, out pShellItem);
-                    if (hr != 0 || pShellItem == IntPtr.Zero)
+                    string ext = Path.GetExtension(filePath).ToLowerInvariant();
+                    string? clsidStr = GetThumbnailHandlerClsidForExtension(ext);
+                    if (string.IsNullOrEmpty(clsidStr))
                     {
-                        AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
-                        return;
+                        // Стандартный CLSID Icaros Thumbnail Provider (K-Lite Codec Pack)
+                        clsidStr = "{49E17978-2C26-4444-9FA8-1F19F2BE1D52}";
                     }
 
-                    // Вариант 1: Прямой COM QueryInterface для IShellItemImageFactory
-                    Guid iidFactory = IID_IShellItemImageFactory;
-                    int hrQi = Marshal.QueryInterface(pShellItem, ref iidFactory, out pFactory);
-                    if (hrQi == 0 && pFactory != IntPtr.Zero)
+                    // Вариант 1 (Приоритетный): Прямое создание зарегистрированного IThumbnailProvider из реестра (K-Lite / Icaros)
+                    if (!string.IsNullOrEmpty(clsidStr) && Guid.TryParse(clsidStr, out Guid handlerClsid))
                     {
-                        var factory = Marshal.GetObjectForIUnknown(pFactory) as IShellItemImageFactory;
-                        if (factory != null)
+                        try
                         {
-                            var size = new SIZE(320, 320);
-                            int hrImg = factory.GetImage(size, SIIGBF.SIIGBF_THUMBNAILONLY | SIIGBF.SIIGBF_BIGGERSIZEOK, out hBitmap);
-                            if (hrImg != 0 || hBitmap == IntPtr.Zero)
+                            var comType = Type.GetTypeFromCLSID(handlerClsid);
+                            if (comType != null)
                             {
-                                int hrImg2 = factory.GetImage(size, SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_SCALEUP, out hBitmap);
-                                if (hrImg2 != 0 && hBitmap == IntPtr.Zero)
+                                object? instance = Activator.CreateInstance(comType);
+                                if (instance != null)
                                 {
-                                    AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hrImg:X8} / 0x{hrImg2:X8} для '{Path.GetFileName(filePath)}'");
+                                    try
+                                    {
+                                        int hrInit = -1;
+                                        if (instance is IInitializeWithFile initFile)
+                                        {
+                                            hrInit = initFile.Initialize(filePath, 0); // STGM_READ
+                                        }
+                                        else if (instance is IInitializeWithItem initItem)
+                                        {
+                                            Guid iidItem = IID_IShellItem;
+                                            if (SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iidItem, out IntPtr pItem) == 0 && pItem != IntPtr.Zero)
+                                            {
+                                                try { hrInit = initItem.Initialize(pItem, 0); }
+                                                finally { Marshal.Release(pItem); }
+                                            }
+                                        }
+
+                                        if (hrInit == 0 && instance is IThumbnailProvider thumbProv)
+                                        {
+                                            int hrThumb = thumbProv.GetThumbnail(320, out hBitmap, out _);
+                                            if (hrThumb == 0 && hBitmap != IntPtr.Zero)
+                                            {
+                                                AppLogger.Info("VideoMetadataExtractor", $"Успешно получен стоп-кадр через IThumbnailProvider (K-Lite {clsidStr})");
+                                            }
+                                            else
+                                            {
+                                                AppLogger.Debug("VideoMetadataExtractor", $"IThumbnailProvider.GetThumbnail вернул hr = 0x{hrThumb:X8} ({clsidStr})");
+                                            }
+                                        }
+                                        else
+                                        {
+                                            AppLogger.Debug("VideoMetadataExtractor", $"IInitializeWithFile.Initialize вернул hr = 0x{hrInit:X8} ({clsidStr})");
+                                        }
+                                    }
+                                    finally
+                                    {
+                                        try { Marshal.ReleaseComObject(instance); } catch { }
+                                    }
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        AppLogger.Debug("VideoMetadataExtractor", $"QueryInterface(IShellItemImageFactory) вернул hr = 0x{hrQi:X8} для '{Path.GetFileName(filePath)}'");
+                        catch (Exception exDirect)
+                        {
+                            AppLogger.Debug("VideoMetadataExtractor", $"Ошибка прямого вызова IThumbnailProvider ({clsidStr}): {exDirect.Message}");
+                        }
                     }
 
-                    // Вариант 2: Если фабрика не вернула картинку, запрашиваем IThumbnailProvider напрямую (Icaros / K-Lite / Shell handler)
+                    // Вариант 2: Если прямой вызов не вернул hBitmap, запрашиваем через SHCreateItemFromParsingName
                     if (hBitmap == IntPtr.Zero)
                     {
-                        var shellItem = Marshal.GetObjectForIUnknown(pShellItem) as IShellItem;
-                        if (shellItem != null)
+                        IntPtr pShellItem = IntPtr.Zero;
+                        IntPtr pFactory = IntPtr.Zero;
+                        try
                         {
-                            IntPtr pThumbProv = IntPtr.Zero;
-                            try
+                            Guid iidItem = IID_IShellItem;
+                            int hr = SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iidItem, out pShellItem);
+                            if (hr == 0 && pShellItem != IntPtr.Zero)
                             {
-                                int hrBind = shellItem.BindToHandler(IntPtr.Zero, BHID_ThumbnailHandler, IID_IThumbnailProvider, out pThumbProv);
-                                if (hrBind == 0 && pThumbProv != IntPtr.Zero)
+                                Guid iidFactory = IID_IShellItemImageFactory;
+                                int hrQi = Marshal.QueryInterface(pShellItem, ref iidFactory, out pFactory);
+                                if (hrQi == 0 && pFactory != IntPtr.Zero)
                                 {
-                                    var thumbProv = Marshal.GetObjectForIUnknown(pThumbProv) as IThumbnailProvider;
-                                    if (thumbProv != null)
+                                    var factory = Marshal.GetObjectForIUnknown(pFactory) as IShellItemImageFactory;
+                                    if (factory != null)
                                     {
-                                        int hrThumb = thumbProv.GetThumbnail(320, out hBitmap, out _);
-                                        if (hrThumb != 0)
+                                        var size = new SIZE(320, 320);
+                                        int hrImg = factory.GetImage(size, SIIGBF.SIIGBF_THUMBNAILONLY | SIIGBF.SIIGBF_BIGGERSIZEOK, out hBitmap);
+                                        if (hrImg != 0 || hBitmap == IntPtr.Zero)
                                         {
-                                            AppLogger.Debug("VideoMetadataExtractor", $"IThumbnailProvider.GetThumbnail вернул hr = 0x{hrThumb:X8} для '{Path.GetFileName(filePath)}'");
+                                            factory.GetImage(size, SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_SCALEUP, out hBitmap);
                                         }
                                     }
                                 }
-                                else
-                                {
-                                    AppLogger.Debug("VideoMetadataExtractor", $"BindToHandler(ThumbnailHandler) вернул hr = 0x{hrBind:X8} для '{Path.GetFileName(filePath)}'");
-                                }
                             }
-                            catch (Exception exBind)
-                            {
-                                AppLogger.Debug("VideoMetadataExtractor", $"Ошибка BindToHandler: {exBind.Message}");
-                            }
-                            finally
-                            {
-                                if (pThumbProv != IntPtr.Zero)
-                                {
-                                    try { Marshal.Release(pThumbProv); } catch { }
-                                }
-                            }
+                        }
+                        finally
+                        {
+                            if (pFactory != IntPtr.Zero) { try { Marshal.Release(pFactory); } catch { } }
+                            if (pShellItem != IntPtr.Zero) { try { Marshal.Release(pShellItem); } catch { } }
                         }
                     }
 
@@ -1195,14 +1274,6 @@ namespace TelegramWebDAV.Services
                     if (hBitmap != IntPtr.Zero)
                     {
                         try { DeleteObject(hBitmap); } catch { }
-                    }
-                    if (pFactory != IntPtr.Zero)
-                    {
-                        try { Marshal.Release(pFactory); } catch { }
-                    }
-                    if (pShellItem != IntPtr.Zero)
-                    {
-                        try { Marshal.Release(pShellItem); } catch { }
                     }
                     if (hrOle == 0 || hrOle == 1) // S_OK or S_FALSE
                     {
