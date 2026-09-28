@@ -619,7 +619,8 @@ namespace TelegramWebDAV.Services
                             }
                             if (stride <= 0)
                             {
-                                int hrStride = MFGetStrideForBitmapInfoHeader((uint)chosenSubtype.Data1, frameWidth, out stride);
+                                uint fourCC = BitConverter.ToUInt32(chosenSubtype.ToByteArray(), 0);
+                                int hrStride = MFGetStrideForBitmapInfoHeader(fourCC, frameWidth, out stride);
                                 if (hrStride != 0 || stride <= 0)
                                 {
                                     // Обычное выравнивание видеокарт DirectX: по границе 16 байт
