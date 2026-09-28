@@ -180,5 +180,6 @@
 * [`README.md`](./README.md) — Общее описание универсальной архитектуры сервиса.
 * [`MAP.md`](./MAP.md) — Карта файлов, компонентов и потоков данных C# решения.
 * [`ROADMAP.md`](./ROADMAP.md) — Актуальная дорожная карта и текущий статус разработки.
+* [`DECISIONS_LOG.md`](./DECISIONS_LOG.md) — Реестр принятых технических решений, исследованных гипотез и первопричин (Root Causes).
 * [`README_V1_AIMP_PLUGIN.md`](./README_V1_AIMP_PLUGIN.md) — Архивы предыдущей концепции (плагин-обертка AIMP).
 * [`ROADMAP_V1_AIMP_PLUGIN.md`](./ROADMAP_V1_AIMP_PLUGIN.md) — Архив дорожной карты версии V1.

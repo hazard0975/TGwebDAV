@@ -133,8 +133,8 @@ namespace TelegramWebDAV.Services
 
         private const uint MF_VERSION = 0x00020070;
         private const uint MFSTARTUP_NOSOCKET = 0x1;
-        private const int MF_SOURCE_READER_FIRST_VIDEO_STREAM = -2; // 0xFFFFFFFE
-        private const int MF_SOURCE_READER_ALL_STREAMS = -3; // 0xFFFFFFFD
+        private const int MF_SOURCE_READER_ALL_STREAMS = unchecked((int)0xFFFFFFFE); // -2
+        private const int MF_SOURCE_READER_FIRST_VIDEO_STREAM = unchecked((int)0xFFFFFFFC); // -4
         private const int MF_SOURCE_READER_FLAG_ENDOFSTREAM = 0x00000001;
 
         private static readonly Guid MF_MT_MAJOR_TYPE = new Guid("48eba18e-f827-4970-b477-5da46946468f");
@@ -396,27 +396,53 @@ namespace TelegramWebDAV.Services
                 Guid chosenSubtype = MFVideoFormat_RGB32;
                 bool isFormatSet = false;
 
+                // Для надежности пробуем как символический индекс MF_SOURCE_READER_FIRST_VIDEO_STREAM, так и явный индекс 0
+                int[] streamIndices = new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0 };
                 Guid[] candidateSubtypes = new[] { MFVideoFormat_RGB32, MFVideoFormat_NV12, MFVideoFormat_YUY2 };
-                foreach (var subtype in candidateSubtypes)
-                {
-                    int hrCreateType = MFCreateMediaType(out mediaType);
-                    if (hrCreateType == 0 && mediaType != null)
-                    {
-                        mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
-                        mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
 
-                        int hrSetType = reader.SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, IntPtr.Zero, mediaType);
-                        if (hrSetType == 0)
+                int targetStreamIndex = MF_SOURCE_READER_FIRST_VIDEO_STREAM;
+
+                foreach (var sIdx in streamIndices)
+                {
+                    // Пробуем взять нативный медиатип от декодера, чтобы сохранить все атрибуты видео
+                    IMFMediaType? baseType = null;
+                    int hrGetNative = reader.GetNativeMediaType(sIdx, 0, out baseType);
+
+                    foreach (var subtype in candidateSubtypes)
+                    {
+                        if (hrGetNative == 0 && baseType != null)
                         {
-                            chosenSubtype = subtype;
-                            isFormatSet = true;
-                            break;
+                            mediaType = baseType;
+                            mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
                         }
                         else
                         {
-                            AppLogger.Debug("VideoMetadataExtractor", $"SetCurrentMediaType({subtype}) вернул hr = 0x{hrSetType:X8}");
+                            int hrCreateType = MFCreateMediaType(out mediaType);
+                            if (hrCreateType == 0 && mediaType != null)
+                            {
+                                mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
+                                mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
+                            }
+                        }
+
+                        if (mediaType != null)
+                        {
+                            int hrSetType = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, mediaType);
+                            if (hrSetType == 0)
+                            {
+                                chosenSubtype = subtype;
+                                targetStreamIndex = sIdx;
+                                isFormatSet = true;
+                                break;
+                            }
+                            else
+                            {
+                                AppLogger.Debug("VideoMetadataExtractor", $"SetCurrentMediaType(stream={sIdx}, subtype={subtype}) вернул hr = 0x{hrSetType:X8}");
+                            }
                         }
                     }
+
+                    if (isFormatSet) break;
                 }
 
                 if (!isFormatSet)
@@ -426,7 +452,7 @@ namespace TelegramWebDAV.Services
                 }
 
                 // Читаем фактический медиатип, чтобы узнать разрешение кадра
-                int hrGetType = reader.GetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, out currentType);
+                int hrGetType = reader.GetCurrentMediaType(targetStreamIndex, out currentType);
                 if (hrGetType != 0 || currentType == null)
                 {
                     AppLogger.Warn("VideoMetadataExtractor", $"GetCurrentMediaType вернул hr = 0x{hrGetType:X8}");
@@ -447,7 +473,7 @@ namespace TelegramWebDAV.Services
                 for (int attempt = 0; attempt < 10; attempt++)
                 {
                     int hrSample = reader.ReadSample(
-                        MF_SOURCE_READER_FIRST_VIDEO_STREAM,
+                        targetStreamIndex,
                         0,
                         out int streamIndex,
                         out int streamFlags,

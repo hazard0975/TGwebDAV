@@ -2,7 +2,8 @@
 
 Документ отслеживания этапов разработки универсального C# WebDAV-сервиса и сетевого диска Telegram.
 
-Архивная дорожная карта версии V1 (AIMP Plugin) сохранена в файле: [`ROADMAP_V1_AIMP_PLUGIN.md`](./ROADMAP_V1_AIMP_PLUGIN.md).
+* Реестр принятых технических решений, исследованных гипотез и первопричин (Root Causes): [`DECISIONS_LOG.md`](./DECISIONS_LOG.md).
+* Архивная дорожная карта версии V1 (AIMP Plugin) сохранена в файле: [`ROADMAP_V1_AIMP_PLUGIN.md`](./ROADMAP_V1_AIMP_PLUGIN.md).
 
 ---
 
