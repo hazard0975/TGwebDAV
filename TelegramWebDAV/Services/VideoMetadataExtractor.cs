@@ -432,38 +432,27 @@ namespace TelegramWebDAV.Services
                 Guid chosenSubtype = MFVideoFormat_NV12;
                 bool isFormatSet = false;
 
-                int[] streamIndices = videoStreamIndex == MF_SOURCE_READER_FIRST_VIDEO_STREAM
-                    ? new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM }
-                    : new[] { videoStreamIndex, MF_SOURCE_READER_FIRST_VIDEO_STREAM };
+                // Важно: в SetCurrentMediaType передаем СТРОГО реальный индекс видеопотока,
+                // чтобы исключить ошибку топологии MF_E_TOPO_CODEC_NOT_FOUND (0xC00D5212)
+                int[] streamIndices = videoStreamIndex >= 0 
+                    ? new[] { videoStreamIndex, MF_SOURCE_READER_FIRST_VIDEO_STREAM } 
+                    : new[] { MF_SOURCE_READER_FIRST_VIDEO_STREAM };
 
                 Guid[] candidateSubtypes = new[] { MFVideoFormat_NV12, MFVideoFormat_RGB32, MFVideoFormat_YUY2 };
-                int targetStreamIndex = videoStreamIndex;
+                int targetStreamIndex = videoStreamIndex >= 0 ? videoStreamIndex : MF_SOURCE_READER_FIRST_VIDEO_STREAM;
 
                 foreach (var sIdx in streamIndices)
                 {
-                    // Пробуем взять нативный медиатип от декодера, чтобы сохранить все атрибуты видео
-                    IMFMediaType? baseType = null;
-                    int hrGetNative = reader.GetNativeMediaType(sIdx, 0, out baseType);
-
                     foreach (var subtype in candidateSubtypes)
                     {
-                        if (hrGetNative == 0 && baseType != null)
+                        // 1. Сначала пробуем установить чистый MediaType (MajorType=Video, Subtype=Subtype)
+                        // Windows Video Processor автоматически подберет геометрию и частоту кадров из исходного потока
+                        int hrCreate = MFCreateMediaType(out mediaType);
+                        if (hrCreate == 0 && mediaType != null)
                         {
-                            mediaType = baseType;
+                            mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
                             mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
-                        }
-                        else
-                        {
-                            int hrCreateType = MFCreateMediaType(out mediaType);
-                            if (hrCreateType == 0 && mediaType != null)
-                            {
-                                mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
-                                mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
-                            }
-                        }
 
-                        if (mediaType != null)
-                        {
                             int hrSetType = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, mediaType);
                             if (hrSetType == 0)
                             {
@@ -476,6 +465,24 @@ namespace TelegramWebDAV.Services
                             {
                                 AppLogger.Debug("VideoMetadataExtractor", $"SetCurrentMediaType(stream={sIdx}, subtype={subtype}) вернул hr = 0x{hrSetType:X8}");
                             }
+                        }
+
+                        // 2. Если не получилось, пробуем клонировать нативный медиатип и подменить ему Subtype
+                        IMFMediaType? baseType = null;
+                        int hrGetNative = reader.GetNativeMediaType(sIdx, 0, out baseType);
+                        if (hrGetNative == 0 && baseType != null)
+                        {
+                            baseType.SetGUID(MF_MT_SUBTYPE, subtype);
+                            int hrSetNative = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, baseType);
+                            if (hrSetNative == 0)
+                            {
+                                chosenSubtype = subtype;
+                                targetStreamIndex = sIdx;
+                                isFormatSet = true;
+                                Marshal.ReleaseComObject(baseType);
+                                break;
+                            }
+                            Marshal.ReleaseComObject(baseType);
                         }
                     }
 
