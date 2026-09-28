@@ -437,17 +437,12 @@ namespace TelegramWebDAV.Services
 
                     foreach (var subtype in candidateSubtypes)
                     {
-                        // Вариант А: Создаем чистый MediaType с MajorType и Subtype (и размером кадра если известен)
+                        // Вариант А: Создаем чистый MediaType с MajorType и Subtype (без принудительной геометрии кадра, чтобы Source Reader сам вывел нативное разрешение)
                         int hrCreate = MFCreateMediaType(out mediaType);
                         if (hrCreate == 0 && mediaType != null)
                         {
                             mediaType.SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
                             mediaType.SetGUID(MF_MT_SUBTYPE, subtype);
-                            if (result.Width > 0 && result.Height > 0)
-                            {
-                                ulong packed = ((ulong)result.Width << 32) | (uint)result.Height;
-                                mediaType.SetUINT64(MF_MT_FRAME_SIZE, packed);
-                            }
 
                             int hrSetType = reader.SetCurrentMediaType(sIdx, IntPtr.Zero, mediaType);
                             if (hrSetType == 0)
@@ -631,23 +626,30 @@ namespace TelegramWebDAV.Services
                     {
                         try
                         {
-                            // Определяем точный шаг строки (Stride) видеокарты напрямую
+                            // Определяем точный шаг строки (Stride) видеокарты
                             int stride = 0;
                             if (currentType != null)
                             {
                                 currentType.GetUINT32(MF_MT_DEFAULT_STRIDE, out uint uStride);
                                 stride = (int)uStride;
                             }
-                            if (stride <= 0)
+
+                            if (chosenSubtype == MFVideoFormat_NV12)
                             {
-                                uint fourCC = BitConverter.ToUInt32(chosenSubtype.ToByteArray(), 0);
-                                int hrStride = MFGetStrideForBitmapInfoHeader(fourCC, frameWidth, out stride);
-                                if (hrStride != 0 || stride <= 0)
+                                // Аппаратный декодер NV12 всегда выравнивает ширину строки минимум по 16 байтам (854 -> 864, 640 -> 640)
+                                int aligned16 = (frameWidth + 15) & ~15;
+                                if (stride <= 0 || stride < frameWidth || (stride == frameWidth && (frameWidth & 15) != 0))
                                 {
-                                    stride = chosenSubtype == MFVideoFormat_RGB32 
-                                        ? frameWidth * 4 
-                                        : (chosenSubtype == MFVideoFormat_YUY2 ? ((frameWidth * 2 + 3) & ~3) : ((frameWidth + 15) & ~15));
+                                    stride = aligned16;
                                 }
+                            }
+                            else if (chosenSubtype == MFVideoFormat_RGB32)
+                            {
+                                if (stride == 0) stride = frameWidth * 4;
+                            }
+                            else // YUY2
+                            {
+                                if (stride <= 0) stride = (frameWidth * 2 + 3) & ~3;
                             }
 
                             using System.Drawing.Bitmap? bmp = CreateBitmapFromBuffer(pBuffer, (int)curLength, frameWidth, frameHeight, stride, chosenSubtype);
