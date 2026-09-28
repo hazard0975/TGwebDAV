@@ -8,7 +8,7 @@ namespace TelegramWebDAV.Services
 {
     /// <summary>
     /// Парсер метаданных видео (длительность, ширина, высота) и генератор превью-кадров (thumbnails)
-    /// с использованием ATL.NET, Windows Shell API (IShellItem -> IShellItemImageFactory / IShellItem2) и fallback парсеров.
+    /// с использованием системного Windows Shell Property Store, IShellItemImageFactory, ATL.NET и fallback парсеров.
     /// </summary>
     public static class VideoMetadataExtractor
     {
@@ -90,7 +90,7 @@ namespace TelegramWebDAV.Services
                 AppLogger.Debug("VideoMetadataExtractor", $"ATL чтение '{filePath}': {ex.Message}");
             }
 
-            // Шаг 2: Windows Shell API (IShellItem -> IShellItemImageFactory для превью и IShellItem2 для разрешения)
+            // Шаг 2: Windows Shell Property Store и IShellItemImageFactory (как в проводнике Windows)
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 try
@@ -133,7 +133,7 @@ namespace TelegramWebDAV.Services
             return result;
         }
 
-        #region Windows Shell Interop
+        #region Windows Shell Property Store & Thumbnail Interop
 
         [DllImport("ole32.dll")]
         private static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
@@ -141,30 +141,59 @@ namespace TelegramWebDAV.Services
         [DllImport("ole32.dll")]
         private static extern void CoUninitialize();
 
+        [DllImport("ole32.dll")]
+        private static extern int PropVariantClear(ref PROPVARIANT pvar);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
+        private static extern int SHGetPropertyStoreFromParsingName(
+            [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
+            [In] IntPtr pbc,
+            [In] GETPROPERTYSTOREFLAGS flags,
+            [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+            [Out] out IntPtr ppv);
+
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
         private static extern int SHCreateItemFromParsingName(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
             [In] IntPtr pbc,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [Out, MarshalAs(UnmanagedType.Interface)] out object ppv);
+            [Out] out IntPtr ppv);
 
         [DllImport("gdi32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteObject(IntPtr hObject);
 
-        // IShellItem IID: {43826d1e-e718-42ee-bc55-a1e261c37bfe}
-        private static readonly Guid IID_IShellItem = new Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe");
+        private static readonly Guid IID_IUnknown = new Guid("00000000-0000-0000-C000-000000000046");
+        private static readonly Guid IID_IPropertyStore = new Guid("886d8eeb-8cf2-4446-8d02-cdba1dbdcf99");
+        private static readonly Guid IID_IShellItemImageFactory = new Guid("bcc18b79-ba16-442f-80c4-8a59c07c4ffc");
+
+        [Flags]
+        private enum GETPROPERTYSTOREFLAGS : uint
+        {
+            GPS_DEFAULT = 0,
+            GPS_HANDLERPROPERTIESONLY = 0x1,
+            GPS_READWRITE = 0x2,
+            GPS_TEMPORARY = 0x4,
+            GPS_FASTPROPERTIESONLY = 0x8,
+            GPS_OPENSLOWITEM = 0x10,
+            GPS_DELAYCREATION = 0x20,
+            GPS_BESTEFFORT = 0x40,
+            GPS_NO_OPLOCK = 0x80,
+            GPS_PREFERQUERYPROPERTIES = 0x100,
+            GPS_EXTRINSICPROPERTIES = 0x200,
+            GPS_EXTRINSICPROPERTIESONLY = 0x400
+        }
 
         [ComImport]
-        [Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe")]
+        [Guid("886d8eeb-8cf2-4446-8d02-cdba1dbdcf99")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IShellItem
+        private interface IPropertyStore
         {
-            [PreserveSig] int BindToHandler(IntPtr pbc, ref Guid bhid, ref Guid riid, out IntPtr ppv);
-            [PreserveSig] int GetParent(out IntPtr ppsi);
-            [PreserveSig] int GetDisplayName(uint sigdnName, out IntPtr ppszName);
-            [PreserveSig] int GetAttributes(uint sfgaoMask, out uint psfgaoAttribs);
-            [PreserveSig] int Compare(IntPtr psi, uint hint, out int piOrder);
+            [PreserveSig] int GetCount(out uint cProps);
+            [PreserveSig] int GetAt(uint iProp, out PROPERTYKEY pkey);
+            [PreserveSig] int GetValue(ref PROPERTYKEY key, [Out] out PROPVARIANT pv);
+            [PreserveSig] int SetValue(ref PROPERTYKEY key, ref PROPVARIANT pv);
+            [PreserveSig] int Commit();
         }
 
         [ComImport]
@@ -177,28 +206,6 @@ namespace TelegramWebDAV.Services
                 [In, MarshalAs(UnmanagedType.Struct)] SIZE size,
                 [In] SIIGBF flags,
                 [Out] out IntPtr phbm);
-        }
-
-        [ComImport]
-        [Guid("7e9fb0d3-919f-4307-ab2e-9b1860310c93")]
-        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IShellItem2 : IShellItem
-        {
-            [PreserveSig] new int BindToHandler(IntPtr pbc, ref Guid bhid, ref Guid riid, out IntPtr ppv);
-            [PreserveSig] new int GetParent(out IntPtr ppsi);
-            [PreserveSig] new int GetDisplayName(uint sigdnName, out IntPtr ppszName);
-            [PreserveSig] new int GetAttributes(uint sfgaoMask, out uint psfgaoAttribs);
-            [PreserveSig] new int Compare(IntPtr psi, uint hint, out int piOrder);
-            [PreserveSig] int GetPropertyStore(int flags, ref Guid riid, out IntPtr ppv);
-            [PreserveSig] int GetPropertyStoreWithCredentials(int flags, IntPtr pbc, ref Guid riid, out IntPtr ppv);
-            [PreserveSig] int GetProperty(ref PROPERTYKEY key, out IntPtr pv);
-            [PreserveSig] int GetCLSID(ref PROPERTYKEY key, out Guid pclsid);
-            [PreserveSig] int GetFileTime(ref PROPERTYKEY key, out System.Runtime.InteropServices.ComTypes.FILETIME pft);
-            [PreserveSig] int GetInt32(ref PROPERTYKEY key, out int pi);
-            [PreserveSig] int GetString(ref PROPERTYKEY key, out IntPtr ppsz);
-            [PreserveSig] int GetUInt32(ref PROPERTYKEY key, out uint pui);
-            [PreserveSig] int GetUInt64(ref PROPERTYKEY key, out ulong pull);
-            [PreserveSig] int GetBool(ref PROPERTYKEY key, out bool pf);
         }
 
         [StructLayout(LayoutKind.Sequential)]
@@ -216,6 +223,30 @@ namespace TelegramWebDAV.Services
             public uint pid;
             public PROPERTYKEY(Guid guid, uint id) { fmtid = guid; pid = id; }
         }
+
+        [StructLayout(LayoutKind.Explicit)]
+        private struct PROPVARIANT
+        {
+            [FieldOffset(0)] public ushort vt;
+            [FieldOffset(2)] public ushort wReserved1;
+            [FieldOffset(4)] public ushort wReserved2;
+            [FieldOffset(6)] public ushort wReserved3;
+            [FieldOffset(8)] public byte bVal;
+            [FieldOffset(8)] public sbyte cVal;
+            [FieldOffset(8)] public ushort uiVal;
+            [FieldOffset(8)] public short iVal;
+            [FieldOffset(8)] public uint uintVal;
+            [FieldOffset(8)] public int intVal;
+            [FieldOffset(8)] public ulong ulVal;
+            [FieldOffset(8)] public long lVal;
+            [FieldOffset(8)] public float fltVal;
+            [FieldOffset(8)] public double dblVal;
+            [FieldOffset(8)] public IntPtr ptrVal;
+        }
+
+        private const ushort VT_UI4 = 19;
+        private const ushort VT_UI8 = 21;
+        private const ushort VT_I4 = 3;
 
         [Flags]
         private enum SIIGBF
@@ -239,7 +270,6 @@ namespace TelegramWebDAV.Services
         /// </summary>
         private static void ExtractWindowsShellMetadataWithApartment(string filePath, VideoMetadataResult result)
         {
-            // IShellItemImageFactory наиболее надежно работает в STA-потоках
             var thread = new Thread(() =>
             {
                 int coInitHr = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
@@ -269,107 +299,150 @@ namespace TelegramWebDAV.Services
 
         private static void ExtractWindowsShellMetadataCore(string filePath, VideoMetadataResult result)
         {
-            // В Windows Shell SHCreateItemFromParsingName ВСЕГДА вызывается с IID_IShellItem,
-            // а уже затем полученный объект опрашивается на IShellItemImageFactory и IShellItem2!
-            int hr = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem, out object rawShellItem);
-            if (hr != 0 || rawShellItem == null)
-            {
-                AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItem) вернул hr = 0x{hr:X8} для '{Path.GetFileName(filePath)}'");
-                return;
-            }
-
-            // 1. Чтение свойств видео через IShellItem2
+            // 1. Точное чтение свойств через системный Windows Shell Property Store
             try
             {
-                if (rawShellItem is IShellItem2 shellItem2)
+                int hrStore = SHGetPropertyStoreFromParsingName(
+                    filePath, 
+                    IntPtr.Zero, 
+                    GETPROPERTYSTOREFLAGS.GPS_OPENSLOWITEM | GETPROPERTYSTOREFLAGS.GPS_BESTEFFORT, 
+                    IID_IPropertyStore, 
+                    out IntPtr storePtr
+                );
+
+                if (hrStore == 0 && storePtr != IntPtr.Zero)
                 {
-                    // PKEY_Video_FrameWidth: {64440490-4C87-11D1-A264-00A0C91FED73}, 3
-                    var keyWidth = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
-                    if (shellItem2.GetUInt32(ref keyWidth, out uint w) == 0 && w > 0)
+                    try
                     {
-                        result.Width = (int)w;
-                    }
+                        var propStore = (IPropertyStore)Marshal.GetObjectForIUnknown(storePtr);
 
-                    // PKEY_Video_FrameHeight: {64440490-4C87-11D1-A264-00A0C91FED73}, 4
-                    var keyHeight = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 4);
-                    if (shellItem2.GetUInt32(ref keyHeight, out uint h) == 0 && h > 0)
-                    {
-                        result.Height = (int)h;
-                    }
-
-                    // PKEY_Media_Duration: {64440490-4C87-11D1-A264-00A0C91FED73}, 3 (100-нс единицы)
-                    if (result.DurationSeconds <= 0)
-                    {
-                        var keyDuration = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
-                        if (shellItem2.GetUInt64(ref keyDuration, out ulong dur100ns) == 0 && dur100ns > 0)
+                        // PKEY_Video_FrameWidth: {64440490-4C87-11D1-A264-00A0C91FED73}, 3
+                        var keyWidth = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
+                        var varWidth = new PROPVARIANT();
+                        if (propStore.GetValue(ref keyWidth, out varWidth) == 0)
                         {
-                            result.DurationSeconds = (int)(dur100ns / 10000000UL);
+                            uint w = (varWidth.vt == VT_UI4) ? varWidth.uintVal : (varWidth.vt == VT_I4 ? (uint)varWidth.intVal : 0);
+                            if (w > 0) result.Width = (int)w;
+                            PropVariantClear(ref varWidth);
+                        }
+
+                        // PKEY_Video_FrameHeight: {64440490-4C87-11D1-A264-00A0C91FED73}, 4
+                        var keyHeight = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 4);
+                        var varHeight = new PROPVARIANT();
+                        if (propStore.GetValue(ref keyHeight, out varHeight) == 0)
+                        {
+                            uint h = (varHeight.vt == VT_UI4) ? varHeight.uintVal : (varHeight.vt == VT_I4 ? (uint)varHeight.intVal : 0);
+                            if (h > 0) result.Height = (int)h;
+                            PropVariantClear(ref varHeight);
+                        }
+
+                        // PKEY_Media_Duration: {64440490-4C87-11D1-A264-00A0C91FED73}, 3 (100-нс единицы)
+                        if (result.DurationSeconds <= 0)
+                        {
+                            var keyDuration = new PROPERTYKEY(new Guid("64440490-4C87-11D1-A264-00A0C91FED73"), 3);
+                            var varDuration = new PROPVARIANT();
+                            if (propStore.GetValue(ref keyDuration, out varDuration) == 0)
+                            {
+                                ulong dur100ns = (varDuration.vt == VT_UI8) ? varDuration.ulVal : 0;
+                                if (dur100ns > 0)
+                                {
+                                    result.DurationSeconds = (int)(dur100ns / 10000000UL);
+                                }
+                                PropVariantClear(ref varDuration);
+                            }
                         }
                     }
+                    finally
+                    {
+                        Marshal.Release(storePtr);
+                    }
+                }
+                else
+                {
+                    AppLogger.Debug("VideoMetadataExtractor", $"SHGetPropertyStoreFromParsingName вернул hr = 0x{hrStore:X8} для '{Path.GetFileName(filePath)}'");
                 }
             }
             catch (Exception ex)
             {
-                AppLogger.Debug("VideoMetadataExtractor", $"IShellItem2 чтение '{filePath}': {ex.Message}");
+                AppLogger.Debug("VideoMetadataExtractor", $"PropertyStore чтение '{filePath}': {ex.Message}");
             }
 
-            // 2. Генерация превью-кадра через IShellItemImageFactory (если не было встроенного постера)
+            // 2. Генерация превью-кадра через IShellItemImageFactory
             if (result.Thumbnail == null)
             {
+                IntPtr itemPtr = IntPtr.Zero;
+                IntPtr factoryPtr = IntPtr.Zero;
                 try
                 {
-                    if (rawShellItem is IShellItemImageFactory factory)
+                    // Получаем базовый IUnknown
+                    int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IUnknown, out itemPtr);
+                    if (hrItem == 0 && itemPtr != IntPtr.Zero)
                     {
-                        // Важно: размер 320x320 (требование Telegram для thumbs)
-                        // Сначала пробуем запросить чистый стоп-кадр (RESIZETOFIT)
-                        int hrImage = factory.GetImage(
-                            new SIZE(320, 320), 
-                            SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_BIGGERSIZEOK, 
-                            out IntPtr hBitmap
-                        );
-
-                        // Если не вернулся, пробуем флаг SCALEUP
-                        if (hrImage != 0 || hBitmap == IntPtr.Zero)
+                        // Запрашиваем фабрику эскизов через нативный QueryInterface
+                        var factoryGuid = IID_IShellItemImageFactory;
+                        int hrQI = Marshal.QueryInterface(itemPtr, ref factoryGuid, out factoryPtr);
+                        if (hrQI == 0 && factoryPtr != IntPtr.Zero)
                         {
-                            hrImage = factory.GetImage(
-                                new SIZE(320, 320), 
-                                SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_SCALEUP, 
-                                out hBitmap
+                            var factory = (IShellItemImageFactory)Marshal.GetObjectForIUnknown(factoryPtr);
+
+                            // Запрашиваем ресайз под 320x320
+                            int hrImage = factory.GetImage(
+                                new SIZE(320, 320),
+                                SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_BIGGERSIZEOK,
+                                out IntPtr hBitmap
                             );
-                        }
 
-                        if (hrImage == 0 && hBitmap != IntPtr.Zero)
-                        {
-                            try
+                            if (hrImage != 0 || hBitmap == IntPtr.Zero)
                             {
-                                using var bmp = System.Drawing.Image.FromHbitmap(hBitmap);
-                                if (result.Width <= 0 || result.Height <= 0)
-                                {
-                                    result.Width = bmp.Width;
-                                    result.Height = bmp.Height;
-                                }
-
-                                result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
-                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell для '{Path.GetFileName(filePath)}' ({result.Thumbnail?.Length} байт)");
+                                hrImage = factory.GetImage(
+                                    new SIZE(320, 320),
+                                    SIIGBF.SIIGBF_RESIZETOFIT | SIIGBF.SIIGBF_SCALEUP,
+                                    out hBitmap
+                                );
                             }
-                            finally
+
+                            if (hrImage == 0 && hBitmap != IntPtr.Zero)
                             {
-                                DeleteObject(hBitmap);
+                                try
+                                {
+                                    using var bmp = System.Drawing.Image.FromHbitmap(hBitmap);
+                                    if (result.Width <= 0 || result.Height <= 0)
+                                    {
+                                        result.Width = bmp.Width;
+                                        result.Height = bmp.Height;
+                                    }
+
+                                    result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
+                                    AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell для '{Path.GetFileName(filePath)}' ({result.Thumbnail?.Length} байт)");
+                                }
+                                finally
+                                {
+                                    DeleteObject(hBitmap);
+                                }
+                            }
+                            else
+                            {
+                                AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hrImage:X8} для '{Path.GetFileName(filePath)}'");
                             }
                         }
                         else
                         {
-                            AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hrImage:X8} для '{Path.GetFileName(filePath)}'");
+                            AppLogger.Debug("VideoMetadataExtractor", $"QueryInterface(IShellItemImageFactory) вернул hr = 0x{hrQI:X8} для '{Path.GetFileName(filePath)}'");
                         }
                     }
                     else
                     {
-                        AppLogger.Debug("VideoMetadataExtractor", $"Объект IShellItem не поддерживает IShellItemImageFactory для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Debug("VideoMetadataExtractor", $"SHCreateItemFromParsingName вернул hr = 0x{hrItem:X8} для '{Path.GetFileName(filePath)}'");
                     }
                 }
                 catch (Exception ex)
                 {
                     AppLogger.Debug("VideoMetadataExtractor", $"IShellItemImageFactory ошибка '{filePath}': {ex.Message}");
+                }
+                finally
+                {
+                    if (factoryPtr != IntPtr.Zero) Marshal.Release(factoryPtr);
+                    if (itemPtr != IntPtr.Zero) Marshal.Release(itemPtr);
                 }
             }
         }
