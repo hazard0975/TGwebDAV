@@ -99,20 +99,7 @@ namespace TelegramWebDAV.Services
                 AppLogger.Debug("VideoMetadataExtractor", $"ATL чтение '{filePath}': {ex.Message}");
             }
 
-            // Шаг 3: Если превью нет, извлекаем его через системный Windows Media Foundation (IMFSourceReader)
-            if (result.Thumbnail == null && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                try
-                {
-                    ExtractThumbnailViaMediaFoundation(filePath, result);
-                }
-                catch (Exception ex)
-                {
-                    AppLogger.Debug("VideoMetadataExtractor", $"Media Foundation превью ошибка '{filePath}': {ex.Message}");
-                }
-            }
-
-            // Шаг 4: Если Media Foundation не смог декодировать кодек (например, AV1, MKV, VP9), извлекаем кадр через Shell Thumbnail Provider (K-Lite / Icaros / Windows Shell)
+            // Шаг 3: Извлечение стоп-кадра через Shell Thumbnail Provider (K-Lite Codec Pack / Icaros / Windows Shell) - всеяден, поддерживает AV1, HEVC, H.264, VP9, MKV и др.
             if (result.Thumbnail == null && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 try
@@ -122,6 +109,19 @@ namespace TelegramWebDAV.Services
                 catch (Exception ex)
                 {
                     AppLogger.Debug("VideoMetadataExtractor", $"Shell Thumbnail (K-Lite/Icaros) ошибка '{filePath}': {ex.Message}");
+                }
+            }
+
+            // Шаг 4: Запасной резерв — если Shell/K-Lite не вернул эскиз, пробуем системный Windows Media Foundation (IMFSourceReader)
+            if (result.Thumbnail == null && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                try
+                {
+                    ExtractThumbnailViaMediaFoundation(filePath, result);
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("VideoMetadataExtractor", $"Media Foundation превью ошибка '{filePath}': {ex.Message}");
                 }
             }
 
@@ -404,7 +404,7 @@ namespace TelegramWebDAV.Services
                 int hrReader = MFCreateSourceReaderFromURL(filePath, pAttributes, out reader);
                 if (hrReader != 0 || reader == null)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
+                    AppLogger.Debug("VideoMetadataExtractor", $"MFCreateSourceReaderFromURL вернул hr = 0x{hrReader:X8} для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
@@ -559,7 +559,7 @@ namespace TelegramWebDAV.Services
 
                 if (!isFormatSet)
                 {
-                    AppLogger.Warn("VideoMetadataExtractor", $"Не удалось согласовать видеоформат (RGB32/NV12/YUY2) для '{Path.GetFileName(filePath)}'");
+                    AppLogger.Debug("VideoMetadataExtractor", $"Media Foundation: не удалось согласовать формат кадра (RGB32/NV12/YUY2) для '{Path.GetFileName(filePath)}'");
                     return;
                 }
 
