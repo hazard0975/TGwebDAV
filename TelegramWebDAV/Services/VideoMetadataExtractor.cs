@@ -129,14 +129,14 @@ namespace TelegramWebDAV.Services
             return result;
         }
 
-        #region Windows Shell IShellItemImageFactory Interop
+        #region Windows Shell IThumbnailProvider Interop
 
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, PreserveSig = true)]
         private static extern int SHCreateItemFromParsingName(
             [In, MarshalAs(UnmanagedType.LPWStr)] string pszPath,
             [In] IntPtr pbc,
             [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
-            [Out, MarshalAs(UnmanagedType.Interface)] out IShellItemImageFactory ppv);
+            [Out, MarshalAs(UnmanagedType.Interface)] out IShellItem ppv);
 
         [DllImport("ole32.dll")]
         private static extern int CoInitializeEx(IntPtr pvReserved, uint dwCoInit);
@@ -148,40 +148,45 @@ namespace TelegramWebDAV.Services
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool DeleteObject(IntPtr hObject);
 
-        private static readonly Guid IID_IShellItemImageFactory = new Guid("bcc18b79-ba16-442f-80c4-8a59c07c463b");
+        private static readonly Guid IID_IShellItem = new Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe");
+        private static readonly Guid BHID_ThumbnailHandler = new Guid("7b0ffd17-11ee-4014-87cc-c68e7ca7c78f");
+        private static readonly Guid IID_IThumbnailProvider = new Guid("e357fcc7-4295-4576-b01f-234630154e96");
 
         [ComImport]
-        [Guid("bcc18b79-ba16-442f-80c4-8a59c07c463b")]
+        [Guid("43826d1e-e718-42ee-bc55-a1e261c37bfe")]
         [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-        private interface IShellItemImageFactory
+        private interface IShellItem
         {
             [PreserveSig]
-            int GetImage(
-                [In, MarshalAs(UnmanagedType.Struct)] SIZE size,
-                [In] SIIGBF flags,
-                [Out] out IntPtr phbm);
+            int BindToHandler(
+                [In] IntPtr pbc,
+                [In, MarshalAs(UnmanagedType.LPStruct)] Guid bhid,
+                [In, MarshalAs(UnmanagedType.LPStruct)] Guid riid,
+                [Out, MarshalAs(UnmanagedType.Interface)] out object ppv);
+
+            [PreserveSig]
+            int GetParent([Out, MarshalAs(UnmanagedType.Interface)] out IShellItem ppsi);
+
+            [PreserveSig]
+            int GetDisplayName([In] uint sigdnName, [Out, MarshalAs(UnmanagedType.LPWStr)] out string ppszName);
+
+            [PreserveSig]
+            int GetAttributes([In] uint sfgaoMask, [Out] out uint psfgaoAttribs);
+
+            [PreserveSig]
+            int Compare([In, MarshalAs(UnmanagedType.Interface)] IShellItem psi, [In] uint hint, [Out] out int piOrder);
         }
 
-        [StructLayout(LayoutKind.Sequential)]
-        private struct SIZE
+        [ComImport]
+        [Guid("e357fcc7-4295-4576-b01f-234630154e96")]
+        [InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+        private interface IThumbnailProvider
         {
-            public int cx;
-            public int cy;
-        }
-
-        [Flags]
-        private enum SIIGBF
-        {
-            SIIGBF_RESIZETOFIT = 0x00000000,
-            SIIGBF_BIGGERSIZEOK = 0x00000001,
-            SIIGBF_MEMORYONLY = 0x00000002,
-            SIIGBF_ICONONLY = 0x00000004,
-            SIIGBF_THUMBNAILONLY = 0x00000008,
-            SIIGBF_INCACHEONLY = 0x00000010,
-            SIIGBF_CROPTOSQUARE = 0x00000020,
-            SIIGBF_WIDETHUMBNAILS = 0x00000040,
-            SIIGBF_ICONBACKGROUND = 0x00000080,
-            SIIGBF_SCALEUP = 0x00000100
+            [PreserveSig]
+            int GetThumbnail(
+                [In] uint cx,
+                [Out] out IntPtr phbmp,
+                [Out] out uint pdwAlpha);
         }
 
         private const uint COINIT_APARTMENTTHREADED = 0x2;
@@ -191,28 +196,30 @@ namespace TelegramWebDAV.Services
             var thread = new Thread(() =>
             {
                 int hrCo = CoInitializeEx(IntPtr.Zero, COINIT_APARTMENTTHREADED);
-                IShellItemImageFactory? factory = null;
+                IShellItem? shellItem = null;
+                IThumbnailProvider? thumbProvider = null;
                 IntPtr hBitmap = IntPtr.Zero;
 
                 try
                 {
-                    int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItemImageFactory, out factory);
-                    if (hrItem != 0 || factory == null)
+                    int hrItem = SHCreateItemFromParsingName(filePath, IntPtr.Zero, IID_IShellItem, out shellItem);
+                    if (hrItem != 0 || shellItem == null)
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItemImageFactory) вернул hr = 0x{hrItem:X8} для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Warn("VideoMetadataExtractor", $"SHCreateItemFromParsingName(IShellItem) вернул hr = 0x{hrItem:X8} для '{Path.GetFileName(filePath)}'");
                         return;
                     }
 
-                    var size = new SIZE { cx = 320, cy = 320 };
-                    // Сначала пробуем получить эскиз с флагом BIGGERSIZEOK
-                    int hrImage = factory.GetImage(size, SIIGBF.SIIGBF_BIGGERSIZEOK | SIIGBF.SIIGBF_RESIZETOFIT, out hBitmap);
-                    if (hrImage != 0 || hBitmap == IntPtr.Zero)
+                    int hrBind = shellItem.BindToHandler(IntPtr.Zero, BHID_ThumbnailHandler, IID_IThumbnailProvider, out object rawProvider);
+                    if (hrBind != 0 || rawProvider == null)
                     {
-                        // Пробуем без флагов
-                        hrImage = factory.GetImage(size, SIIGBF.SIIGBF_RESIZETOFIT, out hBitmap);
+                        AppLogger.Warn("VideoMetadataExtractor", $"BindToHandler(BHID_ThumbnailHandler) вернул hr = 0x{hrBind:X8} для '{Path.GetFileName(filePath)}'");
+                        return;
                     }
 
-                    if (hrImage == 0 && hBitmap != IntPtr.Zero)
+                    thumbProvider = (IThumbnailProvider)rawProvider;
+                    int hrThumb = thumbProvider.GetThumbnail(320, out hBitmap, out uint pdwAlpha);
+
+                    if (hrThumb == 0 && hBitmap != IntPtr.Zero)
                     {
                         try
                         {
@@ -220,7 +227,7 @@ namespace TelegramWebDAV.Services
                             result.Thumbnail = ResizeBitmapToTelegramJpeg(bmp, 320, 320);
                             if (result.Thumbnail != null)
                             {
-                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через IShellItemImageFactory ({result.Thumbnail.Length} байт)");
+                                AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через IThumbnailProvider ({result.Thumbnail.Length} байт)");
 
                                 // Сохраняем в Temp для наглядной проверки
                                 try
@@ -242,7 +249,7 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        AppLogger.Warn("VideoMetadataExtractor", $"IShellItemImageFactory.GetImage вернул hr = 0x{hrImage:X8} для '{Path.GetFileName(filePath)}'");
+                        AppLogger.Warn("VideoMetadataExtractor", $"IThumbnailProvider.GetThumbnail вернул hr = 0x{hrThumb:X8} для '{Path.GetFileName(filePath)}'");
                     }
                 }
                 catch (Exception ex)
@@ -251,9 +258,13 @@ namespace TelegramWebDAV.Services
                 }
                 finally
                 {
-                    if (factory != null && Marshal.IsComObject(factory))
+                    if (thumbProvider != null && Marshal.IsComObject(thumbProvider))
                     {
-                        Marshal.ReleaseComObject(factory);
+                        Marshal.ReleaseComObject(thumbProvider);
+                    }
+                    if (shellItem != null && Marshal.IsComObject(shellItem))
+                    {
+                        Marshal.ReleaseComObject(shellItem);
                     }
                     if (hrCo >= 0) CoUninitialize();
                 }
