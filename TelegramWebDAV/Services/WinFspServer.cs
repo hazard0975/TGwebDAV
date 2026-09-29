@@ -808,8 +808,6 @@ namespace TelegramWebDAV.Services
                     }
                     finally
                     {
-                        // ВРЕМЕННО: отключено удаление файлов для ручной проверки превью
-                        /*
                         try 
                         { 
                             if (File.Exists(tempPath)) File.Delete(tempPath); 
@@ -819,8 +817,10 @@ namespace TelegramWebDAV.Services
                                 Directory.Delete(parentDir, true);
                             }
                         } 
-                        catch { }
-                        */
+                        catch (Exception delEx)
+                        {
+                            AppLogger.Debug("WinFsp", $"Не удалось удалить временный файл '{tempPath}': {delEx.Message}");
+                        }
                     }
                 });
             }

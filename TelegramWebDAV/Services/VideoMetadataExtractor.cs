@@ -710,17 +710,6 @@ namespace TelegramWebDAV.Services
                                 if (result.Thumbnail != null)
                                 {
                                     AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Media Foundation ({result.Thumbnail.Length} байт, {frameWidth}x{frameHeight}, stride={stride}, формат: {(chosenSubtype == MFVideoFormat_RGB32 ? "RGB32" : chosenSubtype == MFVideoFormat_NV12 ? "NV12" : "YUY2")})");
-
-                                    try
-                                    {
-                                        string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
-                                        File.WriteAllBytes(thumbPath, result.Thumbnail);
-                                        AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
-                                    }
-                                    catch (Exception saveEx)
-                                    {
-                                        AppLogger.Debug("VideoMetadataExtractor", $"Не удалось сохранить превью на диск: {saveEx.Message}");
-                                    }
                                 }
                             }
                         }
@@ -1296,14 +1285,6 @@ namespace TelegramWebDAV.Services
                             if (result.Thumbnail != null)
                             {
                                 AppLogger.Info("VideoMetadataExtractor", $"Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для '{Path.GetFileName(filePath)}' ({result.Thumbnail.Length} байт, {bmp.Width}x{bmp.Height})");
-
-                                try
-                                {
-                                    string thumbPath = Path.Combine(Path.GetDirectoryName(filePath) ?? Path.GetTempPath(), $"{Path.GetFileNameWithoutExtension(filePath)}_preview.jpg");
-                                    File.WriteAllBytes(thumbPath, result.Thumbnail);
-                                    AppLogger.Info("VideoMetadataExtractor", $"Превью сохранено на диск: {thumbPath}");
-                                }
-                                catch { }
                             }
 
                             if (result.Width <= 0 || result.Height <= 0)
