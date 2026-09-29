@@ -234,9 +234,9 @@ namespace TelegramWebDAV.UI
             pnlFullTrack.Controls.Add(new Label { Text = "Качать трек целиком до (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
             _numFullTrackMaxMb = new NumericUpDown
             {
-                Minimum = 10,
+                Minimum = 1,
                 Maximum = 500, // До 500 МБ
-                Value = Math.Max(10, Math.Min(500, _settings.Server.FullTrackPrefetchMaxFileSizeMb > 0 ? _settings.Server.FullTrackPrefetchMaxFileSizeMb : 70)),
+                Value = Math.Max(1, Math.Min(500, _settings.Server.FullTrackPrefetchMaxFileSizeMb > 0 ? _settings.Server.FullTrackPrefetchMaxFileSizeMb : 2)),
                 Width = 100
             };
             pnlFullTrack.Controls.Add(_numFullTrackMaxMb);

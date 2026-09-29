@@ -1640,7 +1640,7 @@ namespace TelegramWebDAV.Services
                 try
                 {
                     int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
-                    int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 70;
+                    int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 2;
                     int windowMb = _configManager?.CurrentSettings?.Server?.StreamingPrefetchWindowMb ?? 20;
 
                     long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
