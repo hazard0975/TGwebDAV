@@ -1683,7 +1683,8 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        OnMetadataProgress?.Invoke(fileName, currentPos, actualTotalSize);
+                        long transferredMetaBytes = audit.NetworkBytes > 0 ? audit.NetworkBytes : Math.Min(actualTotalSize, (long)audit.ReceivedChunksCount * 65536);
+                        OnMetadataProgress?.Invoke(fileName, transferredMetaBytes, actualTotalSize);
                         OnChunkCached?.Invoke(fileName, currentPos, actualTotalSize);
                     }
                 }
