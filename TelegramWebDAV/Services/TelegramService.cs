@@ -77,6 +77,8 @@ namespace TelegramWebDAV.Services
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, CancellationTokenSource> _activeFilePrefetches = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, SemaphoreSlim> _fileDownloadLocks = new();
         private readonly SemaphoreSlim _downloadRpcSemaphore = new SemaphoreSlim(3, 3);
+        private readonly System.Collections.Concurrent.ConcurrentQueue<int> _availableWorkerIds = new(new[] { 1, 2, 3 });
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<string, WTelegram.Client> _workerClientsMap = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, NetworkTransferAudit> _networkAudits = new();
 
         private class FileReadSequence
@@ -535,14 +537,33 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Возвращает сессию DC основного клиента MTProto для параллельных воркеров пула.
-        /// Протокол MTProto поддерживает мультиплексирование параллельных запросов чанков без повторных файловых блокировок.
+        /// Гарантирует изоляцию сокетов воркеров для предотвращения RpcError 420 FLOOD_WAIT.
         /// </summary>
         public async Task<WTelegram.Client> GetWorkerClientAsync(int workerId, int dcId)
         {
             if (_client == null)
                 throw new InvalidOperationException("Основной клиент Telegram не инициализирован.");
 
-            return dcId != 0 ? await _client.GetClientForDC(dcId) : _client;
+            int targetDc = dcId != 0 ? dcId : 0;
+            string key = $"{targetDc}:{workerId}";
+
+            if (_workerClientsMap.TryGetValue(key, out var cachedClient) && cachedClient != null)
+            {
+                return cachedClient;
+            }
+
+            WTelegram.Client clientToUse;
+            if (targetDc != 0)
+            {
+                clientToUse = await _client.GetClientForDC(targetDc);
+            }
+            else
+            {
+                clientToUse = _client;
+            }
+
+            _workerClientsMap[key] = clientToUse;
+            return clientToUse;
         }
 
         private void HandleWTelegramResult(string? result)
@@ -1398,7 +1419,6 @@ namespace TelegramWebDAV.Services
                     await EnsureFloodWaitDelayAsync();
                     if (_client == null) return null;
 
-                    var activeClient = document.dc_id != 0 ? await _client.GetClientForDC(document.dc_id) : _client;
                     var location = document.ToFileLocation();
 
                     if (chunkOffset >= actualTotal && actualTotal > 0)
@@ -1425,11 +1445,15 @@ namespace TelegramWebDAV.Services
 
                     TL.Upload_FileBase? fileBase = null;
                     await _downloadRpcSemaphore.WaitAsync(cancellationToken);
+                    int workerId = 1;
+                    if (!_availableWorkerIds.TryDequeue(out workerId)) workerId = 1;
+
                     try
                     {
+                        var activeClient = await GetWorkerClientAsync(workerId, document.dc_id);
                         int totalChunks = audit.TotalChunks;
                         string probeTag = requestLimit < 1048576 ? $" [Зонд метаданных {requestLimit / 1024} КБ]" : "";
-                        AppLogger.Info("TelegramService", $"[MTProto] Запрос чанка #{chunkIndex}/{totalChunks} для '{fileName}' (ID {messageId}): смещение {chunkOffset:N0} б, размер {requestLimit / 1024} КБ{probeTag}...");
+                        AppLogger.Info("TelegramService", $"[MTProto] [Воркер #{workerId}] Запрос чанка #{chunkIndex}/{totalChunks} для '{fileName}' (ID {messageId}): смещение {chunkOffset:N0} б, размер {requestLimit / 1024} КБ{probeTag}...");
                         var sw = System.Diagnostics.Stopwatch.StartNew();
 
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
@@ -1437,7 +1461,7 @@ namespace TelegramWebDAV.Services
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
                     {
-                        activeClient = await _client.GetClientForDC(rpcEx.X);
+                        var activeClient = await GetWorkerClientAsync(workerId, rpcEx.X);
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("FILE_REFERENCE_EXPIRED"))
@@ -1446,7 +1470,7 @@ namespace TelegramWebDAV.Services
                         if (refreshedDoc != null)
                         {
                             location = refreshedDoc.ToFileLocation();
-                            activeClient = refreshedDoc.dc_id != 0 ? await _client.GetClientForDC(refreshedDoc.dc_id) : _client;
+                            var activeClient = await GetWorkerClientAsync(workerId, refreshedDoc.dc_id);
                             fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                         }
                         else throw;
@@ -1454,13 +1478,15 @@ namespace TelegramWebDAV.Services
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
                     {
                         int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
-                        AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
+                        AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] [Воркер #{workerId}] Telegram запросил паузу {waitSec} сек.");
                         _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
                         await Task.Delay(waitSec * 1000, cancellationToken);
+                        var activeClient = await GetWorkerClientAsync(workerId, document.dc_id);
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                     }
                     finally
                     {
+                        _availableWorkerIds.Enqueue(workerId);
                         _downloadRpcSemaphore.Release();
                     }
 
