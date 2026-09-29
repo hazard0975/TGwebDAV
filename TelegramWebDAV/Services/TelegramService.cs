@@ -1401,6 +1401,8 @@ namespace TelegramWebDAV.Services
             long chunkOffset = (long)chunkIndex * 1048576;
             long actualTotal = totalFileSize > 0 ? totalFileSize : document.size;
 
+            byte[]? existingPrefix = null;
+
             // 1. Проверяем наличие в RAM-кэше
             if (_chunkMemoryCache.TryGetValue(chunkKey, out var cached) && cached.expiresAt > DateTime.UtcNow && cached.data != null)
             {
@@ -1408,6 +1410,12 @@ namespace TelegramWebDAV.Services
                 if (cached.data.Length >= minRequiredBytes || cached.data.Length >= 1048576 || (actualTotal > 0 && chunkOffset + cached.data.Length >= actualTotal))
                 {
                     return cached.data;
+                }
+
+                // Если в кэше есть начальная часть (префикс), выравнивание по 4 КБ (4096 байт)
+                if (cached.data.Length > 0 && cached.data.Length % 4096 == 0)
+                {
+                    existingPrefix = cached.data;
                 }
             }
 
@@ -1426,21 +1434,38 @@ namespace TelegramWebDAV.Services
                         return Array.Empty<byte>();
                     }
 
-                    // Адаптивный расчет requestLimit по спецификации MTProto (строго кратно 1 КБ и степеням двойки):
-                    // Для зондов метаданных запрашиваем минимально необходимый объем (64 КБ .. 256 КБ),
-                    // а для полного чтения — 1 МБ.
-                    int requestLimit;
+                    int existingLength = existingPrefix?.Length ?? 0;
+
+                    // Адаптивный расчет целевого размера блока:
+                    int targetSize;
                     if (isMetadataProbe)
                     {
-                        if (minRequiredBytes <= 65536) requestLimit = 65536;       // 64 КБ
-                        else if (minRequiredBytes <= 131072) requestLimit = 131072; // 128 КБ
-                        else if (minRequiredBytes <= 262144) requestLimit = 262144; // 256 КБ
-                        else if (minRequiredBytes <= 524288) requestLimit = 524288; // 512 КБ
-                        else requestLimit = 1048576;                               // 1 МБ
+                        if (minRequiredBytes <= 65536) targetSize = 65536;       // 64 КБ
+                        else if (minRequiredBytes <= 131072) targetSize = 131072; // 128 КБ
+                        else if (minRequiredBytes <= 262144) targetSize = 262144; // 256 КБ
+                        else if (minRequiredBytes <= 524288) targetSize = 524288; // 512 КБ
+                        else targetSize = 1048576;                               // 1 МБ
                     }
                     else
                     {
-                        requestLimit = 1048576; // 1 МБ для стриминга и копирования
+                        targetSize = 1048576; // 1 МБ для стриминга и копирования
+                    }
+
+                    if (targetSize <= existingLength)
+                    {
+                        return existingPrefix;
+                    }
+
+                    long fetchOffset = chunkOffset + existingLength;
+                    int requestLimit = targetSize - existingLength;
+
+                    // Защита: requestLimit должен быть выравнен и кратен 4 КБ
+                    if (requestLimit % 4096 != 0)
+                    {
+                        existingPrefix = null;
+                        existingLength = 0;
+                        fetchOffset = chunkOffset;
+                        requestLimit = targetSize;
                     }
 
                     TL.Upload_FileBase? fileBase = null;
@@ -1452,17 +1477,17 @@ namespace TelegramWebDAV.Services
                     {
                         var activeClient = await GetWorkerClientAsync(workerId, document.dc_id);
                         int totalChunks = audit.TotalChunks;
-                        string probeTag = requestLimit < 1048576 ? $" [Зонд метаданных {requestLimit / 1024} КБ]" : "";
-                        AppLogger.Info("TelegramService", $"[MTProto] [Воркер #{workerId}] Запрос чанка #{chunkIndex}/{totalChunks} для '{fileName}' (ID {messageId}): смещение {chunkOffset:N0} б, размер {requestLimit / 1024} КБ{probeTag}...");
+                        string tailTag = existingLength > 0 ? $" [Докачка хвоста +{requestLimit / 1024} КБ до {targetSize / 1024} КБ]" : (requestLimit < 1048576 ? $" [Зонд метаданных {requestLimit / 1024} КБ]" : "");
+                        AppLogger.Info("TelegramService", $"[MTProto] [Воркер #{workerId}] Запрос чанка #{chunkIndex}/{totalChunks} для '{fileName}' (ID {messageId}): смещение {fetchOffset:N0} б, размер {requestLimit / 1024} КБ{tailTag}...");
                         var sw = System.Diagnostics.Stopwatch.StartNew();
 
-                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                        fileBase = await activeClient.Upload_GetFile(location, fetchOffset, requestLimit, precise: true);
                         sw.Stop();
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
                     {
                         var activeClient = await GetWorkerClientAsync(workerId, rpcEx.X);
-                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                        fileBase = await activeClient.Upload_GetFile(location, fetchOffset, requestLimit, precise: true);
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("FILE_REFERENCE_EXPIRED"))
                     {
@@ -1471,7 +1496,7 @@ namespace TelegramWebDAV.Services
                         {
                             location = refreshedDoc.ToFileLocation();
                             var activeClient = await GetWorkerClientAsync(workerId, refreshedDoc.dc_id);
-                            fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                            fileBase = await activeClient.Upload_GetFile(location, fetchOffset, requestLimit, precise: true);
                         }
                         else throw;
                     }
@@ -1482,7 +1507,7 @@ namespace TelegramWebDAV.Services
                         _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
                         await Task.Delay(waitSec * 1000, cancellationToken);
                         var activeClient = await GetWorkerClientAsync(workerId, document.dc_id);
-                        fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
+                        fileBase = await activeClient.Upload_GetFile(location, fetchOffset, requestLimit, precise: true);
                     }
                     finally
                     {
@@ -1492,24 +1517,37 @@ namespace TelegramWebDAV.Services
 
                     if (fileBase is TL.Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                     {
-                        byte[] raw = uploadFile.bytes;
-                        audit.AddNetworkBytes(raw.Length);
-                        bool allReceived = audit.MarkRangeReceived(chunkOffset, raw.Length);
+                        byte[] tailRaw = uploadFile.bytes;
+                        audit.AddNetworkBytes(tailRaw.Length);
+                        bool allReceived = audit.MarkRangeReceived(fetchOffset, tailRaw.Length);
+
+                        byte[] fullData;
+                        if (existingPrefix != null && existingPrefix.Length > 0)
+                        {
+                            fullData = new byte[existingPrefix.Length + tailRaw.Length];
+                            Buffer.BlockCopy(existingPrefix, 0, fullData, 0, existingPrefix.Length);
+                            Buffer.BlockCopy(tailRaw, 0, fullData, existingPrefix.Length, tailRaw.Length);
+                        }
+                        else
+                        {
+                            fullData = tailRaw;
+                        }
+
                         EnsureChunkCacheCapacity();
-                        _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
+                        _chunkMemoryCache[chunkKey] = (fullData, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
 
-                        AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{chunkIndex}/{audit.TotalChunks} для '{fileName}': смещение {chunkOffset:N0} б, размер {raw.Length / 1024} КБ. {audit.ProgressSummary}.");
+                        AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{chunkIndex}/{audit.TotalChunks} для '{fileName}': скачано {tailRaw.Length / 1024} КБ (итого в RAM: {fullData.Length / 1024} КБ). {audit.ProgressSummary}.");
 
-                        OnChunkCached?.Invoke(fileName, chunkOffset + raw.Length, actualTotal);
+                        OnChunkCached?.Invoke(fileName, chunkOffset + fullData.Length, actualTotal);
 
                         if (allReceived && audit.LogCompletionOnce())
                         {
                             OnDownloadCompleted?.Invoke(fileName);
                         }
 
-                        return raw;
+                        return fullData;
                     }
-                    return null;
+                    return existingPrefix;
                 }
                 finally
                 {
