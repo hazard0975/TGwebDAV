@@ -1245,11 +1245,14 @@ namespace TelegramWebDAV.Services
             }
 
             // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ (Format-Agnostic, без списков расширений):
-            // Считаем операцию сбором метаданных/эскиза, если запрашиваются крайние чанки (#0 или конец файла)
-            // ИЛИ пока не зафиксировано минимум 2 последовательных чанка подряд.
+            // Считаем операцию сбором метаданных/эскиза, если:
+            // 1) Запрос происходит в хвостовой зоне файла (последние 2 МБ — зона moov-атома MP4, mkv cues, zip cd, ID3v1),
+            // 2) ИЛИ это самый первый чанк файла (#0),
+            // 3) ИЛИ еще не зафиксировано последовательное воспроизведение (SequentialCount < 2).
             bool isFirstChunkProbe = currentChunkIdx == 0;
-            bool isTailChunkProbe = totalChunks > 1 && currentChunkIdx >= totalChunks - 1;
-            bool isMetadataProbe = (isFirstChunkProbe || isTailChunkProbe || readSeq.SequentialCount < 2) && readSeq.SequentialCount < 2;
+            bool isTailChunkProbe = (actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152) ||
+                                    (totalChunks > 1 && currentChunkIdx >= totalChunks - 1);
+            bool isMetadataProbe = isFirstChunkProbe || isTailChunkProbe || readSeq.SequentialCount < 2;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1655,8 +1658,10 @@ namespace TelegramWebDAV.Services
                         ? actualTotalSize
                         : Math.Min(actualTotalSize, currentReadOffset + windowBytes);
 
+                    long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
+                    long scanOffset = actualTotalSize <= fullTrackMaxBytes ? 0 : startChunkOffset;
+
                     var missingChunks = new List<long>();
-                    long scanOffset = 0;
                     while (scanOffset < maxPrefetchLimit)
                     {
                         if (!TryGetFromMemoryCache(messageId, scanOffset, out _, out _))
