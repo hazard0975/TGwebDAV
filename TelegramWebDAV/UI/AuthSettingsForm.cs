@@ -452,23 +452,25 @@ namespace TelegramWebDAV.UI
             _tabLogs = new TabPage("Логирование");
 
             // Нижняя панель для кнопки «Сохранить» в правом нижнем углу окна
-            var pnlSaveBar = new Panel
+            var pnlSaveBar = new TableLayoutPanel
             {
                 Dock = DockStyle.Bottom,
-                Height = 48,
-                Padding = new Padding(0, 6, 15, 10)
+                Height = 44,
+                ColumnCount = 2,
+                RowCount = 1,
+                Padding = new Padding(0, 0, 15, 10)
             };
+            pnlSaveBar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
+            pnlSaveBar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120f));
 
             var btnSaveLogs = new Button
             {
                 Text = "Сохранить",
-                AutoSize = true,
-                Padding = new Padding(20, 6, 20, 6),
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                Dock = DockStyle.Right
+                Dock = DockStyle.Fill,
+                Margin = new Padding(0)
             };
 
-            pnlSaveBar.Controls.Add(btnSaveLogs);
+            pnlSaveBar.Controls.Add(btnSaveLogs, 1, 0);
 
             var pnlLogs = new FlowLayoutPanel
             {
