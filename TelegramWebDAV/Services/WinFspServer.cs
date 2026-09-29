@@ -782,7 +782,7 @@ namespace TelegramWebDAV.Services
                         }
 
                         using var fs = new FileStream(tempPath, FileMode.Open, FileAccess.Read, FileShare.Read);
-                        int? msgId = await _telegramService.UploadFileAsync(
+                        var uploadResult = await _telegramService.UploadFileAsync(
                             fs, 
                             nodeName, 
                             finalLength, 
@@ -790,16 +790,17 @@ namespace TelegramWebDAV.Services
                             audioMeta: fspAudioMeta, 
                             videoMeta: fspVideoMeta
                         );
-                        if (msgId.HasValue)
+                        if (uploadResult?.MessageId != null)
                         {
                             _repository.CreateOrUpdateFile(
                                 parentId, 
                                 nodeName, 
                                 finalLength, 
-                                msgId.Value, 
+                                uploadResult.MessageId, 
+                                uploadResult.PreviewMessageId,
                                 metadata: fspAudioMeta
                             );
-                            AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {msgId.Value}).");
+                            AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {uploadResult.MessageId}" + (uploadResult.PreviewMessageId != null ? $", Preview ID: {uploadResult.PreviewMessageId}" : "") + ").");
                         }
                     }
                     catch (Exception ex)

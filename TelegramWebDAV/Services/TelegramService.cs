@@ -30,6 +30,20 @@ namespace TelegramWebDAV.Services
         public int FloodWaitSecondsRemaining { get; set; }
     }
 
+    public class FileUploadResult
+    {
+        public int MessageId { get; set; }
+        public int? PreviewMessageId { get; set; }
+
+        public FileUploadResult(int messageId, int? previewMessageId = null)
+        {
+            MessageId = messageId;
+            PreviewMessageId = previewMessageId;
+        }
+
+        public static implicit operator int?(FileUploadResult? res) => res?.MessageId;
+    }
+
     /// <summary>
     /// Сервис для работы с Telegram API через WTelegramClient.
     /// Управляет подключением, сессией (.session), многошаговой авторизацией и защитой от FLOOD_WAIT.
@@ -716,7 +730,7 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Надежная загрузка чанка с поддержкой докачки и отправкой собранного файла в канал Telegram по завершении.
         /// </summary>
-        public async Task<int?> UploadFileChunkAsync(Stream source, string fileName, long offset, long totalSize, string? caption = null)
+        public async Task<FileUploadResult?> UploadFileChunkAsync(Stream source, string fileName, long offset, long totalSize, string? caption = null)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -764,14 +778,14 @@ namespace TelegramWebDAV.Services
 
                     using (var completeStream = File.OpenRead(tempFilePath))
                     {
-                        int? messageId = await UploadFileAsync(
+                        var uploadResult = await UploadFileAsync(
                             completeStream, 
                             fileName, 
                             caption: caption, 
                             audioMeta: chunkAudioMeta, 
                             videoMeta: chunkVideoMeta
                         );
-                        return messageId;
+                        return uploadResult;
                     }
                 }
                 finally
@@ -789,7 +803,7 @@ namespace TelegramWebDAV.Services
         /// Для аудио- и видеофайлов автоматически формирует InputMediaUploadedDocument с атрибутами стриминга (DocumentAttributeAudio / DocumentAttributeVideo) и обложкой (thumb).
         /// Возвращает реальный ID сообщения из Telegram, либо null если файл пустой.
         /// </summary>
-        public async Task<int?> UploadFileAsync(
+        public async Task<FileUploadResult?> UploadFileAsync(
             Stream source, 
             string fileName, 
             long length = -1, 
@@ -814,6 +828,7 @@ namespace TelegramWebDAV.Services
                     throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
 
                 var peer = await GetStoragePeerAsync();
+                bool isGallery = IsGalleryImage(effectiveFileName);
 
                 // Если поток не поддерживает Seek (входящий сетевой поток WebDAV от Проводника)
                 // или если это уже StreamingUploadStream (переданный после извлечения аудио-тегов)
@@ -826,9 +841,9 @@ namespace TelegramWebDAV.Services
                 {
                     long actualLength = length > 0 ? length : GetStreamLengthSafe(source);
 
-                    if (actualLength > 0)
+                    if (actualLength > 0 && !isGallery)
                     {
-                        // Прямой сквозной стриминг с поддержкой обратного давления TCP
+                        // Прямой сквозной стриминг с поддержкой обратного давления TCP (только если не картинка для галереи)
                         uploadStream = new StreamingUploadStream(
                             source,
                             actualLength,
@@ -843,12 +858,12 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        // Резервный случай для потоков неизвестного размера (Chunked Transfer без Content-Length)
+                        // Буферизация во временный файл: для потоков неизвестного размера, а также для картинок галереи (чтобы создать превью и отправить оригинал)
                         string subDir = Path.Combine(Path.GetTempPath(), "TelegramWebDAV_Buffer", Guid.NewGuid().ToString("N"));
                         Directory.CreateDirectory(subDir);
                         tempFilePath = Path.Combine(subDir, effectiveFileName);
                         
-                        AppLogger.Info("TelegramService", $"Поток без заголовка длины. Буферизация во временный файл: {tempFilePath}");
+                        AppLogger.Info("TelegramService", $"Буферизация изображения во временный файл: {tempFilePath}");
                         using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
                         {
                             await source.CopyToAsync(fs);
@@ -863,6 +878,13 @@ namespace TelegramWebDAV.Services
                 {
                     AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' пустой или является probe-запросом клиента ({uploadStream.Length} байт). Регистрация в БД без загрузки в Telegram.");
                     return null;
+                }
+
+                byte[]? galleryPhotoBytes = null;
+                if (isGallery && uploadStream.CanSeek && uploadStream.Length > 1)
+                {
+                    galleryPhotoBytes = CreateOptimizedGalleryThumbnail(uploadStream);
+                    uploadStream.Seek(0, SeekOrigin.Begin);
                 }
 
                 AppLogger.Info("TelegramService", $"Прямая потоковая передача файла '{effectiveFileName}' ({uploadStream.Length} байт) в Telegram...");
@@ -1016,6 +1038,32 @@ namespace TelegramWebDAV.Services
                 }
                 else
                 {
+                    TL.Message? photoMessage = null;
+                    if (galleryPhotoBytes != null && galleryPhotoBytes.Length > 0)
+                    {
+                        try
+                        {
+                            using var photoMs = new MemoryStream(galleryPhotoBytes, false);
+                            var photoInput = await _client.UploadFileAsync(photoMs, "photo.jpg");
+                            var photoMedia = new TL.InputMediaUploadedPhoto { file = photoInput };
+                            photoMessage = await _client.SendMessageAsync(peer, effectiveCaption, photoMedia);
+                            AppLogger.Info("TelegramService", $"Фото-превью для галереи успешно опубликовано в Telegram (Message ID: {photoMessage.ID}).");
+                        }
+                        catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
+                        {
+                            InvalidateStoragePeer();
+                            peer = await GetStoragePeerAsync();
+                            using var photoMs = new MemoryStream(galleryPhotoBytes, false);
+                            var photoInput = await _client.UploadFileAsync(photoMs, "photo.jpg");
+                            var photoMedia = new TL.InputMediaUploadedPhoto { file = photoInput };
+                            photoMessage = await _client.SendMessageAsync(peer, effectiveCaption, photoMedia);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Warn("TelegramService", $"Не удалось отправить фото-превью для галереи: {ex.Message}");
+                        }
+                    }
+
                     string mimeType = GetDocumentMimeType(effectiveFileName);
                     var fileNameAttr = new TL.DocumentAttributeFilename
                     {
@@ -1024,27 +1072,36 @@ namespace TelegramWebDAV.Services
                     var attributes = new TL.DocumentAttribute[] { fileNameAttr };
                     var mediaDoc = new TL.InputMediaUploadedDocument(inputFile, mimeType, attributes);
 
+                    int replyToId = photoMessage != null ? photoMessage.ID : 0;
+                    string docCaption = photoMessage != null ? string.Empty : effectiveCaption;
+
                     try
                     {
-                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
+                        message = await _client.SendMessageAsync(peer, docCaption, mediaDoc, reply_to_msg_id: replyToId);
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
                     {
                         AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
                         InvalidateStoragePeer();
                         peer = await GetStoragePeerAsync();
-                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
+                        message = await _client.SendMessageAsync(peer, docCaption, mediaDoc, reply_to_msg_id: replyToId);
+                    }
+
+                    if (message != null)
+                    {
+                        AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' успешно сохранен в Telegram. Message ID: {message.ID}" + (photoMessage != null ? $", Preview ID: {photoMessage.ID}" : ""));
+                        return new FileUploadResult(message.ID, photoMessage?.ID);
                     }
                 }
 
                 if (message != null)
                 {
                     AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' успешно сохранен в Telegram. Message ID: {message.ID}");
-                    return message.ID;
+                    return new FileUploadResult(message.ID);
                 }
 
                 AppLogger.Warn("TelegramService", "Сообщение отправлено, но ID не определен, возвращаем 1.");
-                return 1;
+                return new FileUploadResult(1);
             }
             finally
             {
@@ -1140,6 +1197,81 @@ namespace TelegramWebDAV.Services
                 ".html" or ".htm" => "text/html",
                 _ => "application/octet-stream"
             };
+        }
+
+        public static bool IsGalleryImage(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return false;
+            string ext = Path.GetExtension(fileName).ToLowerInvariant();
+            return ext is ".jpg" or ".jpeg" or ".png" or ".webp" or ".bmp";
+        }
+
+        public static byte[]? CreateOptimizedGalleryThumbnail(Stream stream, int maxW = 1920, int maxH = 1920)
+        {
+            try
+            {
+                if (!stream.CanSeek) return null;
+                long origin = stream.Position;
+                stream.Seek(0, SeekOrigin.Begin);
+
+                using var originalBmp = System.Drawing.Image.FromStream(stream, false, false);
+                stream.Seek(origin, SeekOrigin.Begin);
+
+                int origW = originalBmp.Width;
+                int origH = originalBmp.Height;
+                if (origW <= 0 || origH <= 0) return null;
+
+                double ratioW = (double)maxW / origW;
+                double ratioH = (double)maxH / origH;
+                double ratio = Math.Min(ratioW, ratioH);
+                if (ratio > 1.0) ratio = 1.0;
+
+                int newW = Math.Max(1, (int)(origW * ratio));
+                int newH = Math.Max(1, (int)(origH * ratio));
+
+                using var resized = new System.Drawing.Bitmap(newW, newH);
+                using (var g = System.Drawing.Graphics.FromImage(resized))
+                {
+                    g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                    g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                    g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
+                    g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
+                    g.DrawImage(originalBmp, 0, 0, newW, newH);
+                }
+
+                using var outMs = new MemoryStream();
+                var encoder = GetEncoder(System.Drawing.Imaging.ImageFormat.Jpeg);
+                if (encoder != null)
+                {
+                    using var encoderParams = new System.Drawing.Imaging.EncoderParameters(1);
+                    encoderParams.Param[0] = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 85L);
+                    resized.Save(outMs, encoder, encoderParams);
+                }
+                else
+                {
+                    resized.Save(outMs, System.Drawing.Imaging.ImageFormat.Jpeg);
+                }
+
+                return outMs.ToArray();
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("TelegramService", $"Не удалось сформировать превью галереи: {ex.Message}");
+                return null;
+            }
+        }
+
+        private static System.Drawing.Imaging.ImageCodecInfo? GetEncoder(System.Drawing.Imaging.ImageFormat format)
+        {
+            var codecs = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders();
+            foreach (var codec in codecs)
+            {
+                if (codec.FormatID == format.Guid)
+                {
+                    return codec;
+                }
+            }
+            return null;
         }
 
         private async Task<TL.Document?> GetDocumentFromMessageAsync(int messageId, bool forceRefresh = false)

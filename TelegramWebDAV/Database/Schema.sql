@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     
     -- Telegram специфика
     tg_message_id INTEGER,
+    tg_preview_message_id INTEGER,
     
     -- Версионирование и Корзина
     version INTEGER NOT NULL DEFAULT 1,

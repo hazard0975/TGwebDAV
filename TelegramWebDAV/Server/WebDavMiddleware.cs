@@ -338,10 +338,12 @@ namespace TelegramWebDAV.Server
                     string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
 
                     // Загружаем чанк в Telegram
-                    int? tgMessageId = await telegramService.UploadFileChunkAsync(context.Request.InputStream, name, offset, totalSize, caption: fullPathWithVersion);
+                    var uploadResult = await telegramService.UploadFileChunkAsync(context.Request.InputStream, name, offset, totalSize, caption: fullPathWithVersion);
+                    int? tgMessageId = uploadResult?.MessageId;
+                    int? tgPreviewId = uploadResult?.PreviewMessageId;
                     
                     // Обновляем позицию докачки и статус в SQLite
-                    repository.UpdateUploadProgress(parentNode.Id, name, offset + contentLength, totalSize, tgMessageId);
+                    repository.UpdateUploadProgress(parentNode.Id, name, offset + contentLength, totalSize, tgMessageId, tgPreviewId);
 
                     // Если файл полностью догружен последним куском - 201 Created / 204 No Content, иначе 200/206
                     if (tgMessageId.HasValue || (offset + contentLength >= totalSize))
@@ -399,6 +401,7 @@ namespace TelegramWebDAV.Server
                     {
                         byte[]? inlineBytes = null;
                         int? tgMessageId = null;
+                        int? tgPreviewMessageId = null;
 
                         // Если размер файла <= 1 байт (пустой плейсхолдер Проводника или probe Total Commander)
                         if (uploadLength <= 1)
@@ -449,7 +452,9 @@ namespace TelegramWebDAV.Server
                             string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
 
                             // Прямая потоковая загрузка в Telegram с сохранением TCP Flow Control для Проводника
-                            tgMessageId = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion, audioMeta: audioMeta, videoMeta: videoMeta);
+                            var uploadResult = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion, audioMeta: audioMeta, videoMeta: videoMeta);
+                            tgMessageId = uploadResult?.MessageId;
+                            tgPreviewMessageId = uploadResult?.PreviewMessageId;
                         }
                         
                         DateTime? headerLastModified = null;
@@ -468,7 +473,7 @@ namespace TelegramWebDAV.Server
                         }
 
                         // Записываем инфу в базу с метаданными и встроенными байтами при необходимости
-                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, audioMeta, inlineBytes, headerLastModified);
+                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, tgPreviewMessageId, audioMeta, inlineBytes, headerLastModified);
 
                         context.Response.StatusCode = (int)HttpStatusCode.Created;
                     }
@@ -573,6 +578,10 @@ namespace TelegramWebDAV.Server
                     if (n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
                     {
                         tgMessageIds.Add(n.TgMessageId.Value);
+                    }
+                    if (n.TgPreviewMessageId.HasValue && n.TgPreviewMessageId.Value > 0)
+                    {
+                        tgMessageIds.Add(n.TgPreviewMessageId.Value);
                     }
                 }
 

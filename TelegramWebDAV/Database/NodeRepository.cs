@@ -711,7 +711,7 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Создание или перезапись файла с поддержкой версионирования, метаданных и сохранения оригинальных дат
         /// </summary>
-        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null, DateTime? lastModified = null, DateTime? creationDate = null)
+        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, int? tgPreviewMessageId = null, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null, DateTime? lastModified = null, DateTime? creationDate = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
@@ -736,6 +736,7 @@ namespace TelegramWebDAV.Database
                                 UPDATE nodes SET
                                     size = @size,
                                     tg_message_id = @tgMessageId,
+                                    tg_preview_message_id = @tgPreviewMessageId,
                                     artist = @artist,
                                     title = @title,
                                     album = @album,
@@ -752,6 +753,7 @@ namespace TelegramWebDAV.Database
                             updateCmd.CommandText = updateSql;
                             updateCmd.Parameters.AddWithValue("@size", size);
                             updateCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
+                            updateCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
                             if (lastModified.HasValue)
                             {
@@ -795,11 +797,11 @@ namespace TelegramWebDAV.Database
                             insertCmd.Transaction = transaction;
                             insertCmd.CommandText = @"
                                 INSERT INTO nodes (
-                                    parent_id, name, is_dir, size, version, original_node_id, tg_message_id,
+                                    parent_id, name, is_dir, size, version, original_node_id, tg_message_id, tg_preview_message_id,
                                     artist, title, album, year, genre, track_number, duration_seconds, bitrate,
                                     header_cache_bytes, album_cover_bytes, created_at, updated_at
                                 ) VALUES (
-                                    @parentId, @name, 0, @size, @version, @originalId, @tgMessageId,
+                                    @parentId, @name, 0, @size, @version, @originalId, @tgMessageId, @tgPreviewMessageId,
                                     @artist, @title, @album, @year, @genre, @trackNumber, @duration, @bitrate,
                                     @headerCache, @albumCover, @createdAt, @updatedAt
                                 );";
@@ -809,6 +811,7 @@ namespace TelegramWebDAV.Database
                             insertCmd.Parameters.AddWithValue("@version", existingNode.Version + 1);
                             insertCmd.Parameters.AddWithValue("@originalId", existingNode.Id);
                             insertCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
+                            insertCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                                 ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                                 : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -839,11 +842,11 @@ namespace TelegramWebDAV.Database
                     {
                         command.CommandText = @"
                             INSERT INTO nodes (
-                                parent_id, name, is_dir, size, version, tg_message_id,
+                                parent_id, name, is_dir, size, version, tg_message_id, tg_preview_message_id,
                                 artist, title, album, year, genre, track_number, duration_seconds, bitrate,
                                 header_cache_bytes, album_cover_bytes, created_at, updated_at
                             ) VALUES (
-                                @parentId, @name, 0, @size, 1, @tgMessageId,
+                                @parentId, @name, 0, @size, 1, @tgMessageId, @tgPreviewMessageId,
                                 @artist, @title, @album, @year, @genre, @trackNumber, @duration, @bitrate,
                                 @headerCache, @albumCover, @createdAt, @updatedAt
                             );";
@@ -851,6 +854,7 @@ namespace TelegramWebDAV.Database
                         command.Parameters.AddWithValue("@name", name);
                         command.Parameters.AddWithValue("@size", size);
                         command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
                         command.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                             ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                             : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -909,7 +913,7 @@ namespace TelegramWebDAV.Database
         /// Обновляет прогресс частичной загрузки (для умного софта с Content-Range в PUT).
         /// Если загрузка завершена (передан tgMessageId или достигнут totalSize), очищает временный прогресс.
         /// </summary>
-        public void UpdateUploadProgress(int parentId, string name, long chunkPosition, long totalSize, int? tgMessageId)
+        public void UpdateUploadProgress(int parentId, string name, long chunkPosition, long totalSize, int? tgMessageId, int? tgPreviewMessageId = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
@@ -924,7 +928,7 @@ namespace TelegramWebDAV.Database
 
                 if (node == null)
                 {
-                    CreateOrUpdateFile(parentId, name, totalSize, tgMessageId);
+                    CreateOrUpdateFile(parentId, name, totalSize, tgMessageId, tgPreviewMessageId);
                     return;
                 }
 
@@ -937,7 +941,9 @@ namespace TelegramWebDAV.Database
                         // При успешном завершении удаляем временный журнал докачки и обновляем финальный узел
                         command.CommandText = @"
                             DELETE FROM upload_progress WHERE node_id = @nodeId;
-                            UPDATE nodes SET size = @totalSize, tg_message_id = COALESCE(@tgMessageId, tg_message_id) 
+                            UPDATE nodes SET size = @totalSize, 
+                                tg_message_id = COALESCE(@tgMessageId, tg_message_id),
+                                tg_preview_message_id = COALESCE(@tgPreviewMessageId, tg_preview_message_id)
                             WHERE id = @nodeId;";
                     }
                     else
@@ -945,13 +951,16 @@ namespace TelegramWebDAV.Database
                         command.CommandText = @"
                             INSERT INTO upload_progress (node_id, chunk_position) 
                             VALUES (@nodeId, @chunkPosition);
-                            UPDATE nodes SET size = @totalSize, tg_message_id = COALESCE(@tgMessageId, tg_message_id) 
+                            UPDATE nodes SET size = @totalSize, 
+                                tg_message_id = COALESCE(@tgMessageId, tg_message_id),
+                                tg_preview_message_id = COALESCE(@tgPreviewMessageId, tg_preview_message_id)
                             WHERE id = @nodeId;";
                     }
                     command.Parameters.AddWithValue("@nodeId", node.Id);
                     command.Parameters.AddWithValue("@chunkPosition", chunkPosition);
                     command.Parameters.AddWithValue("@totalSize", totalSize);
                     command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
                     command.ExecuteNonQuery();
                 }
             }
@@ -1026,6 +1035,7 @@ namespace TelegramWebDAV.Database
                 CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
                 UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc),
                 TgMessageId = reader["tg_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_message_id"]) : (int?)null,
+                TgPreviewMessageId = reader["tg_preview_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_preview_message_id"]) : (int?)null,
                 Version = Convert.ToInt32(reader["version"]),
                 IsDeleted = Convert.ToInt32(reader["is_deleted"]) == 1
             };

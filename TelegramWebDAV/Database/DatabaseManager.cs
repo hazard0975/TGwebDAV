@@ -79,6 +79,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     
     tg_message_id INTEGER,
+    tg_preview_message_id INTEGER,
     
     version INTEGER NOT NULL DEFAULT 1,
     is_deleted INTEGER NOT NULL DEFAULT 0,
@@ -185,6 +186,7 @@ CREATE TABLE IF NOT EXISTS pending_caption_updates (
             AddColumnIfMissing("bitrate", "INTEGER");
             AddColumnIfMissing("header_cache_bytes", "BLOB");
             AddColumnIfMissing("album_cover_bytes", "BLOB");
+            AddColumnIfMissing("tg_preview_message_id", "INTEGER");
         }
 
         private void ApplySchema(SqliteConnection connection)
