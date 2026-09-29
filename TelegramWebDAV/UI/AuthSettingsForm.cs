@@ -37,6 +37,7 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkHideTrash = null!;
         private CheckBox _chkContextMenu = null!;
         private CheckBox _chkAutoShowPopup = null!;
+        private CheckBox _chkGalleryPreview = null!;
         private CheckBox _chkEnableDiskCache = null!;
         private NumericUpDown _numMemoryCacheMb = null!;
         private NumericUpDown _numChunkTtlMinutes = null!;
@@ -201,6 +202,14 @@ namespace TelegramWebDAV.UI
                 Margin = new Padding(0, 5, 0, 5)
             };
 
+            _chkGalleryPreview = new CheckBox
+            {
+                Text = "Создавать фото-превью для галереи Telegram (листание стрелочками)",
+                Checked = _settings.Server.CreatePhotoGalleryPreview,
+                AutoSize = true,
+                Margin = new Padding(0, 5, 0, 5)
+            };
+
             _chkEnableDiskCache = new CheckBox
             {
                 Text = "Сохранять прочитанные файлы в дисковый кэш (%TEMP%)",
@@ -274,7 +283,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkEnableDiskCache, pnlMemCache, pnlChunkTtl, pnlFullTrack, pnlAudioWindow, pnlStreamWindow, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkGalleryPreview, _chkEnableDiskCache, pnlMemCache, pnlChunkTtl, pnlFullTrack, pnlAudioWindow, pnlStreamWindow, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
@@ -910,6 +919,7 @@ namespace TelegramWebDAV.UI
             _settings.Server.HideTrashFromRoot = _chkHideTrash.Checked;
             _settings.Server.AddTrashToContextMenu = _chkContextMenu.Checked;
             _settings.Server.AutoShowUploadPopup = _chkAutoShowPopup.Checked;
+            _settings.Server.CreatePhotoGalleryPreview = _chkGalleryPreview.Checked;
             _settings.Server.EnableDiskReadCache = _chkEnableDiskCache.Checked;
             _settings.Server.MemoryCacheSizeMb = (int)_numMemoryCacheMb.Value;
             _settings.Server.ChunkMemoryCacheTtlMinutes = (int)_numChunkTtlMinutes.Value;

@@ -828,7 +828,7 @@ namespace TelegramWebDAV.Services
                     throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
 
                 var peer = await GetStoragePeerAsync();
-                bool isGallery = IsGalleryImage(effectiveFileName);
+                bool isGallery = _configManager.CurrentSettings.Server.CreatePhotoGalleryPreview && IsGalleryImage(effectiveFileName);
 
                 // Если поток не поддерживает Seek (входящий сетевой поток WebDAV от Проводника)
                 // или если это уже StreamingUploadStream (переданный после извлечения аудио-тегов)
