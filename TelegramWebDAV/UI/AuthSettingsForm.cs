@@ -204,7 +204,7 @@ namespace TelegramWebDAV.UI
 
             _chkGalleryPreview = new CheckBox
             {
-                Text = "Создавать фото-превью для галереи Telegram (листание стрелочками)",
+                Text = "Создавать фото-превью для галереи Telegram",
                 Checked = _settings.Server.CreatePhotoGalleryPreview,
                 AutoSize = true,
                 Margin = new Padding(0, 5, 0, 5)
