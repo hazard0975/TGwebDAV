@@ -1641,7 +1641,10 @@ namespace TelegramWebDAV.Services
                 {
                     int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
                     int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 2;
-                    int windowMb = _configManager?.CurrentSettings?.Server?.StreamingPrefetchWindowMb ?? 20;
+                    bool isAudio = IsAudioFileName(fileName);
+                    int windowMb = isAudio
+                        ? (_configManager?.CurrentSettings?.Server?.AudioPrefetchWindowMb ?? 2)
+                        : (_configManager?.CurrentSettings?.Server?.StreamingPrefetchWindowMb ?? 20);
 
                     long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
                     long windowBytes = (long)windowMb * 1024 * 1024;
@@ -1834,6 +1837,13 @@ namespace TelegramWebDAV.Services
                 await DeleteBatchWithBisectAsync(peer, isChannel, left);
                 await DeleteBatchWithBisectAsync(peer, isChannel, right);
             }
+        }
+
+        private static bool IsAudioFileName(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName)) return false;
+            string ext = Path.GetExtension(fileName).ToLowerInvariant();
+            return ext is ".mp3" or ".flac" or ".aac" or ".m4a" or ".ogg" or ".wav" or ".wma" or ".opus" or ".alac" or ".aiff" or ".ape";
         }
 
         public void Dispose()
