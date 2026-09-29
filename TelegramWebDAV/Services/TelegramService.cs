@@ -1409,6 +1409,7 @@ namespace TelegramWebDAV.Services
                 // Если в кэше уже есть нужный объем байт, или полный 1 МБ, или хвост до конца файла — отдаем из ОЗУ
                 if (cached.data.Length >= minRequiredBytes || cached.data.Length >= 1048576 || (actualTotal > 0 && chunkOffset + cached.data.Length >= actualTotal))
                 {
+                    AppLogger.Info("TelegramService", $"[Cache RAM] Точечное чтение из ОЗУ для '{fileName}' (ID {messageId}): Чанк #{chunkIndex}/{audit.TotalChunks} (смещение {chunkOffset:N0} б, размер {cached.data.Length / 1024} КБ). {audit.ProgressSummary}.");
                     return cached.data;
                 }
 
