@@ -1231,11 +1231,11 @@ namespace TelegramWebDAV.Services
                     readSeq.LastChunkIndex = -1;
                 }
 
-                if (readSeq.LastChunkIndex != -1 && (currentChunkIdx == readSeq.LastChunkIndex || currentChunkIdx == readSeq.LastChunkIndex + 1))
+                if (readSeq.LastChunkIndex != -1 && currentChunkIdx == readSeq.LastChunkIndex + 1)
                 {
                     readSeq.SequentialCount++;
                 }
-                else
+                else if (readSeq.LastChunkIndex != currentChunkIdx)
                 {
                     readSeq.SequentialCount = 1;
                 }
