@@ -459,15 +459,15 @@ namespace TelegramWebDAV.UI
                 AutoScroll = true
             };
 
-            // 1. Рамка: Уровни логирования
+            // 1. Рамка: Уровни логирования (уменьшенные отступы)
             var grpLogLevels = new GroupBox
             {
                 Text = "Уровни логирования",
                 Width = 510,
-                MinimumSize = new Size(510, 130),
+                MinimumSize = new Size(510, 110),
                 AutoSize = true,
-                Margin = new Padding(0, 0, 0, 15),
-                Padding = new Padding(12)
+                Margin = new Padding(0, 0, 0, 8),
+                Padding = new Padding(8)
             };
 
             var pnlLogLevels = new FlowLayoutPanel
@@ -483,7 +483,7 @@ namespace TelegramWebDAV.UI
                 Text = "Debug — подробная техническая отладка (COM-интерфейсы, внутренние вызовы)",
                 Checked = _settings.Logging.EnableDebug,
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 4)
+                Margin = new Padding(0, 1, 0, 2)
             };
 
             _chkLogInfo = new CheckBox
@@ -491,7 +491,7 @@ namespace TelegramWebDAV.UI
                 Text = "Info — стандартные информационные события (файлы, загрузки, запуски)",
                 Checked = _settings.Logging.EnableInfo,
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 4)
+                Margin = new Padding(0, 1, 0, 2)
             };
 
             _chkLogWarn = new CheckBox
@@ -499,7 +499,7 @@ namespace TelegramWebDAV.UI
                 Text = "Warn — предупреждения и некритичные отклонения",
                 Checked = _settings.Logging.EnableWarn,
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 4)
+                Margin = new Padding(0, 1, 0, 2)
             };
 
             _chkLogError = new CheckBox
@@ -507,21 +507,21 @@ namespace TelegramWebDAV.UI
                 Text = "Error — ошибки приложения и сбои операций",
                 Checked = _settings.Logging.EnableError,
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 4)
+                Margin = new Padding(0, 1, 0, 2)
             };
 
             pnlLogLevels.Controls.AddRange(new Control[] { _chkLogDebug, _chkLogInfo, _chkLogWarn, _chkLogError });
             grpLogLevels.Controls.Add(pnlLogLevels);
 
-            // 2. Рамка: Параметры хранения и ротации
+            // 2. Рамка: Параметры хранения и ротации (уменьшенные отступы)
             var grpRotation = new GroupBox
             {
                 Text = "Параметры хранения и ротации лог-файлов",
                 Width = 510,
-                MinimumSize = new Size(510, 95),
+                MinimumSize = new Size(510, 80),
                 AutoSize = true,
-                Margin = new Padding(0, 0, 0, 15),
-                Padding = new Padding(12)
+                Margin = new Padding(0, 0, 0, 8),
+                Padding = new Padding(8)
             };
 
             var tblRotation = new TableLayoutPanel
@@ -540,7 +540,7 @@ namespace TelegramWebDAV.UI
                 Text = "Максимальный размер одного файла лога (МБ):",
                 AutoSize = true,
                 Anchor = AnchorStyles.Left,
-                Margin = new Padding(0, 6, 10, 6)
+                Margin = new Padding(0, 4, 10, 4)
             };
 
             _numMaxLogMb = new NumericUpDown
@@ -557,7 +557,7 @@ namespace TelegramWebDAV.UI
                 Text = "Количество хранящихся архивных файлов:",
                 AutoSize = true,
                 Anchor = AnchorStyles.Left,
-                Margin = new Padding(0, 6, 10, 6)
+                Margin = new Padding(0, 4, 10, 4)
             };
 
             _numMaxLogFiles = new NumericUpDown
@@ -575,15 +575,15 @@ namespace TelegramWebDAV.UI
             tblRotation.Controls.Add(_numMaxLogFiles, 1, 1);
             grpRotation.Controls.Add(tblRotation);
 
-            // 3. Рамка: Текущая информация и действия
+            // 3. Рамка: Текущая информация и действия (увеличенные отступы "воздух")
             var grpStats = new GroupBox
             {
                 Text = "Текущая информация и действия",
                 Width = 510,
-                MinimumSize = new Size(510, 125),
+                MinimumSize = new Size(510, 140),
                 AutoSize = true,
-                Margin = new Padding(0, 0, 0, 15),
-                Padding = new Padding(12)
+                Margin = new Padding(0, 0, 0, 12),
+                Padding = new Padding(12, 12, 12, 12)
             };
 
             var pnlStatsInner = new FlowLayoutPanel
@@ -597,7 +597,7 @@ namespace TelegramWebDAV.UI
             _lblLogStats = new Label
             {
                 AutoSize = true,
-                Margin = new Padding(0, 0, 0, 12),
+                Margin = new Padding(0, 2, 0, 14),
                 Font = new Font("Segoe UI", 8.5F, FontStyle.Regular)
             };
 
@@ -631,20 +631,24 @@ namespace TelegramWebDAV.UI
             };
             updateLogStats();
 
-            var pnlLogActions = new FlowLayoutPanel
+            // Табличное ровное размещение 3 кнопок действия
+            var tblLogActions = new TableLayoutPanel
             {
-                AutoSize = true,
-                FlowDirection = FlowDirection.LeftToRight,
-                WrapContents = false,
-                Margin = new Padding(0, 0, 0, 0)
+                Width = 485,
+                Height = 32,
+                ColumnCount = 3,
+                RowCount = 1,
+                Margin = new Padding(0)
             };
+            tblLogActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33f));
+            tblLogActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33f));
+            tblLogActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.34f));
 
             var btnOpenLogDir = new Button
             {
-                Text = "📁 Открыть папку с логами",
-                AutoSize = true,
-                Padding = new Padding(8, 4, 8, 4),
-                Margin = new Padding(0, 0, 10, 0)
+                Text = "📁 Папка с логами",
+                Dock = DockStyle.Fill,
+                Margin = new Padding(0, 0, 3, 0)
             };
             btnOpenLogDir.Click += (s, e) =>
             {
@@ -662,9 +666,8 @@ namespace TelegramWebDAV.UI
             var btnOpenLogFile = new Button
             {
                 Text = "📄 Открыть app.log",
-                AutoSize = true,
-                Padding = new Padding(8, 4, 8, 4),
-                Margin = new Padding(0, 0, 10, 0)
+                Dock = DockStyle.Fill,
+                Margin = new Padding(3, 0, 3, 0)
             };
             btnOpenLogFile.Click += (s, e) =>
             {
@@ -691,9 +694,9 @@ namespace TelegramWebDAV.UI
 
             var btnClearLogs = new Button
             {
-                Text = "🗑 Очистить все логи",
-                AutoSize = true,
-                Padding = new Padding(8, 4, 8, 4),
+                Text = "🗑 Очистить логи",
+                Dock = DockStyle.Fill,
+                Margin = new Padding(3, 0, 0, 0),
                 ForeColor = Color.DarkRed
             };
             btnClearLogs.Click += (s, e) =>
@@ -706,18 +709,28 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            pnlLogActions.Controls.AddRange(new Control[] { btnOpenLogDir, btnOpenLogFile, btnClearLogs });
-            pnlStatsInner.Controls.AddRange(new Control[] { _lblLogStats, pnlLogActions });
+            tblLogActions.Controls.Add(btnOpenLogDir, 0, 0);
+            tblLogActions.Controls.Add(btnOpenLogFile, 1, 0);
+            tblLogActions.Controls.Add(btnClearLogs, 2, 0);
+
+            pnlStatsInner.Controls.AddRange(new Control[] { _lblLogStats, tblLogActions });
             grpStats.Controls.Add(pnlStatsInner);
 
-            // 4. Кнопка «Сохранить» внизу
+            // 4. Кнопка «Сохранить» в правом нижнем углу
+            var pnlSave = new FlowLayoutPanel
+            {
+                Width = 510,
+                AutoSize = true,
+                FlowDirection = FlowDirection.RightToLeft,
+                Margin = new Padding(0, 5, 0, 10)
+            };
+
             var btnSaveLogs = new Button
             {
                 Text = "Сохранить",
                 AutoSize = true,
-                Padding = new Padding(14, 6, 14, 6),
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                Margin = new Padding(0, 5, 0, 10)
+                Padding = new Padding(16, 6, 16, 6),
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold)
             };
             btnSaveLogs.Click += (s, e) =>
             {
@@ -733,7 +746,9 @@ namespace TelegramWebDAV.UI
                 MessageBox.Show("Настройки логирования успешно сохранены!", "Логирование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
-            pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats, btnSaveLogs });
+            pnlSave.Controls.Add(btnSaveLogs);
+
+            pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats, pnlSave });
             _tabLogs.Controls.Add(pnlLogs);
 
             _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry, _tabLogs });
