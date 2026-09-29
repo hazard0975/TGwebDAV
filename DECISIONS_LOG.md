@@ -200,3 +200,32 @@
     * Для видео и крупных файлов (`.mp4`, `.mkv`, `.avi`, архивы) используется `StreamingPrefetchWindowMb` (по умолчанию 20 МБ, дающее быстрый старт тяжелого видеопотока).
   - При запуске проигрывания или копировании перетягиванием Drag&Drop/Copy-Paste со второго чанка подряд подхватывается фоновый конвейер MTProto, и выводится оверлей `[Download]`.
 
+---
+
+## 5. Отправка изображений и файлов произвольного формата в Telegram (Root Cause Analysis: почему закачанную картинку нельзя было скачать)
+
+### Бизнес-цель:
+Обеспечить надежное сохранение и последующее чтение/скачивание любых файлов (включая изображения `.jpg`, `.png`, `.webp`, `.bmp`, `.gif`) на виртуальном диске WebDAV/WinFsp без потерь качества и сбоев при скачивании.
+
+---
+
+### Симптом:
+Пользователь загрузил картинку на диск, файл отобразился в проводнике, но при попытке скачать его или открыть выдавалась ошибка (в логах `FileNotFoundException: Не удалось найти медиа-документ для сообщения ID ... в Telegram`).
+
+---
+
+### Первопричина (Root Cause):
+1. **Точка записи (`UploadFileAsync`):** Не-аудио и не-видео файлы отправлялись через `_client.SendMediaAsync(peer, effectiveCaption, inputFile)`.
+2. Библиотека `WTelegramClient` внутри `SendMediaAsync` анализирует расширение файла. Увидев расширение изображения, она автоматически конвертирует его в `InputMediaUploadedPhoto` и отправляет в Telegram как сжатую фотографию (`TL.MessageMediaPhoto`), а не как бинарный документ.
+3. Telegram пересжимает изображение и сохраняет его в сообщении с типом медиа `TL.MessageMediaPhoto` (с объектом `TL.Photo`).
+4. **Точка чтения (`DownloadFileAsync` -> `GetDocumentFromMessageAsync`):** Потоковый ридер ожидал строго `TL.MessageMediaDocument` (`msg.media is TL.MessageMediaDocument mediaDoc && mediaDoc.document is TL.Document doc`). Так как `media` являлось `TL.MessageMediaPhoto`, метод возвращал `null`, приводя к `FileNotFoundException`.
+5. Кроме того, отправка как Photo нарушает принцип облачного диска: файл сжимается с потерями, меняется его бинарный размер относительно сохраненного в базе SQLite `node.Size`, и ломается побайтовая целостность.
+
+---
+
+### Принятое решение (Принцип Root Cause First):
+* **Отказ от `SendMediaAsync`:** Все файлы (не-аудио и не-видео) теперь отправляются строго как несжатые документы через `_client.SendMessageAsync(peer, effectiveCaption, mediaDoc)` с использованием `TL.InputMediaUploadedDocument` и атрибутом `TL.DocumentAttributeFilename`.
+* Добавлен хелпер `GetDocumentMimeType` для явного указания MIME-типа файла.
+* Telegram гарантированно сохраняет файлы 1-в-1 без сжатия в виде `TL.MessageMediaDocument`.
+* Чтение и скачивание через MTProto (`Upload_GetFile`), параллельные воркеры и RAM-кэш работают штатно и прозрачно для всех форматов файлов.
+

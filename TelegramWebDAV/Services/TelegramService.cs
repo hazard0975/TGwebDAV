@@ -1016,16 +1016,24 @@ namespace TelegramWebDAV.Services
                 }
                 else
                 {
+                    string mimeType = GetDocumentMimeType(effectiveFileName);
+                    var fileNameAttr = new TL.DocumentAttributeFilename
+                    {
+                        file_name = effectiveFileName
+                    };
+                    var attributes = new TL.DocumentAttribute[] { fileNameAttr };
+                    var mediaDoc = new TL.InputMediaUploadedDocument(inputFile, mimeType, attributes);
+
                     try
                     {
-                        message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
                     {
                         AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
                         InvalidateStoragePeer();
                         peer = await GetStoragePeerAsync();
-                        message = await _client.SendMediaAsync(peer, effectiveCaption, inputFile);
+                        message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
                     }
                 }
 
@@ -1105,6 +1113,33 @@ namespace TelegramWebDAV.Services
             {
                 return -1;
             }
+        }
+
+        private static string GetDocumentMimeType(string fileName)
+        {
+            string ext = Path.GetExtension(fileName).ToLowerInvariant();
+            return ext switch
+            {
+                ".jpg" or ".jpeg" => "image/jpeg",
+                ".png" => "image/png",
+                ".gif" => "image/gif",
+                ".webp" => "image/webp",
+                ".bmp" => "image/bmp",
+                ".svg" => "image/svg+xml",
+                ".ico" => "image/x-icon",
+                ".tif" or ".tiff" => "image/tiff",
+                ".pdf" => "application/pdf",
+                ".zip" => "application/zip",
+                ".rar" => "application/x-rar-compressed",
+                ".7z" => "application/x-7z-compressed",
+                ".tar" => "application/x-tar",
+                ".gz" => "application/gzip",
+                ".txt" => "text/plain",
+                ".json" => "application/json",
+                ".xml" => "application/xml",
+                ".html" or ".htm" => "text/html",
+                _ => "application/octet-stream"
+            };
         }
 
         private async Task<TL.Document?> GetDocumentFromMessageAsync(int messageId, bool forceRefresh = false)
