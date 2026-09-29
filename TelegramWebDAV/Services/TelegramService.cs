@@ -1352,9 +1352,11 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Централизованное получение или скачивание 1 МБ чанка MTProto.
-        /// Если чанк уже скачан — мгновенно возвращает его из RAM-кэша.
-        /// Если чанк прямо сейчас качается другим потоком Windows — присоединяется к существующей Task<byte[]?> без дублирования сетевых запросов.
+        /// Централизованное получение или скачивание чанка MTProto.
+        /// Если чанк уже скачан и содержит требуемое количество байт — мгновенно возвращает его из RAM-кэша.
+        /// Для зондов метаданных адаптивно запрашивает минимально достаточный блок (64 КБ / 128 КБ / 256 КБ / 512 КБ),
+        /// а при реальном стриминге и копировании — полноценные 1 МБ блоки.
+        /// Если чанк прямо сейчас качается другим потоком — присоединяется к существующей Task<byte[]?> без дублирования сетевых запросов.
         /// </summary>
         private async Task<byte[]?> GetOrDownloadChunkAsync(
             int messageId,
@@ -1363,15 +1365,23 @@ namespace TelegramWebDAV.Services
             string fileName,
             long totalFileSize,
             NetworkTransferAudit audit,
+            int minRequiredBytes = 1048576,
+            bool isMetadataProbe = false,
             CancellationToken cancellationToken = default)
         {
             int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
             string chunkKey = $"{messageId}:{chunkIndex}";
+            long chunkOffset = (long)chunkIndex * 1048576;
+            long actualTotal = totalFileSize > 0 ? totalFileSize : document.size;
 
             // 1. Проверяем наличие в RAM-кэше
             if (_chunkMemoryCache.TryGetValue(chunkKey, out var cached) && cached.expiresAt > DateTime.UtcNow && cached.data != null)
             {
-                return cached.data;
+                // Если в кэше уже есть нужный объем байт, или полный 1 МБ, или хвост до конца файла — отдаем из ОЗУ
+                if (cached.data.Length >= minRequiredBytes || cached.data.Length >= 1048576 || (actualTotal > 0 && chunkOffset + cached.data.Length >= actualTotal))
+                {
+                    return cached.data;
+                }
             }
 
             // 2. Если чанк уже качается другой задачей / потоком — присоединяемся к существующей Task<byte[]?>
@@ -1385,21 +1395,35 @@ namespace TelegramWebDAV.Services
                     var activeClient = document.dc_id != 0 ? await _client.GetClientForDC(document.dc_id) : _client;
                     var location = document.ToFileLocation();
 
-                    long chunkOffset = (long)chunkIndex * 1048576;
-                    long actualTotal = totalFileSize > 0 ? totalFileSize : document.size;
                     if (chunkOffset >= actualTotal && actualTotal > 0)
                     {
                         return Array.Empty<byte>();
                     }
 
-                    const int requestLimit = 1048576; // 1 МБ стандарт MTProto
+                    // Адаптивный расчет requestLimit по спецификации MTProto (строго кратно 1 КБ и степеням двойки):
+                    // Для зондов метаданных запрашиваем минимально необходимый объем (64 КБ .. 256 КБ),
+                    // а для полного чтения — 1 МБ.
+                    int requestLimit;
+                    if (isMetadataProbe)
+                    {
+                        if (minRequiredBytes <= 65536) requestLimit = 65536;       // 64 КБ
+                        else if (minRequiredBytes <= 131072) requestLimit = 131072; // 128 КБ
+                        else if (minRequiredBytes <= 262144) requestLimit = 262144; // 256 КБ
+                        else if (minRequiredBytes <= 524288) requestLimit = 524288; // 512 КБ
+                        else requestLimit = 1048576;                               // 1 МБ
+                    }
+                    else
+                    {
+                        requestLimit = 1048576; // 1 МБ для стриминга и копирования
+                    }
 
                     TL.Upload_FileBase? fileBase = null;
                     await _downloadRpcSemaphore.WaitAsync(cancellationToken);
                     try
                     {
                         int totalChunks = audit.TotalChunks;
-                        AppLogger.Info("TelegramService", $"[MTProto] Запрос чанка #{chunkIndex}/{totalChunks} для '{fileName}' (ID {messageId}): смещение {chunkOffset:N0} б, размер {requestLimit / 1024} КБ...");
+                        string probeTag = requestLimit < 1048576 ? $" [Зонд метаданных {requestLimit / 1024} КБ]" : "";
+                        AppLogger.Info("TelegramService", $"[MTProto] Запрос чанка #{chunkIndex}/{totalChunks} для '{fileName}' (ID {messageId}): смещение {chunkOffset:N0} б, размер {requestLimit / 1024} КБ{probeTag}...");
                         var sw = System.Diagnostics.Stopwatch.StartNew();
 
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
@@ -1600,15 +1624,28 @@ namespace TelegramWebDAV.Services
 
             for (int chunkIdx = (int)startChunkIdx; chunkIdx <= (int)endChunkIdx && remainingBytes > 0; chunkIdx++)
             {
-                byte[]? chunkData = await GetOrDownloadChunkAsync(messageId, document, chunkIdx, fileName, actualTotalSize, audit, CancellationToken.None);
+                long chunkBaseOffset = (long)chunkIdx * 1048576;
+                int sliceOffset = (int)(currentPos - chunkBaseOffset);
+                int neededInChunk = (int)Math.Min(1048576 - sliceOffset, remainingBytes);
+                int minRequiredBytes = sliceOffset + neededInChunk;
+
+                byte[]? chunkData = await GetOrDownloadChunkAsync(
+                    messageId,
+                    document,
+                    chunkIdx,
+                    fileName,
+                    actualTotalSize,
+                    audit,
+                    minRequiredBytes: minRequiredBytes,
+                    isMetadataProbe: isMetadataProbe,
+                    cancellationToken: CancellationToken.None);
+
                 if (chunkData == null || chunkData.Length == 0)
                 {
                     AppLogger.Warn("TelegramService", $"Не удалось получить чанк #{chunkIdx} для '{fileName}' (ID {messageId}).");
                     break;
                 }
 
-                long chunkBaseOffset = (long)chunkIdx * 1048576;
-                int sliceOffset = (int)(currentPos - chunkBaseOffset);
                 if (sliceOffset < 0 || sliceOffset >= chunkData.Length)
                 {
                     break;
@@ -1697,7 +1734,7 @@ namespace TelegramWebDAV.Services
                     {
                         int chunkIdx = (int)(scanOffset / 1048576);
                         string chunkKey = $"{messageId}:{chunkIdx}";
-                        if (!_chunkMemoryCache.TryGetValue(chunkKey, out var entry) || entry.expiresAt <= DateTime.UtcNow || entry.data == null)
+                        if (!_chunkMemoryCache.TryGetValue(chunkKey, out var entry) || entry.expiresAt <= DateTime.UtcNow || entry.data == null || (entry.data.Length < 1048576 && ((long)chunkIdx * 1048576 + entry.data.Length < actualTotalSize)))
                         {
                             missingChunkIndices.Add(chunkIdx);
                         }
@@ -1717,7 +1754,7 @@ namespace TelegramWebDAV.Services
                             while (queue.TryDequeue(out int chunkIdx))
                             {
                                 if (cts.Token.IsCancellationRequested) break;
-                                await GetOrDownloadChunkAsync(messageId, document, chunkIdx, fileName, actualTotalSize, audit, cts.Token);
+                                await GetOrDownloadChunkAsync(messageId, document, chunkIdx, fileName, actualTotalSize, audit, minRequiredBytes: 1048576, isMetadataProbe: false, cancellationToken: cts.Token);
                             }
                         }, cts.Token);
                     }
