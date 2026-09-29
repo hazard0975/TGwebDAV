@@ -86,6 +86,14 @@ namespace TelegramWebDAV.Services
 
             public int TotalChunks => FileSize > 0 ? (int)Math.Ceiling((double)FileSize / 1048576.0) : 1;
             public int ReceivedChunksCount => _receivedChunkIndexes.Count;
+            public string ProgressSummary
+            {
+                get
+                {
+                    double pct = TotalChunks > 0 ? (double)ReceivedChunksCount * 100.0 / TotalChunks : 100.0;
+                    return $"Скачано всего: {ReceivedChunksCount} из {TotalChunks} чанков ({pct:0.#}%)";
+                }
+            }
 
             public void AddNetworkBytes(long bytes) => Interlocked.Add(ref _networkBytesDownloaded, bytes);
             public void AddRamBytes(long bytes) => Interlocked.Add(ref _ramBytesDelivered, bytes);
@@ -1330,7 +1338,7 @@ namespace TelegramWebDAV.Services
                     await destination.FlushAsync();
                     audit.AddRamBytes(bytesToSend);
                     bool allReceived = audit.MarkRangeReceived(offset, bytesToSend);
-                    AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт). Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
+                    AppLogger.Info("TelegramService", $"[Cache RAM] Точечное чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт). {audit.ProgressSummary}.");
 
                     if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
                     {
@@ -1456,7 +1464,7 @@ namespace TelegramWebDAV.Services
 
                     bool allReceived = audit.MarkRangeReceived(currentPos - toSend, toSend);
 
-                    AppLogger.Info("TelegramService", $"[Cache RAM] Чтение из памяти RAM '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
+                    AppLogger.Info("TelegramService", $"[Cache RAM] Потоковое чтение из ОЗУ для '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). {audit.ProgressSummary}.");
 
                     // Уведомление о прогрессе вызываем в зависимости от типа чтения и переданного объёма
                     long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
@@ -1541,7 +1549,7 @@ namespace TelegramWebDAV.Services
                     EnsureChunkCacheCapacity();
                     int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
                     _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
-                    AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{(int)(chunkOffset / 1048576)}/{audit.TotalChunks} для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length / 1024} КБ. Чанки: {audit.ReceivedChunksCount}/{audit.TotalChunks}.");
+                    AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{(int)(chunkOffset / 1048576)}/{audit.TotalChunks} для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length / 1024} КБ. {audit.ProgressSummary}.");
 
                     if (_inFlightChunkWaiters.TryRemove(inFlightDirectKey, out var waiter))
                     {
