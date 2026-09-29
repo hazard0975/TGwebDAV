@@ -65,6 +65,15 @@ namespace TelegramWebDAV.Services
         private readonly SemaphoreSlim _downloadRpcSemaphore = new SemaphoreSlim(1, 1);
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, NetworkTransferAudit> _networkAudits = new();
 
+        private class FileReadSequence
+        {
+            public long LastChunkIndex { get; set; } = -1;
+            public int SequentialCount { get; set; } = 0;
+            public DateTime LastReadTime { get; set; } = DateTime.UtcNow;
+        }
+
+        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, FileReadSequence> _fileReadSequences = new();
+
         public class NetworkTransferAudit
         {
             public string FileName { get; set; } = string.Empty;
@@ -236,6 +245,11 @@ namespace TelegramWebDAV.Services
         /// Событие запроса метаданных / тегов файла из Telegram.
         /// </summary>
         public event Action<string, long, long>? OnMetadataProgress;
+
+        /// <summary>
+        /// Событие завершения получения метаданных файла.
+        /// </summary>
+        public event Action<string>? OnMetadataCompleted;
 
         /// <summary>
         /// Событие кэширования отдельных чанков / метаданных / тегов файла в ОЗУ.
@@ -1200,18 +1214,42 @@ namespace TelegramWebDAV.Services
 
             long actualTotalSize = totalFileSize > 0 ? totalFileSize : (document.size > 0 ? document.size : offset + length);
             bool isSmallFile = actualTotalSize <= 262144; // Файл меньше 256 КБ
-            string ext = Path.GetExtension(fileName).ToLowerInvariant();
-            bool isMediaFile = ext is ".mp3" or ".flac" or ".wav" or ".m4a" or ".ogg" or ".ape" or ".wma" or ".aac" or ".opus";
+            long currentChunkIdx = offset / 1048576;
+            long totalChunks = actualTotalSize > 0 ? (long)Math.Ceiling((double)actualTotalSize / 1048576.0) : 1;
 
             var audit = _networkAudits.GetOrAdd(messageId, _ => new NetworkTransferAudit { FileName = fileName, FileSize = actualTotalSize });
             audit.FileName = fileName;
             audit.FileSize = actualTotalSize;
 
-            long totalNetworkBytes = audit.NetworkBytes;
-            long metadataLimit = isMediaFile ? 1572864 : 524288;
-            bool isHeaderProbe = (offset + length <= metadataLimit) && (totalNetworkBytes <= metadataLimit);
-            bool isTailProbe = isMediaFile && (actualTotalSize > 524288) && (offset >= actualTotalSize - 1048576) && (totalNetworkBytes <= metadataLimit);
-            bool isMetadataProbe = (isHeaderProbe || isTailProbe) && (totalNetworkBytes <= metadataLimit);
+            var readSeq = _fileReadSequences.GetOrAdd(messageId, _ => new FileReadSequence());
+            lock (readSeq)
+            {
+                var now = DateTime.UtcNow;
+                if ((now - readSeq.LastReadTime).TotalSeconds > 10)
+                {
+                    readSeq.SequentialCount = 0;
+                    readSeq.LastChunkIndex = -1;
+                }
+
+                if (readSeq.LastChunkIndex != -1 && (currentChunkIdx == readSeq.LastChunkIndex || currentChunkIdx == readSeq.LastChunkIndex + 1))
+                {
+                    readSeq.SequentialCount++;
+                }
+                else
+                {
+                    readSeq.SequentialCount = 1;
+                }
+
+                readSeq.LastChunkIndex = currentChunkIdx;
+                readSeq.LastReadTime = now;
+            }
+
+            // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ (Format-Agnostic, без списков расширений):
+            // Считаем операцию сбором метаданных/эскиза, если запрашиваются крайние чанки (#0 или конец файла)
+            // ИЛИ пока не зафиксировано минимум 2 последовательных чанка подряд.
+            bool isFirstChunkProbe = currentChunkIdx == 0;
+            bool isTailChunkProbe = totalChunks > 1 && currentChunkIdx >= totalChunks - 1;
+            bool isMetadataProbe = (isFirstChunkProbe || isTailChunkProbe || readSeq.SequentialCount < 2) && readSeq.SequentialCount < 2;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1297,7 +1335,7 @@ namespace TelegramWebDAV.Services
                     }
 
                     // Запускаем непрерывный фоновый конвейер скачивания оставшихся чанков файла только при реальном воспроизведении/скачивании
-                    if (!isMetadataProbe && !isTailProbe)
+                    if (!isMetadataProbe)
                     {
                         TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
                     }
@@ -1311,7 +1349,7 @@ namespace TelegramWebDAV.Services
             }
 
             // Для аудио/файлов запускаем непрерывный фоновый конвейер воркеров MTProto
-            if (!enableDiskCache && !isSmallFile && !isMetadataProbe && !isTailProbe)
+            if (!enableDiskCache && !isSmallFile && !isMetadataProbe)
             {
                 TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
             }
@@ -1348,7 +1386,7 @@ namespace TelegramWebDAV.Services
                     onProgress: (transferred, total) =>
                     {
                         long currentTransferred = offset + transferred;
-                        if (!isMetadataProbe || currentTransferred > metadataLimit)
+                        if (!isMetadataProbe)
                             OnDownloadProgress?.Invoke(fileName, currentTransferred, actualTotalSize);
                         else
                         {
@@ -1420,10 +1458,10 @@ namespace TelegramWebDAV.Services
                     // Уведомление о прогрессе вызываем в зависимости от типа чтения и переданного объёма
                     long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
 
-                    if (!isMetadataProbe || currentTotalProgress > metadataLimit || currentPos > metadataLimit)
+                    if (!isMetadataProbe)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
-                        if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
+                        if (allReceived && audit.LogCompletionOnce())
                         {
                             OnDownloadCompleted?.Invoke(fileName);
                         }
@@ -1549,7 +1587,7 @@ namespace TelegramWebDAV.Services
 
                     long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
 
-                    if (!isMetadataProbe || currentTotalProgress > metadataLimit || currentPos > metadataLimit)
+                    if (!isMetadataProbe)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
@@ -1571,7 +1609,11 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            if (!isSmallFile && !isMetadataProbe && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
+            if (isMetadataProbe)
+            {
+                OnMetadataCompleted?.Invoke(fileName);
+            }
+            else if (!isSmallFile && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
             {
                 OnDownloadCompleted?.Invoke(fileName);
             }
@@ -1604,10 +1646,7 @@ namespace TelegramWebDAV.Services
                     long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
                     long windowBytes = (long)windowMb * 1024 * 1024;
 
-                    string ext = Path.GetExtension(fileName).ToLowerInvariant();
-                    bool isMediaFile = ext is ".mp3" or ".flac" or ".wav" or ".m4a" or ".ogg" or ".ape" or ".wma" or ".aac" or ".opus";
-
-                    // Для аудио и небольших файлов (<= fullTrackMaxMb) качаем весь трек целиком до 100%
+                    // Для аудио и любых других файлов <= fullTrackMaxMb качаем файл целиком до 100%
                     // Для очень больших файлов (> fullTrackMaxMb) держим буфер упреждения windowMb вперед
                     long maxPrefetchLimit = actualTotalSize <= fullTrackMaxBytes
                         ? actualTotalSize
@@ -1668,15 +1707,7 @@ namespace TelegramWebDAV.Services
                         },
                         onProgress: (transferred, total) =>
                         {
-                            long totalFileTransferred = audit.RamBytes + audit.NetworkBytes;
-                            if (totalFileTransferred > 524288 || transferred > 524288 || !isMediaFile)
-                            {
-                                OnDownloadProgress?.Invoke(fileName, prefetchStart + transferred, actualTotalSize);
-                            }
-                            else
-                            {
-                                OnMetadataProgress?.Invoke(fileName, transferred, actualTotalSize);
-                            }
+                            OnDownloadProgress?.Invoke(fileName, prefetchStart + transferred, actualTotalSize);
                         },
                         existingChunkProvider: cOff => TryGetFromMemoryCache(messageId, cOff, out var d, out _) ? d : null,
                         cancellationToken: cts.Token);

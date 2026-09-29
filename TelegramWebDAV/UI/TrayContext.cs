@@ -93,6 +93,11 @@ namespace TelegramWebDAV.UI
                 _progressOverlay.UpdateMetadataProgress(fileName, current, total);
             };
 
+            _telegramService.OnMetadataCompleted += (fileName) =>
+            {
+                _progressOverlay.CompleteMetadata(fileName);
+            };
+
             _telegramService.OnDownloadCompleted += (fileName) =>
             {
                 AppLogger.Info("TrayContext", $"Событие OnDownloadCompleted для '{fileName}' получено из TelegramService.");

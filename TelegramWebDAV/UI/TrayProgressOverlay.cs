@@ -218,15 +218,6 @@ namespace TelegramWebDAV.UI
             _isFinalizing = false;
             _lastProgressUpdateTime = DateTime.UtcNow;
 
-            if (!Visible)
-            {
-                AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса [Запрос метаданных] для {fileName} ({current}/{total})");
-                PositionNearTray(useMouse: false);
-                Show();
-                _updateTimer.Start();
-                _hideCheckTimer.Start();
-            }
-
             Invalidate();
             Update();
         }
@@ -241,13 +232,23 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
-            AppLogger.Info("TrayProgressOverlay", $"CompleteMetadata вызван для '{fileName}'. Запуск _completionTimer...");
+            AppLogger.Info("TrayProgressOverlay", $"CompleteMetadata вызван для '{fileName}'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...");
             _direction = TransferDirection.Download;
             _isTransferring = false;
             _isFinalizing = false;
             _isMetadata = true;
             _isCompleted = true;
+            _currentFileName = fileName;
             _bytesPerSecond = 0;
+
+            if (!Visible)
+            {
+                PositionNearTray(useMouse: false);
+                Show();
+                _updateTimer.Start();
+                _hideCheckTimer.Start();
+            }
+
             Invalidate();
             Update();
 
@@ -427,7 +428,7 @@ namespace TelegramWebDAV.UI
                 }
                 else if (_isMetadata)
                 {
-                    header = "ЗАПРОС МЕТАДАННЫХ";
+                    header = "МЕТАДАННЫЕ ПОЛУЧЕНЫ";
                 }
                 else if (_isFinalizing)
                 {
