@@ -95,6 +95,7 @@ namespace TelegramWebDAV.Services
             private long _networkBytesDownloaded;
             private long _ramBytesDelivered;
             private int _completionLogged;
+            private int _metadataCompletedLogged;
 
             private readonly System.Collections.Concurrent.ConcurrentDictionary<int, bool> _receivedChunkIndexes = new();
 
@@ -146,6 +147,11 @@ namespace TelegramWebDAV.Services
             {
                 if (FileSize <= 0) return true;
                 return _receivedChunkIndexes.Count >= TotalChunks;
+            }
+
+            public bool LogMetadataCompletionOnce()
+            {
+                return Interlocked.CompareExchange(ref _metadataCompletedLogged, 1, 0) == 0;
             }
 
             public bool LogCompletionOnce()
@@ -1685,7 +1691,10 @@ namespace TelegramWebDAV.Services
 
             if (isMetadataProbe)
             {
-                OnMetadataCompleted?.Invoke(fileName);
+                if (audit.LogMetadataCompletionOnce())
+                {
+                    OnMetadataCompleted?.Invoke(fileName);
+                }
             }
             else if (audit.IsAllChunksReceived() && audit.LogCompletionOnce())
             {

@@ -232,6 +232,11 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
+            if (_isCompleted && _isMetadata && _currentFileName == fileName && Visible)
+            {
+                return;
+            }
+
             AppLogger.Info("TrayProgressOverlay", $"CompleteMetadata вызван для '{fileName}'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...");
             _direction = TransferDirection.Download;
             _isTransferring = false;
