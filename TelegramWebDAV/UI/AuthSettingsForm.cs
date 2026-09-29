@@ -717,20 +717,23 @@ namespace TelegramWebDAV.UI
             grpStats.Controls.Add(pnlStatsInner);
 
             // 4. Кнопка «Сохранить» в правом нижнем углу
-            var pnlSave = new FlowLayoutPanel
+            var tblSave = new TableLayoutPanel
             {
                 Width = 510,
-                AutoSize = true,
-                FlowDirection = FlowDirection.RightToLeft,
-                Margin = new Padding(0, 5, 0, 10)
+                Height = 38,
+                ColumnCount = 1,
+                RowCount = 1,
+                Margin = new Padding(0, 10, 0, 10)
             };
+            tblSave.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
 
             var btnSaveLogs = new Button
             {
                 Text = "Сохранить",
                 AutoSize = true,
-                Padding = new Padding(16, 6, 16, 6),
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold)
+                Padding = new Padding(18, 6, 18, 6),
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Anchor = AnchorStyles.Right
             };
             btnSaveLogs.Click += (s, e) =>
             {
@@ -746,9 +749,9 @@ namespace TelegramWebDAV.UI
                 MessageBox.Show("Настройки логирования успешно сохранены!", "Логирование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
-            pnlSave.Controls.Add(btnSaveLogs);
+            tblSave.Controls.Add(btnSaveLogs, 0, 0);
 
-            pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats, pnlSave });
+            pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats, tblSave });
             _tabLogs.Controls.Add(pnlLogs);
 
             _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry, _tabLogs });
