@@ -464,6 +464,7 @@ namespace TelegramWebDAV.UI
             {
                 Text = "Уровни логирования",
                 Width = 510,
+                MinimumSize = new Size(510, 130),
                 AutoSize = true,
                 Margin = new Padding(0, 0, 0, 15),
                 Padding = new Padding(12)
@@ -517,6 +518,7 @@ namespace TelegramWebDAV.UI
             {
                 Text = "Параметры хранения и ротации лог-файлов",
                 Width = 510,
+                MinimumSize = new Size(510, 95),
                 AutoSize = true,
                 Margin = new Padding(0, 0, 0, 15),
                 Padding = new Padding(12)
@@ -578,6 +580,7 @@ namespace TelegramWebDAV.UI
             {
                 Text = "Текущая информация и действия",
                 Width = 510,
+                MinimumSize = new Size(510, 125),
                 AutoSize = true,
                 Margin = new Padding(0, 0, 0, 15),
                 Padding = new Padding(12)
