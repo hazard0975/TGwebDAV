@@ -450,6 +450,26 @@ namespace TelegramWebDAV.UI
 
             // === Вкладка 4: Логирование ===
             _tabLogs = new TabPage("Логирование");
+
+            // Нижняя панель для кнопки «Сохранить» в правом нижнем углу окна
+            var pnlSaveBar = new Panel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 48,
+                Padding = new Padding(0, 6, 15, 10)
+            };
+
+            var btnSaveLogs = new Button
+            {
+                Text = "Сохранить",
+                AutoSize = true,
+                Padding = new Padding(20, 6, 20, 6),
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                Dock = DockStyle.Right
+            };
+
+            pnlSaveBar.Controls.Add(btnSaveLogs);
+
             var pnlLogs = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
@@ -635,7 +655,7 @@ namespace TelegramWebDAV.UI
             var tblLogActions = new TableLayoutPanel
             {
                 Width = 485,
-                Height = 32,
+                Height = 36,
                 ColumnCount = 3,
                 RowCount = 1,
                 Margin = new Padding(0)
@@ -716,25 +736,6 @@ namespace TelegramWebDAV.UI
             pnlStatsInner.Controls.AddRange(new Control[] { _lblLogStats, tblLogActions });
             grpStats.Controls.Add(pnlStatsInner);
 
-            // 4. Кнопка «Сохранить» в правом нижнем углу
-            var tblSave = new TableLayoutPanel
-            {
-                Width = 510,
-                Height = 38,
-                ColumnCount = 1,
-                RowCount = 1,
-                Margin = new Padding(0, 10, 0, 10)
-            };
-            tblSave.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
-
-            var btnSaveLogs = new Button
-            {
-                Text = "Сохранить",
-                AutoSize = true,
-                Padding = new Padding(18, 6, 18, 6),
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                Anchor = AnchorStyles.Right
-            };
             btnSaveLogs.Click += (s, e) =>
             {
                 _settings.Logging.EnableDebug = _chkLogDebug.Checked;
@@ -749,10 +750,8 @@ namespace TelegramWebDAV.UI
                 MessageBox.Show("Настройки логирования успешно сохранены!", "Логирование", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
-            tblSave.Controls.Add(btnSaveLogs, 0, 0);
-
-            pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats, tblSave });
-            _tabLogs.Controls.Add(pnlLogs);
+            pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats });
+            _tabLogs.Controls.AddRange(new Control[] { pnlLogs, pnlSaveBar });
 
             _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry, _tabLogs });
             this.Controls.Add(_tabControl);
