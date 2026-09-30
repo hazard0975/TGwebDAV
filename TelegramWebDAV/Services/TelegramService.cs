@@ -1552,12 +1552,6 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            // Для аудио/файлов запускаем непрерывный фоновый конвейер воркеров MTProto
-            if (!enableDiskCache && !isSmallFile && !isMetadataProbe)
-            {
-                TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
-            }
-
             var activeClient = document.dc_id != 0 ? await _client.GetClientForDC(document.dc_id) : _client;
             TL.InputFileLocationBase location = document.ToFileLocation();
 
@@ -1722,6 +1716,19 @@ namespace TelegramWebDAV.Services
                     EnsureChunkCacheCapacity();
                     int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
                     _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
+
+                    // Если был скачан хвост для блока при наличии зонда головы — склеиваем их в цельный 1 МБ блок в ОЗУ
+                    long megaStart = (chunkOffset / 1048576) * 1048576;
+                    if (chunkOffset > megaStart && TryGetFromMemoryCache(messageId, megaStart, out var probeData, out _) && probeData != null && probeData.Length == (int)(chunkOffset - megaStart))
+                    {
+                        int fullSize = probeData.Length + raw.Length;
+                        byte[] stitched = new byte[fullSize];
+                        Buffer.BlockCopy(probeData, 0, stitched, 0, probeData.Length);
+                        Buffer.BlockCopy(raw, 0, stitched, probeData.Length, raw.Length);
+                        string fullChunkKey = $"{messageId}:{megaStart}:{fullSize}";
+                        _chunkMemoryCache[fullChunkKey] = (stitched, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
+                    }
+
                     AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{(int)(chunkOffset / 1048576)}/{audit.TotalChunks} для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length / 1024} КБ. {audit.ProgressSummary}.");
 
                     if (_inFlightChunkWaiters.TryRemove(inFlightDirectKey, out var waiter))
@@ -1806,6 +1813,11 @@ namespace TelegramWebDAV.Services
                 {
                     OnMetadataCompleted?.Invoke(fileName);
                 }
+            }
+            else if (!enableDiskCache && !isSmallFile)
+            {
+                // Запускаем непрерывный фоновый конвейер воркеров MTProto строго ПОСЛЕ того, как текущий чанк скачан и готов в RAM
+                TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
             }
         }
 
