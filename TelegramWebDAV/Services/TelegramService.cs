@@ -95,8 +95,10 @@ namespace TelegramWebDAV.Services
             private long _networkBytesDownloaded;
             private long _ramBytesDelivered;
             private int _completionLogged;
+            private int _metadataCompletedLogged;
 
             private readonly System.Collections.Concurrent.ConcurrentDictionary<int, bool> _receivedChunkIndexes = new();
+            private readonly System.Collections.Concurrent.ConcurrentDictionary<int, long> _chunkBytesAccumulator = new();
 
             public int TotalChunks => FileSize > 0 ? (int)Math.Ceiling((double)FileSize / 1048576.0) : 1;
             public int ReceivedChunksCount => _receivedChunkIndexes.Count;
@@ -116,7 +118,7 @@ namespace TelegramWebDAV.Services
             public long RamBytes => Interlocked.Read(ref _ramBytesDelivered);
 
             /// <summary>
-            /// Помечает диапазон байт как полученный. Чанк отмечается как завершенный только если диапазон полностью покрывает данный чанк.
+            /// Помечает диапазон байт как полученный. Чанк отмечается как завершенный при получении 100% байт данного блока (в том числе слайсами по 256 КБ).
             /// Возвращает true, если получены ВСЕ чанки файла (100% загрузка).
             /// </summary>
             public bool MarkRangeReceived(long offset, long length)
@@ -137,10 +139,20 @@ namespace TelegramWebDAV.Services
                     {
                         long chunkStart = (long)i * 1048576;
                         long chunkEnd = Math.Min(FileSize, chunkStart + 1048576);
-                        // Помечаем чанк i как завершенный только если полученный диапазон покрывает весь чанк от chunkStart до chunkEnd
-                        if (offset <= chunkStart && endPos >= chunkEnd)
+                        long expectedChunkBytes = chunkEnd - chunkStart;
+
+                        // Считаем пересечение диапазона с данным чанком
+                        long overlapStart = Math.Max(offset, chunkStart);
+                        long overlapEnd = Math.Min(endPos, chunkEnd);
+                        long overlapBytes = Math.Max(0, overlapEnd - overlapStart);
+
+                        if (overlapBytes > 0)
                         {
-                            _receivedChunkIndexes.TryAdd(i, true);
+                            long accumulated = _chunkBytesAccumulator.AddOrUpdate(i, overlapBytes, (_, old) => old + overlapBytes);
+                            if (accumulated >= expectedChunkBytes || (offset <= chunkStart && endPos >= chunkEnd))
+                            {
+                                _receivedChunkIndexes.TryAdd(i, true);
+                            }
                         }
                     }
                 }
@@ -152,6 +164,11 @@ namespace TelegramWebDAV.Services
             {
                 if (FileSize <= 0) return true;
                 return _receivedChunkIndexes.Count >= TotalChunks;
+            }
+
+            public bool LogMetadataCompletedOnce()
+            {
+                return Interlocked.CompareExchange(ref _metadataCompletedLogged, 1, 0) == 0;
             }
 
             public bool LogCompletionOnce()
@@ -1664,9 +1681,26 @@ namespace TelegramWebDAV.Services
                 // 2. Адаптивный выбор размера чанка MTProto
                 int baseChunkSize = (isSmallFile || isMetadataProbe) ? 262144 : 1048576;
 
+                // Эвристика повторного обращения: если в пределах текущего 1 МБ блока уже происходило чтение
+                // (например, был скачан 256 КБ зонд метаданных), то повторный запрос означает реальное последовательное чтение.
+                // Вместо серии медленных 256 КБ RPC-запросов одним махом выкачиваем весь остаток 1 МБ блока!
+                long megaBlockStart = (currentPos / 1048576) * 1048576;
+                long offsetInMegaBlock = currentPos - megaBlockStart;
+                if (!isSmallFile && isMetadataProbe && offsetInMegaBlock >= 262144)
+                {
+                    // Выравниваем по текущему 256 КБ кванту (например 256 КБ, 512 КБ или 768 КБ)
+                    long alignedSubOffset = (currentPos / 262144) * 262144;
+                    long bytesToMegaEnd = (megaBlockStart + 1048576) - alignedSubOffset;
+                    if (bytesToMegaEnd > 262144)
+                    {
+                        // Запрашиваем остаток блока до конца 1 МБ (например, 768 КБ или 512 КБ)
+                        baseChunkSize = (int)bytesToMegaEnd;
+                    }
+                }
+
                 // MTProto строго запрещает запросам выходить за пределы одного 1-мегабайтного блока (1048576 байт).
-                // Выравниваем chunkOffset по границе baseChunkSize.
-                long chunkOffset = (currentPos / baseChunkSize) * baseChunkSize;
+                // Выравниваем chunkOffset по границе 262144 байт.
+                long chunkOffset = (currentPos / 262144) * 262144;
                 int internalOffset = (int)(currentPos - chunkOffset);
                 int requestLimit = baseChunkSize;
 
@@ -1798,7 +1832,10 @@ namespace TelegramWebDAV.Services
 
             if (isMetadataProbe)
             {
-                OnMetadataCompleted?.Invoke(fileName);
+                if (audit.LogMetadataCompletedOnce())
+                {
+                    OnMetadataCompleted?.Invoke(fileName);
+                }
             }
             else if (!isSmallFile && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
             {
