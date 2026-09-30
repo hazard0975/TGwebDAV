@@ -151,6 +151,8 @@ namespace TelegramWebDAV.Services
                 return _receivedChunkIndexes.Count >= TotalChunks;
             }
 
+            public bool IsMetadataAlreadyCompleted => Thread.VolatileRead(ref _metadataCompletedLogged) == 1;
+
             public bool LogMetadataCompletionOnce()
             {
                 return Interlocked.CompareExchange(ref _metadataCompletedLogged, 1, 0) == 0;
@@ -1633,7 +1635,17 @@ namespace TelegramWebDAV.Services
             bool isFirstChunkProbe = startChunkIdx == 0 && effectiveLength <= 262144;
             bool isTailChunkProbe = (actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152) ||
                                     (audit.TotalChunks > 1 && startChunkIdx >= audit.TotalChunks - 1);
-            bool isMetadataProbe = isFirstChunkProbe || isTailChunkProbe || readSeq.SequentialCount < 2;
+
+            bool isMetadataProbe;
+            if (audit.IsMetadataAlreadyCompleted)
+            {
+                // Если метаданные уже ранее были получены, только микро-чтения первого чанка (<= 256 КБ) или хвостового блока считаются зондами
+                isMetadataProbe = isFirstChunkProbe || isTailChunkProbe;
+            }
+            else
+            {
+                isMetadataProbe = isFirstChunkProbe || isTailChunkProbe || readSeq.SequentialCount < 2;
+            }
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1748,8 +1760,11 @@ namespace TelegramWebDAV.Services
                     }
                     else
                     {
-                        long transferredMetaBytes = audit.NetworkBytes > 0 ? audit.NetworkBytes : Math.Min(actualTotalSize, (long)audit.ReceivedChunksCount * 65536);
-                        OnMetadataProgress?.Invoke(fileName, transferredMetaBytes, actualTotalSize);
+                        if (!audit.IsMetadataAlreadyCompleted)
+                        {
+                            long transferredMetaBytes = audit.NetworkBytes > 0 ? audit.NetworkBytes : Math.Min(actualTotalSize, (long)audit.ReceivedChunksCount * 65536);
+                            OnMetadataProgress?.Invoke(fileName, transferredMetaBytes, actualTotalSize);
+                        }
                         OnChunkCached?.Invoke(fileName, currentPos, actualTotalSize);
                     }
                 }
