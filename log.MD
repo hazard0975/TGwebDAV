@@ -1,115 +1,134 @@
-[2026-09-30 02:30:14.906] [INFO ] [TelegramService] [MTProto] [Воркер #3] Запрос чанка #0/13 для 'Headhunters - Dayz Like That (3base club mix).mp3' (ID 1225): смещение 0 б, размер 64 КБ [Зонд метаданных 64 КБ]...
-[2026-09-30 02:30:14.907] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:14Z (svc)
-[2026-09-30 02:30:14.907] [DEBUG] [WTelegram]             → Upload_GetFile                         #684A
-[2026-09-30 02:30:14.907] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:14.965] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:14Z
-[2026-09-30 02:30:14.965] [DEBUG] [WTelegram]              → Upload_File                           #684A
-[2026-09-30 02:30:14.965] [INFO ] [TelegramService] [MTProto] Получен чанк #0/13 для 'Headhunters - Dayz Like That (3base club mix).mp3': скачано 64 КБ (итого в RAM: 64 КБ). Скачано всего: 1 из 13 чанков (7,7%).
-[2026-09-30 02:30:14.965] [INFO ] [TelegramService] [MTProto] [Воркер #1] Запрос чанка #12/13 для 'Headhunters - Dayz Like That (3base club mix).mp3' (ID 1225): смещение 12 582 912 б, размер 128 КБ [Зонд метаданных 128 КБ]...
-[2026-09-30 02:30:14.965] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:14Z (svc)
-[2026-09-30 02:30:14.965] [DEBUG] [WTelegram]             → Upload_GetFile                         #7082
-[2026-09-30 02:30:14.965] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:14.966] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'Headhunters - Dayz Like That (3base club mix).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
-[2026-09-30 02:30:15.079] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.079] [DEBUG] [WTelegram]              → Upload_File                           #7082
-[2026-09-30 02:30:15.079] [INFO ] [TelegramService] [MTProto] Получен чанк #12/13 для 'Headhunters - Dayz Like That (3base club mix).mp3': скачано 89 КБ (итого в RAM: 89 КБ). Скачано всего: 2 из 13 чанков (15,4%).
-[2026-09-30 02:30:15.088] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.088] [DEBUG] [WTelegram]             → Channels_GetMessages                   #EB6F
-[2026-09-30 02:30:15.088] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.143] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.143] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #EB6F
-[2026-09-30 02:30:15.143] [INFO ] [TelegramService] [MTProto] [Воркер #2] Запрос чанка #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 1226): смещение 0 б, размер 64 КБ [Зонд метаданных 64 КБ]...
-[2026-09-30 02:30:15.143] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.143] [DEBUG] [WTelegram]             → Upload_GetFile                         #7E03
-[2026-09-30 02:30:15.143] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.204] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.204] [DEBUG] [WTelegram]              → Upload_File                           #7E03
-[2026-09-30 02:30:15.204] [INFO ] [TelegramService] [MTProto] Получен чанк #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3': скачано 64 КБ (итого в RAM: 64 КБ). Скачано всего: 1 из 13 чанков (7,7%).
-[2026-09-30 02:30:15.204] [INFO ] [TelegramService] [MTProto] [Воркер #3] Запрос чанка #12/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 1226): смещение 12 582 912 б, размер 1024 КБ...
-[2026-09-30 02:30:15.205] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.205] [DEBUG] [WTelegram]             → Upload_GetFile                         #9647
-[2026-09-30 02:30:15.205] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.205] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
-[2026-09-30 02:30:15.314] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.314] [DEBUG] [WTelegram]              → Upload_File                           #9647
-[2026-09-30 02:30:15.314] [INFO ] [TelegramService] [MTProto] Получен чанк #12/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3': скачано 593 КБ (итого в RAM: 593 КБ). Скачано всего: 2 из 13 чанков (15,4%).
-[2026-09-30 02:30:15.315] [INFO ] [TelegramService] [MTProto] [Воркер #1] Запрос чанка #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 1226): смещение 65 536 б, размер 64 КБ [Докачка хвоста +64 КБ до 128 КБ]...
-[2026-09-30 02:30:15.315] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.315] [DEBUG] [WTelegram]             → Upload_GetFile                         #2A9B
-[2026-09-30 02:30:15.315] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.368] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.368] [DEBUG] [WTelegram]              → Upload_File                           #2A9B
-[2026-09-30 02:30:15.369] [INFO ] [TelegramService] [MTProto] Получен чанк #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3': скачано 64 КБ (итого в RAM: 128 КБ). Скачано всего: 2 из 13 чанков (15,4%).
-[2026-09-30 02:30:15.369] [INFO ] [TelegramService] [MTProto] [Воркер #2] Запрос чанка #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 1226): смещение 131 072 б, размер 128 КБ [Докачка хвоста +128 КБ до 256 КБ]...
-[2026-09-30 02:30:15.370] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.370] [DEBUG] [WTelegram]             → Upload_GetFile                         #CEEB
-[2026-09-30 02:30:15.370] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.445] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.445] [DEBUG] [WTelegram]              → Upload_File                           #CEEB
-[2026-09-30 02:30:15.445] [INFO ] [TelegramService] [MTProto] Получен чанк #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3': скачано 128 КБ (итого в RAM: 256 КБ). Скачано всего: 2 из 13 чанков (15,4%).
-[2026-09-30 02:30:15.446] [INFO ] [TelegramService] [MTProto] [Воркер #3] Запрос чанка #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 1226): смещение 262 144 б, размер 256 КБ [Докачка хвоста +256 КБ до 512 КБ]...
-[2026-09-30 02:30:15.446] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.446] [DEBUG] [WTelegram]             → Upload_GetFile                         #88F3
-[2026-09-30 02:30:15.446] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.511] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.511] [DEBUG] [WTelegram]              → Upload_File                           #88F3
-[2026-09-30 02:30:15.512] [INFO ] [TelegramService] [MTProto] Получен чанк #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3': скачано 256 КБ (итого в RAM: 512 КБ). Скачано всего: 2 из 13 чанков (15,4%).
-[2026-09-30 02:30:15.518] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.518] [DEBUG] [WTelegram]             → Channels_GetMessages                   #BA87
-[2026-09-30 02:30:15.518] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.573] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.573] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #BA87
-
-[2026-09-30 02:30:15.574] [INFO ] [TelegramService] [MTProto] [Воркер #1] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1229): смещение 0 б, размер 64 КБ [Зонд метаданных 64 КБ]...
-[2026-09-30 02:30:15.574] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.574] [DEBUG] [WTelegram]             → Upload_GetFile                         #65E7
-[2026-09-30 02:30:15.574] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.629] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.629] [DEBUG] [WTelegram]              → Upload_File                           #65E7
-[2026-09-30 02:30:15.629] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': скачано 64 КБ (итого в RAM: 64 КБ). Скачано всего: 1 из 14 чанков (7,1%).
-[2026-09-30 02:30:15.630] [INFO ] [TelegramService] [MTProto] [Воркер #2] Запрос чанка #13/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1229): смещение 13 631 488 б, размер 256 КБ [Зонд метаданных 256 КБ]...
-[2026-09-30 02:30:15.630] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.630] [DEBUG] [WTelegram]             → Upload_GetFile                         #D987
-[2026-09-30 02:30:15.630] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.630] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
-[2026-09-30 02:30:15.692] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.692] [DEBUG] [WTelegram]              → Upload_File                           #D987
-[2026-09-30 02:30:15.692] [INFO ] [TelegramService] [MTProto] Получен чанк #13/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': скачано 228 КБ (итого в RAM: 228 КБ). Скачано всего: 2 из 14 чанков (14,3%).
-[2026-09-30 02:30:15.693] [INFO ] [TelegramService] [MTProto] [Воркер #3] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1229): смещение 65 536 б, размер 64 КБ [Докачка хвоста +64 КБ до 128 КБ]...
-[2026-09-30 02:30:15.694] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:15Z (svc)
-[2026-09-30 02:30:15.694] [DEBUG] [WTelegram]             → Upload_GetFile                         #865F
-[2026-09-30 02:30:15.694] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:15.745] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:30:15Z
-[2026-09-30 02:30:15.745] [DEBUG] [WTelegram]              → Upload_File                           #865F
-[2026-09-30 02:30:15.746] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': скачано 64 КБ (итого в RAM: 128 КБ). Скачано всего: 2 из 14 чанков (14,3%).
-[2026-09-30 02:30:17.251] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,5 сек).
-[2026-09-30 02:30:17.251] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
-[2026-09-30 02:30:18.649] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
-[2026-09-30 02:30:18.652] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
-
-[2026-09-30 02:30:29.221] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:30:29Z (svc)
-[2026-09-30 02:30:29.221] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #188D
-[2026-09-30 02:30:29.221] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:30:29.264] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-09-29 23:30:29Z (svc) 
-[2026-09-30 02:31:29.279] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #8ED1
-[2026-09-30 02:31:29.322] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-09-29 23:31:29Z (svc) 
-[2026-09-30 02:32:13.580] [INFO ] [TelegramService] [MTProto] [Воркер #1] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1229): смещение 131 072 б, размер 128 КБ [Докачка хвоста +128 КБ до 256 КБ]...
-[2026-09-30 02:32:13.580] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #6289
-[2026-09-30 02:32:13.636] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:32:13Z
-[2026-09-30 02:32:13.636] [DEBUG] [WTelegram]              → Upload_File                           #6289
-[2026-09-30 02:32:13.637] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': скачано 128 КБ (итого в RAM: 256 КБ). Скачано всего: 2 из 14 чанков (14,3%).
-[2026-09-30 02:32:13.637] [INFO ] [TelegramService] [MTProto] [Воркер #2] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1229): смещение 262 144 б, размер 256 КБ [Докачка хвоста +256 КБ до 512 КБ]...
-[2026-09-30 02:32:13.638] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:32:13Z (svc)
-[2026-09-30 02:32:13.638] [DEBUG] [WTelegram]             → Upload_GetFile                         #5395
-[2026-09-30 02:32:13.638] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:32:13.704] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:32:13Z
-[2026-09-30 02:32:13.704] [DEBUG] [WTelegram]              → Upload_File                           #5395
-[2026-09-30 02:32:13.705] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': скачано 256 КБ (итого в RAM: 512 КБ). Скачано всего: 2 из 14 чанков (14,3%).
-[2026-09-30 02:32:13.706] [INFO ] [TelegramService] [MTProto] [Воркер #3] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1229): смещение 524 288 б, размер 512 КБ [Докачка хвоста +512 КБ до 1024 КБ]...
-[2026-09-30 02:32:13.706] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-29 23:32:13Z (svc)
-[2026-09-30 02:32:13.706] [DEBUG] [WTelegram]             → Upload_GetFile                         #5021
-[2026-09-30 02:32:13.706] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-09-30 02:32:13.818] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-29 23:32:13Z
-[2026-09-30 02:32:13.818] [DEBUG] [WTelegram]              → Upload_File                           #5021
-[2026-09-30 02:32:13.819] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': скачано 512 КБ (итого в RAM: 1024 КБ). Скачано всего: 2 из 14 чанков (14,3%).
-[2026-09-30 02:32:13.823] [INFO ] [TelegramService] [MTProto] [Воркер #1] Запрос
+[2026-09-30 17:29:17.779] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/12 для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): смещение 0, размер 256 КБ...
+[2026-09-30 17:29:17.779] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:17Z (svc)
+[2026-09-30 17:29:17.779] [DEBUG] [WTelegram]             → Upload_GetFile                         #51C5
+[2026-09-30 17:29:17.780] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:18.010] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:17Z
+[2026-09-30 17:29:18.011] [DEBUG] [WTelegram]              → Upload_File                           #51C5
+[2026-09-30 17:29:18.015] [INFO ] [TelegramService] [MTProto] Получен чанк #0/12 для 'IMG_20201018_131419 (12 mb).jpg': смещение 0, размер 256 КБ. Скачано всего: 1 из 12 чанков (8,3%).
+[2026-09-30 17:29:18.016] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'IMG_20201018_131419 (12 mb).jpg'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-09-30 17:29:19.446] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-09-30 17:29:19.448] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-09-30 17:29:23.688] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:23Z (svc)
+[2026-09-30 17:29:23.688] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #8DB7
+[2026-09-30 17:29:23.688] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:23.730] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-09-30 14:29:23Z (svc) 
+[2026-09-30 17:29:23.998] [DEBUG] [WTelegram] 2>Receiving Updates                                  2026-09-30 14:29:23Z  
+[2026-09-30 17:29:52.320] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #0 (смещение 0, 262 144 байт). Скачано всего: 1 из 12 чанков (8,3%).
+[2026-09-30 17:29:52.324] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанки #1..#3 (всего 12)) через 3 воркеров MTProto...
+[2026-09-30 17:29:52.327] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #1/12 (смещение 1 048 576 б, размер 1 048 576 б)...
+[2026-09-30 17:29:52.328] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:52Z (svc)
+[2026-09-30 17:29:52.328] [DEBUG] [WTelegram]             → Upload_GetFile                         #B868
+[2026-09-30 17:29:52.328] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #1..#5 (всего 12)) через 3 воркеров MTProto...
+[2026-09-30 17:29:52.328] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:52.531] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #2/12 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-09-30 17:29:52.531] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:52Z
+[2026-09-30 17:29:52.531] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:52Z (svc)
+[2026-09-30 17:29:52.531] [DEBUG] [WTelegram]             → Upload_GetFile                         #F064
+[2026-09-30 17:29:52.531] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:52.531] [DEBUG] [WTelegram]              → Upload_File                           #B868
+[2026-09-30 17:29:52.533] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #1/12 (1 048 576 б за 204 мс) [Полный].
+[2026-09-30 17:29:52.533] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для IMG_20201018_131419 (12 mb).jpg (2097152/12414274)
+[2026-09-30 17:29:52.651] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:52Z
+[2026-09-30 17:29:52.652] [DEBUG] [WTelegram]              → Upload_File                           #F064
+[2026-09-30 17:29:52.652] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #2/12 (1 048 576 б за 120 мс) [Полный].
+[2026-09-30 17:29:52.652] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #2 (смещение 2 097 152, 1 048 576 байт). Скачано всего: 3 из 12 чанков (25%).
+[2026-09-30 17:29:52.730] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #3/12 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-09-30 17:29:52.731] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:52Z (svc)
+[2026-09-30 17:29:52.731] [DEBUG] [WTelegram]             → Upload_GetFile                         #47B4
+[2026-09-30 17:29:52.731] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:52.823] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:52Z
+[2026-09-30 17:29:52.823] [DEBUG] [WTelegram]              → Upload_File                           #47B4
+[2026-09-30 17:29:52.824] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 12 чанков (33,3%).
+[2026-09-30 17:29:52.825] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #3/12 (1 048 576 б за 93 мс) [Полный].
+[2026-09-30 17:29:52.934] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/12 (смещение 1 048 576 б, размер 1 048 576 б)...
+[2026-09-30 17:29:52.935] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:52Z (svc)
+[2026-09-30 17:29:52.935] [DEBUG] [WTelegram]             → Upload_GetFile                         #4ADC
+[2026-09-30 17:29:52.935] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:53.060] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:53Z
+[2026-09-30 17:29:53.060] [DEBUG] [WTelegram]              → Upload_File                           #4ADC
+[2026-09-30 17:29:53.061] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/12 (1 048 576 б за 125 мс) [Полный].
+[2026-09-30 17:29:53.136] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #2/12 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-09-30 17:29:53.137] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:53Z (svc)
+[2026-09-30 17:29:53.137] [DEBUG] [WTelegram]             → Upload_GetFile                         #71D1
+[2026-09-30 17:29:53.137] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:53.269] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:53Z
+[2026-09-30 17:29:53.270] [DEBUG] [WTelegram]              → Upload_File                           #71D1
+[2026-09-30 17:29:53.270] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #2/12 (1 048 576 б за 133 мс) [Полный].
+[2026-09-30 17:29:53.338] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #3/12 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-09-30 17:29:53.339] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:53Z (svc)
+[2026-09-30 17:29:53.339] [DEBUG] [WTelegram]             → Upload_GetFile                         #2335
+[2026-09-30 17:29:53.339] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:53.492] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:53Z
+[2026-09-30 17:29:53.492] [DEBUG] [WTelegram]              → Upload_File                           #2335
+[2026-09-30 17:29:53.492] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #3/12 (1 048 576 б за 153 мс) [Полный].
+[2026-09-30 17:29:53.545] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/12 (смещение 4 194 304 б, размер 1 048 576 б)...
+[2026-09-30 17:29:53.546] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:53Z (svc)
+[2026-09-30 17:29:53.546] [DEBUG] [WTelegram]             → Upload_GetFile                         #8E95
+[2026-09-30 17:29:53.546] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:53.665] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:53Z
+[2026-09-30 17:29:53.666] [DEBUG] [WTelegram]              → Upload_File                           #8E95
+[2026-09-30 17:29:53.666] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/12 (1 048 576 б за 120 мс) [Полный].
+[2026-09-30 17:29:53.666] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 12 чанков (41,7%).
+[2026-09-30 17:29:53.751] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #5/12 (смещение 5 242 880 б, размер 1 048 576 б)...
+[2026-09-30 17:29:53.752] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:53Z (svc)
+[2026-09-30 17:29:53.752] [DEBUG] [WTelegram]             → Upload_GetFile                         #2D5D
+[2026-09-30 17:29:53.752] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:53.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:53Z
+[2026-09-30 17:29:53.856] [DEBUG] [WTelegram]              → Upload_File                           #2D5D
+[2026-09-30 17:29:53.856] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #5/12 (1 048 576 б за 104 мс) [Полный].
+[2026-09-30 17:29:53.856] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 6 из 12 чанков (50%).
+[2026-09-30 17:29:53.857] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #6..#9 (всего 12)) через 3 воркеров MTProto...
+[2026-09-30 17:29:53.954] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #6/12 (смещение 6 291 456 б, размер 1 048 576 б)...
+[2026-09-30 17:29:53.955] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:53Z (svc)
+[2026-09-30 17:29:53.955] [DEBUG] [WTelegram]             → Upload_GetFile                         #4391
+[2026-09-30 17:29:53.955] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:54.121] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:54Z
+[2026-09-30 17:29:54.122] [DEBUG] [WTelegram]              → Upload_File                           #4391
+[2026-09-30 17:29:54.123] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #6/12 (1 048 576 б за 167 мс) [Полный].
+[2026-09-30 17:29:54.123] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #6 (смещение 6 291 456, 1 048 576 байт). Скачано всего: 7 из 12 чанков (58,3%).
+[2026-09-30 17:29:54.156] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/12 (смещение 7 340 032 б, размер 1 048 576 б)...
+[2026-09-30 17:29:54.156] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:54Z (svc)
+[2026-09-30 17:29:54.156] [DEBUG] [WTelegram]             → Upload_GetFile                         #6D8E
+[2026-09-30 17:29:54.157] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:54.249] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:54Z
+[2026-09-30 17:29:54.249] [DEBUG] [WTelegram]              → Upload_File                           #6D8E
+[2026-09-30 17:29:54.250] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/12 (1 048 576 б за 93 мс) [Полный].
+[2026-09-30 17:29:54.250] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #7 (смещение 7 340 032, 1 048 576 байт). Скачано всего: 8 из 12 чанков (66,7%).
+[2026-09-30 17:29:54.359] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #8/12 (смещение 8 388 608 б, размер 1 048 576 б)...
+[2026-09-30 17:29:54.359] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:54Z (svc)
+[2026-09-30 17:29:54.359] [DEBUG] [WTelegram]             → Upload_GetFile                         #4982
+[2026-09-30 17:29:54.359] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:54.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:54Z
+[2026-09-30 17:29:54.448] [DEBUG] [WTelegram]              → Upload_File                           #4982
+[2026-09-30 17:29:54.448] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #8/12 (1 048 576 б за 89 мс) [Полный].
+[2026-09-30 17:29:54.448] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #8 (смещение 8 388 608, 1 048 576 байт). Скачано всего: 9 из 12 чанков (75%).
+[2026-09-30 17:29:54.562] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/12 (смещение 9 437 184 б, размер 1 048 576 б)...
+[2026-09-30 17:29:54.563] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:54Z (svc)
+[2026-09-30 17:29:54.563] [DEBUG] [WTelegram]             → Upload_GetFile                         #1C6E
+[2026-09-30 17:29:54.563] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:54.645] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:54Z
+[2026-09-30 17:29:54.645] [DEBUG] [WTelegram]              → Upload_File                           #1C6E
+[2026-09-30 17:29:54.645] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/12 (1 048 576 б за 82 мс) [Полный].
+[2026-09-30 17:29:54.646] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #9 (смещение 9 437 184, 1 048 576 байт). Скачано всего: 10 из 12 чанков (83,3%).
+[2026-09-30 17:29:54.646] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,84 МБ (чанки #10..#11 (всего 12)) через 2 воркеров MTProto...
+[2026-09-30 17:29:54.766] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #10/12 (смещение 10 485 760 б, размер 1 048 576 б)...
+[2026-09-30 17:29:54.766] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:54Z (svc)
+[2026-09-30 17:29:54.766] [DEBUG] [WTelegram]             → Upload_GetFile                         #07CA
+[2026-09-30 17:29:54.766] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:54.894] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:54Z
+[2026-09-30 17:29:54.894] [DEBUG] [WTelegram]              → Upload_File                           #07CA
+[2026-09-30 17:29:54.895] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #10/12 (1 048 576 б за 128 мс) [Полный].
+[2026-09-30 17:29:54.895] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #10 (смещение 10 485 760, 1 048 576 байт). Скачано всего: 11 из 12 чанков (91,7%).
+[2026-09-30 17:29:54.969] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #11/12 (смещение 11 534 336 б, размер 1 048 576 б)...
+[2026-09-30 17:29:54.970] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-09-30 14:29:54Z (svc)
+[2026-09-30 17:29:54.970] [DEBUG] [WTelegram]             → Upload_GetFile                         #BECE
+[2026-09-30 17:29:54.970] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-09-30 17:29:55.140] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-09-30 14:29:55Z
+[2026-09-30 17:29:55.140] [DEBUG] [WTelegram]              → Upload_File                           #BECE
+[2026-09-30 17:29:55.141] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): Глобальный Чанк #11 (смещение 11 534 336, 879 938 байт). Скачано всего: 12 из 12 чанков (100%).
+[2026-09-30 17:29:55.141] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'IMG_20201018_131419 (12 mb).jpg': Размер: 12 414 274 б (11,84 МБ) | Из сети TG: 14 773 570 б (14,09 МБ) | Из ОЗУ: 10 579 266 б (10,09 МБ) | Эффективность сети: 1,19x (Допустимо — остаток хвоста чанка)
+[2026-09-30 17:29:55.141] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'IMG_20201018_131419 (12 mb).jpg' получено из TelegramService.
+[2026-09-30 17:29:55.141] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #11/12 (879 938 б за 171 мс) [879 938 б из 1 048 576 б, Хвост EOF].
+[2026-09-30 17:29:55.142] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'IMG_20201018_131419 (12 mb).jpg'. Запуск _completionTimer...
+[2026-09-30 17:29:55.143] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла IMG_20201018_131419 (12 mb).jpg
+[2026-09-30 17:29:56.796] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,7 сек).

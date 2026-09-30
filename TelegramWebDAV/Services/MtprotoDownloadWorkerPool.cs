@@ -174,18 +174,34 @@ namespace TelegramWebDAV.Services
                     {
                         if (cancellationToken.IsCancellationRequested) break;
 
-                        // Если чанк уже доступен в памяти (RAM кэш), пропускаем сетевой запрос
+                        // Вычисляем фактический ожидаемый размер для данного чанка
+                        int expectedChunkSize = (int)Math.Min((long)chunk.RequestLimit, totalSize - chunk.ChunkOffset);
+                        if (expectedChunkSize <= 0) expectedChunkSize = chunk.RequestLimit;
+
+                        byte[]? partialExisting = null;
+
+                        // Если чанк уже доступен в памяти (RAM кэш)
                         if (existingChunkProvider != null)
                         {
                             var existingBytes = existingChunkProvider(chunk.ChunkOffset);
                             if (existingBytes != null && existingBytes.Length > 0)
                             {
-                                downloadedChunks[chunk.ChunkOffset] = existingBytes;
-                                onChunkReceived?.Invoke(existingBytes, chunk.ChunkOffset);
-                                long currentTotal = Interlocked.Add(ref totalDownloadedBytes, existingBytes.Length);
-                                onProgress?.Invoke(currentTotal, length);
-                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б) уже имеется в RAM, сетевой запрос пропущен.");
-                                continue;
+                                if (existingBytes.Length == expectedChunkSize)
+                                {
+                                    // Чанк уже полностью в памяти (100% данных на месте)
+                                    downloadedChunks[chunk.ChunkOffset] = existingBytes;
+                                    onChunkReceived?.Invoke(existingBytes, chunk.ChunkOffset);
+                                    long currentTotal = Interlocked.Add(ref totalDownloadedBytes, existingBytes.Length);
+                                    onProgress?.Invoke(currentTotal, length);
+                                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б) полностью имеется в RAM ({existingBytes.Length:N0} б), сетевой запрос пропущен.");
+                                    continue;
+                                }
+                                else if (existingBytes.Length < expectedChunkSize)
+                                {
+                                    // В памяти лежит частичный зонд (например, 256 КБ). Не качаем чанк заново, а сохраняем его для докачки хвоста!
+                                    partialExisting = existingBytes;
+                                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex}/{totalFileChunks}: в RAM обнаружен частичный зонд ({existingBytes.Length:N0} из {expectedChunkSize:N0} б). Запуск докачки недостающего остатка...");
+                                }
                             }
                         }
 
@@ -193,24 +209,47 @@ namespace TelegramWebDAV.Services
                         {
                             await PaceRequestAsync(workerId, cancellationToken);
 
-                            string probeTag = chunk.RequestLimit < 1048576 ? " [Зонд метаданных]" : "";
-                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б, размер {chunk.RequestLimit:N0} б){probeTag}...");
+                            long reqOffset = chunk.ChunkOffset;
+                            int reqLimit = chunk.RequestLimit;
+
+                            // Если есть частичный зонд, докачиваем только недостающую часть
+                            if (partialExisting != null && partialExisting.Length > 0)
+                            {
+                                reqOffset = chunk.ChunkOffset + partialExisting.Length;
+                                reqLimit = chunk.RequestLimit - partialExisting.Length;
+                            }
+
+                            string probeTag = reqLimit < 1048576 ? " [Докачка остатка/Зонд]" : "";
+                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {reqOffset:N0} б, размер {reqLimit:N0} б){probeTag}...");
                             var sw = Stopwatch.StartNew();
 
-                            var fileBase = await workerClient.Upload_GetFile(location, chunk.ChunkOffset, chunk.RequestLimit, precise: true);
+                            var fileBase = await workerClient.Upload_GetFile(location, reqOffset, reqLimit, precise: true);
                             sw.Stop();
 
                             if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                             {
-                                downloadedChunks[chunk.ChunkOffset] = uploadFile.bytes;
-                                onChunkReceived?.Invoke(uploadFile.bytes, chunk.ChunkOffset);
+                                byte[] finalChunkBytes;
+                                if (partialExisting != null && partialExisting.Length > 0)
+                                {
+                                    // Склеиваем имеющуюся часть из RAM и свежедокачанный остаток из Telegram
+                                    finalChunkBytes = new byte[partialExisting.Length + uploadFile.bytes.Length];
+                                    Buffer.BlockCopy(partialExisting, 0, finalChunkBytes, 0, partialExisting.Length);
+                                    Buffer.BlockCopy(uploadFile.bytes, 0, finalChunkBytes, partialExisting.Length, uploadFile.bytes.Length);
+                                }
+                                else
+                                {
+                                    finalChunkBytes = uploadFile.bytes;
+                                }
+
+                                downloadedChunks[chunk.ChunkOffset] = finalChunkBytes;
+                                onChunkReceived?.Invoke(finalChunkBytes, chunk.ChunkOffset);
 
                                 long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
                                 onProgress?.Invoke(currentTotal, length);
 
-                                int receivedLen = uploadFile.bytes.Length;
-                                string chunkTag = receivedLen < chunk.RequestLimit
-                                    ? $" [{receivedLen:N0} б из {chunk.RequestLimit:N0} б, Хвост EOF]"
+                                int receivedLen = finalChunkBytes.Length;
+                                string chunkTag = receivedLen < expectedChunkSize
+                                    ? $" [{receivedLen:N0} б из {expectedChunkSize:N0} б, Хвост EOF]"
                                     : " [Полный]";
 
                                 AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{chunk.ChunkIndex}/{totalFileChunks} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
