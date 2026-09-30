@@ -199,6 +199,44 @@ namespace TelegramWebDAV.Services
             }
         }
 
+        private void StoreChunkInMemoryCache(int messageId, long chunkOffset, byte[] raw, int cacheTtlMinutes)
+        {
+            EnsureChunkCacheCapacity();
+            long megaStart = (chunkOffset / 1048576) * 1048576;
+
+            // Если пришел хвост к существующему зонду головы того же 1 МБ блока:
+            if (chunkOffset > megaStart)
+            {
+                // Ищем существующий зонд головы в ОЗУ
+                string headProbeKey = $"{messageId}:{megaStart}:{(int)(chunkOffset - megaStart)}";
+                if (_chunkMemoryCache.TryRemove(headProbeKey, out var headProbeItem) && headProbeItem.data != null)
+                {
+                    byte[] probeData = headProbeItem.data;
+                    int fullSize = probeData.Length + raw.Length;
+                    byte[] stitched = new byte[fullSize];
+                    Buffer.BlockCopy(probeData, 0, stitched, 0, probeData.Length);
+                    Buffer.BlockCopy(raw, 0, stitched, probeData.Length, raw.Length);
+
+                    string fullChunkKey = $"{messageId}:{megaStart}:{fullSize}";
+                    _chunkMemoryCache[fullChunkKey] = (stitched, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
+                    return;
+                }
+            }
+
+            // Очищаем любые устаревшие частичные фрагменты этого же 1 МБ блока (если были)
+            foreach (var key in _chunkMemoryCache.Keys)
+            {
+                var parts = key.Split(':');
+                if (parts.Length == 3 && int.TryParse(parts[0], out var mId) && mId == messageId && long.TryParse(parts[1], out var cStart) && cStart == megaStart)
+                {
+                    _chunkMemoryCache.TryRemove(key, out _);
+                }
+            }
+
+            string canonicalKey = $"{messageId}:{chunkOffset}:{raw.Length}";
+            _chunkMemoryCache[canonicalKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
+        }
+
         private bool TryGetFromMemoryCache(int messageId, long pos, out byte[]? data, out int offsetInChunk)
         {
             var now = DateTime.UtcNow;
@@ -1713,21 +1751,8 @@ namespace TelegramWebDAV.Services
                     raw = uploadFile.bytes;
                     audit.AddNetworkBytes(raw.Length);
                     bool allReceived = audit.MarkRangeReceived(chunkOffset, raw.Length);
-                    EnsureChunkCacheCapacity();
                     int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
-                    _chunkMemoryCache[chunkKey] = (raw, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
-
-                    // Если был скачан хвост для блока при наличии зонда головы — склеиваем их в цельный 1 МБ блок в ОЗУ
-                    long megaStart = (chunkOffset / 1048576) * 1048576;
-                    if (chunkOffset > megaStart && TryGetFromMemoryCache(messageId, megaStart, out var probeData, out _) && probeData != null && probeData.Length == (int)(chunkOffset - megaStart))
-                    {
-                        int fullSize = probeData.Length + raw.Length;
-                        byte[] stitched = new byte[fullSize];
-                        Buffer.BlockCopy(probeData, 0, stitched, 0, probeData.Length);
-                        Buffer.BlockCopy(raw, 0, stitched, probeData.Length, raw.Length);
-                        string fullChunkKey = $"{messageId}:{megaStart}:{fullSize}";
-                        _chunkMemoryCache[fullChunkKey] = (stitched, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
-                    }
+                    StoreChunkInMemoryCache(messageId, chunkOffset, raw, cacheTtlMinutes);
 
                     AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{(int)(chunkOffset / 1048576)}/{audit.TotalChunks} для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length / 1024} КБ. {audit.ProgressSummary}.");
 
@@ -1904,9 +1929,7 @@ namespace TelegramWebDAV.Services
                         {
                             audit.AddNetworkBytes(chunkBytes.Length);
                             bool allReceived = audit.MarkRangeReceived(chunkOffset, chunkBytes.Length);
-                            EnsureChunkCacheCapacity();
-                            string ramKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
-                            _chunkMemoryCache[ramKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
+                            StoreChunkInMemoryCache(messageId, chunkOffset, chunkBytes, cacheTtlMinutes);
 
                             string waitKey = $"{messageId}:{chunkOffset}";
                             if (_inFlightChunkWaiters.TryRemove(waitKey, out var waiter))
