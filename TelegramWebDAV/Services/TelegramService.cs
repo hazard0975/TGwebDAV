@@ -1442,14 +1442,15 @@ namespace TelegramWebDAV.Services
                 readSeq.LastReadTime = now;
             }
 
-            // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ (Format-Agnostic, без списков расширений):
-            // Считаем операцию сбором метаданных/эскиза, если:
-            // 1) Запрос происходит в хвостовой зоне файла (последние 2 МБ — зона moov-атома MP4, mkv cues, zip cd, ID3v1) и это короткий запрос (<= 256 КБ),
-            // 2) ИЛИ это самый первый короткий чанк файла (#0, <= 256 КБ),
-            // 3) И еще не зафиксировано последовательное воспроизведение (SequentialCount < 2).
-            bool isFirstChunkProbe = currentChunkIdx == 0 && length <= 262144;
-            bool isTailChunkProbe = actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152 && length <= 262144;
-            bool isMetadataProbe = (isFirstChunkProbe || isTailChunkProbe) && readSeq.SequentialCount < 2;
+            // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ / ТОЧЕЧНЫХ СЭМПЛОВ (Format-Agnostic):
+            // Считаем операцию сбором метаданных/эскизов/точечным сэмплом (Seek/Thumbnail), если:
+            // 1) Запрос короткий (<= 256 КБ) и еще не зафиксировано последовательное воспроизведение (SequentialCount < 2).
+            //    Это полностью покрывает теги ID3 (#0), хвостовые атомы moov/cues/zip, а также одиночные видео-эскизы в середине файла.
+            bool isShortRead = length <= 262144;
+            bool isHeadProbe = currentChunkIdx == 0 && isShortRead;
+            bool isTailProbe = actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152 && isShortRead;
+            bool isIsolatedMiddleProbe = isShortRead && readSeq.SequentialCount < 2;
+            bool isMetadataProbe = (isHeadProbe || isTailProbe || isIsolatedMiddleProbe) && readSeq.SequentialCount < 2;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1639,7 +1640,9 @@ namespace TelegramWebDAV.Services
                 }
 
                 // 2. Адаптивный выбор размера чанка MTProto
-                int baseChunkSize = (isSmallFile || isMetadataProbe) ? 262144 : 1048576;
+                bool isHeadOrTailProbe = (isHeadProbe || isTailProbe) && readSeq.SequentialCount < 2;
+                bool use256kQuantum = isSmallFile || isHeadOrTailProbe;
+                int baseChunkSize = use256kQuantum ? 262144 : 1048576;
 
                 // Эвристика повторного обращения: если в пределах текущего 1 МБ блока уже происходило чтение
                 // (например, был скачан 256 КБ зонд метаданных), то повторный запрос означает реальное последовательное чтение.
@@ -1659,8 +1662,8 @@ namespace TelegramWebDAV.Services
                 }
 
                 // MTProto строго запрещает запросам выходить за пределы одного 1-мегабайтного блока (1048576 байт).
-                // Выравниваем chunkOffset по границе 262144 байт.
-                long chunkOffset = (currentPos / 262144) * 262144;
+                long chunkAlignment = use256kQuantum ? 262144L : 1048576L;
+                long chunkOffset = (currentPos / chunkAlignment) * chunkAlignment;
                 int internalOffset = (int)(currentPos - chunkOffset);
                 int requestLimit = baseChunkSize;
 
