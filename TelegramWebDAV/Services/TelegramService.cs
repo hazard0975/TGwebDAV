@@ -1558,58 +1558,6 @@ namespace TelegramWebDAV.Services
                 TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, offset, audit);
             }
 
-            // 2. Для прямого скачивания архивов и больших файлов качаем чанки через MtprotoDownloadWorkerPool напрямую в ОЗУ с заполнением RAM-кэша
-            if (!enableDiskCache && !isSmallFile && !isMetadataProbe && length > 262144)
-            {
-                int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
-                var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
-                bool success = await workerPool.DownloadToStreamAsync(
-                    document,
-                    destination,
-                    offset,
-                    length,
-                    onChunkReceived: (chunkBytes, chunkOffset) =>
-                    {
-                        audit.AddNetworkBytes(chunkBytes.Length);
-                        bool allReceived = audit.MarkRangeReceived(chunkOffset, chunkBytes.Length);
-                        EnsureChunkCacheCapacity();
-                        string chunkKey = $"{messageId}:{chunkOffset}:{chunkBytes.Length}";
-                        _chunkMemoryCache[chunkKey] = (chunkBytes, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
-
-                        string waitKey = $"{messageId}:{chunkOffset}";
-                        if (_inFlightChunkWaiters.TryRemove(waitKey, out var waiter))
-                        {
-                            waiter.TrySetResult(chunkBytes);
-                        }
-
-                        if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
-                        {
-                            OnDownloadCompleted?.Invoke(fileName);
-                        }
-                    },
-                    onProgress: (transferred, total) =>
-                    {
-                        long currentTransferred = offset + transferred;
-                        if (!isMetadataProbe)
-                            OnDownloadProgress?.Invoke(fileName, currentTransferred, actualTotalSize);
-                        else
-                        {
-                            OnMetadataProgress?.Invoke(fileName, transferred, actualTotalSize);
-                            OnChunkCached?.Invoke(fileName, transferred, actualTotalSize);
-                        }
-                    },
-                    existingChunkProvider: cOff => TryGetFromMemoryCache(messageId, cOff, out var d, out _) ? d : null);
-
-                if (success)
-                {
-                    if (!isMetadataProbe && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
-                    {
-                        OnDownloadCompleted?.Invoke(fileName);
-                    }
-                    return;
-                }
-            }
-
             var activeClient = document.dc_id != 0 ? await _client.GetClientForDC(document.dc_id) : _client;
             TL.InputFileLocationBase location = document.ToFileLocation();
 
@@ -1622,15 +1570,27 @@ namespace TelegramWebDAV.Services
                 await EnsureFloodWaitDelayAsync();
 
                 long alignedCurrentBlock = (currentPos / 1048576) * 1048576;
+                long aligned256kBlock = (currentPos / 262144) * 262144;
                 string blockWaitKey = $"{messageId}:{alignedCurrentBlock}";
-                if (!TryGetFromMemoryCache(messageId, currentPos, out _, out _) && _inFlightChunkWaiters.TryGetValue(blockWaitKey, out var blockWaiter))
+                string subBlockWaitKey = $"{messageId}:{aligned256kBlock}";
+
+                if (!TryGetFromMemoryCache(messageId, currentPos, out _, out _))
                 {
-                    using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-                    try
+                    TaskCompletionSource<byte[]?>? waiterToAwait = null;
+                    if (_inFlightChunkWaiters.TryGetValue(blockWaitKey, out var bw))
+                        waiterToAwait = bw;
+                    else if (_inFlightChunkWaiters.TryGetValue(subBlockWaitKey, out var sbw))
+                        waiterToAwait = sbw;
+
+                    if (waiterToAwait != null)
                     {
-                        await blockWaiter.Task.WaitAsync(cts.Token);
+                        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+                        try
+                        {
+                            await waiterToAwait.Task.WaitAsync(cts.Token);
+                        }
+                        catch { }
                     }
-                    catch { }
                 }
 
                 // 1. Проверяем, есть ли уже нужные байты в быстром кэше оперативной памяти
