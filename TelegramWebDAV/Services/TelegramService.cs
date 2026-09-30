@@ -782,10 +782,43 @@ namespace TelegramWebDAV.Services
             }
         }
 
+        // Глобальный сквозной семафор и таймер пейсинга (70 мс) для всех исходящих запросов Upload_GetFile в приложении
+        private static readonly SemaphoreSlim _globalPacingLock = new SemaphoreSlim(1, 1);
+        private static DateTime _globalLastRequestUtc = DateTime.MinValue;
+        private static int _globalPacingDelayMs = 70; // 70 мс (~14 запросов/сек) — оптимальный темп Telegram MTProto
+
+        /// <summary>
+        /// Гарантирует минимальный интервал запуска (70 мс) между любыми исходящими запросами Upload_GetFile в Telegram MTProto.
+        /// Предотвращает возникновение пиковых наложений (0-5 мс) между разными файлами и воркерами.
+        /// </summary>
+        public static async Task EnsurePacingDelayAsync(CancellationToken cancellationToken = default)
+        {
+            await _globalPacingLock.WaitAsync(cancellationToken);
+            try
+            {
+                var elapsed = (DateTime.UtcNow - _globalLastRequestUtc).TotalMilliseconds;
+                if (elapsed < _globalPacingDelayMs)
+                {
+                    await Task.Delay((int)(_globalPacingDelayMs - elapsed), cancellationToken);
+                }
+                _globalLastRequestUtc = DateTime.UtcNow;
+            }
+            finally
+            {
+                _globalPacingLock.Release();
+            }
+        }
+
+        public static void AdaptPacingDelay(int deltaMs)
+        {
+            Interlocked.Exchange(ref _globalPacingDelayMs, Math.Clamp(_globalPacingDelayMs + deltaMs, 50, 300));
+        }
+
         public void TriggerFloodWait(int seconds)
         {
             _floodWaitUntil = DateTime.UtcNow.AddSeconds(seconds);
-            AppLogger.Warn("TelegramService", $"Получен FLOOD_WAIT на {seconds} сек от серверов Telegram.");
+            AdaptPacingDelay(20);
+            AppLogger.Warn("TelegramService", $"Получен FLOOD_WAIT на {seconds} сек от серверов Telegram. Пейсинг адаптирован до {_globalPacingDelayMs} мс.");
         }
 
         /// <summary>
@@ -1710,6 +1743,7 @@ namespace TelegramWebDAV.Services
                 try
                 {
                     await EnsureFloodWaitDelayAsync();
+                    await EnsurePacingDelayAsync();
                     try
                     {
                         int globalChunkIdx = (int)(chunkOffset / 1048576);
@@ -1719,6 +1753,7 @@ namespace TelegramWebDAV.Services
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
                     {
                         activeClient = await _client.GetClientForDC(rpcEx.X);
+                        await EnsurePacingDelayAsync();
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                     }
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("FILE_REFERENCE_EXPIRED"))
@@ -1728,6 +1763,7 @@ namespace TelegramWebDAV.Services
                         {
                             location = refreshedDoc.ToFileLocation();
                             activeClient = refreshedDoc.dc_id != 0 ? await _client.GetClientForDC(refreshedDoc.dc_id) : _client;
+                            await EnsurePacingDelayAsync();
                             fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                         }
                         else throw;
@@ -1737,7 +1773,9 @@ namespace TelegramWebDAV.Services
                         int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
                         AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
                         _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
+                        AdaptPacingDelay(20);
                         await Task.Delay(waitSec * 1000);
+                        await EnsurePacingDelayAsync();
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
                     }
                 }
