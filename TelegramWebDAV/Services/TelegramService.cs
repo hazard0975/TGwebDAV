@@ -1444,13 +1444,12 @@ namespace TelegramWebDAV.Services
 
             // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ (Format-Agnostic, без списков расширений):
             // Считаем операцию сбором метаданных/эскиза, если:
-            // 1) Запрос происходит в хвостовой зоне файла (последние 2 МБ — зона moov-атома MP4, mkv cues, zip cd, ID3v1),
-            // 2) ИЛИ это самый первый чанк файла (#0),
-            // 3) ИЛИ еще не зафиксировано последовательное воспроизведение (SequentialCount < 2).
-            bool isFirstChunkProbe = currentChunkIdx == 0;
-            bool isTailChunkProbe = (actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152) ||
-                                    (totalChunks > 1 && currentChunkIdx >= totalChunks - 1);
-            bool isMetadataProbe = isFirstChunkProbe || isTailChunkProbe || readSeq.SequentialCount < 2;
+            // 1) Запрос происходит в хвостовой зоне файла (последние 2 МБ — зона moov-атома MP4, mkv cues, zip cd, ID3v1) и это короткий запрос (<= 256 КБ),
+            // 2) ИЛИ это самый первый короткий чанк файла (#0, <= 256 КБ),
+            // 3) И еще не зафиксировано последовательное воспроизведение (SequentialCount < 2).
+            bool isFirstChunkProbe = currentChunkIdx == 0 && length <= 262144;
+            bool isTailChunkProbe = actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152 && length <= 262144;
+            bool isMetadataProbe = (isFirstChunkProbe || isTailChunkProbe) && readSeq.SequentialCount < 2;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1625,15 +1624,16 @@ namespace TelegramWebDAV.Services
                     if (!isMetadataProbe)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
-                        if (allReceived && audit.LogCompletionOnce())
-                        {
-                            OnDownloadCompleted?.Invoke(fileName);
-                        }
                     }
                     else
                     {
                         OnMetadataProgress?.Invoke(fileName, currentTotalProgress, actualTotalSize);
                         OnChunkCached?.Invoke(fileName, currentTotalProgress, actualTotalSize);
+                    }
+
+                    if (allReceived && audit.LogCompletionOnce())
+                    {
+                        OnDownloadCompleted?.Invoke(fileName);
                     }
                     continue;
                 }
@@ -1726,7 +1726,7 @@ namespace TelegramWebDAV.Services
                         waiter.TrySetResult(raw);
                     }
 
-                    if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
+                    if (allReceived && audit.LogCompletionOnce())
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
@@ -1790,16 +1790,19 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            if (isMetadataProbe)
+            if (audit.IsAllChunksReceived())
+            {
+                if (audit.LogCompletionOnce())
+                {
+                    OnDownloadCompleted?.Invoke(fileName);
+                }
+            }
+            else if (isMetadataProbe)
             {
                 if (audit.LogMetadataCompletedOnce())
                 {
                     OnMetadataCompleted?.Invoke(fileName);
                 }
-            }
-            else if (!isSmallFile && audit.IsAllChunksReceived() && audit.LogCompletionOnce())
-            {
-                OnDownloadCompleted?.Invoke(fileName);
             }
         }
 
@@ -1819,50 +1822,58 @@ namespace TelegramWebDAV.Services
                 return;
             }
 
+            int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
+            int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 2;
+            bool isAudio = IsAudioFileName(fileName);
+            int windowMb = isAudio
+                ? (_configManager?.CurrentSettings?.Server?.AudioPrefetchWindowMb ?? 2)
+                : (_configManager?.CurrentSettings?.Server?.StreamingPrefetchWindowMb ?? 20);
+
+            long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
+            long windowBytes = (long)windowMb * 1024 * 1024;
+
+            // Для аудио и любых других файлов <= fullTrackMaxMb качаем файл целиком до 100%
+            // Для очень больших файлов (> fullTrackMaxMb) держим буфер упреждения windowMb вперед
+            long maxPrefetchLimit = actualTotalSize <= fullTrackMaxBytes
+                ? actualTotalSize
+                : Math.Min(actualTotalSize, currentReadOffset + windowBytes);
+
+            long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
+            long scanOffset = actualTotalSize <= fullTrackMaxBytes ? 0 : startChunkOffset;
+
+            var missingChunks = new List<long>();
+            while (scanOffset < maxPrefetchLimit)
+            {
+                int expectedSize = (int)Math.Min(1048576L, actualTotalSize - scanOffset);
+                if (!TryGetFromMemoryCache(messageId, scanOffset, out var cachedData, out _) || (cachedData != null && cachedData.Length < expectedSize))
+                {
+                    missingChunks.Add(scanOffset);
+                }
+                scanOffset += 1048576;
+            }
+
+            if (missingChunks.Count == 0)
+            {
+                if (_activeFilePrefetches.TryRemove(messageId, out var unusedCts))
+                {
+                    try { unusedCts.Dispose(); } catch { }
+                }
+                return;
+            }
+
+            // СИНХРОННО регистрируем все чанки очереди в _inFlightChunkWaiters ДО ухода в фоновый Task.Run
+            foreach (var cOff in missingChunks)
+            {
+                _inFlightChunkWaiters.GetOrAdd($"{messageId}:{cOff}", _ => new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously));
+            }
+
             _ = Task.Run(async () =>
             {
                 try
                 {
-                    int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
-                    int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 2;
-                    bool isAudio = IsAudioFileName(fileName);
-                    int windowMb = isAudio
-                        ? (_configManager?.CurrentSettings?.Server?.AudioPrefetchWindowMb ?? 2)
-                        : (_configManager?.CurrentSettings?.Server?.StreamingPrefetchWindowMb ?? 20);
-
-                    long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
-                    long windowBytes = (long)windowMb * 1024 * 1024;
-
-                    // Для аудио и любых других файлов <= fullTrackMaxMb качаем файл целиком до 100%
-                    // Для очень больших файлов (> fullTrackMaxMb) держим буфер упреждения windowMb вперед
-                    long maxPrefetchLimit = actualTotalSize <= fullTrackMaxBytes
-                        ? actualTotalSize
-                        : Math.Min(actualTotalSize, currentReadOffset + windowBytes);
-
-                    long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
-                    long scanOffset = actualTotalSize <= fullTrackMaxBytes ? 0 : startChunkOffset;
-
-                    var missingChunks = new List<long>();
-                    while (scanOffset < maxPrefetchLimit)
-                    {
-                        int expectedSize = (int)Math.Min(1048576L, actualTotalSize - scanOffset);
-                        if (!TryGetFromMemoryCache(messageId, scanOffset, out var cachedData, out _) || (cachedData != null && cachedData.Length < expectedSize))
-                        {
-                            missingChunks.Add(scanOffset);
-                        }
-                        scanOffset += 1048576;
-                    }
-
-                    if (missingChunks.Count == 0) return;
-
                     long prefetchStart = missingChunks[0];
                     long prefetchEnd = missingChunks[missingChunks.Count - 1] + 1048576;
                     long prefetchLength = Math.Min(prefetchEnd - prefetchStart, actualTotalSize - prefetchStart);
-
-                    foreach (var cOff in missingChunks)
-                    {
-                        _inFlightChunkWaiters.GetOrAdd($"{messageId}:{cOff}", _ => new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously));
-                    }
 
                     var prefetchPool = new MtprotoDownloadWorkerPool(
                         _client,
