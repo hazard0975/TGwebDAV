@@ -71,7 +71,7 @@ namespace TelegramWebDAV.Services
         // Кэш дескрипторов документов Telegram (TL.Document) для устранения лишних сетевых вызовов Channels_GetMessages
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, (TL.Document document, DateTime expiresAt)> _documentCache = new();
 
-        // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (~32 МБ) для мгновенного чтения плеерами без повторных обращений к сети
+        // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (настраивается в UI, по умолчанию 128 МБ) для мгновенного чтения плеерами без повторных обращений к сети
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (byte[] data, DateTime expiresAt)> _chunkMemoryCache = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, TaskCompletionSource<byte[]?>> _inFlightChunkWaiters = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, CancellationTokenSource> _activeFilePrefetches = new();
@@ -1710,16 +1710,14 @@ namespace TelegramWebDAV.Services
                     AppLogger.Info("TelegramService", $"[Cache RAM] Потоковое чтение из ОЗУ для '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). {audit.ProgressSummary}.");
 
                     // Уведомление о прогрессе вызываем в зависимости от типа чтения и переданного объёма
-                    long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
-
                     if (!isMetadataProbe)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
                     else
                     {
-                        OnMetadataProgress?.Invoke(fileName, currentTotalProgress, actualTotalSize);
-                        OnChunkCached?.Invoke(fileName, currentTotalProgress, actualTotalSize);
+                        OnMetadataProgress?.Invoke(fileName, audit.NetworkBytes, actualTotalSize);
+                        OnChunkCached?.Invoke(fileName, audit.NetworkBytes, actualTotalSize);
                     }
 
                     if (allReceived && audit.LogCompletionOnce())
@@ -1795,11 +1793,10 @@ namespace TelegramWebDAV.Services
 
                         AppLogger.Info("TelegramService", $"[Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). {audit.ProgressSummary}.");
 
-                        long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
                         if (!isMetadataProbe)
                             OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                         else
-                            OnMetadataProgress?.Invoke(fileName, currentTotalProgress, actualTotalSize);
+                            OnMetadataProgress?.Invoke(fileName, audit.NetworkBytes, actualTotalSize);
 
                         if (allReceived && audit.LogCompletionOnce())
                             OnDownloadCompleted?.Invoke(fileName);
@@ -1927,16 +1924,14 @@ namespace TelegramWebDAV.Services
                     remainingBytes -= toSend;
                     totalSent += toSend;
 
-                    long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
-
                     if (!isMetadataProbe)
                     {
                         OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
                     }
                     else
                     {
-                        OnMetadataProgress?.Invoke(fileName, currentTotalProgress, actualTotalSize);
-                        OnChunkCached?.Invoke(fileName, currentTotalProgress, actualTotalSize);
+                        OnMetadataProgress?.Invoke(fileName, audit.NetworkBytes, actualTotalSize);
+                        OnChunkCached?.Invoke(fileName, audit.NetworkBytes, actualTotalSize);
                     }
 
                     // Если Telegram вернул меньше данных, чем requestLimit — достигнут конец файла
