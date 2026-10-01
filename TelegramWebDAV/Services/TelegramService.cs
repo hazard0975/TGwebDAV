@@ -83,6 +83,7 @@ namespace TelegramWebDAV.Services
         {
             public long LastChunkIndex { get; set; } = -1;
             public int SequentialCount { get; set; } = 0;
+            public long AccumulatedSequentialBytes { get; set; } = 0;
             public DateTime LastReadTime { get; set; } = DateTime.UtcNow;
         }
 
@@ -1505,31 +1506,40 @@ namespace TelegramWebDAV.Services
                 if ((now - readSeq.LastReadTime).TotalSeconds > 10)
                 {
                     readSeq.SequentialCount = 0;
+                    readSeq.AccumulatedSequentialBytes = 0;
                     readSeq.LastChunkIndex = -1;
                 }
 
                 if (readSeq.LastChunkIndex != -1 && currentChunkIdx == readSeq.LastChunkIndex + 1)
                 {
                     readSeq.SequentialCount++;
+                    readSeq.AccumulatedSequentialBytes += length;
                 }
-                else if (readSeq.LastChunkIndex != currentChunkIdx)
+                else if (readSeq.LastChunkIndex == currentChunkIdx)
+                {
+                    readSeq.AccumulatedSequentialBytes += length;
+                }
+                else
                 {
                     readSeq.SequentialCount = 1;
+                    readSeq.AccumulatedSequentialBytes = length;
                 }
 
                 readSeq.LastChunkIndex = currentChunkIdx;
                 readSeq.LastReadTime = now;
             }
 
-            // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ / ТОЧЕЧНЫХ СЭМПЛОВ (Format-Agnostic):
+            // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ / ТОЧЕЧНЫХ СЭМПЛОВ (Вариант А):
             // Считаем операцию сбором метаданных/эскизов/точечным сэмплом (Seek/Thumbnail), если:
-            // 1) Запрос короткий (<= 256 КБ) и еще не зафиксировано последовательное воспроизведение (SequentialCount < 2).
-            //    Это полностью покрывает теги ID3 (#0), хвостовые атомы moov/cues/zip, а также одиночные видео-эскизы в середине файла.
+            // 1) Запрос короткий (<= 256 КБ) и еще не зафиксировано длительное последовательное воспроизведение:
+            //    Требуем >= 3 последовательных перехода между чанками ИЛИ суммарно >= 1.5 МБ выкачанных байт.
+            //    Одиночный переход через границу мегабайта (например 5.95 МБ -> 6.10 МБ при чтении кадра) не срывает систему в тяжелый префетч.
             bool isShortRead = length <= 262144;
-            bool isHeadProbe = currentChunkIdx == 0 && isShortRead;
-            bool isTailProbe = actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152 && isShortRead;
-            bool isIsolatedMiddleProbe = isShortRead && readSeq.SequentialCount < 2;
-            bool isMetadataProbe = (isHeadProbe || isTailProbe || isIsolatedMiddleProbe) && readSeq.SequentialCount < 2;
+            bool isSequentialPlayback = !isShortRead || readSeq.SequentialCount >= 3 || readSeq.AccumulatedSequentialBytes >= 1572864;
+            bool isHeadProbe = currentChunkIdx == 0 && isShortRead && !isSequentialPlayback;
+            bool isTailProbe = actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152 && isShortRead && !isSequentialPlayback;
+            bool isIsolatedMiddleProbe = isShortRead && !isSequentialPlayback;
+            bool isMetadataProbe = !isSequentialPlayback;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -2018,25 +2028,15 @@ namespace TelegramWebDAV.Services
                 _inFlightChunkWaiters.GetOrAdd($"{messageId}:{cOff}", _ => new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously));
             }
 
+            if (_activeFilePrefetches.TryGetValue(messageId, out var existingCts) && !existingCts.IsCancellationRequested)
+            {
+                // Активный конвейер уже выкачивает упреждающие чанки для этого файла.
+                // Не отменяем его на каждом мелком чтении, исключая коллизии и спам отменой задач.
+                return;
+            }
+
             var cts = new CancellationTokenSource();
-            if (_activeFilePrefetches.TryGetValue(messageId, out var oldCts))
-            {
-                try
-                {
-                    oldCts.Cancel();
-                    oldCts.Dispose();
-                }
-                catch { }
-                _activeFilePrefetches[messageId] = cts;
-            }
-            else
-            {
-                if (!_activeFilePrefetches.TryAdd(messageId, cts))
-                {
-                    cts.Dispose();
-                    return;
-                }
-            }
+            _activeFilePrefetches[messageId] = cts;
 
             _ = Task.Run(async () =>
             {
