@@ -1648,6 +1648,9 @@ namespace TelegramWebDAV.Services
 
                 if (!TryGetFromMemoryCache(messageId, currentPos, out _, out _))
                 {
+                    int globalChunkIdx = (int)(currentPos / 1048576);
+                    AppLogger.Info("TelegramService", $"[MTProto] Запрос чанка #{globalChunkIdx}/{audit.TotalChunks} для '{fileName}' (ID {messageId}): смещение {currentPos:N0}, размер 1024 КБ...");
+
                     TaskCompletionSource<byte[]?>? waiterToAwait = null;
                     if (_inFlightChunkWaiters.TryGetValue(blockWaitKey, out var bw))
                         waiterToAwait = bw;
