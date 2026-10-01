@@ -117,6 +117,12 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
+            // Если для этого файла передача уже была завершена на 100%, игнорируем любые остаточные/запоздалые обновления
+            if (_isCompleted && _currentFileName == fileName && _direction == direction)
+            {
+                return;
+            }
+
             _queueCount = queueCount;
 
             // Отменяем любой таймер закрытия от предыдущих файлов
@@ -138,6 +144,7 @@ namespace TelegramWebDAV.UI
                 _lastSpeedBytes = 0;
                 _lastSpeedCalcTime = DateTime.UtcNow;
                 _bytesPerSecond = 0;
+                _isCompleted = false;
             }
             else
             {
@@ -194,20 +201,11 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
-            // Временно закомментировано: стейт-машина TelegramService является единым источником правды.
-            // Принудительное переключение в UpdateProgress по эвристике 512 КБ ложно срабатывало при чтении
-            // хвостов видеофайлов (moov-атом ~600 КБ). При реальном скачивании вызывается UpdateProgress напрямую.
-            /*
-            string ext = Path.GetExtension(fileName).ToLowerInvariant();
-            bool isMedia = ext is ".mp3" or ".flac" or ".wav" or ".m4a" or ".ogg" or ".ape" or ".wma" or ".aac" or ".opus";
-            long metadataLimit = isMedia ? 1572864 : 524288;
-
-            if (current > metadataLimit)
+            // Если для этого файла передача уже завершилась на 100%, игнорируем любые обновления
+            if (_isCompleted && _currentFileName == fileName)
             {
-                UpdateProgress(fileName, current, total, TransferDirection.Download);
                 return;
             }
-            */
 
             if (_completionTimer.Enabled)
             {
@@ -218,6 +216,7 @@ namespace TelegramWebDAV.UI
             {
                 _currentFileName = fileName;
                 _lastMetadataCompletedFile = null;
+                _isCompleted = false;
             }
 
             _direction = TransferDirection.Download;
@@ -283,11 +282,16 @@ namespace TelegramWebDAV.UI
             }
 
             AppLogger.Info("TrayProgressOverlay", $"CompleteTransfer [{direction}] вызван для '{fileName}'. Запуск _completionTimer...");
+            _currentFileName = fileName;
             _direction = direction;
             _isTransferring = false;
             _isFinalizing = false;
             _isMetadata = false; // При полном скачивании файла сбрасываем флаг метаданных
             _isCompleted = true;
+            if (_totalBytes > 0)
+            {
+                _currentBytes = _totalBytes;
+            }
             _bytesPerSecond = 0;
             Invalidate();
             Update();
