@@ -223,18 +223,18 @@ namespace TelegramWebDAV.Services
                                     finalChunkBytes = uploadFile.bytes;
                                 }
 
-                                downloadedChunks[chunk.ChunkOffset] = finalChunkBytes;
-                                onChunkReceived?.Invoke(finalChunkBytes, chunk.ChunkOffset);
-
-                                long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
-                                onProgress?.Invoke(currentTotal, length);
-
                                 int receivedLen = finalChunkBytes.Length;
                                 string chunkTag = receivedLen < expectedChunkSize
                                     ? $" [{receivedLen:N0} б из {expectedChunkSize:N0} б, Хвост EOF]"
                                     : " [Полный]";
 
                                 AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{chunk.ChunkIndex}/{totalFileChunks} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
+
+                                downloadedChunks[chunk.ChunkOffset] = finalChunkBytes;
+                                onChunkReceived?.Invoke(finalChunkBytes, chunk.ChunkOffset);
+
+                                long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
+                                onProgress?.Invoke(currentTotal, length);
                             }
                             else if (chunk.RetryCount < 3)
                             {
