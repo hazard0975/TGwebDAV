@@ -1630,6 +1630,13 @@ namespace TelegramWebDAV.Services
             long remainingBytes = length;
             long totalSent = 0;
 
+            if (!enableDiskCache && !isSmallFile && !isMetadataProbe && remainingBytes > 262144)
+            {
+                // Запускаем фоновый конвейер воркеров MTProto ДО входа в цикл чтения,
+                // чтобы все чанки очереди (#1..#N) были СИНХРОННО зарегистрированы в _inFlightChunkWaiters
+                TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
+            }
+
             while (remainingBytes > 0)
             {
                 await EnsureFloodWaitDelayAsync();
@@ -1978,13 +1985,6 @@ namespace TelegramWebDAV.Services
             bool enableDiskCache = _configManager?.CurrentSettings?.Server?.EnableDiskReadCache ?? false;
             if (enableDiskCache || document == null || actualTotalSize <= 262144 || _client == null) return;
 
-            var cts = new CancellationTokenSource();
-            if (!_activeFilePrefetches.TryAdd(messageId, cts))
-            {
-                cts.Dispose();
-                return;
-            }
-
             int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
             int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 2;
             bool isAudio = IsAudioFileName(fileName);
@@ -2017,17 +2017,20 @@ namespace TelegramWebDAV.Services
 
             if (missingChunks.Count == 0)
             {
-                if (_activeFilePrefetches.TryRemove(messageId, out var unusedCts))
-                {
-                    try { unusedCts.Dispose(); } catch { }
-                }
                 return;
             }
 
-            // СИНХРОННО регистрируем все чанки очереди в _inFlightChunkWaiters ДО ухода в фоновый Task.Run
+            // СИНХРОННО регистрируем все чанки очереди в _inFlightChunkWaiters ДО проверки наличия активного пула
             foreach (var cOff in missingChunks)
             {
                 _inFlightChunkWaiters.GetOrAdd($"{messageId}:{cOff}", _ => new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously));
+            }
+
+            var cts = new CancellationTokenSource();
+            if (!_activeFilePrefetches.TryAdd(messageId, cts))
+            {
+                cts.Dispose();
+                return;
             }
 
             _ = Task.Run(async () =>
