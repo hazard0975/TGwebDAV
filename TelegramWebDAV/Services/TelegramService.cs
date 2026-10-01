@@ -223,14 +223,22 @@ namespace TelegramWebDAV.Services
                 }
             }
 
-            // Очищаем любые устаревшие частичные фрагменты этого же 1 МБ блока (если были)
-            foreach (var key in _chunkMemoryCache.Keys)
+            // Очищаем частичные фрагменты только при получении полного 1 МБ блока
+            if (raw.Length >= 1048576)
             {
-                var parts = key.Split(':');
-                if (parts.Length == 3 && int.TryParse(parts[0], out var mId) && mId == messageId && long.TryParse(parts[1], out var cStart) && cStart == megaStart)
+                foreach (var key in _chunkMemoryCache.Keys)
                 {
-                    _chunkMemoryCache.TryRemove(key, out _);
+                    var parts = key.Split(':');
+                    if (parts.Length == 3 && int.TryParse(parts[0], out var mId) && mId == messageId && long.TryParse(parts[1], out var cStart) && cStart >= megaStart && cStart < megaStart + 1048576)
+                    {
+                        _chunkMemoryCache.TryRemove(key, out _);
+                    }
                 }
+            }
+            else
+            {
+                string exactKey = $"{messageId}:{chunkOffset}:{raw.Length}";
+                _chunkMemoryCache.TryRemove(exactKey, out _);
             }
 
             string canonicalKey = $"{messageId}:{chunkOffset}:{raw.Length}";
@@ -1648,9 +1656,6 @@ namespace TelegramWebDAV.Services
 
                 if (!TryGetFromMemoryCache(messageId, currentPos, out _, out _))
                 {
-                    int globalChunkIdx = (int)(currentPos / 1048576);
-                    AppLogger.Info("TelegramService", $"[MTProto] Запрос чанка #{globalChunkIdx}/{audit.TotalChunks} для '{fileName}' (ID {messageId}): смещение {currentPos:N0}, размер 1024 КБ...");
-
                     TaskCompletionSource<byte[]?>? waiterToAwait = null;
                     if (_inFlightChunkWaiters.TryGetValue(blockWaitKey, out var bw))
                         waiterToAwait = bw;
@@ -1793,33 +1798,17 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                // 2. Адаптивный выбор размера чанка MTProto
-                bool isHeadOrTailProbe = (isHeadProbe || isTailProbe) && readSeq.SequentialCount < 2;
-                bool use256kQuantum = isSmallFile || isHeadOrTailProbe;
-                int baseChunkSize = use256kQuantum ? 262144 : 1048576;
+                // 2. Адаптивный выбор размера чанка MTProto:
+                // Метаданные, превью видео и точечные сэмплы (isMetadataProbe) ВСЕГДА качаем квантом 256 КБ (262 144 байт)
+                // со строгим выравниванием chunkOffset по сетке 256 КБ.
+                // При реальном скачивании или последовательном воспроизведении (SequentialCount >= 2) качаем полным 1 МБ (1 048 576 байт).
+                bool use256kQuantum = isSmallFile || isMetadataProbe;
+                int quantum = use256kQuantum ? 262144 : 1048576;
 
-                // Эвристика повторного обращения: если в пределах текущего 1 МБ блока уже происходило чтение
-                // (например, был скачан 256 КБ зонд метаданных), то повторный запрос означает реальное последовательное чтение.
-                // Вместо серии медленных 256 КБ RPC-запросов одним махом выкачиваем весь остаток 1 МБ блока!
-                long megaBlockStart = (currentPos / 1048576) * 1048576;
-                long offsetInMegaBlock = currentPos - megaBlockStart;
-                if (!isSmallFile && isMetadataProbe && offsetInMegaBlock >= 262144)
-                {
-                    // Выравниваем по текущему 256 КБ кванту (например 256 КБ, 512 КБ или 768 КБ)
-                    long alignedSubOffset = (currentPos / 262144) * 262144;
-                    long bytesToMegaEnd = (megaBlockStart + 1048576) - alignedSubOffset;
-                    if (bytesToMegaEnd > 262144)
-                    {
-                        // Запрашиваем остаток блока до конца 1 МБ (например, 768 КБ или 512 КБ)
-                        baseChunkSize = (int)bytesToMegaEnd;
-                    }
-                }
-
-                // MTProto строго запрещает запросам выходить за пределы одного 1-мегабайтного блока (1048576 байт).
-                long chunkAlignment = use256kQuantum ? 262144L : 1048576L;
+                long chunkAlignment = quantum;
                 long chunkOffset = (currentPos / chunkAlignment) * chunkAlignment;
                 int internalOffset = (int)(currentPos - chunkOffset);
-                int requestLimit = baseChunkSize;
+                int requestLimit = quantum;
 
                 string chunkKey = $"{messageId}:{chunkOffset}:{requestLimit}";
                 string inFlightDirectKey = $"{messageId}:{chunkOffset}";
@@ -1905,7 +1894,7 @@ namespace TelegramWebDAV.Services
                 {
                     if (internalOffset >= raw.Length)
                     {
-                        // Смещение вышло за пределы доступных байт
+                        AppLogger.Warn("TelegramService", $"[MTProto] Предупреждение: internalOffset ({internalOffset}) >= raw.Length ({raw.Length}) для '{fileName}' (ID {messageId}, chunkOffset {chunkOffset}). Завершение чтения диапазона.");
                         break;
                     }
 
