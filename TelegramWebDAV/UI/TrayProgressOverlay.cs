@@ -192,7 +192,10 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
-            // Для аудиофайлов чтение тегов (заголовок + хвост moov/id3) может достигать ~1.5 МБ, для остальных файлов — 512 КБ
+            // Временно закомментировано: стейт-машина TelegramService является единым источником правды.
+            // Принудительное переключение в UpdateProgress по эвристике 512 КБ ложно срабатывало при чтении
+            // хвостов видеофайлов (moov-атом ~600 КБ). При реальном скачивании вызывается UpdateProgress напрямую.
+            /*
             string ext = Path.GetExtension(fileName).ToLowerInvariant();
             bool isMedia = ext is ".mp3" or ".flac" or ".wav" or ".m4a" or ".ogg" or ".ape" or ".wma" or ".aac" or ".opus";
             long metadataLimit = isMedia ? 1572864 : 524288;
@@ -202,6 +205,7 @@ namespace TelegramWebDAV.UI
                 UpdateProgress(fileName, current, total, TransferDirection.Download);
                 return;
             }
+            */
 
             if (_completionTimer.Enabled)
             {
