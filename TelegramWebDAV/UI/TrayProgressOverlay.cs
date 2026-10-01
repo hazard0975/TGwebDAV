@@ -61,7 +61,7 @@ namespace TelegramWebDAV.UI
             ShowInTaskbar = false;
             TopMost = true;
             StartPosition = FormStartPosition.Manual;
-            Size = new Size(290, 96);
+            Size = new Size(325, 96);
             BackColor = Color.FromArgb(30, 41, 59); // Slate 800
 
             // Принудительно создаем дескриптор Win32 HWND
@@ -563,12 +563,13 @@ namespace TelegramWebDAV.UI
                 {
                     string currStr = FormatBytes(_currentBytes);
                     string totalStr = FormatBytes(_totalBytes);
-                    string speedStr = _bytesPerSecond > 1024 ? $"{FormatBytes((long)_bytesPerSecond)}/с" : "вычисление...";
+                    string speedStr = FormatDualSpeed(_bytesPerSecond);
                     stats = $"{currStr} из {totalStr} ({percent}%) • {speedStr}";
                 }
                 else if (_isTransferring)
                 {
-                    stats = $"Передано: {FormatBytes(_currentBytes)} • передача...";
+                    string speedStr = FormatDualSpeed(_bytesPerSecond);
+                    stats = $"Передано: {FormatBytes(_currentBytes)} • {speedStr}";
                 }
                 else
                 {
@@ -577,6 +578,24 @@ namespace TelegramWebDAV.UI
 
                 g.DrawString(stats, statsFont, statsBrush, new PointF(12, 68));
             }
+        }
+
+        private static string FormatDualSpeed(double bytesPerSecond)
+        {
+            if (bytesPerSecond < 1024) return "вычисление...";
+
+            // 1. Сетевая скорость в битах/с (Мбит/с, кбит/с)
+            double bitsPerSec = bytesPerSecond * 8.0;
+            string bitsStr = bitsPerSec >= 1_000_000
+                ? $"{(bitsPerSec / 1_000_000.0):F1} Мбит/с"
+                : $"{(bitsPerSec / 1_000.0):F0} кбит/с";
+
+            // 2. Скорость полезных данных в байтах/с (МБ/с, КБ/с)
+            string bytesStr = bytesPerSecond >= 1024 * 1024
+                ? $"{(bytesPerSecond / (1024.0 * 1024.0)):F1} МБ/с"
+                : $"{(bytesPerSecond / 1024.0):F1} КБ/с";
+
+            return $"{bitsStr} ({bytesStr})";
         }
 
         private static string FormatBytes(long bytes)
