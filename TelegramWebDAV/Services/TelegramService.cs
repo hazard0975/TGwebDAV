@@ -1701,7 +1701,86 @@ namespace TelegramWebDAV.Services
                     {
                         OnDownloadCompleted?.Invoke(fileName);
                     }
+
+                    // Если мы в режиме стриминга и префетч еще не запущен, запускаем префетч
+                    if (!enableDiskCache && !isSmallFile && !isMetadataProbe && remainingBytes > 0)
+                    {
+                        TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
+                    }
+
                     continue;
+                }
+
+                // Если чанк еще качается фоновым воркером префетча — ждем его завершения в ОЗУ (без повторных запросов в сеть!)
+                if (_inFlightChunkWaiters.TryGetValue(blockWaitKey, out var activeWaiter) || _activeFilePrefetches.ContainsKey(messageId))
+                {
+                    if (activeWaiter != null)
+                    {
+                        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                        try
+                        {
+                            await activeWaiter.Task.WaitAsync(cts.Token);
+                        }
+                        catch { }
+                    }
+                    else if (_activeFilePrefetches.ContainsKey(messageId))
+                    {
+                        // Воркер пула еще выполняет или формирует запрос — подождем появления данных в ОЗУ
+                        int waitAttempts = 0;
+                        while (waitAttempts < 600 && !TryGetFromMemoryCache(messageId, currentPos, out _, out _) && _activeFilePrefetches.ContainsKey(messageId))
+                        {
+                            if (_inFlightChunkWaiters.TryGetValue(blockWaitKey, out var newlyAddedWaiter))
+                            {
+                                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+                                try
+                                {
+                                    await newlyAddedWaiter.Task.WaitAsync(cts.Token);
+                                }
+                                catch { }
+                                break;
+                            }
+                            await Task.Delay(50);
+                            waitAttempts++;
+                        }
+                    }
+
+                    // После ожидания воркера отдаем готовые данные из RAM
+                    if (TryGetFromMemoryCache(messageId, currentPos, out cachedRaw, out cachedOffset) && cachedRaw != null)
+                    {
+                        int available = cachedRaw.Length - cachedOffset;
+                        int toSend = (int)Math.Min(available, remainingBytes);
+
+                        try
+                        {
+                            await destination.WriteAsync(cachedRaw, cachedOffset, toSend);
+                            await destination.FlushAsync();
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Debug("TelegramService", $"Клиент прервал соединение для '{fileName}' (ID {messageId}): {ex.Message}");
+                            return;
+                        }
+
+                        currentPos += toSend;
+                        remainingBytes -= toSend;
+                        totalSent += toSend;
+                        audit.AddRamBytes(toSend);
+
+                        bool allReceived = audit.MarkRangeReceived(currentPos - toSend, toSend);
+
+                        AppLogger.Info("TelegramService", $"[Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). {audit.ProgressSummary}.");
+
+                        long currentTotalProgress = Math.Max(currentPos, audit.NetworkBytes);
+                        if (!isMetadataProbe)
+                            OnDownloadProgress?.Invoke(fileName, currentPos, actualTotalSize);
+                        else
+                            OnMetadataProgress?.Invoke(fileName, currentTotalProgress, actualTotalSize);
+
+                        if (allReceived && audit.LogCompletionOnce())
+                            OnDownloadCompleted?.Invoke(fileName);
+
+                        continue;
+                    }
                 }
 
                 // 2. Адаптивный выбор размера чанка MTProto
@@ -1855,6 +1934,12 @@ namespace TelegramWebDAV.Services
                     if (raw.Length < requestLimit && remainingBytes > 0)
                     {
                         break;
+                    }
+
+                    // Если мы в режиме стриминга и префетч еще не запущен, запускаем префетч на оставшиеся чанки
+                    if (!enableDiskCache && !isSmallFile && !isMetadataProbe && remainingBytes > 0)
+                    {
+                        TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
                     }
                 }
                 else
