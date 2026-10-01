@@ -45,6 +45,7 @@ namespace TelegramWebDAV.UI
         private double _bytesPerSecond = 0;
         private DateTime _lastHoverTime = DateTime.MinValue;
         private DateTime _lastProgressUpdateTime = DateTime.UtcNow;
+        private string? _lastMetadataCompletedFile;
 
         public TrayProgressOverlay()
         {
@@ -132,6 +133,7 @@ namespace TelegramWebDAV.UI
             if (_currentFileName != fileName)
             {
                 _currentFileName = fileName;
+                _lastMetadataCompletedFile = null;
                 _currentBytes = current;
                 _lastSpeedBytes = 0;
                 _lastSpeedCalcTime = DateTime.UtcNow;
@@ -212,9 +214,14 @@ namespace TelegramWebDAV.UI
                 _completionTimer.Stop();
             }
 
+            if (_currentFileName != fileName)
+            {
+                _currentFileName = fileName;
+                _lastMetadataCompletedFile = null;
+            }
+
             _direction = TransferDirection.Download;
             _isMetadata = true;
-            _currentFileName = fileName;
             _currentBytes = current;
             _totalBytes = total;
             _isTransferring = true;
@@ -235,6 +242,13 @@ namespace TelegramWebDAV.UI
                 _syncContext.Post(_ => CompleteMetadata(fileName), null);
                 return;
             }
+
+            // Защита от повторного показа плашки для одного и того же файла
+            if (!string.IsNullOrEmpty(fileName) && _lastMetadataCompletedFile == fileName)
+            {
+                return;
+            }
+            _lastMetadataCompletedFile = fileName;
 
             AppLogger.Info("TrayProgressOverlay", $"CompleteMetadata вызван для '{fileName}'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...");
             _direction = TransferDirection.Download;
@@ -350,20 +364,12 @@ namespace TelegramWebDAV.UI
             {
                 if (!_completionTimer.Enabled)
                 {
-                    AppLogger.Info("TrayProgressOverlay", $"Таймаут неактивности передачи ({secondsSinceProgress:F1} сек).");
-                    if (_isMetadata)
-                    {
-                        CompleteMetadata(_currentFileName);
-                    }
-                    else
-                    {
-                        // Если это была неполная передача (не 100% скачивание), просто убираем оверлей без фейкового «СКАЧИВАНИЕ ЗАВЕРШЕНО»
-                        _isTransferring = false;
-                        _isFinalizing = false;
-                        _updateTimer.Stop();
-                        _hideCheckTimer.Stop();
-                        Hide();
-                    }
+                    AppLogger.Info("TrayProgressOverlay", $"Таймаут неактивности передачи ({secondsSinceProgress:F1} сек). Скрытие оверлея.");
+                    _isTransferring = false;
+                    _isFinalizing = false;
+                    _updateTimer.Stop();
+                    _hideCheckTimer.Stop();
+                    Hide();
                 }
                 return;
             }
