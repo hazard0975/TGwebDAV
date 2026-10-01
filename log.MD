@@ -1,762 +1,761 @@
 
-[2026-10-01 03:15:01.376] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:01Z (svc)
-[2026-10-01 03:15:01.376] [DEBUG] [WTelegram]             → Channels_GetMessages                   #8E09
-[2026-10-01 03:15:01.376] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:01.377] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #9561
-[2026-10-01 03:15:01.378] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #956D
-[2026-10-01 03:15:01.429] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:01Z
-[2026-10-01 03:15:01.429] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #8E09
-[2026-10-01 03:15:01.430] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/18 для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 0, размер 1024 КБ...
-[2026-10-01 03:15:01.430] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:01Z (svc)
-[2026-10-01 03:15:01.430] [DEBUG] [WTelegram]             → Upload_GetFile                         #70E5
-[2026-10-01 03:15:01.430] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:01.482] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:15:01Z (svc)
-[2026-10-01 03:15:01.483] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:15:01Z
-[2026-10-01 03:15:01.483] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #9561
-[2026-10-01 03:15:01.483] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:15:01Z (svc) 
-[2026-10-01 03:15:01.484] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:01Z
-[2026-10-01 03:15:01.484] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #956D
-[2026-10-01 03:15:01.844] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:01Z
-[2026-10-01 03:15:01.845] [DEBUG] [WTelegram]              → Upload_File                           #70E5
-[2026-10-01 03:15:01.845] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/18 для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 1 048 576, размер 1024 КБ...
-[2026-10-01 03:15:01.845] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:01Z (svc)
-[2026-10-01 03:15:01.845] [DEBUG] [WTelegram]             → Upload_GetFile                         #4A8D
-[2026-10-01 03:15:01.845] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:01.846] [INFO ] [TelegramService] [MTProto] Получен чанк #0/18 для 'KOMODO- All 4 U (Official video).mp4': смещение 0, размер 1024 КБ. Скачано всего: 1 из 18 чанков (5,6%).
-[2026-10-01 03:15:01.848] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для KOMODO- All 4 U (Official video).mp4 (1048576/17915288)
-[2026-10-01 03:15:01.854] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #1..#5 (всего 18)) через 3 воркеров MTProto...
-[2026-10-01 03:15:01.917] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #2/18 (смещение 2 097 152 б, размер 1 048 576 б)...
-[2026-10-01 03:15:01.918] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #3145
-[2026-10-01 03:15:01.995] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/18 (смещение 1 048 576 б, размер 1 048 576 б)...
-[2026-10-01 03:15:01.995] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #6C81
-[2026-10-01 03:15:02.073] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #3/18 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-01 03:15:02.074] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #BC95
-[2026-10-01 03:15:02.077] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:01Z
-[2026-10-01 03:15:02.077] [DEBUG] [WTelegram]              → Upload_File                           #4A8D
-[2026-10-01 03:15:02.077] [INFO ] [TelegramService] [MTProto] Получен чанк #1/18 для 'KOMODO- All 4 U (Official video).mp4': смещение 1 048 576, размер 1024 КБ. Скачано всего: 2 из 18 чанков (11,1%).
-[2026-10-01 03:15:02.151] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/18 для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 2 097 152, размер 1024 КБ...
-[2026-10-01 03:15:02.152] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:02Z (svc)
-[2026-10-01 03:15:02.152] [DEBUG] [WTelegram]             → Upload_GetFile                         #4A92
-[2026-10-01 03:15:02.152] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:02.173] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:01Z
-[2026-10-01 03:15:02.173] [DEBUG] [WTelegram]              → Upload_File                           #3145
-[2026-10-01 03:15:02.174] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #2/18 (1 048 576 б за 255 мс) [Полный].
-[2026-10-01 03:15:02.229] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #4/18 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-01 03:15:02.229] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:02Z (svc)
-[2026-10-01 03:15:02.229] [DEBUG] [WTelegram]             → Upload_GetFile                         #67EE
-[2026-10-01 03:15:02.229] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:02.286] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:02Z
-[2026-10-01 03:15:02.286] [DEBUG] [WTelegram]              → Upload_File                           #6C81
-[2026-10-01 03:15:02.288] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/18 (1 048 576 б за 291 мс) [Полный].
-[2026-10-01 03:15:02.306] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #5/18 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-01 03:15:02.307] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:02Z (svc)
-[2026-10-01 03:15:02.307] [DEBUG] [WTelegram]             → Upload_GetFile                         #6E8E
-[2026-10-01 03:15:02.307] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:02.375] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:02Z
-[2026-10-01 03:15:02.376] [DEBUG] [WTelegram]              → Upload_File                           #BC95
-[2026-10-01 03:15:02.376] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #3/18 (1 048 576 б за 302 мс) [Полный].
-[2026-10-01 03:15:02.377] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 18 чанков (22,2%).
-[2026-10-01 03:15:02.460] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:02Z
-[2026-10-01 03:15:02.460] [DEBUG] [WTelegram]              → Upload_File                           #4A92
-[2026-10-01 03:15:02.460] [INFO ] [TelegramService] [MTProto] Получен чанк #2/18 для 'KOMODO- All 4 U (Official video).mp4': смещение 2 097 152, размер 1024 КБ. Скачано всего: 4 из 18 чанков (22,2%).
-[2026-10-01 03:15:02.574] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:02Z
-[2026-10-01 03:15:02.574] [DEBUG] [WTelegram]              → Upload_File                           #67EE
-[2026-10-01 03:15:02.574] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #4/18 (1 048 576 б за 345 мс) [Полный].
-[2026-10-01 03:15:02.574] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 18 чанков (27,8%).
-[2026-10-01 03:15:02.696] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:02Z
-[2026-10-01 03:15:02.696] [DEBUG] [WTelegram]              → Upload_File                           #6E8E
-[2026-10-01 03:15:02.697] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #5/18 (1 048 576 б за 390 мс) [Полный].
-[2026-10-01 03:15:02.697] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 6 из 18 чанков (33,3%).
-[2026-10-01 03:15:02.698] [INFO ] [TelegramService] [MTProto] Запрос чанка #8/18 для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 8 388 608, размер 1024 КБ...
-[2026-10-01 03:15:02.698] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:02Z (svc)
-[2026-10-01 03:15:02.698] [DEBUG] [WTelegram]             → Upload_GetFile                         #EABE
-[2026-10-01 03:15:02.698] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:03.241] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:02Z
-[2026-10-01 03:15:03.242] [DEBUG] [WTelegram]              → Upload_File                           #EABE
-[2026-10-01 03:15:03.242] [INFO ] [TelegramService] [MTProto] Запрос чанка #7/18 для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 7 340 032, размер 1024 КБ...
-[2026-10-01 03:15:03.242] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:03Z (svc)
-[2026-10-01 03:15:03.242] [DEBUG] [WTelegram]             → Upload_GetFile                         #F1F7
-[2026-10-01 03:15:03.242] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:03.243] [INFO ] [TelegramService] [MTProto] Получен чанк #8/18 для 'KOMODO- All 4 U (Official video).mp4': смещение 8 388 608, размер 1024 КБ. Скачано всего: 7 из 18 чанков (38,9%).
-[2026-10-01 03:15:03.244] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #9..#13 (всего 18)) через 3 воркеров MTProto...
-[2026-10-01 03:15:03.321] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/18 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-01 03:15:03.321] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #AF0F
-[2026-10-01 03:15:03.400] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/18 (смещение 10 485 760 б, размер 1 048 576 б)...
-[2026-10-01 03:15:03.400] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #19D7
-[2026-10-01 03:15:03.478] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #11/18 (смещение 11 534 336 б, размер 1 048 576 б)...
-[2026-10-01 03:15:03.479] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #28BB
-[2026-10-01 03:15:03.515] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:03Z
-[2026-10-01 03:15:03.516] [DEBUG] [WTelegram]              → Upload_File                           #F1F7
-[2026-10-01 03:15:03.516] [INFO ] [TelegramService] [MTProto] Получен чанк #7/18 для 'KOMODO- All 4 U (Official video).mp4': смещение 7 340 032, размер 1024 КБ. Скачано всего: 8 из 18 чанков (44,4%).
-[2026-10-01 03:15:03.556] [INFO ] [TelegramService] [MTProto] Запрос чанка #6/18 для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 6 291 456, размер 1024 КБ...
-[2026-10-01 03:15:03.556] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:03Z (svc)
-[2026-10-01 03:15:03.556] [DEBUG] [WTelegram]             → Upload_GetFile                         #576F
-[2026-10-01 03:15:03.556] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:03.674] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:03Z
-[2026-10-01 03:15:03.674] [DEBUG] [WTelegram]              → Upload_File                           #AF0F
-[2026-10-01 03:15:03.674] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/18 (1 048 576 б за 353 мс) [Полный].
-[2026-10-01 03:15:03.674] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #12/18 (смещение 12 582 912 б, размер 1 048 576 б)...
-[2026-10-01 03:15:03.675] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:03Z (svc)
-[2026-10-01 03:15:03.675] [DEBUG] [WTelegram]             → Upload_GetFile                         #7413
-[2026-10-01 03:15:03.675] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:03.808] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:03Z
-[2026-10-01 03:15:03.808] [DEBUG] [WTelegram]              → Upload_File                           #19D7
-[2026-10-01 03:15:03.809] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/18 (1 048 576 б за 408 мс) [Полный].
-[2026-10-01 03:15:03.809] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #13/18 (смещение 13 631 488 б, размер 1 048 576 б)...
-[2026-10-01 03:15:03.809] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:03Z (svc)
-[2026-10-01 03:15:03.809] [DEBUG] [WTelegram]             → Upload_GetFile                         #5117
-[2026-10-01 03:15:03.809] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:03.938] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:03Z
-[2026-10-01 03:15:03.939] [DEBUG] [WTelegram]              → Upload_File                           #28BB
-[2026-10-01 03:15:03.939] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #11/18 (1 048 576 б за 460 мс) [Полный].
-[2026-10-01 03:15:04.079] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:03Z
-[2026-10-01 03:15:04.079] [DEBUG] [WTelegram]              → Upload_File                           #576F
-[2026-10-01 03:15:04.079] [INFO ] [TelegramService] [MTProto] Получен чанк #6/18 для 'KOMODO- All 4 U (Official video).mp4': смещение 6 291 456, размер 1024 КБ. Скачано всего: 12 из 18 чанков (66,7%).
-[2026-10-01 03:15:04.081] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #9 (смещение 9 437 184, 1 048 576 байт). Скачано всего: 12 из 18 чанков (66,7%).
-[2026-10-01 03:15:04.081] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #10 (смещение 10 485 760, 1 048 576 байт). Скачано всего: 12 из 18 чанков (66,7%).
-[2026-10-01 03:15:04.081] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #11 (смещение 11 534 336, 1 048 576 байт). Скачано всего: 12 из 18 чанков (66,7%).
-[2026-10-01 03:15:04.204] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:03Z
-[2026-10-01 03:15:04.205] [DEBUG] [WTelegram]              → Upload_File                           #7413
-[2026-10-01 03:15:04.205] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #12/18 (1 048 576 б за 530 мс) [Полный].
-[2026-10-01 03:15:04.205] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #12 (смещение 12 582 912, 1 048 576 байт). Скачано всего: 13 из 18 чанков (72,2%).
-[2026-10-01 03:15:04.327] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:03Z
-[2026-10-01 03:15:04.327] [DEBUG] [WTelegram]              → Upload_File                           #5117
-[2026-10-01 03:15:04.327] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #13/18 (1 048 576 б за 518 мс) [Полный].
-[2026-10-01 03:15:04.328] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #13 (смещение 13 631 488, 1 048 576 байт). Скачано всего: 14 из 18 чанков (77,8%).
-[2026-10-01 03:15:04.328] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 3,09 МБ (чанки #14..#17 (всего 18)) через 3 воркеров MTProto...
-[2026-10-01 03:15:04.328] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #14/18 (смещение 14 680 064 б, размер 1 048 576 б)...
-[2026-10-01 03:15:04.328] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:04Z (svc)
-[2026-10-01 03:15:04.328] [DEBUG] [WTelegram]             → Upload_GetFile                         #0750
-[2026-10-01 03:15:04.328] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:04.410] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #15/18 (смещение 15 728 640 б, размер 1 048 576 б)...
-[2026-10-01 03:15:04.410] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #AADC
-[2026-10-01 03:15:04.487] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #16/18 (смещение 16 777 216 б, размер 1 048 576 б)...
-[2026-10-01 03:15:04.487] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #5A54
-[2026-10-01 03:15:04.656] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:04Z
-[2026-10-01 03:15:04.658] [DEBUG] [WTelegram]              → Upload_File                           #0750
-[2026-10-01 03:15:04.658] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #14/18 (1 048 576 б за 330 мс) [Полный].
-[2026-10-01 03:15:04.658] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #17/18 (смещение 17 825 792 б, размер 1 048 576 б)...
-[2026-10-01 03:15:04.659] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:04Z (svc)
-[2026-10-01 03:15:04.659] [DEBUG] [WTelegram]             → Upload_GetFile                         #C8A8
-[2026-10-01 03:15:04.659] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:04.659] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 14 680 064, отдано 1 048 576 байт (15 728 640 / 17 915 288 байт, 87,8%). Скачано всего: 15 из 18 чанков (83,3%).
-[2026-10-01 03:15:04.779] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:04Z
-[2026-10-01 03:15:04.779] [DEBUG] [WTelegram]              → Upload_File                           #AADC
-[2026-10-01 03:15:04.779] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #15/18 (1 048 576 б за 369 мс) [Полный].
-[2026-10-01 03:15:04.780] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 15 728 640, отдано 1 048 576 байт (16 777 216 / 17 915 288 байт, 93,6%). Скачано всего: 16 из 18 чанков (88,9%).
-[2026-10-01 03:15:04.947] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:04Z
-[2026-10-01 03:15:04.947] [DEBUG] [WTelegram]              → Upload_File                           #5A54
-[2026-10-01 03:15:04.947] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #16/18 (1 048 576 б за 459 мс) [Полный].
-[2026-10-01 03:15:04.947] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #16 (смещение 16 777 216, 1 048 576 байт). Скачано всего: 17 из 18 чанков (94,4%).
-[2026-10-01 03:15:04.948] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:04Z
-[2026-10-01 03:15:04.948] [DEBUG] [WTelegram]              → Upload_File                           #C8A8
-[2026-10-01 03:15:04.948] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #17 (смещение 17 825 792, 89 496 байт). Скачано всего: 18 из 18 чанков (100%).
-[2026-10-01 03:15:04.948] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'KOMODO- All 4 U (Official video).mp4': Размер: 17 915 288 б (17,09 МБ) | Из сети TG: 20 012 440 б (19,09 МБ) | Из ОЗУ: 11 623 832 б (11,09 МБ) | Эффективность сети: 1,12x (Допустимо — остаток хвоста чанка)
-[2026-10-01 03:15:04.949] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'KOMODO- All 4 U (Official video).mp4' получено из TelegramService.
-[2026-10-01 03:15:04.949] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #17/18 (89 496 б за 289 мс) [Полный].
-[2026-10-01 03:15:04.949] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'KOMODO- All 4 U (Official video).mp4'. Запуск _completionTimer...
-[2026-10-01 03:15:04.950] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла KOMODO- All 4 U (Official video).mp4
-[2026-10-01 03:15:04.953] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:04Z (svc)
-[2026-10-01 03:15:04.953] [DEBUG] [WTelegram]             → Channels_GetMessages                   #3978
-[2026-10-01 03:15:04.953] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:04.953] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #5544
-[2026-10-01 03:15:04.953] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #04DC
-[2026-10-01 03:15:05.003] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:04Z
-[2026-10-01 03:15:05.004] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #3978
-[2026-10-01 03:15:05.004] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 0, размер 1024 КБ...
-[2026-10-01 03:15:05.004] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:04Z (svc)
-[2026-10-01 03:15:05.004] [DEBUG] [WTelegram]             → Upload_GetFile                         #022C
-[2026-10-01 03:15:05.004] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:05.058] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:15:05Z (svc)
-[2026-10-01 03:15:05.058] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:15:05Z
-[2026-10-01 03:15:05.058] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #5544
-[2026-10-01 03:15:05.058] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:15:05Z (svc) 
-[2026-10-01 03:15:05.061] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:05.061] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #04DC
-[2026-10-01 03:15:05.299] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:05.299] [DEBUG] [WTelegram]              → Upload_File                           #022C
-[2026-10-01 03:15:05.299] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 1 048 576, размер 1024 КБ...
-[2026-10-01 03:15:05.300] [INFO ] [TelegramService] [MTProto] Получен чанк #0/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': смещение 0, размер 1024 КБ. Скачано всего: 1 из 10 чанков (10%).
-[2026-10-01 03:15:05.300] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:05Z (svc)
-[2026-10-01 03:15:05.300] [DEBUG] [WTelegram]             → Upload_GetFile                         #E609
-[2026-10-01 03:15:05.300] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:05.301] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #1..#5 (всего 10)) через 3 воркеров MTProto...
-[2026-10-01 03:15:05.376] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/10 (смещение 1 048 576 б, размер 1 048 576 б)...
-[2026-10-01 03:15:05.376] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #9861
-[2026-10-01 03:15:05.454] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #2/10 (смещение 2 097 152 б, размер 1 048 576 б)...
-[2026-10-01 03:15:05.454] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #888D
-[2026-10-01 03:15:05.532] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #3/10 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-01 03:15:05.532] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #1889
-[2026-10-01 03:15:05.624] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:05.624] [DEBUG] [WTelegram]              → Upload_File                           #E609
-[2026-10-01 03:15:05.624] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 2 097 152, размер 1024 КБ...
-[2026-10-01 03:15:05.624] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:05Z (svc)
-[2026-10-01 03:15:05.624] [DEBUG] [WTelegram]             → Upload_GetFile                         #30B5
-[2026-10-01 03:15:05.624] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:05.624] [INFO ] [TelegramService] [MTProto] Получен чанк #1/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': смещение 1 048 576, размер 1024 КБ. Скачано всего: 2 из 10 чанков (20%).
-[2026-10-01 03:15:05.896] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:05.896] [DEBUG] [WTelegram]              → Upload_File                           #9861
-[2026-10-01 03:15:05.896] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/10 (1 048 576 б за 520 мс) [Полный].
-[2026-10-01 03:15:05.896] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/10 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-01 03:15:05.896] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:05Z (svc)
-[2026-10-01 03:15:05.896] [DEBUG] [WTelegram]             → Upload_GetFile                         #70D9
-[2026-10-01 03:15:05.896] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:06.105] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:06.105] [DEBUG] [WTelegram]              → Upload_File                           #888D
-[2026-10-01 03:15:06.105] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #2/10 (1 048 576 б за 651 мс) [Полный].
-[2026-10-01 03:15:06.105] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #5/10 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-01 03:15:06.105] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:06Z (svc)
-[2026-10-01 03:15:06.106] [DEBUG] [WTelegram]             → Upload_GetFile                         #5CF6
-[2026-10-01 03:15:06.106] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:06.338] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:06.338] [DEBUG] [WTelegram]              → Upload_File                           #1889
-[2026-10-01 03:15:06.339] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #3/10 (1 048 576 б за 805 мс) [Полный].
-[2026-10-01 03:15:06.339] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 10 чанков (40%).
-[2026-10-01 03:15:06.556] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:06.556] [DEBUG] [WTelegram]              → Upload_File                           #30B5
-[2026-10-01 03:15:06.557] [INFO ] [TelegramService] [MTProto] Получен чанк #2/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': смещение 2 097 152, размер 1024 КБ. Скачано всего: 4 из 10 чанков (40%).
-[2026-10-01 03:15:06.781] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:05Z
-[2026-10-01 03:15:06.781] [DEBUG] [WTelegram]              → Upload_File                           #70D9
-[2026-10-01 03:15:06.781] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/10 (1 048 576 б за 884 мс) [Полный].
-[2026-10-01 03:15:06.782] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 10 чанков (50%).
-[2026-10-01 03:15:06.979] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:06Z
-[2026-10-01 03:15:06.980] [DEBUG] [WTelegram]              → Upload_File                           #5CF6
-[2026-10-01 03:15:06.980] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #5/10 (1 048 576 б за 874 мс) [Полный].
-[2026-10-01 03:15:06.980] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 6 из 10 чанков (60%).
-[2026-10-01 03:15:06.981] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 3,81 МБ (чанки #6..#9 (всего 10)) через 3 воркеров MTProto...
-[2026-10-01 03:15:06.981] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #6/10 (смещение 6 291 456 б, размер 1 048 576 б)...
-[2026-10-01 03:15:06.981] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:06Z (svc)
-[2026-10-01 03:15:06.981] [DEBUG] [WTelegram]             → Upload_GetFile                         #A692
-[2026-10-01 03:15:06.981] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:07.052] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/10 (смещение 7 340 032 б, размер 1 048 576 б)...
-[2026-10-01 03:15:07.052] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #BC4B
-[2026-10-01 03:15:07.129] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #8/10 (смещение 8 388 608 б, размер 1 048 576 б)...
-[2026-10-01 03:15:07.129] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #91AF
-[2026-10-01 03:15:07.288] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:07Z
-[2026-10-01 03:15:07.288] [DEBUG] [WTelegram]              → Upload_File                           #A692
-[2026-10-01 03:15:07.289] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #6/10 (1 048 576 б за 307 мс) [Полный].
-[2026-10-01 03:15:07.289] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/10 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-01 03:15:07.289] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 6 291 456, отдано 1 048 576 байт (7 340 032 / 10 283 683 байт, 71,4%). Скачано всего: 7 из 10 чанков (70%).
-[2026-10-01 03:15:07.289] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:07Z (svc)
-[2026-10-01 03:15:07.289] [DEBUG] [WTelegram]             → Upload_GetFile                         #325F
-[2026-10-01 03:15:07.289] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:07.558] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:07Z
-[2026-10-01 03:15:07.559] [DEBUG] [WTelegram]              → Upload_File                           #BC4B
-[2026-10-01 03:15:07.559] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/10 (1 048 576 б за 506 мс) [Полный].
-[2026-10-01 03:15:07.559] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 7 340 032, отдано 1 048 576 байт (8 388 608 / 10 283 683 байт, 81,6%). Скачано всего: 8 из 10 чанков (80%).
-[2026-10-01 03:15:07.743] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:07Z
-[2026-10-01 03:15:07.744] [DEBUG] [WTelegram]              → Upload_File                           #91AF
-[2026-10-01 03:15:07.744] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #8/10 (1 048 576 б за 614 мс) [Полный].
-[2026-10-01 03:15:07.744] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #8 (смещение 8 388 608, 1 048 576 байт). Скачано всего: 9 из 10 чанков (90%).
-[2026-10-01 03:15:07.906] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:07Z
-[2026-10-01 03:15:07.906] [DEBUG] [WTelegram]              → Upload_File                           #325F
-[2026-10-01 03:15:07.906] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': Размер: 10 283 683 б (9,81 МБ) | Из сети TG: 12 380 835 б (11,81 МБ) | Из ОЗУ: 6 291 456 б (6,00 МБ) | Эффективность сети: 1,20x (Допустимо — остаток хвоста чанка)
-[2026-10-01 03:15:07.906] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' получено из TelegramService.
-[2026-10-01 03:15:07.906] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/10 (846 499 б за 617 мс) [Полный].
-[2026-10-01 03:15:07.906] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #9 (смещение 9 437 184, 846 499 байт). Скачано всего: 10 из 10 чанков (100%).
-[2026-10-01 03:15:07.906] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'. Запуск _completionTimer...
-[2026-10-01 03:15:07.908] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4
-[2026-10-01 03:15:07.926] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:07Z (svc)
-[2026-10-01 03:15:07.926] [DEBUG] [WTelegram]             → Channels_GetMessages                   #7A13
-[2026-10-01 03:15:07.926] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:07.927] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #EEAF
-[2026-10-01 03:15:07.927] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #5E7B
-[2026-10-01 03:15:07.979] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:07Z
-[2026-10-01 03:15:07.980] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #7A13
-[2026-10-01 03:15:07.980] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 0, размер 1024 КБ...
-[2026-10-01 03:15:07.980] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:07Z (svc)
-[2026-10-01 03:15:07.980] [DEBUG] [WTelegram]             → Upload_GetFile                         #50FF
-[2026-10-01 03:15:07.980] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:08.031] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:15:08Z (svc)
-[2026-10-01 03:15:08.031] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:15:08Z
-[2026-10-01 03:15:08.031] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #5E7B
-[2026-10-01 03:15:08.031] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:15:08Z (svc) 
-[2026-10-01 03:15:08.031] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:08.031] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #EEAF
-[2026-10-01 03:15:08.315] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:08.316] [DEBUG] [WTelegram]              → Upload_File                           #50FF
-[2026-10-01 03:15:08.316] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 1 048 576, размер 1024 КБ...
-[2026-10-01 03:15:08.316] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:08Z (svc)
-[2026-10-01 03:15:08.316] [DEBUG] [WTelegram]             → Upload_GetFile                         #6B9C
-[2026-10-01 03:15:08.316] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:08.316] [INFO ] [TelegramService] [MTProto] Получен чанк #0/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': смещение 0, размер 1024 КБ. Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-01 03:15:08.317] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #1..#5 (всего 24)) через 3 воркеров MTProto...
-[2026-10-01 03:15:08.389] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #1/24 (смещение 1 048 576 б, размер 1 048 576 б)...
-[2026-10-01 03:15:08.389] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #D180
-[2026-10-01 03:15:08.468] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #2/24 (смещение 2 097 152 б, размер 1 048 576 б)...
-[2026-10-01 03:15:08.469] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #0E08
-[2026-10-01 03:15:08.545] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/24 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-01 03:15:08.545] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #6230
-[2026-10-01 03:15:08.633] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:08.633] [DEBUG] [WTelegram]              → Upload_File                           #6B9C
-[2026-10-01 03:15:08.633] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 2 097 152, размер 1024 КБ...
-[2026-10-01 03:15:08.633] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:08Z (svc)
-[2026-10-01 03:15:08.633] [DEBUG] [WTelegram]             → Upload_GetFile                         #ADC0
-[2026-10-01 03:15:08.633] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:08.633] [INFO ] [TelegramService] [MTProto] Получен чанк #1/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': смещение 1 048 576, размер 1024 КБ. Скачано всего: 2 из 24 чанков (8,3%).
-[2026-10-01 03:15:08.875] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:08.875] [DEBUG] [WTelegram]              → Upload_File                           #D180
-[2026-10-01 03:15:08.875] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #1/24 (1 048 576 б за 485 мс) [Полный].
-[2026-10-01 03:15:08.875] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #4/24 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-01 03:15:08.876] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:08Z (svc)
-[2026-10-01 03:15:08.876] [DEBUG] [WTelegram]             → Upload_GetFile                         #46B0
-[2026-10-01 03:15:08.876] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:09.100] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:09.101] [DEBUG] [WTelegram]              → Upload_File                           #0E08
-[2026-10-01 03:15:09.101] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #2/24 (1 048 576 б за 632 мс) [Полный].
-[2026-10-01 03:15:09.101] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #5/24 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-01 03:15:09.101] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:09Z (svc)
-[2026-10-01 03:15:09.101] [DEBUG] [WTelegram]             → Upload_GetFile                         #D521
-[2026-10-01 03:15:09.101] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:09.321] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:09.321] [DEBUG] [WTelegram]              → Upload_File                           #6230
-[2026-10-01 03:15:09.321] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/24 (1 048 576 б за 775 мс) [Полный].
-[2026-10-01 03:15:09.322] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 24 чанков (16,7%).
-[2026-10-01 03:15:09.535] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:09.536] [DEBUG] [WTelegram]              → Upload_File                           #ADC0
-[2026-10-01 03:15:09.536] [INFO ] [TelegramService] [MTProto] Получен чанк #2/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': смещение 2 097 152, размер 1024 КБ. Скачано всего: 4 из 24 чанков (16,7%).
-[2026-10-01 03:15:09.722] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:08Z
-[2026-10-01 03:15:09.723] [DEBUG] [WTelegram]              → Upload_File                           #46B0
-[2026-10-01 03:15:09.723] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #4/24 (1 048 576 б за 847 мс) [Полный].
-[2026-10-01 03:15:09.723] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 24 чанков (20,8%).
-[2026-10-01 03:15:09.920] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:09Z
-[2026-10-01 03:15:09.921] [DEBUG] [WTelegram]              → Upload_File                           #D521
-[2026-10-01 03:15:09.921] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #5/24 (1 048 576 б за 819 мс) [Полный].
-[2026-10-01 03:15:09.921] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 6 из 24 чанков (25%).
-[2026-10-01 03:15:09.922] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #6..#9 (всего 24)) через 3 воркеров MTProto...
-[2026-10-01 03:15:09.922] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #6/24 (смещение 6 291 456 б, размер 1 048 576 б)...
-[2026-10-01 03:15:09.922] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:09Z (svc)
-[2026-10-01 03:15:09.922] [DEBUG] [WTelegram]             → Upload_GetFile                         #4811
-[2026-10-01 03:15:09.922] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:10.004] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/24 (смещение 7 340 032 б, размер 1 048 576 б)...
-[2026-10-01 03:15:10.004] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #9262
-[2026-10-01 03:15:10.081] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #8/24 (смещение 8 388 608 б, размер 1 048 576 б)...
-[2026-10-01 03:15:10.081] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #C45E
-[2026-10-01 03:15:10.203] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:09Z
-[2026-10-01 03:15:10.204] [DEBUG] [WTelegram]              → Upload_File                           #4811
-[2026-10-01 03:15:10.204] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #6/24 (1 048 576 б за 282 мс) [Полный].
-[2026-10-01 03:15:10.204] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/24 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-01 03:15:10.204] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 6 291 456, отдано 1 048 576 байт (7 340 032 / 24 891 313 байт, 29,5%). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-01 03:15:10.204] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:10Z (svc)
-[2026-10-01 03:15:10.204] [DEBUG] [WTelegram]             → Upload_GetFile                         #447E
-[2026-10-01 03:15:10.204] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:10.395] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:10Z
-[2026-10-01 03:15:10.396] [DEBUG] [WTelegram]              → Upload_File                           #9262
-[2026-10-01 03:15:10.396] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/24 (1 048 576 б за 391 мс) [Полный].
-[2026-10-01 03:15:10.396] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 7 340 032, отдано 1 048 576 байт (8 388 608 / 24 891 313 байт, 33,7%). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-01 03:15:10.595] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:10Z
-[2026-10-01 03:15:10.597] [DEBUG] [WTelegram]              → Upload_File                           #C45E
-[2026-10-01 03:15:10.597] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #8/24 (1 048 576 б за 515 мс) [Полный].
-[2026-10-01 03:15:10.597] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #8 (смещение 8 388 608, 1 048 576 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-01 03:15:10.766] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:10Z
-[2026-10-01 03:15:10.766] [DEBUG] [WTelegram]              → Upload_File                           #447E
-[2026-10-01 03:15:10.766] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/24 (1 048 576 б за 561 мс) [Полный].
-[2026-10-01 03:15:10.766] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #9 (смещение 9 437 184, 1 048 576 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-01 03:15:10.767] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #10..#13 (всего 24)) через 3 воркеров MTProto...
-[2026-10-01 03:15:10.767] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #11/24 (смещение 11 534 336 б, размер 1 048 576 б)...
-[2026-10-01 03:15:10.767] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:10Z (svc)
-[2026-10-01 03:15:10.767] [DEBUG] [WTelegram]             → Upload_GetFile                         #899A
-[2026-10-01 03:15:10.767] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:10.838] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/24 (смещение 10 485 760 б, размер 1 048 576 б)...
-[2026-10-01 03:15:10.838] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #42EE
-[2026-10-01 03:15:10.915] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #12/24 (смещение 12 582 912 б, размер 1 048 576 б)...
-[2026-10-01 03:15:10.915] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #E0FA
-[2026-10-01 03:15:11.045] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:10Z
-[2026-10-01 03:15:11.045] [DEBUG] [WTelegram]              → Upload_File                           #899A
-[2026-10-01 03:15:11.046] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #11/24 (1 048 576 б за 278 мс) [Полный].
-[2026-10-01 03:15:11.046] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #13/24 (смещение 13 631 488 б, размер 1 048 576 б)...
-[2026-10-01 03:15:11.046] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:11Z (svc)
-[2026-10-01 03:15:11.046] [DEBUG] [WTelegram]             → Upload_GetFile                         #699B
-[2026-10-01 03:15:11.046] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:11.046] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 11 534 336, отдано 1 048 576 байт (12 582 912 / 24 891 313 байт, 50,6%). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-01 03:15:11.255] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:10Z
-[2026-10-01 03:15:11.255] [DEBUG] [WTelegram]              → Upload_File                           #42EE
-[2026-10-01 03:15:11.256] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/24 (1 048 576 б за 417 мс) [Полный].
-[2026-10-01 03:15:11.256] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 10 485 760, отдано 1 048 576 байт (11 534 336 / 24 891 313 байт, 46,3%). Скачано всего: 12 из 24 чанков (50%).
-[2026-10-01 03:15:11.461] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:10Z
-[2026-10-01 03:15:11.461] [DEBUG] [WTelegram]              → Upload_File                           #E0FA
-[2026-10-01 03:15:11.462] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #12/24 (1 048 576 б за 546 мс) [Полный].
-[2026-10-01 03:15:11.462] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #12 (смещение 12 582 912, 1 048 576 байт). Скачано всего: 13 из 24 чанков (54,2%).
-[2026-10-01 03:15:11.661] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:11Z
-[2026-10-01 03:15:11.661] [DEBUG] [WTelegram]              → Upload_File                           #699B
-[2026-10-01 03:15:11.661] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #13/24 (1 048 576 б за 615 мс) [Полный].
-[2026-10-01 03:15:11.661] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #13 (смещение 13 631 488, 1 048 576 байт). Скачано всего: 14 из 24 чанков (58,3%).
-[2026-10-01 03:15:11.662] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #14..#17 (всего 24)) через 3 воркеров MTProto...
-[2026-10-01 03:15:11.662] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #14/24 (смещение 14 680 064 б, размер 1 048 576 б)...
-[2026-10-01 03:15:11.662] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:11Z (svc)
-[2026-10-01 03:15:11.662] [DEBUG] [WTelegram]             → Upload_GetFile                         #EF5B
-[2026-10-01 03:15:11.662] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:11.743] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #15/24 (смещение 15 728 640 б, размер 1 048 576 б)...
-[2026-10-01 03:15:11.743] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #17EF
-[2026-10-01 03:15:11.820] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #16/24 (смещение 16 777 216 б, размер 1 048 576 б)...
-[2026-10-01 03:15:11.821] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #E7F3
-[2026-10-01 03:15:11.994] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:11Z
-[2026-10-01 03:15:11.994] [DEBUG] [WTelegram]              → Upload_File                           #EF5B
-[2026-10-01 03:15:11.994] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #14/24 (1 048 576 б за 332 мс) [Полный].
-[2026-10-01 03:15:11.994] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #17/24 (смещение 17 825 792 б, размер 1 048 576 б)...
-[2026-10-01 03:15:11.995] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:12Z (svc)
-[2026-10-01 03:15:11.995] [DEBUG] [WTelegram]             → Upload_GetFile                         #C154
-[2026-10-01 03:15:11.995] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:11.995] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 14 680 064, отдано 1 048 576 байт (15 728 640 / 24 891 313 байт, 63,2%). Скачано всего: 15 из 24 чанков (62,5%).
-[2026-10-01 03:15:12.242] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:11Z
-[2026-10-01 03:15:12.243] [DEBUG] [WTelegram]              → Upload_File                           #17EF
-[2026-10-01 03:15:12.243] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #15/24 (1 048 576 б за 500 мс) [Полный].
-[2026-10-01 03:15:12.244] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 15 728 640, отдано 1 048 576 байт (16 777 216 / 24 891 313 байт, 67,4%). Скачано всего: 16 из 24 чанков (66,7%).
-[2026-10-01 03:15:12.474] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:11Z
-[2026-10-01 03:15:12.474] [DEBUG] [WTelegram]              → Upload_File                           #E7F3
-[2026-10-01 03:15:12.475] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #16/24 (1 048 576 б за 653 мс) [Полный].
-[2026-10-01 03:15:12.475] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #16 (смещение 16 777 216, 1 048 576 байт). Скачано всего: 17 из 24 чанков (70,8%).
-[2026-10-01 03:15:12.682] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:12Z
-[2026-10-01 03:15:12.682] [DEBUG] [WTelegram]              → Upload_File                           #C154
-[2026-10-01 03:15:12.682] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #17/24 (1 048 576 б за 687 мс) [Полный].
-[2026-10-01 03:15:12.683] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #17 (смещение 17 825 792, 1 048 576 байт). Скачано всего: 18 из 24 чанков (75%).
-[2026-10-01 03:15:12.683] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #18..#21 (всего 24)) через 3 воркеров MTProto...
-[2026-10-01 03:15:12.683] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #18/24 (смещение 18 874 368 б, размер 1 048 576 б)...
-[2026-10-01 03:15:12.683] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:12Z (svc)
-[2026-10-01 03:15:12.683] [DEBUG] [WTelegram]             → Upload_GetFile                         #104C
-[2026-10-01 03:15:12.683] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:12.751] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #19/24 (смещение 19 922 944 б, размер 1 048 576 б)...
-[2026-10-01 03:15:12.752] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #0400
-[2026-10-01 03:15:12.829] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #20/24 (смещение 20 971 520 б, размер 1 048 576 б)...
-[2026-10-01 03:15:12.829] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #B504
-[2026-10-01 03:15:12.951] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:12Z
-[2026-10-01 03:15:12.951] [DEBUG] [WTelegram]              → Upload_File                           #104C
-[2026-10-01 03:15:12.952] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #18/24 (1 048 576 б за 268 мс) [Полный].
-[2026-10-01 03:15:12.952] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #21/24 (смещение 22 020 096 б, размер 1 048 576 б)...
-[2026-10-01 03:15:12.952] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:12Z (svc)
-[2026-10-01 03:15:12.952] [DEBUG] [WTelegram]             → Upload_GetFile                         #0450
-[2026-10-01 03:15:12.952] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:12.952] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 18 874 368, отдано 1 048 576 байт (19 922 944 / 24 891 313 байт, 80,0%). Скачано всего: 19 из 24 чанков (79,2%).
-[2026-10-01 03:15:13.160] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:12Z
-[2026-10-01 03:15:13.160] [DEBUG] [WTelegram]              → Upload_File                           #0400
-[2026-10-01 03:15:13.160] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #19/24 (1 048 576 б за 408 мс) [Полный].
-[2026-10-01 03:15:13.160] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 19 922 944, отдано 1 048 576 байт (20 971 520 / 24 891 313 байт, 84,3%). Скачано всего: 20 из 24 чанков (83,3%).
-[2026-10-01 03:15:13.352] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:12Z
-[2026-10-01 03:15:13.352] [DEBUG] [WTelegram]              → Upload_File                           #B504
-[2026-10-01 03:15:13.353] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #20/24 (1 048 576 б за 523 мс) [Полный].
-[2026-10-01 03:15:13.353] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #20 (смещение 20 971 520, 1 048 576 байт). Скачано всего: 21 из 24 чанков (87,5%).
-[2026-10-01 03:15:13.521] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:12Z
-[2026-10-01 03:15:13.521] [DEBUG] [WTelegram]              → Upload_File                           #0450
-[2026-10-01 03:15:13.522] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #21/24 (1 048 576 б за 569 мс) [Полный].
-[2026-10-01 03:15:13.522] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #21 (смещение 22 020 096, 1 048 576 байт). Скачано всего: 22 из 24 чанков (91,7%).
-[2026-10-01 03:15:13.522] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,74 МБ (чанки #22..#23 (всего 24)) через 2 воркеров MTProto...
-[2026-10-01 03:15:13.522] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #22/24 (смещение 23 068 672 б, размер 1 048 576 б)...
-[2026-10-01 03:15:13.523] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:13Z (svc)
-[2026-10-01 03:15:13.523] [DEBUG] [WTelegram]             → Upload_GetFile                         #BE05
-[2026-10-01 03:15:13.523] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:13.593] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #23/24 (смещение 24 117 248 б, размер 1 048 576 б)...
-[2026-10-01 03:15:13.593] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #9689
-[2026-10-01 03:15:13.666] [DEBUG] [WTelegram] 2>Receiving MsgsAck                                  2026-10-01 00:15:13Z (svc) 
-[2026-10-01 03:15:13.931] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:13Z
-[2026-10-01 03:15:13.931] [DEBUG] [WTelegram]              → Upload_File                           #BE05
-[2026-10-01 03:15:13.932] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #22/24 (1 048 576 б за 409 мс) [Полный].
-[2026-10-01 03:15:13.932] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 23 068 672, отдано 1 048 576 байт (24 117 248 / 24 891 313 байт, 96,9%). Скачано всего: 23 из 24 чанков (95,8%).
-[2026-10-01 03:15:14.015] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:14Z (svc)
-[2026-10-01 03:15:14.015] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #79A6
-[2026-10-01 03:15:14.015] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:14.021] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:13Z
-[2026-10-01 03:15:14.021] [DEBUG] [WTelegram]              → Upload_File                           #9689
-[2026-10-01 03:15:14.021] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': Размер: 24 891 313 б (23,74 МБ) | Из сети TG: 26 988 465 б (25,74 МБ) | Из ОЗУ: 20 971 520 б (20,00 МБ) | Эффективность сети: 1,08x (Допустимо — остаток хвоста чанка)
-[2026-10-01 03:15:14.021] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' получено из TelegramService.
-[2026-10-01 03:15:14.021] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #23/24 (774 065 б за 428 мс) [Полный].
-[2026-10-01 03:15:14.021] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'. Запуск _completionTimer...
-[2026-10-01 03:15:14.021] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 24 117 248, отдано 774 065 байт (24 891 313 / 24 891 313 байт, 100,0%). Скачано всего: 24 из 24 чанков (100%).
-[2026-10-01 03:15:14.023] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4
-[2026-10-01 03:15:14.040] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #7A92
-[2026-10-01 03:15:14.040] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:14Z (svc)
-[2026-10-01 03:15:14.040] [DEBUG] [WTelegram]             → Channels_GetMessages                   #8C7E
-[2026-10-01 03:15:14.040] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:14.040] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #C222
-[2026-10-01 03:15:14.058] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-01 00:15:14Z (svc) 
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:15:14Z (svc)
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:15:14Z
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #C222
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:15:14Z (svc) 
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #7A92
-[2026-10-01 03:15:14.108] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 2 097 152, размер 1024 КБ...
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:14Z (svc)
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram]             → Upload_GetFile                         #CABA
-[2026-10-01 03:15:14.108] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:14.109] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:14.109] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #8C7E
-[2026-10-01 03:15:14.391] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:14.391] [DEBUG] [WTelegram]              → Upload_File                           #CABA
-[2026-10-01 03:15:14.391] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 1 048 576, размер 1024 КБ...
-[2026-10-01 03:15:14.391] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:14Z (svc)
-[2026-10-01 03:15:14.391] [DEBUG] [WTelegram]             → Upload_GetFile                         #5466
-[2026-10-01 03:15:14.391] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:14.391] [INFO ] [TelegramService] [MTProto] Получен чанк #2/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': смещение 2 097 152, размер 1024 КБ. Скачано всего: 1 из 19 чанков (5,3%).
-[2026-10-01 03:15:14.392] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #3..#7 (всего 19)) через 3 воркеров MTProto...
-[2026-10-01 03:15:14.464] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #3/19 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-01 03:15:14.464] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #FA7A
-[2026-10-01 03:15:14.543] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/19 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-01 03:15:14.543] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #2656
-[2026-10-01 03:15:14.621] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #5/19 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-01 03:15:14.621] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #9C7E
-[2026-10-01 03:15:14.707] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:14.708] [DEBUG] [WTelegram]              → Upload_File                           #5466
-[2026-10-01 03:15:14.708] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 0, размер 1024 КБ...
-[2026-10-01 03:15:14.708] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:14Z (svc)
-[2026-10-01 03:15:14.708] [DEBUG] [WTelegram]             → Upload_GetFile                         #6606
-[2026-10-01 03:15:14.708] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:14.708] [INFO ] [TelegramService] [MTProto] Получен чанк #1/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': смещение 1 048 576, размер 1024 КБ. Скачано всего: 2 из 19 чанков (10,5%).
-[2026-10-01 03:15:14.947] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:14.948] [DEBUG] [WTelegram]              → Upload_File                           #FA7A
-[2026-10-01 03:15:14.948] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #3/19 (1 048 576 б за 483 мс) [Полный].
-[2026-10-01 03:15:14.948] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #6/19 (смещение 6 291 456 б, размер 1 048 576 б)...
-[2026-10-01 03:15:14.948] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:14Z (svc)
-[2026-10-01 03:15:14.948] [DEBUG] [WTelegram]             → Upload_GetFile                         #72EA
-[2026-10-01 03:15:14.948] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:15.164] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:15.164] [DEBUG] [WTelegram]              → Upload_File                           #2656
-[2026-10-01 03:15:15.164] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/19 (1 048 576 б за 620 мс) [Полный].
-[2026-10-01 03:15:15.164] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/19 (смещение 7 340 032 б, размер 1 048 576 б)...
-[2026-10-01 03:15:15.164] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:15Z (svc)
-[2026-10-01 03:15:15.164] [DEBUG] [WTelegram]             → Upload_GetFile                         #426B
-[2026-10-01 03:15:15.165] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:15.390] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:15.391] [DEBUG] [WTelegram]              → Upload_File                           #9C7E
-[2026-10-01 03:15:15.391] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #5/19 (1 048 576 б за 769 мс) [Полный].
-[2026-10-01 03:15:15.596] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:15.596] [DEBUG] [WTelegram]              → Upload_File                           #6606
-[2026-10-01 03:15:15.597] [INFO ] [TelegramService] [MTProto] Получен чанк #0/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': смещение 0, размер 1024 КБ. Скачано всего: 6 из 19 чанков (31,6%).
-[2026-10-01 03:15:15.598] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 6 из 19 чанков (31,6%).
-[2026-10-01 03:15:15.598] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 6 из 19 чанков (31,6%).
-[2026-10-01 03:15:15.598] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 6 из 19 чанков (31,6%).
-[2026-10-01 03:15:15.789] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:14Z
-[2026-10-01 03:15:15.790] [DEBUG] [WTelegram]              → Upload_File                           #72EA
-[2026-10-01 03:15:15.790] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #6/19 (1 048 576 б за 841 мс) [Полный].
-[2026-10-01 03:15:15.790] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #6 (смещение 6 291 456, 1 048 576 байт). Скачано всего: 7 из 19 чанков (36,8%).
-[2026-10-01 03:15:15.990] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:15Z
-[2026-10-01 03:15:15.991] [DEBUG] [WTelegram]              → Upload_File                           #426B
-[2026-10-01 03:15:15.991] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/19 (1 048 576 б за 826 мс) [Полный].
-[2026-10-01 03:15:15.991] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #7 (смещение 7 340 032, 1 048 576 байт). Скачано всего: 8 из 19 чанков (42,1%).
-[2026-10-01 03:15:15.992] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #8..#11 (всего 19)) через 3 воркеров MTProto...
-[2026-10-01 03:15:15.992] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #8/19 (смещение 8 388 608 б, размер 1 048 576 б)...
-[2026-10-01 03:15:15.992] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:16Z (svc)
-[2026-10-01 03:15:15.992] [DEBUG] [WTelegram]             → Upload_GetFile                         #A9F0
-[2026-10-01 03:15:15.992] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:16.066] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #9/19 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-01 03:15:16.066] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #1254
-[2026-10-01 03:15:16.143] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #10/19 (смещение 10 485 760 б, размер 1 048 576 б)...
-[2026-10-01 03:15:16.144] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #8868
-[2026-10-01 03:15:16.255] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:16Z
-[2026-10-01 03:15:16.256] [DEBUG] [WTelegram]              → Upload_File                           #A9F0
-[2026-10-01 03:15:16.256] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #8/19 (1 048 576 б за 264 мс) [Полный].
-[2026-10-01 03:15:16.256] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #11/19 (смещение 11 534 336 б, размер 1 048 576 б)...
-[2026-10-01 03:15:16.256] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:16Z (svc)
-[2026-10-01 03:15:16.256] [DEBUG] [WTelegram]             → Upload_GetFile                         #D780
-[2026-10-01 03:15:16.256] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:16.256] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 8 388 608, отдано 1 048 576 байт (9 437 184 / 19 456 938 байт, 48,5%). Скачано всего: 9 из 19 чанков (47,4%).
-[2026-10-01 03:15:16.469] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:16Z
-[2026-10-01 03:15:16.469] [DEBUG] [WTelegram]              → Upload_File                           #1254
-[2026-10-01 03:15:16.469] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #9/19 (1 048 576 б за 403 мс) [Полный].
-[2026-10-01 03:15:16.470] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 9 437 184, отдано 1 048 576 байт (10 485 760 / 19 456 938 байт, 53,9%). Скачано всего: 10 из 19 чанков (52,6%).
-[2026-10-01 03:15:16.667] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:16Z
-[2026-10-01 03:15:16.667] [DEBUG] [WTelegram]              → Upload_File                           #8868
-[2026-10-01 03:15:16.668] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #10/19 (1 048 576 б за 523 мс) [Полный].
-[2026-10-01 03:15:16.668] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #10 (смещение 10 485 760, 1 048 576 байт). Скачано всего: 11 из 19 чанков (57,9%).
-[2026-10-01 03:15:16.839] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:16Z
-[2026-10-01 03:15:16.840] [DEBUG] [WTelegram]              → Upload_File                           #D780
-[2026-10-01 03:15:16.840] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #11/19 (1 048 576 б за 583 мс) [Полный].
-[2026-10-01 03:15:16.840] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #11 (смещение 11 534 336, 1 048 576 байт). Скачано всего: 12 из 19 чанков (63,2%).
-[2026-10-01 03:15:16.840] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #12..#15 (всего 19)) через 3 воркеров MTProto...
-[2026-10-01 03:15:16.840] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #12/19 (смещение 12 582 912 б, размер 1 048 576 б)...
-[2026-10-01 03:15:16.841] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:16Z (svc)
-[2026-10-01 03:15:16.841] [DEBUG] [WTelegram]             → Upload_GetFile                         #1D3C
-[2026-10-01 03:15:16.841] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:16.921] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #13/19 (смещение 13 631 488 б, размер 1 048 576 б)...
-[2026-10-01 03:15:16.921] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #8898
-[2026-10-01 03:15:16.999] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #14/19 (смещение 14 680 064 б, размер 1 048 576 б)...
-[2026-10-01 03:15:16.999] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #2469
-[2026-10-01 03:15:17.172] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:16Z
-[2026-10-01 03:15:17.172] [DEBUG] [WTelegram]              → Upload_File                           #1D3C
-[2026-10-01 03:15:17.173] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #12/19 (1 048 576 б за 332 мс) [Полный].
-[2026-10-01 03:15:17.173] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #15/19 (смещение 15 728 640 б, размер 1 048 576 б)...
-[2026-10-01 03:15:17.173] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:17Z (svc)
-[2026-10-01 03:15:17.173] [DEBUG] [WTelegram]             → Upload_GetFile                         #5AB9
-[2026-10-01 03:15:17.173] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:17.173] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 12 582 912, отдано 1 048 576 байт (13 631 488 / 19 456 938 байт, 70,1%). Скачано всего: 13 из 19 чанков (68,4%).
-[2026-10-01 03:15:17.374] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:17Z
-[2026-10-01 03:15:17.374] [DEBUG] [WTelegram]              → Upload_File                           #8898
-[2026-10-01 03:15:17.374] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #13/19 (1 048 576 б за 452 мс) [Полный].
-[2026-10-01 03:15:17.375] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 13 631 488, отдано 1 048 576 байт (14 680 064 / 19 456 938 байт, 75,4%). Скачано всего: 14 из 19 чанков (73,7%).
-[2026-10-01 03:15:17.544] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:17Z
-[2026-10-01 03:15:17.545] [DEBUG] [WTelegram]              → Upload_File                           #2469
-[2026-10-01 03:15:17.545] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #14/19 (1 048 576 б за 546 мс) [Полный].
-[2026-10-01 03:15:17.545] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #14 (смещение 14 680 064, 1 048 576 байт). Скачано всего: 15 из 19 чанков (78,9%).
-[2026-10-01 03:15:17.716] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:17Z
-[2026-10-01 03:15:17.716] [DEBUG] [WTelegram]              → Upload_File                           #5AB9
-[2026-10-01 03:15:17.716] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #15/19 (1 048 576 б за 543 мс) [Полный].
-[2026-10-01 03:15:17.717] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #15 (смещение 15 728 640, 1 048 576 байт). Скачано всего: 16 из 19 чанков (84,2%).
-[2026-10-01 03:15:17.717] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 2,56 МБ (чанки #16..#18 (всего 19)) через 3 воркеров MTProto...
-[2026-10-01 03:15:17.717] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #16/19 (смещение 16 777 216 б, размер 1 048 576 б)...
-[2026-10-01 03:15:17.717] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:17Z (svc)
-[2026-10-01 03:15:17.717] [DEBUG] [WTelegram]             → Upload_GetFile                         #6ED5
-[2026-10-01 03:15:17.717] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:17.792] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/19 (смещение 17 825 792 б, размер 1 048 576 б)...
-[2026-10-01 03:15:17.792] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #0E99
-[2026-10-01 03:15:17.871] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #18/19 (смещение 18 874 368 б, размер 1 048 576 б)...
-[2026-10-01 03:15:17.871] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #A9CD
-[2026-10-01 03:15:17.957] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:17Z
-[2026-10-01 03:15:17.958] [DEBUG] [WTelegram]              → Upload_File                           #6ED5
-[2026-10-01 03:15:17.958] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #16/19 (1 048 576 б за 240 мс) [Полный].
-[2026-10-01 03:15:17.958] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 16 777 216, отдано 1 048 576 байт (17 825 792 / 19 456 938 байт, 91,6%). Скачано всего: 17 из 19 чанков (89,5%).
-[2026-10-01 03:15:18.163] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:17Z
-[2026-10-01 03:15:18.164] [DEBUG] [WTelegram]              → Upload_File                           #0E99
-[2026-10-01 03:15:18.164] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #17/19 (1 048 576 б за 371 мс) [Полный].
-[2026-10-01 03:15:18.164] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 17 825 792, отдано 1 048 576 байт (18 874 368 / 19 456 938 байт, 97,0%). Скачано всего: 18 из 19 чанков (94,7%).
-[2026-10-01 03:15:18.244] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:17Z
-[2026-10-01 03:15:18.244] [DEBUG] [WTelegram]              → Upload_File                           #A9CD
-[2026-10-01 03:15:18.244] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': Размер: 19 456 938 б (18,56 МБ) | Из сети TG: 19 456 938 б (18,56 МБ) | Из ОЗУ: 15 728 640 б (15,00 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
-[2026-10-01 03:15:18.244] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' получено из TelegramService.
-[2026-10-01 03:15:18.244] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #18/19 (582 570 б за 373 мс) [Полный].
-[2026-10-01 03:15:18.244] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'. Запуск _completionTimer...
-[2026-10-01 03:15:18.244] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #18 (смещение 18 874 368, 582 570 байт). Скачано всего: 19 из 19 чанков (100%).
-[2026-10-01 03:15:18.246] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4
-[2026-10-01 03:15:18.250] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:18Z (svc)
-[2026-10-01 03:15:18.250] [DEBUG] [WTelegram]             → Channels_GetMessages                   #11B6
-[2026-10-01 03:15:18.250] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:18.250] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #07E2
-[2026-10-01 03:15:18.250] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #A1AE
-[2026-10-01 03:15:18.301] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:18.301] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #11B6
-[2026-10-01 03:15:18.301] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 0, размер 1024 КБ...
-[2026-10-01 03:15:18.302] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:18Z (svc)
-[2026-10-01 03:15:18.302] [DEBUG] [WTelegram]             → Upload_GetFile                         #6F42
-[2026-10-01 03:15:18.302] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:18.352] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:15:18Z (svc)
-[2026-10-01 03:15:18.352] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:15:18Z
-[2026-10-01 03:15:18.352] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #A1AE
-[2026-10-01 03:15:18.352] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:15:18Z (svc) 
-[2026-10-01 03:15:18.353] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:18.353] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #07E2
-[2026-10-01 03:15:18.600] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:18.600] [DEBUG] [WTelegram]              → Upload_File                           #6F42
-[2026-10-01 03:15:18.600] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 2 097 152, размер 1024 КБ...
-[2026-10-01 03:15:18.601] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:18Z (svc)
-[2026-10-01 03:15:18.601] [DEBUG] [WTelegram]             → Upload_GetFile                         #C046
-[2026-10-01 03:15:18.601] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:18.601] [INFO ] [TelegramService] [MTProto] Получен чанк #0/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': смещение 0, размер 1024 КБ. Скачано всего: 1 из 16 чанков (6,3%).
-[2026-10-01 03:15:18.601] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #1..#5 (всего 16)) через 3 воркеров MTProto...
-[2026-10-01 03:15:18.681] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #1/16 (смещение 1 048 576 б, размер 1 048 576 б)...
-[2026-10-01 03:15:18.682] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #F0AA
-[2026-10-01 03:15:18.759] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #2/16 (смещение 2 097 152 б, размер 1 048 576 б)...
-[2026-10-01 03:15:18.759] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #F7A2
-[2026-10-01 03:15:18.836] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #3/16 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-01 03:15:18.837] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #6176
-[2026-10-01 03:15:18.888] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:18.889] [DEBUG] [WTelegram]              → Upload_File                           #C046
-[2026-10-01 03:15:18.889] [INFO ] [TelegramService] [MTProto] Получен чанк #2/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': смещение 2 097 152, размер 1024 КБ. Скачано всего: 2 из 16 чанков (12,5%).
-[2026-10-01 03:15:18.916] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 1 048 576, размер 1024 КБ...
-[2026-10-01 03:15:18.916] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:18Z (svc)
-[2026-10-01 03:15:18.916] [DEBUG] [WTelegram]             → Upload_GetFile                         #B116
-[2026-10-01 03:15:18.916] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:19.091] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:19.091] [DEBUG] [WTelegram]              → Upload_File                           #F0AA
-[2026-10-01 03:15:19.092] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #1/16 (1 048 576 б за 410 мс) [Полный].
-[2026-10-01 03:15:19.092] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #4/16 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-01 03:15:19.092] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:19Z (svc)
-[2026-10-01 03:15:19.092] [DEBUG] [WTelegram]             → Upload_GetFile                         #8F2F
-[2026-10-01 03:15:19.092] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:19.297] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:19.298] [DEBUG] [WTelegram]              → Upload_File                           #F7A2
-[2026-10-01 03:15:19.298] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #2/16 (1 048 576 б за 538 мс) [Полный].
-[2026-10-01 03:15:19.298] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #5/16 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-01 03:15:19.298] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:19Z (svc)
-[2026-10-01 03:15:19.298] [DEBUG] [WTelegram]             → Upload_GetFile                         #ECCB
-[2026-10-01 03:15:19.298] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:19.498] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:19.498] [DEBUG] [WTelegram]              → Upload_File                           #6176
-[2026-10-01 03:15:19.498] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #3/16 (1 048 576 б за 661 мс) [Полный].
-[2026-10-01 03:15:19.498] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 16 чанков (25%).
-[2026-10-01 03:15:19.672] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:18Z
-[2026-10-01 03:15:19.672] [DEBUG] [WTelegram]              → Upload_File                           #B116
-[2026-10-01 03:15:19.673] [INFO ] [TelegramService] [MTProto] Получен чанк #1/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': смещение 1 048 576, размер 1024 КБ. Скачано всего: 4 из 16 чанков (25%).
-[2026-10-01 03:15:19.837] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:19Z
-[2026-10-01 03:15:19.837] [DEBUG] [WTelegram]              → Upload_File                           #8F2F
-[2026-10-01 03:15:19.837] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #4/16 (1 048 576 б за 745 мс) [Полный].
-[2026-10-01 03:15:19.837] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 16 чанков (31,3%).
-[2026-10-01 03:15:19.998] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:19Z
-[2026-10-01 03:15:19.999] [DEBUG] [WTelegram]              → Upload_File                           #ECCB
-[2026-10-01 03:15:19.999] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #5/16 (1 048 576 б за 700 мс) [Полный].
-[2026-10-01 03:15:19.999] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 6 из 16 чанков (37,5%).
-[2026-10-01 03:15:20.000] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #6..#9 (всего 16)) через 3 воркеров MTProto...
-[2026-10-01 03:15:20.000] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #6/16 (смещение 6 291 456 б, размер 1 048 576 б)...
-[2026-10-01 03:15:20.000] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:20Z (svc)
-[2026-10-01 03:15:20.000] [DEBUG] [WTelegram]             → Upload_GetFile                         #EDE8
-[2026-10-01 03:15:20.000] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:20.078] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/16 (смещение 7 340 032 б, размер 1 048 576 б)...
-[2026-10-01 03:15:20.079] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #3938
-[2026-10-01 03:15:20.156] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #8/16 (смещение 8 388 608 б, размер 1 048 576 б)...
-[2026-10-01 03:15:20.156] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #E778
-[2026-10-01 03:15:20.273] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:20Z
-[2026-10-01 03:15:20.273] [DEBUG] [WTelegram]              → Upload_File                           #EDE8
-[2026-10-01 03:15:20.273] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #6/16 (1 048 576 б за 273 мс) [Полный].
-[2026-10-01 03:15:20.273] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/16 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-01 03:15:20.274] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:20Z (svc)
-[2026-10-01 03:15:20.274] [DEBUG] [WTelegram]             → Upload_GetFile                         #B374
-[2026-10-01 03:15:20.274] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:20.274] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 6 291 456, отдано 1 048 576 байт (7 340 032 / 16 411 173 байт, 44,7%). Скачано всего: 7 из 16 чанков (43,8%).
-[2026-10-01 03:15:20.463] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:20Z
-[2026-10-01 03:15:20.463] [DEBUG] [WTelegram]              → Upload_File                           #3938
-[2026-10-01 03:15:20.463] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/16 (1 048 576 б за 384 мс) [Полный].
-[2026-10-01 03:15:20.464] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 7 340 032, отдано 1 048 576 байт (8 388 608 / 16 411 173 байт, 51,1%). Скачано всего: 8 из 16 чанков (50%).
-[2026-10-01 03:15:20.670] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:20Z
-[2026-10-01 03:15:20.670] [DEBUG] [WTelegram]              → Upload_File                           #E778
-[2026-10-01 03:15:20.671] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #8/16 (1 048 576 б за 514 мс) [Полный].
-[2026-10-01 03:15:20.671] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #8 (смещение 8 388 608, 1 048 576 байт). Скачано всего: 9 из 16 чанков (56,3%).
-[2026-10-01 03:15:20.849] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:20Z
-[2026-10-01 03:15:20.849] [DEBUG] [WTelegram]              → Upload_File                           #B374
-[2026-10-01 03:15:20.850] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/16 (1 048 576 б за 575 мс) [Полный].
-[2026-10-01 03:15:20.850] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #9 (смещение 9 437 184, 1 048 576 байт). Скачано всего: 10 из 16 чанков (62,5%).
-[2026-10-01 03:15:20.850] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #10..#13 (всего 16)) через 3 воркеров MTProto...
-[2026-10-01 03:15:20.850] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #10/16 (смещение 10 485 760 б, размер 1 048 576 б)...
-[2026-10-01 03:15:20.851] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:20Z (svc)
-[2026-10-01 03:15:20.851] [DEBUG] [WTelegram]             → Upload_GetFile                         #5508
-[2026-10-01 03:15:20.851] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:20.933] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #11/16 (смещение 11 534 336 б, размер 1 048 576 б)...
-[2026-10-01 03:15:20.934] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #4430
-[2026-10-01 03:15:21.011] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #12/16 (смещение 12 582 912 б, размер 1 048 576 б)...
-[2026-10-01 03:15:21.011] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #D075
-[2026-10-01 03:15:21.135] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:20Z
-[2026-10-01 03:15:21.136] [DEBUG] [WTelegram]              → Upload_File                           #5508
-[2026-10-01 03:15:21.137] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #10/16 (1 048 576 б за 285 мс) [Полный].
-[2026-10-01 03:15:21.137] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #13/16 (смещение 13 631 488 б, размер 1 048 576 б)...
-[2026-10-01 03:15:21.137] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:21Z (svc)
-[2026-10-01 03:15:21.137] [DEBUG] [WTelegram]             → Upload_GetFile                         #000D
-[2026-10-01 03:15:21.137] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:21.138] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 10 485 760, отдано 1 048 576 байт (11 534 336 / 16 411 173 байт, 70,3%). Скачано всего: 11 из 16 чанков (68,8%).
-[2026-10-01 03:15:21.343] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:20Z
-[2026-10-01 03:15:21.343] [DEBUG] [WTelegram]              → Upload_File                           #4430
-[2026-10-01 03:15:21.344] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #11/16 (1 048 576 б за 409 мс) [Полный].
-[2026-10-01 03:15:21.344] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 11 534 336, отдано 1 048 576 байт (12 582 912 / 16 411 173 байт, 76,7%). Скачано всего: 12 из 16 чанков (75%).
-[2026-10-01 03:15:21.533] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:21Z
-[2026-10-01 03:15:21.534] [DEBUG] [WTelegram]              → Upload_File                           #D075
-[2026-10-01 03:15:21.534] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #12/16 (1 048 576 б за 522 мс) [Полный].
-[2026-10-01 03:15:21.535] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #12 (смещение 12 582 912, 1 048 576 байт). Скачано всего: 13 из 16 чанков (81,3%).
-[2026-10-01 03:15:21.709] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:21Z
-[2026-10-01 03:15:21.710] [DEBUG] [WTelegram]              → Upload_File                           #000D
-[2026-10-01 03:15:21.710] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #13/16 (1 048 576 б за 572 мс) [Полный].
-[2026-10-01 03:15:21.710] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #13 (смещение 13 631 488, 1 048 576 байт). Скачано всего: 14 из 16 чанков (87,5%).
-[2026-10-01 03:15:21.711] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,65 МБ (чанки #14..#15 (всего 16)) через 2 воркеров MTProto...
-[2026-10-01 03:15:21.711] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #14/16 (смещение 14 680 064 б, размер 1 048 576 б)...
-[2026-10-01 03:15:21.711] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:15:21Z (svc)
-[2026-10-01 03:15:21.711] [DEBUG] [WTelegram]             → Upload_GetFile                         #9969
-[2026-10-01 03:15:21.711] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-01 03:15:21.791] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #15/16 (смещение 15 728 640 б, размер 1 048 576 б)...
-[2026-10-01 03:15:21.791] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #655D
-[2026-10-01 03:15:21.991] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:21Z
-[2026-10-01 03:15:21.991] [DEBUG] [WTelegram]              → Upload_File                           #9969
-[2026-10-01 03:15:21.991] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #14/16 (1 048 576 б за 280 мс) [Полный].
-[2026-10-01 03:15:21.991] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 14 680 064, отдано 1 048 576 байт (15 728 640 / 16 411 173 байт, 95,8%). Скачано всего: 15 из 16 чанков (93,8%).
-[2026-10-01 03:15:22.109] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:15:21Z
-[2026-10-01 03:15:22.109] [DEBUG] [WTelegram]              → Upload_File                           #655D
-[2026-10-01 03:15:22.109] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': Размер: 16 411 173 б (15,65 МБ) | Из сети TG: 18 508 325 б (17,65 МБ) | Из ОЗУ: 12 582 912 б (12,00 МБ) | Эффективность сети: 1,13x (Допустимо — остаток хвоста чанка)
-[2026-10-01 03:15:22.109] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' получено из TelegramService.
-[2026-10-01 03:15:22.109] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #15/16 (682 533 б за 318 мс) [Полный].
-[2026-10-01 03:15:22.109] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'. Запуск _completionTimer...
-[2026-10-01 03:15:22.109] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 15 728 640, отдано 682 533 байт (16 411 173 / 16 411 173 байт, 100,0%). Скачано всего: 16 из 16 чанков (100%).
-[2026-10-01 03:15:22.111] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4
-[2026-10-01 03:15:23.625] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,5 сек).
+[2026-10-01 03:44:26.510] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:26Z (svc)
+[2026-10-01 03:44:26.510] [DEBUG] [WTelegram]             → Channels_GetMessages                   #ED0E
+[2026-10-01 03:44:26.510] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:26.565] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:26Z
+[2026-10-01 03:44:26.566] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #ED0E
+[2026-10-01 03:44:26.574] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/12 для 'IMG_20201018_131419 (12 mb).jpg' (ID 1271): смещение 0, размер 256 КБ...
+[2026-10-01 03:44:26.574] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:26Z (svc)
+[2026-10-01 03:44:26.574] [DEBUG] [WTelegram]             → Upload_GetFile                         #4B1A
+[2026-10-01 03:44:26.575] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:26.812] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:26Z
+[2026-10-01 03:44:26.813] [DEBUG] [WTelegram]              → Upload_File                           #4B1A
+[2026-10-01 03:44:26.819] [INFO ] [TelegramService] [MTProto] Получен чанк #0/12 для 'IMG_20201018_131419 (12 mb).jpg': смещение 0, размер 256 КБ. Скачано всего: 0 из 12 чанков (0%).
+[2026-10-01 03:44:26.820] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'IMG_20201018_131419 (12 mb).jpg'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-01 03:44:28.243] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-01 03:44:28.244] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-10-01 03:44:34.838] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:34Z (svc)
+[2026-10-01 03:44:34.838] [DEBUG] [WTelegram]             → Channels_GetMessages                   #B5AA
+[2026-10-01 03:44:34.838] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:34.839] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #9DC6
+[2026-10-01 03:44:34.840] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #9DCA
+[2026-10-01 03:44:34.891] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:34Z
+[2026-10-01 03:44:34.892] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #B5AA
+[2026-10-01 03:44:34.901] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #0..#4 (всего 18)) через 3 воркеров MTProto...
+[2026-10-01 03:44:34.904] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/18 (смещение 1 048 576 б, размер 1 048 576 б)...
+[2026-10-01 03:44:34.905] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:34Z (svc)
+[2026-10-01 03:44:34.905] [DEBUG] [WTelegram]             → Upload_GetFile                         #AF22
+[2026-10-01 03:44:34.905] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:34.944] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:44:34Z (svc)
+[2026-10-01 03:44:34.944] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:44:34Z
+[2026-10-01 03:44:34.945] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #9DCA
+[2026-10-01 03:44:34.945] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:44:34Z (svc) 
+[2026-10-01 03:44:34.945] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:34Z
+[2026-10-01 03:44:34.945] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #9DC6
+[2026-10-01 03:44:34.989] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #2/18 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-10-01 03:44:34.990] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:34Z (svc)
+[2026-10-01 03:44:34.990] [DEBUG] [WTelegram]             → Upload_GetFile                         #B136
+[2026-10-01 03:44:34.990] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:35.066] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #0/18 (смещение 0 б, размер 1 048 576 б)...
+[2026-10-01 03:44:35.066] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #9E7E
+[2026-10-01 03:44:35.333] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:34Z
+[2026-10-01 03:44:35.333] [DEBUG] [WTelegram]              → Upload_File                           #AF22
+[2026-10-01 03:44:35.335] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/18 (1 048 576 б за 429 мс) [Полный].
+[2026-10-01 03:44:35.335] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/18 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-10-01 03:44:35.336] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:34Z (svc)
+[2026-10-01 03:44:35.336] [DEBUG] [WTelegram]             → Upload_GetFile                         #8E22
+[2026-10-01 03:44:35.336] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:35.336] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #1 (смещение 1 048 576, 1 048 576 байт). Скачано всего: 1 из 18 чанков (5,6%).
+[2026-10-01 03:44:35.336] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для KOMODO- All 4 U (Official video).mp4 (1048576/17915288)
+[2026-10-01 03:44:35.467] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:35Z
+[2026-10-01 03:44:35.467] [DEBUG] [WTelegram]              → Upload_File                           #B136
+[2026-10-01 03:44:35.467] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #2/18 (1 048 576 б за 477 мс) [Полный].
+[2026-10-01 03:44:35.467] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #4/18 (смещение 4 194 304 б, размер 1 048 576 б)...
+[2026-10-01 03:44:35.468] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #2 (смещение 2 097 152, 1 048 576 байт). Скачано всего: 2 из 18 чанков (11,1%).
+[2026-10-01 03:44:35.468] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:35Z (svc)
+[2026-10-01 03:44:35.468] [DEBUG] [WTelegram]             → Upload_GetFile                         #6C7F
+[2026-10-01 03:44:35.468] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:35.625] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:35Z
+[2026-10-01 03:44:35.625] [DEBUG] [WTelegram]              → Upload_File                           #9E7E
+[2026-10-01 03:44:35.625] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #0/18 (1 048 576 б за 559 мс) [Полный].
+[2026-10-01 03:44:35.625] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 0, отдано 1 048 576 байт (1 048 576 / 17 915 288 байт, 5,9%). Скачано всего: 3 из 18 чанков (16,7%).
+[2026-10-01 03:44:35.760] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:35Z
+[2026-10-01 03:44:35.761] [DEBUG] [WTelegram]              → Upload_File                           #8E22
+[2026-10-01 03:44:35.761] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/18 (1 048 576 б за 425 мс) [Полный].
+[2026-10-01 03:44:35.761] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 18 чанков (22,2%).
+[2026-10-01 03:44:35.903] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:35Z
+[2026-10-01 03:44:35.903] [DEBUG] [WTelegram]              → Upload_File                           #6C7F
+[2026-10-01 03:44:35.903] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #4/18 (1 048 576 б за 435 мс) [Полный].
+[2026-10-01 03:44:35.904] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 18 чанков (27,8%).
+[2026-10-01 03:44:35.905] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #5..#9 (всего 18)) через 3 воркеров MTProto...
+[2026-10-01 03:44:35.905] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #5/18 (смещение 5 242 880 б, размер 1 048 576 б)...
+[2026-10-01 03:44:35.905] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:35Z (svc)
+[2026-10-01 03:44:35.905] [DEBUG] [WTelegram]             → Upload_GetFile                         #4853
+[2026-10-01 03:44:35.905] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:35.975] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #6/18 (смещение 6 291 456 б, размер 1 048 576 б)...
+[2026-10-01 03:44:35.975] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #EF8B
+[2026-10-01 03:44:36.055] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #7/18 (смещение 7 340 032 б, размер 1 048 576 б)...
+[2026-10-01 03:44:36.055] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #4807
+[2026-10-01 03:44:36.195] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:35Z
+[2026-10-01 03:44:36.195] [DEBUG] [WTelegram]              → Upload_File                           #4853
+[2026-10-01 03:44:36.196] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #5/18 (1 048 576 б за 290 мс) [Полный].
+[2026-10-01 03:44:36.196] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #8/18 (смещение 8 388 608 б, размер 1 048 576 б)...
+[2026-10-01 03:44:36.196] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 5 242 880, отдано 1 048 576 байт (6 291 456 / 17 915 288 байт, 35,1%). Скачано всего: 6 из 18 чанков (33,3%).
+[2026-10-01 03:44:36.196] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:35Z (svc)
+[2026-10-01 03:44:36.196] [DEBUG] [WTelegram]             → Upload_GetFile                         #2ADB
+[2026-10-01 03:44:36.196] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:36.372] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:36Z
+[2026-10-01 03:44:36.372] [DEBUG] [WTelegram]              → Upload_File                           #EF8B
+[2026-10-01 03:44:36.372] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #6/18 (1 048 576 б за 397 мс) [Полный].
+[2026-10-01 03:44:36.372] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #9/18 (смещение 9 437 184 б, размер 1 048 576 б)...
+[2026-10-01 03:44:36.373] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 6 291 456, отдано 1 048 576 байт (7 340 032 / 17 915 288 байт, 41,0%). Скачано всего: 7 из 18 чанков (38,9%).
+[2026-10-01 03:44:36.373] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:36Z (svc)
+[2026-10-01 03:44:36.373] [DEBUG] [WTelegram]             → Upload_GetFile                         #32C8
+[2026-10-01 03:44:36.373] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:36.543] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:36Z
+[2026-10-01 03:44:36.544] [DEBUG] [WTelegram]              → Upload_File                           #4807
+[2026-10-01 03:44:36.544] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #7/18 (1 048 576 б за 488 мс) [Полный].
+[2026-10-01 03:44:36.544] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #7 (смещение 7 340 032, 1 048 576 байт). Скачано всего: 8 из 18 чанков (44,4%).
+[2026-10-01 03:44:36.718] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:36Z
+[2026-10-01 03:44:36.718] [DEBUG] [WTelegram]              → Upload_File                           #2ADB
+[2026-10-01 03:44:36.719] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #8/18 (1 048 576 б за 522 мс) [Полный].
+[2026-10-01 03:44:36.719] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #8 (смещение 8 388 608, 1 048 576 байт). Скачано всего: 9 из 18 чанков (50%).
+[2026-10-01 03:44:36.891] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:36Z
+[2026-10-01 03:44:36.891] [DEBUG] [WTelegram]              → Upload_File                           #32C8
+[2026-10-01 03:44:36.892] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #9/18 (1 048 576 б за 519 мс) [Полный].
+[2026-10-01 03:44:36.892] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #9 (смещение 9 437 184, 1 048 576 байт). Скачано всего: 10 из 18 чанков (55,6%).
+[2026-10-01 03:44:36.892] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #10..#13 (всего 18)) через 3 воркеров MTProto...
+[2026-10-01 03:44:36.892] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #10/18 (смещение 10 485 760 б, размер 1 048 576 б)...
+[2026-10-01 03:44:36.893] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:36Z (svc)
+[2026-10-01 03:44:36.893] [DEBUG] [WTelegram]             → Upload_GetFile                         #B7F4
+[2026-10-01 03:44:36.893] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:36.974] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #11/18 (смещение 11 534 336 б, размер 1 048 576 б)...
+[2026-10-01 03:44:36.974] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #066C
+[2026-10-01 03:44:37.052] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #12/18 (смещение 12 582 912 б, размер 1 048 576 б)...
+[2026-10-01 03:44:37.052] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #7638
+[2026-10-01 03:44:37.152] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:36Z
+[2026-10-01 03:44:37.152] [DEBUG] [WTelegram]              → Upload_File                           #B7F4
+[2026-10-01 03:44:37.152] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #10/18 (1 048 576 б за 259 мс) [Полный].
+[2026-10-01 03:44:37.152] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #13/18 (смещение 13 631 488 б, размер 1 048 576 б)...
+[2026-10-01 03:44:37.153] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:36Z (svc)
+[2026-10-01 03:44:37.153] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 10 485 760, отдано 1 048 576 байт (11 534 336 / 17 915 288 байт, 64,4%). Скачано всего: 11 из 18 чанков (61,1%).
+[2026-10-01 03:44:37.153] [DEBUG] [WTelegram]             → Upload_GetFile                         #A110
+[2026-10-01 03:44:37.153] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:37.348] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:37Z
+[2026-10-01 03:44:37.348] [DEBUG] [WTelegram]              → Upload_File                           #066C
+[2026-10-01 03:44:37.348] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #11/18 (1 048 576 б за 374 мс) [Полный].
+[2026-10-01 03:44:37.349] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 11 534 336, отдано 1 048 576 байт (12 582 912 / 17 915 288 байт, 70,2%). Скачано всего: 12 из 18 чанков (66,7%).
+[2026-10-01 03:44:37.516] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:37Z
+[2026-10-01 03:44:37.516] [DEBUG] [WTelegram]              → Upload_File                           #7638
+[2026-10-01 03:44:37.516] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #12/18 (1 048 576 б за 464 мс) [Полный].
+[2026-10-01 03:44:37.517] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #12 (смещение 12 582 912, 1 048 576 байт). Скачано всего: 13 из 18 чанков (72,2%).
+[2026-10-01 03:44:37.667] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:37Z
+[2026-10-01 03:44:37.667] [DEBUG] [WTelegram]              → Upload_File                           #A110
+[2026-10-01 03:44:37.667] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #13/18 (1 048 576 б за 514 мс) [Полный].
+[2026-10-01 03:44:37.668] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #13 (смещение 13 631 488, 1 048 576 байт). Скачано всего: 14 из 18 чанков (77,8%).
+[2026-10-01 03:44:37.668] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 3,09 МБ (чанки #14..#17 (всего 18)) через 3 воркеров MTProto...
+[2026-10-01 03:44:37.668] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #14/18 (смещение 14 680 064 б, размер 1 048 576 б)...
+[2026-10-01 03:44:37.668] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:37Z (svc)
+[2026-10-01 03:44:37.668] [DEBUG] [WTelegram]             → Upload_GetFile                         #7079
+[2026-10-01 03:44:37.668] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:37.736] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #15/18 (смещение 15 728 640 б, размер 1 048 576 б)...
+[2026-10-01 03:44:37.737] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #D851
+[2026-10-01 03:44:37.815] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #16/18 (смещение 16 777 216 б, размер 1 048 576 б)...
+[2026-10-01 03:44:37.815] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #1CC9
+[2026-10-01 03:44:37.930] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:37Z
+[2026-10-01 03:44:37.930] [DEBUG] [WTelegram]              → Upload_File                           #7079
+[2026-10-01 03:44:37.931] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #14/18 (1 048 576 б за 262 мс) [Полный].
+[2026-10-01 03:44:37.931] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #17/18 (смещение 17 825 792 б, размер 1 048 576 б)...
+[2026-10-01 03:44:37.931] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:37Z (svc)
+[2026-10-01 03:44:37.931] [DEBUG] [WTelegram]             → Upload_GetFile                         #F125
+[2026-10-01 03:44:37.931] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:37.931] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 14 680 064, отдано 1 048 576 байт (15 728 640 / 17 915 288 байт, 87,8%). Скачано всего: 15 из 18 чанков (83,3%).
+[2026-10-01 03:44:38.110] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:37Z
+[2026-10-01 03:44:38.110] [DEBUG] [WTelegram]              → Upload_File                           #D851
+[2026-10-01 03:44:38.110] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #15/18 (1 048 576 б за 373 мс) [Полный].
+[2026-10-01 03:44:38.111] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): смещение 15 728 640, отдано 1 048 576 байт (16 777 216 / 17 915 288 байт, 93,6%). Скачано всего: 16 из 18 чанков (88,9%).
+[2026-10-01 03:44:38.280] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:37Z
+[2026-10-01 03:44:38.280] [DEBUG] [WTelegram]              → Upload_File                           #1CC9
+[2026-10-01 03:44:38.280] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #16/18 (1 048 576 б за 465 мс) [Полный].
+[2026-10-01 03:44:38.281] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #16 (смещение 16 777 216, 1 048 576 байт). Скачано всего: 17 из 18 чанков (94,4%).
+[2026-10-01 03:44:38.297] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:37Z
+[2026-10-01 03:44:38.297] [DEBUG] [WTelegram]              → Upload_File                           #F125
+[2026-10-01 03:44:38.297] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1288): Глобальный Чанк #17 (смещение 17 825 792, 89 496 байт). Скачано всего: 18 из 18 чанков (100%).
+[2026-10-01 03:44:38.298] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'KOMODO- All 4 U (Official video).mp4': Размер: 17 915 288 б (17,09 МБ) | Из сети TG: 17 915 288 б (17,09 МБ) | Из ОЗУ: 17 915 288 б (17,09 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
+[2026-10-01 03:44:38.298] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'KOMODO- All 4 U (Official video).mp4' получено из TelegramService.
+[2026-10-01 03:44:38.298] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #17/18 (89 496 б за 366 мс) [Полный].
+[2026-10-01 03:44:38.298] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'KOMODO- All 4 U (Official video).mp4'. Запуск _completionTimer...
+[2026-10-01 03:44:38.300] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла KOMODO- All 4 U (Official video).mp4
+[2026-10-01 03:44:38.303] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #C79E
+[2026-10-01 03:44:38.303] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:38Z (svc)
+[2026-10-01 03:44:38.303] [DEBUG] [WTelegram]             → Channels_GetMessages                   #8EF6
+[2026-10-01 03:44:38.303] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:38.303] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #2876
+[2026-10-01 03:44:38.356] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:38Z
+[2026-10-01 03:44:38.356] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #C79E
+[2026-10-01 03:44:38.357] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #2..#6 (всего 10)) через 3 воркеров MTProto...
+[2026-10-01 03:44:38.357] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #2/10 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-10-01 03:44:38.357] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:38Z (svc)
+[2026-10-01 03:44:38.357] [DEBUG] [WTelegram]             → Upload_GetFile                         #C72A
+[2026-10-01 03:44:38.357] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:38.411] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:44:38Z (svc)
+[2026-10-01 03:44:38.411] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:44:38Z
+[2026-10-01 03:44:38.411] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #2876
+[2026-10-01 03:44:38.411] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:44:38Z (svc) 
+[2026-10-01 03:44:38.411] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:38Z
+[2026-10-01 03:44:38.411] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #8EF6
+[2026-10-01 03:44:38.435] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/10 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-10-01 03:44:38.435] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:38Z (svc)
+[2026-10-01 03:44:38.435] [DEBUG] [WTelegram]             → Upload_GetFile                         #0096
+[2026-10-01 03:44:38.435] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:38.514] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #4/10 (смещение 4 194 304 б, размер 1 048 576 б)...
+[2026-10-01 03:44:38.514] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #111E
+[2026-10-01 03:44:38.704] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:38Z
+[2026-10-01 03:44:38.705] [DEBUG] [WTelegram]              → Upload_File                           #C72A
+[2026-10-01 03:44:38.705] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #2/10 (1 048 576 б за 347 мс) [Полный].
+[2026-10-01 03:44:38.705] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #5/10 (смещение 5 242 880 б, размер 1 048 576 б)...
+[2026-10-01 03:44:38.705] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:38Z (svc)
+[2026-10-01 03:44:38.705] [DEBUG] [WTelegram]             → Upload_GetFile                         #D8B6
+[2026-10-01 03:44:38.705] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:38.706] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 2 097 152, отдано 1 048 576 байт (3 145 728 / 10 283 683 байт, 30,6%). Скачано всего: 1 из 10 чанков (10%).
+[2026-10-01 03:44:38.922] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:38Z
+[2026-10-01 03:44:38.922] [DEBUG] [WTelegram]              → Upload_File                           #0096
+[2026-10-01 03:44:38.923] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/10 (1 048 576 б за 487 мс) [Полный].
+[2026-10-01 03:44:38.923] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #6/10 (смещение 6 291 456 б, размер 1 048 576 б)...
+[2026-10-01 03:44:38.923] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:38Z (svc)
+[2026-10-01 03:44:38.923] [DEBUG] [WTelegram]             → Upload_GetFile                         #02F2
+[2026-10-01 03:44:38.923] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:39.112] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:38Z
+[2026-10-01 03:44:39.113] [DEBUG] [WTelegram]              → Upload_File                           #111E
+[2026-10-01 03:44:39.113] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #4/10 (1 048 576 б за 599 мс) [Полный].
+[2026-10-01 03:44:39.313] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:38Z
+[2026-10-01 03:44:39.316] [DEBUG] [WTelegram]              → Upload_File                           #D8B6
+[2026-10-01 03:44:39.316] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #5/10 (1 048 576 б за 610 мс) [Полный].
+[2026-10-01 03:44:39.486] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:38Z
+[2026-10-01 03:44:39.486] [DEBUG] [WTelegram]              → Upload_File                           #02F2
+[2026-10-01 03:44:39.486] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #6/10 (1 048 576 б за 563 мс) [Полный].
+[2026-10-01 03:44:39.487] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 0, размер 1024 КБ...
+[2026-10-01 03:44:39.487] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:39Z (svc)
+[2026-10-01 03:44:39.487] [DEBUG] [WTelegram]             → Upload_GetFile                         #1E73
+[2026-10-01 03:44:39.487] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:39.737] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:39Z
+[2026-10-01 03:44:39.737] [DEBUG] [WTelegram]              → Upload_File                           #1E73
+[2026-10-01 03:44:39.737] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 1 048 576, размер 1024 КБ...
+[2026-10-01 03:44:39.737] [INFO ] [TelegramService] [MTProto] Получен чанк #0/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': смещение 0, размер 1024 КБ. Скачано всего: 6 из 10 чанков (60%).
+[2026-10-01 03:44:39.737] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:39Z (svc)
+[2026-10-01 03:44:39.737] [DEBUG] [WTelegram]             → Upload_GetFile                         #D87F
+[2026-10-01 03:44:39.737] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:39.738] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #1/10) через 1 воркеров MTProto...
+[2026-10-01 03:44:39.739] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 6 из 10 чанков (60%).
+[2026-10-01 03:44:39.818] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/10 (смещение 1 048 576 б, размер 1 048 576 б)...
+[2026-10-01 03:44:39.818] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #968F
+[2026-10-01 03:44:40.033] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:39Z
+[2026-10-01 03:44:40.034] [DEBUG] [WTelegram]              → Upload_File                           #D87F
+[2026-10-01 03:44:40.034] [INFO ] [TelegramService] [MTProto] Получен чанк #1/10 для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': смещение 1 048 576, размер 1024 КБ. Скачано всего: 7 из 10 чанков (70%).
+[2026-10-01 03:44:40.036] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 7 из 10 чанков (70%).
+[2026-10-01 03:44:40.036] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #6 (смещение 6 291 456, 1 048 576 байт). Скачано всего: 7 из 10 чанков (70%).
+[2026-10-01 03:44:40.036] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 7 из 10 чанков (70%).
+[2026-10-01 03:44:40.253] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:39Z
+[2026-10-01 03:44:40.254] [DEBUG] [WTelegram]              → Upload_File                           #968F
+[2026-10-01 03:44:40.255] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/10 (1 048 576 б за 435 мс) [Полный].
+[2026-10-01 03:44:40.255] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 2,81 МБ (чанки #7..#9 (всего 10)) через 3 воркеров MTProto...
+[2026-10-01 03:44:40.255] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #7/10 (смещение 7 340 032 б, размер 1 048 576 б)...
+[2026-10-01 03:44:40.255] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:39Z (svc)
+[2026-10-01 03:44:40.255] [DEBUG] [WTelegram]             → Upload_GetFile                         #4D1F
+[2026-10-01 03:44:40.255] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:40.332] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #8/10 (смещение 8 388 608 б, размер 1 048 576 б)...
+[2026-10-01 03:44:40.333] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #5100
+[2026-10-01 03:44:40.409] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #9/10 (смещение 9 437 184 б, размер 1 048 576 б)...
+[2026-10-01 03:44:40.409] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #4A2C
+[2026-10-01 03:44:40.501] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:40Z
+[2026-10-01 03:44:40.501] [DEBUG] [WTelegram]              → Upload_File                           #4D1F
+[2026-10-01 03:44:40.501] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #7/10 (1 048 576 б за 245 мс) [Полный].
+[2026-10-01 03:44:40.502] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 7 340 032, отдано 1 048 576 байт (8 388 608 / 10 283 683 байт, 81,6%). Скачано всего: 8 из 10 чанков (80%).
+[2026-10-01 03:44:40.707] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:40Z
+[2026-10-01 03:44:40.707] [DEBUG] [WTelegram]              → Upload_File                           #5100
+[2026-10-01 03:44:40.707] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #8/10 (1 048 576 б за 374 мс) [Полный].
+[2026-10-01 03:44:40.707] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 8 388 608, отдано 1 048 576 байт (9 437 184 / 10 283 683 байт, 91,8%). Скачано всего: 9 из 10 чанков (90%).
+[2026-10-01 03:44:40.874] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:40Z
+[2026-10-01 03:44:40.874] [DEBUG] [WTelegram]              → Upload_File                           #4A2C
+[2026-10-01 03:44:40.875] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': Размер: 10 283 683 б (9,81 МБ) | Из сети TG: 11 332 259 б (10,81 МБ) | Из ОЗУ: 7 340 032 б (7,00 МБ) | Эффективность сети: 1,10x (Допустимо — остаток хвоста чанка)
+[2026-10-01 03:44:40.875] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' получено из TelegramService.
+[2026-10-01 03:44:40.875] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #9/10 (846 499 б за 465 мс) [Полный].
+[2026-10-01 03:44:40.875] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'. Запуск _completionTimer...
+[2026-10-01 03:44:40.875] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 1287): смещение 9 437 184, отдано 846 499 байт (10 283 683 / 10 283 683 байт, 100,0%). Скачано всего: 10 из 10 чанков (100%).
+[2026-10-01 03:44:40.876] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4
+[2026-10-01 03:44:40.880] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #C810
+[2026-10-01 03:44:40.880] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:40Z (svc)
+[2026-10-01 03:44:40.880] [DEBUG] [WTelegram]             → Channels_GetMessages                   #7C14
+[2026-10-01 03:44:40.880] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:40.880] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #A61C
+[2026-10-01 03:44:40.934] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:40Z
+[2026-10-01 03:44:40.934] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #C810
+[2026-10-01 03:44:40.935] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #2..#6 (всего 24)) через 3 воркеров MTProto...
+[2026-10-01 03:44:40.935] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #2/24 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-10-01 03:44:40.935] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:40Z (svc)
+[2026-10-01 03:44:40.935] [DEBUG] [WTelegram]             → Upload_GetFile                         #E1A4
+[2026-10-01 03:44:40.935] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:40.987] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:44:40Z (svc)
+[2026-10-01 03:44:40.987] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:44:40Z
+[2026-10-01 03:44:40.987] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #A61C
+[2026-10-01 03:44:40.987] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:44:40Z (svc) 
+[2026-10-01 03:44:40.989] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:40Z
+[2026-10-01 03:44:40.989] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #7C14
+[2026-10-01 03:44:41.018] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/24 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-10-01 03:44:41.019] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:40Z (svc)
+[2026-10-01 03:44:41.019] [DEBUG] [WTelegram]             → Upload_GetFile                         #800C
+[2026-10-01 03:44:41.019] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:41.095] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #4/24 (смещение 4 194 304 б, размер 1 048 576 б)...
+[2026-10-01 03:44:41.095] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #9350
+[2026-10-01 03:44:41.287] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:41Z
+[2026-10-01 03:44:41.287] [DEBUG] [WTelegram]              → Upload_File                           #E1A4
+[2026-10-01 03:44:41.288] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #2/24 (1 048 576 б за 352 мс) [Полный].
+[2026-10-01 03:44:41.288] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #5/24 (смещение 5 242 880 б, размер 1 048 576 б)...
+[2026-10-01 03:44:41.288] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:41Z (svc)
+[2026-10-01 03:44:41.288] [DEBUG] [WTelegram]             → Upload_GetFile                         #8EE9
+[2026-10-01 03:44:41.288] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:41.288] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 2 097 152, отдано 1 048 576 байт (3 145 728 / 24 891 313 байт, 12,6%). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-01 03:44:41.509] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:41Z
+[2026-10-01 03:44:41.510] [DEBUG] [WTelegram]              → Upload_File                           #800C
+[2026-10-01 03:44:41.510] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/24 (1 048 576 б за 491 мс) [Полный].
+[2026-10-01 03:44:41.510] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #6/24 (смещение 6 291 456 б, размер 1 048 576 б)...
+[2026-10-01 03:44:41.510] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:41Z (svc)
+[2026-10-01 03:44:41.510] [DEBUG] [WTelegram]             → Upload_GetFile                         #06E5
+[2026-10-01 03:44:41.510] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:41.718] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:41Z
+[2026-10-01 03:44:41.718] [DEBUG] [WTelegram]              → Upload_File                           #9350
+[2026-10-01 03:44:41.718] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #4/24 (1 048 576 б за 623 мс) [Полный].
+[2026-10-01 03:44:41.908] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:41Z
+[2026-10-01 03:44:41.908] [DEBUG] [WTelegram]              → Upload_File                           #8EE9
+[2026-10-01 03:44:41.909] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #5/24 (1 048 576 б за 620 мс) [Полный].
+[2026-10-01 03:44:42.103] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:41Z
+[2026-10-01 03:44:42.104] [DEBUG] [WTelegram]              → Upload_File                           #06E5
+[2026-10-01 03:44:42.104] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #6/24 (1 048 576 б за 593 мс) [Полный].
+[2026-10-01 03:44:42.104] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 1 048 576, размер 1024 КБ...
+[2026-10-01 03:44:42.104] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:41Z (svc)
+[2026-10-01 03:44:42.104] [DEBUG] [WTelegram]             → Upload_GetFile                         #F379
+[2026-10-01 03:44:42.104] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:42.421] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:42Z
+[2026-10-01 03:44:42.422] [DEBUG] [WTelegram]              → Upload_File                           #F379
+[2026-10-01 03:44:42.422] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 0, размер 1024 КБ...
+[2026-10-01 03:44:42.422] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:42Z (svc)
+[2026-10-01 03:44:42.422] [DEBUG] [WTelegram]             → Upload_GetFile                         #DBEA
+[2026-10-01 03:44:42.422] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:42.422] [INFO ] [TelegramService] [MTProto] Получен чанк #1/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': смещение 1 048 576, размер 1024 КБ. Скачано всего: 6 из 24 чанков (25%).
+[2026-10-01 03:44:42.688] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:42Z
+[2026-10-01 03:44:42.689] [DEBUG] [WTelegram]              → Upload_File                           #DBEA
+[2026-10-01 03:44:42.689] [INFO ] [TelegramService] [MTProto] Получен чанк #0/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': смещение 0, размер 1024 КБ. Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-01 03:44:42.691] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-01 03:44:42.691] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-01 03:44:42.691] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #7/24) через 1 воркеров MTProto...
+[2026-10-01 03:44:42.691] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/24 (смещение 7 340 032 б, размер 1 048 576 б)...
+[2026-10-01 03:44:42.691] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #5 (смещение 5 242 880, 1 048 576 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-01 03:44:42.691] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:42Z (svc)
+[2026-10-01 03:44:42.691] [DEBUG] [WTelegram]             → Upload_GetFile                         #E62A
+[2026-10-01 03:44:42.691] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:42.692] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #6 (смещение 6 291 456, 1 048 576 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-01 03:44:42.955] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:42Z
+[2026-10-01 03:44:42.955] [DEBUG] [WTelegram]              → Upload_File                           #E62A
+[2026-10-01 03:44:42.955] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/24 (1 048 576 б за 263 мс) [Полный].
+[2026-10-01 03:44:42.956] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #7 (смещение 7 340 032, 1 048 576 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-01 03:44:42.956] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #9..#13 (всего 24)) через 3 воркеров MTProto...
+[2026-10-01 03:44:42.956] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/24 (смещение 9 437 184 б, размер 1 048 576 б)...
+[2026-10-01 03:44:42.956] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:42Z (svc)
+[2026-10-01 03:44:42.956] [DEBUG] [WTelegram]             → Upload_GetFile                         #2276
+[2026-10-01 03:44:42.956] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:43.032] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/24 (смещение 10 485 760 б, размер 1 048 576 б)...
+[2026-10-01 03:44:43.033] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #6F7A
+[2026-10-01 03:44:43.110] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #11/24 (смещение 11 534 336 б, размер 1 048 576 б)...
+[2026-10-01 03:44:43.110] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #C9E2
+[2026-10-01 03:44:43.250] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:42Z
+[2026-10-01 03:44:43.250] [DEBUG] [WTelegram]              → Upload_File                           #2276
+[2026-10-01 03:44:43.251] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/24 (1 048 576 б за 294 мс) [Полный].
+[2026-10-01 03:44:43.251] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #12/24 (смещение 12 582 912 б, размер 1 048 576 б)...
+[2026-10-01 03:44:43.251] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 9 437 184, отдано 1 048 576 байт (10 485 760 / 24 891 313 байт, 42,1%). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-01 03:44:43.251] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:43Z (svc)
+[2026-10-01 03:44:43.251] [DEBUG] [WTelegram]             → Upload_GetFile                         #335B
+[2026-10-01 03:44:43.251] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:43.500] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:43Z
+[2026-10-01 03:44:43.500] [DEBUG] [WTelegram]              → Upload_File                           #6F7A
+[2026-10-01 03:44:43.501] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/24 (1 048 576 б за 467 мс) [Полный].
+[2026-10-01 03:44:43.501] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #13/24 (смещение 13 631 488 б, размер 1 048 576 б)...
+[2026-10-01 03:44:43.501] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:43Z (svc)
+[2026-10-01 03:44:43.501] [DEBUG] [WTelegram]             → Upload_GetFile                         #5737
+[2026-10-01 03:44:43.501] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:43.501] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #10 (смещение 10 485 760, 1 048 576 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-01 03:44:43.687] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:43Z
+[2026-10-01 03:44:43.687] [DEBUG] [WTelegram]              → Upload_File                           #C9E2
+[2026-10-01 03:44:43.687] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #11/24 (1 048 576 б за 577 мс) [Полный].
+[2026-10-01 03:44:43.900] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:43Z
+[2026-10-01 03:44:43.900] [DEBUG] [WTelegram]              → Upload_File                           #335B
+[2026-10-01 03:44:43.900] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #12/24 (1 048 576 б за 649 мс) [Полный].
+[2026-10-01 03:44:44.106] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:43Z
+[2026-10-01 03:44:44.106] [DEBUG] [WTelegram]              → Upload_File                           #5737
+[2026-10-01 03:44:44.106] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #13/24 (1 048 576 б за 605 мс) [Полный].
+[2026-10-01 03:44:44.107] [INFO ] [TelegramService] [MTProto] Запрос чанка #8/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 8 388 608, размер 1024 КБ...
+[2026-10-01 03:44:44.107] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:43Z (svc)
+[2026-10-01 03:44:44.107] [DEBUG] [WTelegram]             → Upload_GetFile                         #364B
+[2026-10-01 03:44:44.107] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:44.457] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:44Z
+[2026-10-01 03:44:44.458] [DEBUG] [WTelegram]              → Upload_File                           #364B
+[2026-10-01 03:44:44.458] [INFO ] [TelegramService] [MTProto] Получен чанк #8/24 для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': смещение 8 388 608, размер 1024 КБ. Скачано всего: 14 из 24 чанков (58,3%).
+[2026-10-01 03:44:44.459] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #11 (смещение 11 534 336, 1 048 576 байт). Скачано всего: 14 из 24 чанков (58,3%).
+[2026-10-01 03:44:44.460] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #12 (смещение 12 582 912, 1 048 576 байт). Скачано всего: 14 из 24 чанков (58,3%).
+[2026-10-01 03:44:44.460] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #13 (смещение 13 631 488, 1 048 576 байт). Скачано всего: 14 из 24 чанков (58,3%).
+[2026-10-01 03:44:44.460] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 3,00 МБ (чанки #14..#16 (всего 24)) через 3 воркеров MTProto...
+[2026-10-01 03:44:44.460] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #14/24 (смещение 14 680 064 б, размер 1 048 576 б)...
+[2026-10-01 03:44:44.460] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:44Z (svc)
+[2026-10-01 03:44:44.460] [DEBUG] [WTelegram]             → Upload_GetFile                         #B47C
+[2026-10-01 03:44:44.460] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:44.542] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #15/24 (смещение 15 728 640 б, размер 1 048 576 б)...
+[2026-10-01 03:44:44.542] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #F21C
+[2026-10-01 03:44:44.620] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #16/24 (смещение 16 777 216 б, размер 1 048 576 б)...
+[2026-10-01 03:44:44.620] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #2C3C
+[2026-10-01 03:44:44.780] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:44Z
+[2026-10-01 03:44:44.780] [DEBUG] [WTelegram]              → Upload_File                           #B47C
+[2026-10-01 03:44:44.781] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #14/24 (1 048 576 б за 320 мс) [Полный].
+[2026-10-01 03:44:44.781] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #14 (смещение 14 680 064, 1 048 576 байт). Скачано всего: 15 из 24 чанков (62,5%).
+[2026-10-01 03:44:45.018] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:44Z
+[2026-10-01 03:44:45.019] [DEBUG] [WTelegram]              → Upload_File                           #F21C
+[2026-10-01 03:44:45.019] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #15/24 (1 048 576 б за 476 мс) [Полный].
+[2026-10-01 03:44:45.019] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #15 (смещение 15 728 640, 1 048 576 байт). Скачано всего: 16 из 24 чанков (66,7%).
+[2026-10-01 03:44:45.237] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:44Z
+[2026-10-01 03:44:45.237] [DEBUG] [WTelegram]              → Upload_File                           #2C3C
+[2026-10-01 03:44:45.238] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #16/24 (1 048 576 б за 617 мс) [Полный].
+[2026-10-01 03:44:45.238] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #16 (смещение 16 777 216, 1 048 576 байт). Скачано всего: 17 из 24 чанков (70,8%).
+[2026-10-01 03:44:45.238] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #17..#21 (всего 24)) через 3 воркеров MTProto...
+[2026-10-01 03:44:45.238] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #18/24 (смещение 18 874 368 б, размер 1 048 576 б)...
+[2026-10-01 03:44:45.238] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:45Z (svc)
+[2026-10-01 03:44:45.238] [DEBUG] [WTelegram]             → Upload_GetFile                         #E3E5
+[2026-10-01 03:44:45.238] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:45.322] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/24 (смещение 17 825 792 б, размер 1 048 576 б)...
+[2026-10-01 03:44:45.322] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #E319
+[2026-10-01 03:44:45.400] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #19/24 (смещение 19 922 944 б, размер 1 048 576 б)...
+[2026-10-01 03:44:45.400] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #144D
+[2026-10-01 03:44:45.467] [DEBUG] [WTelegram] 2>Receiving MsgsAck                                  2026-10-01 00:44:45Z (svc) 
+[2026-10-01 03:44:45.707] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:45Z
+[2026-10-01 03:44:45.708] [DEBUG] [WTelegram]              → Upload_File                           #E3E5
+[2026-10-01 03:44:45.708] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #18/24 (1 048 576 б за 469 мс) [Полный].
+[2026-10-01 03:44:45.708] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #20/24 (смещение 20 971 520 б, размер 1 048 576 б)...
+[2026-10-01 03:44:45.708] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 18 874 368, отдано 1 048 576 байт (19 922 944 / 24 891 313 байт, 80,0%). Скачано всего: 18 из 24 чанков (75%).
+[2026-10-01 03:44:45.708] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:45Z (svc)
+[2026-10-01 03:44:45.708] [DEBUG] [WTelegram]             → Upload_GetFile                         #F5C1
+[2026-10-01 03:44:45.708] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:45.924] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:45Z
+[2026-10-01 03:44:45.927] [DEBUG] [WTelegram]              → Upload_File                           #E319
+[2026-10-01 03:44:45.927] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #17/24 (1 048 576 б за 604 мс) [Полный].
+[2026-10-01 03:44:45.927] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #21/24 (смещение 22 020 096 б, размер 1 048 576 б)...
+[2026-10-01 03:44:45.927] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:45Z (svc)
+[2026-10-01 03:44:45.927] [DEBUG] [WTelegram]             → Upload_GetFile                         #12C5
+[2026-10-01 03:44:45.927] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:45.927] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 17 825 792, отдано 1 048 576 байт (18 874 368 / 24 891 313 байт, 75,8%). Скачано всего: 19 из 24 чанков (79,2%).
+[2026-10-01 03:44:46.146] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:45Z
+[2026-10-01 03:44:46.146] [DEBUG] [WTelegram]              → Upload_File                           #144D
+[2026-10-01 03:44:46.147] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #19/24 (1 048 576 б за 746 мс) [Полный].
+[2026-10-01 03:44:46.147] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #19 (смещение 19 922 944, 1 048 576 байт). Скачано всего: 20 из 24 чанков (83,3%).
+[2026-10-01 03:44:46.363] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:45Z
+[2026-10-01 03:44:46.364] [DEBUG] [WTelegram]              → Upload_File                           #F5C1
+[2026-10-01 03:44:46.364] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #20/24 (1 048 576 б за 655 мс) [Полный].
+[2026-10-01 03:44:46.364] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #20 (смещение 20 971 520, 1 048 576 байт). Скачано всего: 21 из 24 чанков (87,5%).
+[2026-10-01 03:44:46.563] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:46Z
+[2026-10-01 03:44:46.563] [DEBUG] [WTelegram]              → Upload_File                           #12C5
+[2026-10-01 03:44:46.563] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #21/24 (1 048 576 б за 635 мс) [Полный].
+[2026-10-01 03:44:46.563] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): Глобальный Чанк #21 (смещение 22 020 096, 1 048 576 байт). Скачано всего: 22 из 24 чанков (91,7%).
+[2026-10-01 03:44:46.564] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,74 МБ (чанки #22..#23 (всего 24)) через 2 воркеров MTProto...
+[2026-10-01 03:44:46.564] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #22/24 (смещение 23 068 672 б, размер 1 048 576 б)...
+[2026-10-01 03:44:46.564] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:46Z (svc)
+[2026-10-01 03:44:46.564] [DEBUG] [WTelegram]             → Upload_GetFile                         #35CE
+[2026-10-01 03:44:46.564] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:46.643] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #23/24 (смещение 24 117 248 б, размер 1 048 576 б)...
+[2026-10-01 03:44:46.643] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #12E2
+[2026-10-01 03:44:46.865] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:46Z
+[2026-10-01 03:44:46.865] [DEBUG] [WTelegram]              → Upload_File                           #35CE
+[2026-10-01 03:44:46.866] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #22/24 (1 048 576 б за 301 мс) [Полный].
+[2026-10-01 03:44:46.866] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 23 068 672, отдано 1 048 576 байт (24 117 248 / 24 891 313 байт, 96,9%). Скачано всего: 23 из 24 чанков (95,8%).
+[2026-10-01 03:44:47.032] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:46Z
+[2026-10-01 03:44:47.032] [DEBUG] [WTelegram]              → Upload_File                           #12E2
+[2026-10-01 03:44:47.032] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': Размер: 24 891 313 б (23,74 МБ) | Из сети TG: 24 891 313 б (23,74 МБ) | Из ОЗУ: 20 971 520 б (20,00 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
+[2026-10-01 03:44:47.032] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' получено из TelegramService.
+[2026-10-01 03:44:47.032] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #23/24 (774 065 б за 389 мс) [Полный].
+[2026-10-01 03:44:47.032] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'. Запуск _completionTimer...
+[2026-10-01 03:44:47.032] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1290): смещение 24 117 248, отдано 774 065 байт (24 891 313 / 24 891 313 байт, 100,0%). Скачано всего: 24 из 24 чанков (100%).
+[2026-10-01 03:44:47.034] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4
+[2026-10-01 03:44:47.038] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:46Z (svc)
+[2026-10-01 03:44:47.038] [DEBUG] [WTelegram]             → Channels_GetMessages                   #D116
+[2026-10-01 03:44:47.038] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:47.038] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #4356
+[2026-10-01 03:44:47.038] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #2B36
+[2026-10-01 03:44:47.091] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:47Z
+[2026-10-01 03:44:47.092] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #D116
+[2026-10-01 03:44:47.092] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #0..#4 (всего 19)) через 3 воркеров MTProto...
+[2026-10-01 03:44:47.092] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #0/19 (смещение 0 б, размер 1 048 576 б)...
+[2026-10-01 03:44:47.092] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:47Z (svc)
+[2026-10-01 03:44:47.092] [DEBUG] [WTelegram]             → Upload_GetFile                         #3943
+[2026-10-01 03:44:47.092] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:47.142] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:44:47Z (svc)
+[2026-10-01 03:44:47.142] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:44:47Z
+[2026-10-01 03:44:47.142] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #2B36
+[2026-10-01 03:44:47.142] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:44:47Z (svc) 
+[2026-10-01 03:44:47.145] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:47Z
+[2026-10-01 03:44:47.145] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #4356
+[2026-10-01 03:44:47.173] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/19 (смещение 1 048 576 б, размер 1 048 576 б)...
+[2026-10-01 03:44:47.174] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:47Z (svc)
+[2026-10-01 03:44:47.174] [DEBUG] [WTelegram]             → Upload_GetFile                         #AE77
+[2026-10-01 03:44:47.174] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:47.252] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #2/19 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-10-01 03:44:47.252] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #361F
+[2026-10-01 03:44:47.437] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:47Z
+[2026-10-01 03:44:47.438] [DEBUG] [WTelegram]              → Upload_File                           #3943
+[2026-10-01 03:44:47.438] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #0/19 (1 048 576 б за 345 мс) [Полный].
+[2026-10-01 03:44:47.438] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #3/19 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-10-01 03:44:47.438] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:47Z (svc)
+[2026-10-01 03:44:47.438] [DEBUG] [WTelegram]             → Upload_GetFile                         #9273
+[2026-10-01 03:44:47.438] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:47.438] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 0, отдано 1 048 576 байт (1 048 576 / 19 456 938 байт, 5,4%). Скачано всего: 1 из 19 чанков (5,3%).
+[2026-10-01 03:44:47.654] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:47Z
+[2026-10-01 03:44:47.654] [DEBUG] [WTelegram]              → Upload_File                           #AE77
+[2026-10-01 03:44:47.655] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/19 (1 048 576 б за 480 мс) [Полный].
+[2026-10-01 03:44:47.655] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/19 (смещение 4 194 304 б, размер 1 048 576 б)...
+[2026-10-01 03:44:47.655] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:47Z (svc)
+[2026-10-01 03:44:47.655] [DEBUG] [WTelegram]             → Upload_GetFile                         #31C7
+[2026-10-01 03:44:47.655] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:47.655] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #1 (смещение 1 048 576, 1 048 576 байт). Скачано всего: 2 из 19 чанков (10,5%).
+[2026-10-01 03:44:47.880] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:47Z
+[2026-10-01 03:44:47.880] [DEBUG] [WTelegram]              → Upload_File                           #361F
+[2026-10-01 03:44:47.881] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #2/19 (1 048 576 б за 628 мс) [Полный].
+[2026-10-01 03:44:47.881] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #2 (смещение 2 097 152, 1 048 576 байт). Скачано всего: 3 из 19 чанков (15,8%).
+[2026-10-01 03:44:48.109] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:47Z
+[2026-10-01 03:44:48.109] [DEBUG] [WTelegram]              → Upload_File                           #9273
+[2026-10-01 03:44:48.109] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #3/19 (1 048 576 б за 670 мс) [Полный].
+[2026-10-01 03:44:48.109] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 19 чанков (21,1%).
+[2026-10-01 03:44:48.320] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:47Z
+[2026-10-01 03:44:48.320] [DEBUG] [WTelegram]              → Upload_File                           #31C7
+[2026-10-01 03:44:48.320] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/19 (1 048 576 б за 664 мс) [Полный].
+[2026-10-01 03:44:48.320] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 19 чанков (26,3%).
+[2026-10-01 03:44:48.321] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #5..#8 (всего 19)) через 3 воркеров MTProto...
+[2026-10-01 03:44:48.321] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #5/19 (смещение 5 242 880 б, размер 1 048 576 б)...
+[2026-10-01 03:44:48.321] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:48Z (svc)
+[2026-10-01 03:44:48.321] [DEBUG] [WTelegram]             → Upload_GetFile                         #D620
+[2026-10-01 03:44:48.321] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:48.399] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #6/19 (смещение 6 291 456 б, размер 1 048 576 б)...
+[2026-10-01 03:44:48.399] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #0700
+[2026-10-01 03:44:48.478] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/19 (смещение 7 340 032 б, размер 1 048 576 б)...
+[2026-10-01 03:44:48.478] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #DE08
+[2026-10-01 03:44:48.663] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:48Z
+[2026-10-01 03:44:48.663] [DEBUG] [WTelegram]              → Upload_File                           #D620
+[2026-10-01 03:44:48.663] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #5/19 (1 048 576 б за 342 мс) [Полный].
+[2026-10-01 03:44:48.663] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #8/19 (смещение 8 388 608 б, размер 1 048 576 б)...
+[2026-10-01 03:44:48.663] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:48Z (svc)
+[2026-10-01 03:44:48.663] [DEBUG] [WTelegram]             → Upload_GetFile                         #C31C
+[2026-10-01 03:44:48.663] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:48.663] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 5 242 880, отдано 1 048 576 байт (6 291 456 / 19 456 938 байт, 32,3%). Скачано всего: 6 из 19 чанков (31,6%).
+[2026-10-01 03:44:48.881] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:48Z
+[2026-10-01 03:44:48.882] [DEBUG] [WTelegram]              → Upload_File                           #0700
+[2026-10-01 03:44:48.882] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #6/19 (1 048 576 б за 482 мс) [Полный].
+[2026-10-01 03:44:48.882] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 6 291 456, отдано 1 048 576 байт (7 340 032 / 19 456 938 байт, 37,7%). Скачано всего: 7 из 19 чанков (36,8%).
+[2026-10-01 03:44:49.098] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:48Z
+[2026-10-01 03:44:49.098] [DEBUG] [WTelegram]              → Upload_File                           #DE08
+[2026-10-01 03:44:49.098] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/19 (1 048 576 б за 620 мс) [Полный].
+[2026-10-01 03:44:49.099] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #7 (смещение 7 340 032, 1 048 576 байт). Скачано всего: 8 из 19 чанков (42,1%).
+[2026-10-01 03:44:49.293] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:48Z
+[2026-10-01 03:44:49.293] [DEBUG] [WTelegram]              → Upload_File                           #C31C
+[2026-10-01 03:44:49.293] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #8/19 (1 048 576 б за 629 мс) [Полный].
+[2026-10-01 03:44:49.293] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #8 (смещение 8 388 608, 1 048 576 байт). Скачано всего: 9 из 19 чанков (47,4%).
+[2026-10-01 03:44:49.293] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #9..#13 (всего 19)) через 3 воркеров MTProto...
+[2026-10-01 03:44:49.294] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/19 (смещение 9 437 184 б, размер 1 048 576 б)...
+[2026-10-01 03:44:49.294] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:49Z (svc)
+[2026-10-01 03:44:49.294] [DEBUG] [WTelegram]             → Upload_GetFile                         #18B5
+[2026-10-01 03:44:49.294] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:49.368] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/19 (смещение 10 485 760 б, размер 1 048 576 б)...
+[2026-10-01 03:44:49.368] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #6909
+[2026-10-01 03:44:49.445] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #11/19 (смещение 11 534 336 б, размер 1 048 576 б)...
+[2026-10-01 03:44:49.445] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #7C61
+[2026-10-01 03:44:49.620] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:49Z
+[2026-10-01 03:44:49.620] [DEBUG] [WTelegram]              → Upload_File                           #18B5
+[2026-10-01 03:44:49.620] [DEBUG] [WTelegram] 2>Receiving MsgsAck                                  2026-10-01 00:44:49Z (svc) 
+[2026-10-01 03:44:49.620] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/19 (1 048 576 б за 326 мс) [Полный].
+[2026-10-01 03:44:49.620] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #12/19 (смещение 12 582 912 б, размер 1 048 576 б)...
+[2026-10-01 03:44:49.620] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:49Z (svc)
+[2026-10-01 03:44:49.620] [DEBUG] [WTelegram]             → Upload_GetFile                         #B721
+[2026-10-01 03:44:49.620] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:49.621] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 9 437 184, отдано 1 048 576 байт (10 485 760 / 19 456 938 байт, 53,9%). Скачано всего: 10 из 19 чанков (52,6%).
+[2026-10-01 03:44:49.833] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:49Z
+[2026-10-01 03:44:49.834] [DEBUG] [WTelegram]              → Upload_File                           #6909
+[2026-10-01 03:44:49.834] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/19 (1 048 576 б за 466 мс) [Полный].
+[2026-10-01 03:44:49.834] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #13/19 (смещение 13 631 488 б, размер 1 048 576 б)...
+[2026-10-01 03:44:49.834] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:49Z (svc)
+[2026-10-01 03:44:49.834] [DEBUG] [WTelegram]             → Upload_GetFile                         #7DA5
+[2026-10-01 03:44:49.834] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:49.834] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 10 485 760, отдано 1 048 576 байт (11 534 336 / 19 456 938 байт, 59,3%). Скачано всего: 11 из 19 чанков (57,9%).
+[2026-10-01 03:44:50.012] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:49Z
+[2026-10-01 03:44:50.013] [DEBUG] [WTelegram]              → Upload_File                           #7C61
+[2026-10-01 03:44:50.013] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #11/19 (1 048 576 б за 567 мс) [Полный].
+[2026-10-01 03:44:50.013] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #11 (смещение 11 534 336, 1 048 576 байт). Скачано всего: 12 из 19 чанков (63,2%).
+[2026-10-01 03:44:50.226] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:49Z
+[2026-10-01 03:44:50.226] [DEBUG] [WTelegram]              → Upload_File                           #B721
+[2026-10-01 03:44:50.226] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #12/19 (1 048 576 б за 605 мс) [Полный].
+[2026-10-01 03:44:50.227] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #12 (смещение 12 582 912, 1 048 576 байт). Скачано всего: 13 из 19 чанков (68,4%).
+[2026-10-01 03:44:50.402] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:49Z
+[2026-10-01 03:44:50.402] [DEBUG] [WTelegram]              → Upload_File                           #7DA5
+[2026-10-01 03:44:50.403] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #13/19 (1 048 576 б за 568 мс) [Полный].
+[2026-10-01 03:44:50.403] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 3,56 МБ (чанки #15..#18 (всего 19)) через 3 воркеров MTProto...
+[2026-10-01 03:44:50.403] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #15/19 (смещение 15 728 640 б, размер 1 048 576 б)...
+[2026-10-01 03:44:50.403] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #13 (смещение 13 631 488, 1 048 576 байт). Скачано всего: 14 из 19 чанков (73,7%).
+[2026-10-01 03:44:50.403] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:50Z (svc)
+[2026-10-01 03:44:50.403] [DEBUG] [WTelegram]             → Upload_GetFile                         #283E
+[2026-10-01 03:44:50.403] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:50.474] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #16/19 (смещение 16 777 216 б, размер 1 048 576 б)...
+[2026-10-01 03:44:50.475] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #3A82
+[2026-10-01 03:44:50.552] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #17/19 (смещение 17 825 792 б, размер 1 048 576 б)...
+[2026-10-01 03:44:50.552] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #0402
+[2026-10-01 03:44:50.720] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:50Z
+[2026-10-01 03:44:50.721] [DEBUG] [WTelegram]              → Upload_File                           #283E
+[2026-10-01 03:44:50.721] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #15/19 (1 048 576 б за 317 мс) [Полный].
+[2026-10-01 03:44:50.721] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #18/19 (смещение 18 874 368 б, размер 1 048 576 б)...
+[2026-10-01 03:44:50.721] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:50Z (svc)
+[2026-10-01 03:44:50.721] [DEBUG] [WTelegram]             → Upload_GetFile                         #488E
+[2026-10-01 03:44:50.721] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 15 728 640, отдано 1 048 576 байт (16 777 216 / 19 456 938 байт, 86,2%). Скачано всего: 15 из 19 чанков (78,9%).
+[2026-10-01 03:44:50.721] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:50.907] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:50Z
+[2026-10-01 03:44:50.907] [DEBUG] [WTelegram]              → Upload_File                           #3A82
+[2026-10-01 03:44:50.907] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #16/19 (1 048 576 б за 432 мс) [Полный].
+[2026-10-01 03:44:50.907] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #16 (смещение 16 777 216, 1 048 576 байт). Скачано всего: 16 из 19 чанков (84,2%).
+[2026-10-01 03:44:51.099] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:50Z
+[2026-10-01 03:44:51.099] [DEBUG] [WTelegram]              → Upload_File                           #0402
+[2026-10-01 03:44:51.100] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #17/19 (1 048 576 б за 547 мс) [Полный].
+[2026-10-01 03:44:51.200] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:50Z
+[2026-10-01 03:44:51.200] [DEBUG] [WTelegram]              → Upload_File                           #488E
+[2026-10-01 03:44:51.200] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #18/19 (582 570 б за 479 мс) [Полный].
+[2026-10-01 03:44:51.200] [INFO ] [TelegramService] [MTProto] Запрос чанка #14/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): смещение 14 680 064, размер 1024 КБ...
+[2026-10-01 03:44:51.200] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:51Z (svc)
+[2026-10-01 03:44:51.200] [DEBUG] [WTelegram]             → Upload_GetFile                         #F183
+[2026-10-01 03:44:51.200] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:51.501] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:51Z
+[2026-10-01 03:44:51.502] [DEBUG] [WTelegram]              → Upload_File                           #F183
+[2026-10-01 03:44:51.502] [INFO ] [TelegramService] [MTProto] Получен чанк #14/19 для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': смещение 14 680 064, размер 1024 КБ. Скачано всего: 19 из 19 чанков (100%).
+[2026-10-01 03:44:51.502] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': Размер: 19 456 938 б (18,56 МБ) | Из сети TG: 19 456 938 б (18,56 МБ) | Из ОЗУ: 16 777 216 б (16,00 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
+[2026-10-01 03:44:51.502] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' получено из TelegramService.
+[2026-10-01 03:44:51.502] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'. Запуск _completionTimer...
+[2026-10-01 03:44:51.503] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #18 (смещение 18 874 368, 582 570 байт). Скачано всего: 19 из 19 чанков (100%).
+[2026-10-01 03:44:51.503] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 1289): Глобальный Чанк #17 (смещение 17 825 792, 1 048 576 байт). Скачано всего: 19 из 19 чанков (100%).
+[2026-10-01 03:44:51.504] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4
+[2026-10-01 03:44:51.509] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:51Z (svc)
+[2026-10-01 03:44:51.509] [DEBUG] [WTelegram]             → Channels_GetMessages                   #EFAB
+[2026-10-01 03:44:51.509] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:51.509] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #96D3
+[2026-10-01 03:44:51.509] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #96D7
+[2026-10-01 03:44:51.562] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:51Z
+[2026-10-01 03:44:51.562] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #EFAB
+[2026-10-01 03:44:51.563] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #0..#4 (всего 16)) через 3 воркеров MTProto...
+[2026-10-01 03:44:51.564] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #0/16 (смещение 0 б, размер 1 048 576 б)...
+[2026-10-01 03:44:51.564] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:51Z (svc)
+[2026-10-01 03:44:51.564] [DEBUG] [WTelegram]             → Upload_GetFile                         #3053
+[2026-10-01 03:44:51.564] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:51.614] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-01 00:44:51Z (svc)
+[2026-10-01 03:44:51.614] [DEBUG] [WTelegram]             → RpcResult                              2026-10-01 00:44:51Z
+[2026-10-01 03:44:51.615] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #96D3
+[2026-10-01 03:44:51.615] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-01 00:44:51Z (svc) 
+[2026-10-01 03:44:51.615] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:51Z
+[2026-10-01 03:44:51.615] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #96D7
+[2026-10-01 03:44:51.643] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/16 (смещение 1 048 576 б, размер 1 048 576 б)...
+[2026-10-01 03:44:51.643] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:51Z (svc)
+[2026-10-01 03:44:51.643] [DEBUG] [WTelegram]             → Upload_GetFile                         #BEBF
+[2026-10-01 03:44:51.643] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:51.720] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #2/16 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-10-01 03:44:51.720] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #4073
+[2026-10-01 03:44:51.918] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:51Z
+[2026-10-01 03:44:51.919] [DEBUG] [WTelegram]              → Upload_File                           #3053
+[2026-10-01 03:44:51.919] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #0/16 (1 048 576 б за 355 мс) [Полный].
+[2026-10-01 03:44:51.919] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #3/16 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-10-01 03:44:51.919] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:51Z (svc)
+[2026-10-01 03:44:51.919] [DEBUG] [WTelegram]             → Upload_GetFile                         #AFB3
+[2026-10-01 03:44:51.919] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 0, отдано 1 048 576 байт (1 048 576 / 16 411 173 байт, 6,4%). Скачано всего: 1 из 16 чанков (6,3%).
+[2026-10-01 03:44:51.919] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:52.114] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:51Z
+[2026-10-01 03:44:52.115] [DEBUG] [WTelegram]              → Upload_File                           #BEBF
+[2026-10-01 03:44:52.115] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/16 (1 048 576 б за 471 мс) [Полный].
+[2026-10-01 03:44:52.115] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/16 (смещение 4 194 304 б, размер 1 048 576 б)...
+[2026-10-01 03:44:52.115] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:52Z (svc)
+[2026-10-01 03:44:52.115] [DEBUG] [WTelegram]             → Upload_GetFile                         #39A8
+[2026-10-01 03:44:52.115] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:52.115] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #1 (смещение 1 048 576, 1 048 576 байт). Скачано всего: 2 из 16 чанков (12,5%).
+[2026-10-01 03:44:52.382] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:51Z
+[2026-10-01 03:44:52.382] [DEBUG] [WTelegram]              → Upload_File                           #4073
+[2026-10-01 03:44:52.383] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #2/16 (1 048 576 б за 662 мс) [Полный].
+[2026-10-01 03:44:52.383] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #2 (смещение 2 097 152, 1 048 576 байт). Скачано всего: 3 из 16 чанков (18,8%).
+[2026-10-01 03:44:52.617] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:51Z
+[2026-10-01 03:44:52.617] [DEBUG] [WTelegram]              → Upload_File                           #AFB3
+[2026-10-01 03:44:52.618] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #3/16 (1 048 576 б за 698 мс) [Полный].
+[2026-10-01 03:44:52.618] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #3 (смещение 3 145 728, 1 048 576 байт). Скачано всего: 4 из 16 чанков (25%).
+[2026-10-01 03:44:52.844] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:52Z
+[2026-10-01 03:44:52.844] [DEBUG] [WTelegram]              → Upload_File                           #39A8
+[2026-10-01 03:44:52.845] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/16 (1 048 576 б за 729 мс) [Полный].
+[2026-10-01 03:44:52.845] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #4 (смещение 4 194 304, 1 048 576 байт). Скачано всего: 5 из 16 чанков (31,3%).
+[2026-10-01 03:44:52.845] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 5,00 МБ (чанки #6..#10 (всего 16)) через 3 воркеров MTProto...
+[2026-10-01 03:44:52.845] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #6/16 (смещение 6 291 456 б, размер 1 048 576 б)...
+[2026-10-01 03:44:52.845] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:52Z (svc)
+[2026-10-01 03:44:52.845] [DEBUG] [WTelegram]             → Upload_GetFile                         #1C74
+[2026-10-01 03:44:52.845] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:52.921] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/16 (смещение 7 340 032 б, размер 1 048 576 б)...
+[2026-10-01 03:44:52.921] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #75B8
+[2026-10-01 03:44:53.000] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #8/16 (смещение 8 388 608 б, размер 1 048 576 б)...
+[2026-10-01 03:44:53.000] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #3470
+[2026-10-01 03:44:53.138] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:52Z
+[2026-10-01 03:44:53.139] [DEBUG] [WTelegram]              → Upload_File                           #1C74
+[2026-10-01 03:44:53.139] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #6/16 (1 048 576 б за 293 мс) [Полный].
+[2026-10-01 03:44:53.139] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #9/16 (смещение 9 437 184 б, размер 1 048 576 б)...
+[2026-10-01 03:44:53.139] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:53Z (svc)
+[2026-10-01 03:44:53.139] [DEBUG] [WTelegram]             → Upload_GetFile                         #4859
+[2026-10-01 03:44:53.139] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:53.139] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 6 291 456, отдано 1 048 576 байт (7 340 032 / 16 411 173 байт, 44,7%). Скачано всего: 6 из 16 чанков (37,5%).
+[2026-10-01 03:44:53.389] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:52Z
+[2026-10-01 03:44:53.389] [DEBUG] [WTelegram]              → Upload_File                           #75B8
+[2026-10-01 03:44:53.390] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/16 (1 048 576 б за 468 мс) [Полный].
+[2026-10-01 03:44:53.390] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/16 (смещение 10 485 760 б, размер 1 048 576 б)...
+[2026-10-01 03:44:53.390] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:53Z (svc)
+[2026-10-01 03:44:53.390] [DEBUG] [WTelegram]             → Upload_GetFile                         #FC01
+[2026-10-01 03:44:53.390] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:53.390] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #7 (смещение 7 340 032, 1 048 576 байт). Скачано всего: 7 из 16 чанков (43,8%).
+[2026-10-01 03:44:53.640] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:53Z
+[2026-10-01 03:44:53.640] [DEBUG] [WTelegram]              → Upload_File                           #3470
+[2026-10-01 03:44:53.640] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #8/16 (1 048 576 б за 640 мс) [Полный].
+[2026-10-01 03:44:53.904] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:53Z
+[2026-10-01 03:44:53.905] [DEBUG] [WTelegram]              → Upload_File                           #4859
+[2026-10-01 03:44:53.905] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #9/16 (1 048 576 б за 766 мс) [Полный].
+[2026-10-01 03:44:54.123] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:53Z
+[2026-10-01 03:44:54.123] [DEBUG] [WTelegram]              → Upload_File                           #FC01
+[2026-10-01 03:44:54.123] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/16 (1 048 576 б за 733 мс) [Полный].
+[2026-10-01 03:44:54.123] [INFO ] [TelegramService] [MTProto] Запрос чанка #5/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 5 242 880, размер 1024 КБ...
+[2026-10-01 03:44:54.124] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:54Z (svc)
+[2026-10-01 03:44:54.124] [DEBUG] [WTelegram]             → Upload_GetFile                         #D5B6
+[2026-10-01 03:44:54.124] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:54.392] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:54Z
+[2026-10-01 03:44:54.392] [DEBUG] [WTelegram]              → Upload_File                           #D5B6
+[2026-10-01 03:44:54.392] [INFO ] [TelegramService] [MTProto] Получен чанк #5/16 для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': смещение 5 242 880, размер 1024 КБ. Скачано всего: 11 из 16 чанков (68,8%).
+[2026-10-01 03:44:54.394] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #8 (смещение 8 388 608, 1 048 576 байт). Скачано всего: 11 из 16 чанков (68,8%).
+[2026-10-01 03:44:54.394] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #9 (смещение 9 437 184, 1 048 576 байт). Скачано всего: 11 из 16 чанков (68,8%).
+[2026-10-01 03:44:54.394] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #10 (смещение 10 485 760, 1 048 576 байт). Скачано всего: 11 из 16 чанков (68,8%).
+[2026-10-01 03:44:54.394] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 2,00 МБ (чанки #11..#12 (всего 16)) через 2 воркеров MTProto...
+[2026-10-01 03:44:54.395] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #11/16 (смещение 11 534 336 б, размер 1 048 576 б)...
+[2026-10-01 03:44:54.395] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:54Z (svc)
+[2026-10-01 03:44:54.395] [DEBUG] [WTelegram]             → Upload_GetFile                         #E54E
+[2026-10-01 03:44:54.395] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:54.471] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #12/16 (смещение 12 582 912 б, размер 1 048 576 б)...
+[2026-10-01 03:44:54.471] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #F836
+[2026-10-01 03:44:54.719] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:54Z
+[2026-10-01 03:44:54.719] [DEBUG] [WTelegram]              → Upload_File                           #E54E
+[2026-10-01 03:44:54.720] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #11/16 (1 048 576 б за 324 мс) [Полный].
+[2026-10-01 03:44:54.720] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #11 (смещение 11 534 336, 1 048 576 байт). Скачано всего: 12 из 16 чанков (75%).
+[2026-10-01 03:44:55.299] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:54Z
+[2026-10-01 03:44:55.299] [DEBUG] [WTelegram]              → Upload_File                           #F836
+[2026-10-01 03:44:55.299] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #12/16 (1 048 576 б за 828 мс) [Полный].
+[2026-10-01 03:44:55.300] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #12 (смещение 12 582 912, 1 048 576 байт). Скачано всего: 13 из 16 чанков (81,3%).
+[2026-10-01 03:44:55.300] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 2,65 МБ (чанки #13..#15 (всего 16)) через 3 воркеров MTProto...
+[2026-10-01 03:44:55.300] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #13/16 (смещение 13 631 488 б, размер 1 048 576 б)...
+[2026-10-01 03:44:55.300] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:44:55Z (svc)
+[2026-10-01 03:44:55.300] [DEBUG] [WTelegram]             → Upload_GetFile                         #49BF
+[2026-10-01 03:44:55.300] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-01 03:44:55.378] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #14/16 (смещение 14 680 064 б, размер 1 048 576 б)...
+[2026-10-01 03:44:55.378] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #632F
+[2026-10-01 03:44:55.455] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #15/16 (смещение 15 728 640 б, размер 1 048 576 б)...
+[2026-10-01 03:44:55.456] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #5AA7
+[2026-10-01 03:44:55.637] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:55Z
+[2026-10-01 03:44:55.638] [DEBUG] [WTelegram]              → Upload_File                           #49BF
+[2026-10-01 03:44:55.638] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #13/16 (1 048 576 б за 337 мс) [Полный].
+[2026-10-01 03:44:55.638] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 13 631 488, отдано 1 048 576 байт (14 680 064 / 16 411 173 байт, 89,5%). Скачано всего: 14 из 16 чанков (87,5%).
+[2026-10-01 03:44:55.897] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:55Z
+[2026-10-01 03:44:55.897] [DEBUG] [WTelegram]              → Upload_File                           #632F
+[2026-10-01 03:44:55.898] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #14/16 (1 048 576 б за 519 мс) [Полный].
+[2026-10-01 03:44:55.898] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): смещение 14 680 064, отдано 1 048 576 байт (15 728 640 / 16 411 173 байт, 95,8%). Скачано всего: 15 из 16 чанков (93,8%).
+[2026-10-01 03:44:56.057] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-01 00:44:55Z
+[2026-10-01 03:44:56.057] [DEBUG] [WTelegram]              → Upload_File                           #5AA7
+[2026-10-01 03:44:56.057] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': Размер: 16 411 173 б (15,65 МБ) | Из сети TG: 16 411 173 б (15,65 МБ) | Из ОЗУ: 14 680 064 б (14,00 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
+[2026-10-01 03:44:56.057] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' получено из TelegramService.
+[2026-10-01 03:44:56.057] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #15/16 (682 533 б за 601 мс) [Полный].
+[2026-10-01 03:44:56.058] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'. Запуск _completionTimer...
+[2026-10-01 03:44:56.058] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 1291): Глобальный Чанк #15 (смещение 15 728 640, 682 533 байт). Скачано всего: 16 из 16 чанков (100%).
+[2026-10-01 03:44:56.059] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4
+[2026-10-01 03:44:57.690] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек).
+[2026-10-01 03:45:02.294] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-01 00:45:02Z (svc)
+[2026-10-01 03:45:02.294] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #CD5E
+[2026-10-01 03:45:02.294] [DEBUG] [WTelegram]             → MsgsAck                      

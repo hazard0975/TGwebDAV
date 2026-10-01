@@ -2027,10 +2027,23 @@ namespace TelegramWebDAV.Services
             }
 
             var cts = new CancellationTokenSource();
-            if (!_activeFilePrefetches.TryAdd(messageId, cts))
+            if (_activeFilePrefetches.TryGetValue(messageId, out var oldCts))
             {
-                cts.Dispose();
-                return;
+                try
+                {
+                    oldCts.Cancel();
+                    oldCts.Dispose();
+                }
+                catch { }
+                _activeFilePrefetches[messageId] = cts;
+            }
+            else
+            {
+                if (!_activeFilePrefetches.TryAdd(messageId, cts))
+                {
+                    cts.Dispose();
+                    return;
+                }
             }
 
             _ = Task.Run(async () =>
@@ -2100,9 +2113,12 @@ namespace TelegramWebDAV.Services
                         }
                     }
 
-                    if (_activeFilePrefetches.TryRemove(messageId, out var removedCts))
+                    if (_activeFilePrefetches.TryGetValue(messageId, out var currentCts) && currentCts == cts)
                     {
-                        try { removedCts.Dispose(); } catch { }
+                        if (_activeFilePrefetches.TryRemove(messageId, out var removedCts))
+                        {
+                            try { removedCts.Dispose(); } catch { }
+                        }
                     }
                 }
             }, cts.Token);
