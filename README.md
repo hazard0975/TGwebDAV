@@ -244,6 +244,16 @@
 * **Self-Contained Single File**: Исполняемый файл компилируется со встроенным рантаймом (`--self-contained true -p:PublishSingleFile=true`) — работает на любой Windows 10/11 «из коробки» без установки .NET.
 * Автоматическая публикация в **GitHub Releases** с тегом `v1.0.${{ github.run_number }}` (архив `.zip` и прямой `.exe`).
 
+### 9. Единая система дизайна интерфейса (UI Design System: `UITheme` & `UIFactory`)
+* **Архитектурная защита от багов WinForms**:
+  - Все рамки `GroupBox` создаются через `UIFactory.CreateGroupBox(...)` со строгой гарантией `MinimumSize` и ширины `510 px`, что полностью исключает баг вертикального схлопывания текста при `FlowDirection.TopDown`.
+  - Строки параметров собираются через `UIFactory.CreateSettingRow(...)` с 2-колоночной сеткой (`TableLayoutPanel`): описание слева с автопереносом, поле ввода/переключатель справа с выравниванием по правому краю (`HorizontalAlignment.Right`).
+* **Стандарты типографики и стилей (`UITheme`)**:
+  - Базовый шрифт: `Segoe UI, 9pt, Regular` (системный стандарт Windows).
+  - Заголовки: `Segoe UI, 9pt, Bold` / `9.5pt, Bold`.
+  - Подсказки: `Segoe UI, 8.5pt, Regular` (приглушенный цвет `#6E6E6E`).
+  - Стандартная высота кнопок: `30 px` (обычные), `34 px` (акцентные).
+
 ---
 
 ## 📂 Структура проекта документации
