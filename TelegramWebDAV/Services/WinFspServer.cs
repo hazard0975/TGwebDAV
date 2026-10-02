@@ -768,6 +768,32 @@ namespace TelegramWebDAV.Services
                 {
                     try
                     {
+                        if (finalLength <= 1)
+                        {
+                            byte[]? inlineBytes = null;
+                            if (finalLength == 1 && File.Exists(tempPath))
+                            {
+                                inlineBytes = await File.ReadAllBytesAsync(tempPath);
+                            }
+
+                            _repository.CreateOrUpdateFile(
+                                parentId,
+                                nodeName,
+                                finalLength,
+                                tgMessageId: null,
+                                tgPreviewMessageId: null,
+                                inlineData: inlineBytes
+                            );
+
+                            node.Size = finalLength;
+                            node.InlineData = inlineBytes;
+                            node.TgMessageId = null;
+                            node.UpdatedAt = DateTime.UtcNow;
+
+                            AppLogger.Info("WinFsp", $"Файл '{nodeName}' ({finalLength} байт) сохранен в базе данных без отправки в Telegram (inline_data).");
+                            return;
+                        }
+
                         AppLogger.Info("WinFsp", $"Начало фоновой отправки файла '{nodeName}' ({finalLength} байт) в Telegram (подпись: '{fullPathWithVersion}')...");
                         AudioMetadataResult? fspAudioMeta = null;
                         VideoMetadataResult? fspVideoMeta = null;
@@ -799,6 +825,13 @@ namespace TelegramWebDAV.Services
                                 uploadResult.MessageId, 
                                 uploadResult.PreviewMessageId
                             );
+
+                            node.Size = finalLength;
+                            node.TgMessageId = uploadResult.MessageId;
+                            node.TgPreviewMessageId = uploadResult.PreviewMessageId;
+                            node.InlineData = null;
+                            node.UpdatedAt = DateTime.UtcNow;
+
                             AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {uploadResult.MessageId}" + (uploadResult.PreviewMessageId != null ? $", Preview ID: {uploadResult.PreviewMessageId}" : "") + ").");
                         }
                     }
