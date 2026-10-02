@@ -23,6 +23,7 @@ namespace TelegramWebDAV.UI
         private TabPage _tabGeneral = null!;
         private TabPage _tabTelegram = null!;
         private TabPage _tabRegistry = null!;
+        private TabPage _tabLogs = null!;
 
         // General Tab
         private CheckBox _chkWebDavEnabled = null!;
@@ -52,17 +53,16 @@ namespace TelegramWebDAV.UI
         private TextBox _txtApiId = null!;
         private TextBox _txtApiHash = null!;
         private TextBox _txtChannelTitle = null!;
-        private Button _btnSaveApi = null!;
         private TextBox _txtInput = null!;
         private Button _btnAction = null!;
         private Button _btnLogout = null!;
 
         // Registry Tab
         private Label _lblRegStatus = null!;
+        private Label _lblRegCurrentState = null!;
         private Button _btnApplyRegFix = null!;
 
         // Logs Tab
-        private TabPage _tabLogs = null!;
         private CheckBox _chkLogDebug = null!;
         private CheckBox _chkLogInfo = null!;
         private CheckBox _chkLogWarn = null!;
@@ -85,220 +85,119 @@ namespace TelegramWebDAV.UI
         private void InitializeComponents()
         {
             this.Text = "Telegram WebDAV Service - Настройки";
-            this.Size = new Size(570, 600);
+            this.Size = new Size(570, 640);
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            this.Font = UITheme.BaseFont;
+
+            // Нижняя фиксированная панель действий
+            var btnSaveAll = new Button { Text = "Сохранить" };
+            btnSaveAll.Click += (s, e) => SaveAllSettings();
+            var btnClose = new Button { Text = "Закрыть", Height = UITheme.ButtonHeightPrimary };
+            btnClose.Click += (s, e) => this.Close();
+            var pnlBottomBar = UIFactory.CreateBottomBar(btnSaveAll, btnClose);
 
             _tabControl = new TabControl { Dock = DockStyle.Fill };
 
-            // === Вкладка 1: Основные настройки (Сервер и Диск) ===
+            // =========================================================================
+            // === Вкладка 1: Основные настройки (Сервер и Диск) =======================
+            // =========================================================================
             _tabGeneral = new TabPage("Сервер и Диск");
             var pnlGeneral = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
-                Padding = new Padding(15),
+                Padding = new Padding(12),
                 AutoScroll = true
             };
 
-            _chkWebDavEnabled = new CheckBox
-            {
-                Text = "Включить встроенный WebDAV сервер",
-                Checked = _settings.Server.WebDavEnabled,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 10)
-            };
+            // 1. Рамка: Сетевой диск и служба
+            var grpServerDrive = UIFactory.CreateGroupBox("Сетевой диск и служба");
+            var pnlServerInner = UIFactory.CreateVerticalContainer();
 
-            var pnlPort = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight };
-            pnlPort.Controls.Add(new Label { Text = "HTTP Порт:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _numPort = new NumericUpDown { Minimum = 1024, Maximum = 65535, Value = _settings.Server.Port, Width = 80 };
-            pnlPort.Controls.Add(_numPort);
+            _chkWebDavEnabled = UIFactory.CreateCheckBox("Включить встроенный WebDAV сервер", _settings.Server.WebDavEnabled);
+            _numPort = UIFactory.CreateNumericInput(1024, 65535, _settings.Server.Port, 80);
+            var rowPort = UIFactory.CreateSettingRow("HTTP Порт:", _numPort, 200);
 
-            var pnlEngine = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 10, 0, 5) };
-            pnlEngine.Controls.Add(new Label { Text = "Драйвер диска:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _cmbEngine = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 380 };
-            _cmbEngine.Items.Add("WinFsp (Прямой стриминг в память, без кэша на C:)");
-            _cmbEngine.Items.Add("WebDAV (Встроенная служба Windows WebClient)");
+            _cmbEngine = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 280, Font = UITheme.BaseFont };
+            _cmbEngine.Items.Add("WinFsp (Прямой стриминг в ОЗУ)");
+            _cmbEngine.Items.Add("WebDAV (Служба Windows WebClient)");
             _cmbEngine.SelectedIndex = _settings.Server.Engine == DriveEngine.WinFsp ? 0 : 1;
-            pnlEngine.Controls.Add(_cmbEngine);
+            var rowEngine = UIFactory.CreateSettingRow("Драйвер диска:", _cmbEngine, 200);
 
-            _chkMountDrive = new CheckBox
-            {
-                Text = "Автоматически монтировать сетевой диск в Windows",
-                Checked = _settings.Server.MountDrive,
-                AutoSize = true,
-                Margin = new Padding(0, 10, 0, 10)
-            };
+            _chkMountDrive = UIFactory.CreateCheckBox("Автоматически монтировать сетевой диск в Windows", _settings.Server.MountDrive);
 
-            var pnlDrive = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight };
-            pnlDrive.Controls.Add(new Label { Text = "Буква диска:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _cmbDriveLetter = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 90 };
+            _cmbDriveLetter = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 80, Font = UITheme.BaseFont };
             _cmbDriveLetter.Items.AddRange(new object[] { "Z:", "T:", "Y:", "X:", "W:", "AUTO" });
             _cmbDriveLetter.SelectedItem = _settings.Server.DriveLetter ?? "Z:";
-            pnlDrive.Controls.Add(_cmbDriveLetter);
+            var rowDriveLetter = UIFactory.CreateSettingRow("Буква диска:", _cmbDriveLetter, 200);
 
-            var pnlVol = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 10, 0, 5) };
-            pnlVol.Controls.Add(new Label { Text = "Имя тома:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _txtVolumeName = new TextBox { Text = _settings.Server.DriveName ?? "Telegram Drive", Width = 150 };
-            pnlVol.Controls.Add(_txtVolumeName);
+            _txtVolumeName = new TextBox { Text = _settings.Server.DriveName ?? "Telegram Drive", Width = 180, Font = UITheme.BaseFont };
+            var rowVolumeName = UIFactory.CreateSettingRow("Имя тома:", _txtVolumeName, 200);
 
-            var pnlCapacity = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
-            pnlCapacity.Controls.Add(new Label { Text = "Размер диска (ГБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _numCapacityGb = new NumericUpDown
-            {
-                Minimum = 10,
-                Maximum = 1048576, // До 1 ПБ
-                Value = Math.Max(10, Math.Min(1048576, _settings.Server.VirtualDiskCapacityGb > 0 ? _settings.Server.VirtualDiskCapacityGb : 1024)),
-                Width = 100
-            };
-            pnlCapacity.Controls.Add(_numCapacityGb);
+            _numCapacityGb = UIFactory.CreateNumericInput(10, 1048576, _settings.Server.VirtualDiskCapacityGb > 0 ? _settings.Server.VirtualDiskCapacityGb : 1024, 90);
+            var rowCapacity = UIFactory.CreateSettingRow("Размер диска (ГБ):", _numCapacityGb, 200);
 
-            _chkAutoExpand = new CheckBox
-            {
-                Text = "Автоматически расширять диск при заполнении > 70%",
-                Checked = _settings.Server.AutoExpandDiskCapacity,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
-            };
+            _chkAutoExpand = UIFactory.CreateCheckBox("Автоматически расширять диск при заполнении > 70%", _settings.Server.AutoExpandDiskCapacity);
+            _chkIncludeTrashInSpace = UIFactory.CreateCheckBox("Учитывать файлы в корзине (.Trash) в занятом месте", _settings.Server.IncludeTrashInUsedSpace);
 
-            _chkIncludeTrashInSpace = new CheckBox
-            {
-                Text = "Учитывать файлы в корзине (.Trash) в занятом месте диска",
-                Checked = _settings.Server.IncludeTrashInUsedSpace,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
-            };
+            pnlServerInner.Controls.AddRange(new Control[] {
+                _chkWebDavEnabled, rowPort, rowEngine, _chkMountDrive, rowDriveLetter, rowVolumeName, rowCapacity, _chkAutoExpand, _chkIncludeTrashInSpace
+            });
+            grpServerDrive.Controls.Add(pnlServerInner);
 
-            _chkAutoStart = new CheckBox
-            {
-                Text = "Автозапуск сервиса при входе в Windows",
-                Checked = _settings.Server.AutoStartWithWindows,
-                AutoSize = true,
-                Margin = new Padding(0, 10, 0, 5)
-            };
+            // 2. Рамка: Интеграция с Windows и проводником
+            var grpIntegration = UIFactory.CreateGroupBox("Интеграция с Windows и проводником");
+            var pnlIntegrationInner = UIFactory.CreateVerticalContainer();
 
-            _chkHideTrash = new CheckBox
-            {
-                Text = "Скрывать папку .Trash из корня диска (чистый корень)",
-                Checked = _settings.Server.HideTrashFromRoot,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
-            };
+            _chkAutoStart = UIFactory.CreateCheckBox("Автозапуск сервиса при входе в Windows", _settings.Server.AutoStartWithWindows);
+            _chkHideTrash = UIFactory.CreateCheckBox("Скрывать папку .Trash из корня диска (чистый корень)", _settings.Server.HideTrashFromRoot);
+            _chkContextMenu = UIFactory.CreateCheckBox("Пункт «Открыть корзину WebDAV» в контекстном меню Windows", _settings.Server.AddTrashToContextMenu);
+            _chkAutoShowPopup = UIFactory.CreateCheckBox("Автоматически открывать карточку прогресса при отправке файлов", _settings.Server.AutoShowUploadPopup);
+            _chkGalleryPreview = UIFactory.CreateCheckBox("Создавать фото-превью для галереи Telegram", _settings.Server.CreatePhotoGalleryPreview);
 
-            _chkContextMenu = new CheckBox
-            {
-                Text = "Пункт «Открыть корзину WebDAV» в контекстном меню Windows",
-                Checked = _settings.Server.AddTrashToContextMenu,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
-            };
+            pnlIntegrationInner.Controls.AddRange(new Control[] {
+                _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkGalleryPreview
+            });
+            grpIntegration.Controls.Add(pnlIntegrationInner);
 
-            _chkAutoShowPopup = new CheckBox
-            {
-                Text = "Автоматически открывать карточку прогресса при отправке файлов",
-                Checked = _settings.Server.AutoShowUploadPopup,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
-            };
+            // 3. Рамка: Кэширование и стриминг
+            var grpCache = UIFactory.CreateGroupBox("Кэширование и стриминг");
+            var pnlCacheInner = UIFactory.CreateVerticalContainer();
 
-            _chkGalleryPreview = new CheckBox
-            {
-                Text = "Создавать фото-превью для галереи Telegram",
-                Checked = _settings.Server.CreatePhotoGalleryPreview,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
-            };
+            _chkEnableDiskCache = UIFactory.CreateCheckBox("Сохранять прочитанные файлы в дисковый кэш (%TEMP%)", _settings.Server.EnableDiskReadCache);
 
-            _chkEnableDiskCache = new CheckBox
-            {
-                Text = "Сохранять прочитанные файлы в дисковый кэш (%TEMP%)",
-                Checked = _settings.Server.EnableDiskReadCache,
-                AutoSize = true,
-                Margin = new Padding(0, 5, 0, 5)
-            };
+            _numMemoryCacheMb = UIFactory.CreateNumericInput(32, 4096, _settings.Server.MemoryCacheSizeMb > 0 ? _settings.Server.MemoryCacheSizeMb : 128, 80);
+            var rowMemCache = UIFactory.CreateSettingRow("Буфер кэша в ОЗУ (МБ):", _numMemoryCacheMb, 290);
 
-            var pnlMemCache = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
-            pnlMemCache.Controls.Add(new Label { Text = "Буфер кэша в ОЗУ (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _numMemoryCacheMb = new NumericUpDown
-            {
-                Minimum = 32,
-                Maximum = 4096, // До 4 ГБ
-                Value = Math.Max(32, Math.Min(4096, _settings.Server.MemoryCacheSizeMb > 0 ? _settings.Server.MemoryCacheSizeMb : 128)),
-                Width = 100
-            };
-            pnlMemCache.Controls.Add(_numMemoryCacheMb);
+            _numChunkTtlMinutes = UIFactory.CreateNumericInput(1, 120, _settings.Server.ChunkMemoryCacheTtlMinutes > 0 ? _settings.Server.ChunkMemoryCacheTtlMinutes : 10, 80);
+            var rowChunkTtl = UIFactory.CreateSettingRow("Время жизни кэша в ОЗУ (мин):", _numChunkTtlMinutes, 290);
 
-            var pnlChunkTtl = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
-            pnlChunkTtl.Controls.Add(new Label { Text = "Время жизни кэша в ОЗУ (мин):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _numChunkTtlMinutes = new NumericUpDown
-            {
-                Minimum = 1,
-                Maximum = 120, // До 2 часов
-                Value = Math.Max(1, Math.Min(120, _settings.Server.ChunkMemoryCacheTtlMinutes > 0 ? _settings.Server.ChunkMemoryCacheTtlMinutes : 10)),
-                Width = 100
-            };
-            pnlChunkTtl.Controls.Add(_numChunkTtlMinutes);
+            _numFullTrackMaxMb = UIFactory.CreateNumericInput(1, 500, _settings.Server.FullTrackPrefetchMaxFileSizeMb > 0 ? _settings.Server.FullTrackPrefetchMaxFileSizeMb : 2, 80);
+            var rowFullTrack = UIFactory.CreateSettingRow("Качать мелкие медиа целиком до (МБ):", _numFullTrackMaxMb, 290);
 
-            var pnlFullTrack = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
-            pnlFullTrack.Controls.Add(new Label { Text = "Качать мелкие медиа целиком до (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _numFullTrackMaxMb = new NumericUpDown
-            {
-                Minimum = 1,
-                Maximum = 500, // До 500 МБ
-                Value = Math.Max(1, Math.Min(500, _settings.Server.FullTrackPrefetchMaxFileSizeMb > 0 ? _settings.Server.FullTrackPrefetchMaxFileSizeMb : 2)),
-                Width = 100
-            };
-            pnlFullTrack.Controls.Add(_numFullTrackMaxMb);
+            _numAudioWindowMb = UIFactory.CreateNumericInput(1, 100, _settings.Server.AudioPrefetchWindowMb > 0 ? _settings.Server.AudioPrefetchWindowMb : 2, 80);
+            var rowAudioWindow = UIFactory.CreateSettingRow("Буфер упреждения для аудио (МБ):", _numAudioWindowMb, 290);
 
-            var pnlAudioWindow = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 5) };
-            pnlAudioWindow.Controls.Add(new Label { Text = "Буфер упреждения для музыки / аудио (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _numAudioWindowMb = new NumericUpDown
-            {
-                Minimum = 1,
-                Maximum = 100, // До 100 МБ
-                Value = Math.Max(1, Math.Min(100, _settings.Server.AudioPrefetchWindowMb > 0 ? _settings.Server.AudioPrefetchWindowMb : 2)),
-                Width = 100
-            };
-            pnlAudioWindow.Controls.Add(_numAudioWindowMb);
+            _numStreamingWindowMb = UIFactory.CreateNumericInput(5, 200, _settings.Server.StreamingPrefetchWindowMb > 0 ? _settings.Server.StreamingPrefetchWindowMb : 20, 80);
+            var rowStreamingWindow = UIFactory.CreateSettingRow("Буфер упреждения для видео/файлов (МБ):", _numStreamingWindowMb, 290);
 
-            var pnlStreamWindow = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, Margin = new Padding(0, 5, 0, 10) };
-            pnlStreamWindow.Controls.Add(new Label { Text = "Буфер упреждения для видео и крупных файлов (МБ):", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _numStreamingWindowMb = new NumericUpDown
-            {
-                Minimum = 5,
-                Maximum = 200, // До 200 МБ
-                Value = Math.Max(5, Math.Min(200, _settings.Server.StreamingPrefetchWindowMb > 0 ? _settings.Server.StreamingPrefetchWindowMb : 20)),
-                Width = 100
-            };
-            pnlStreamWindow.Controls.Add(_numStreamingWindowMb);
+            pnlCacheInner.Controls.AddRange(new Control[] {
+                _chkEnableDiskCache, rowMemCache, rowChunkTtl, rowFullTrack, rowAudioWindow, rowStreamingWindow
+            });
+            grpCache.Controls.Add(pnlCacheInner);
 
-            // Секция: База данных SQLite (base.db)
-            var grpDb = new GroupBox
-            {
-                Text = "База данных SQLite (base.db)",
-                Width = 510,
-                MinimumSize = new Size(510, 95),
-                AutoSize = true,
-                Margin = new Padding(0, 15, 0, 5),
-                Padding = new Padding(10)
-            };
-
-            var pnlDbInner = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                AutoSize = true,
-                FlowDirection = FlowDirection.TopDown,
-                WrapContents = false
-            };
+            // 4. Рамка: База данных SQLite (base.db)
+            var grpDb = UIFactory.CreateGroupBox("База данных SQLite (base.db)");
+            var pnlDbInner = UIFactory.CreateVerticalContainer();
 
             var lblDbStats = new Label
             {
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 8),
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Regular)
+                Margin = new Padding(0, 2, 0, 10),
+                Font = UITheme.SmallFont
             };
 
             Action updateDbStats = () =>
@@ -324,23 +223,7 @@ namespace TelegramWebDAV.UI
             };
             updateDbStats();
 
-            var tblDbActions = new TableLayoutPanel
-            {
-                Width = 485,
-                Height = 34,
-                ColumnCount = 2,
-                RowCount = 1,
-                Margin = new Padding(0, 0, 0, 2)
-            };
-            tblDbActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55f));
-            tblDbActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45f));
-
-            var btnVacuum = new Button
-            {
-                Text = "🗜 Сжать базу (VACUUM)",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(0, 0, 4, 0)
-            };
+            var btnVacuum = UIFactory.CreateButton("🗜 Сжать базу (VACUUM)");
             btnVacuum.Click += async (s, e) =>
             {
                 btnVacuum.Enabled = false;
@@ -362,12 +245,7 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            var btnOpenDbFolder = new Button
-            {
-                Text = "📁 Папка с базой данных",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(4, 0, 0, 0)
-            };
+            var btnOpenDbFolder = UIFactory.CreateButton("📁 Папка с базой данных");
             btnOpenDbFolder.Click += (s, e) =>
             {
                 try
@@ -389,131 +267,95 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            tblDbActions.Controls.Add(btnVacuum, 0, 0);
-            tblDbActions.Controls.Add(btnOpenDbFolder, 1, 0);
-
-            pnlDbInner.Controls.AddRange(new Control[] { lblDbStats, tblDbActions });
+            var rowDbButtons = UIFactory.CreateActionRow(btnVacuum, btnOpenDbFolder);
+            pnlDbInner.Controls.AddRange(new Control[] { lblDbStats, rowDbButtons });
             grpDb.Controls.Add(pnlDbInner);
 
-            var btnSaveGeneral = new Button
-            {
-                Text = "Сохранить настройки",
-                AutoSize = true,
-                Padding = new Padding(10, 5, 10, 5),
-                Margin = new Padding(0, 15, 0, 0)
-            };
-            btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
-
-            pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkGalleryPreview, _chkEnableDiskCache, pnlMemCache, pnlChunkTtl, pnlFullTrack, pnlAudioWindow, pnlStreamWindow, grpDb, btnSaveGeneral
-            });
+            pnlGeneral.Controls.AddRange(new Control[] { grpServerDrive, grpIntegration, grpCache, grpDb });
             _tabGeneral.Controls.Add(pnlGeneral);
 
-            // === Вкладка 2: Авторизация Telegram ===
+            // =========================================================================
+            // === Вкладка 2: Авторизация Telegram =====================================
+            // =========================================================================
             _tabTelegram = new TabPage("Авторизация Telegram");
             var pnlTg = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
-                Padding = new Padding(15),
+                Padding = new Padding(12),
                 AutoScroll = true
             };
 
-            var lblApiTitle = new Label
-            {
-                Text = "Параметры приложения Telegram (my.telegram.org):",
-                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
-                AutoSize = true,
-                Margin = new Padding(0, 0, 0, 8)
-            };
+            // 1. Рамка: Параметры API Telegram
+            var grpTelegramApi = UIFactory.CreateGroupBox("Параметры приложения (my.telegram.org)");
+            var pnlTgApiInner = UIFactory.CreateVerticalContainer();
 
-            var pnlApiId = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 0, 0, 4) };
-            pnlApiId.Controls.Add(new Label { Text = "API ID:  ", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _txtApiId = new TextBox
-            {
-                Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "",
-                Width = 240
-            };
-            pnlApiId.Controls.Add(_txtApiId);
+            _txtApiId = new TextBox { Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "", Font = UITheme.BaseFont };
+            var rowApiId = UIFactory.CreateInputRow("API ID:", _txtApiId, 120);
 
-            var pnlApiHash = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 0, 0, 8) };
-            pnlApiHash.Controls.Add(new Label { Text = "API Hash:", AutoSize = true, Margin = new Padding(0, 5, 10, 0) });
-            _txtApiHash = new TextBox
-            {
-                Text = _settings.Telegram.ApiHash ?? "",
-                Width = 240,
-                UseSystemPasswordChar = true
-            };
-            pnlApiHash.Controls.Add(_txtApiHash);
+            _txtApiHash = new TextBox { Text = _settings.Telegram.ApiHash ?? "", UseSystemPasswordChar = true, Font = UITheme.BaseFont };
+            var rowApiHash = UIFactory.CreateInputRow("API Hash:", _txtApiHash, 120);
 
-            var pnlChannel = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 0, 0, 8) };
-            pnlChannel.Controls.Add(new Label { Text = "Имя канала:", AutoSize = true, Margin = new Padding(0, 5, 2, 0) });
-            _txtChannelTitle = new TextBox
-            {
-                Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle,
-                Width = 240
-            };
-            pnlChannel.Controls.Add(_txtChannelTitle);
+            _txtChannelTitle = new TextBox { Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle, Font = UITheme.BaseFont };
+            var rowChannel = UIFactory.CreateInputRow("Имя канала:", _txtChannelTitle, 120);
 
-            _btnSaveApi = new Button
-            {
-                Text = "Сохранить настройки Telegram",
-                AutoSize = true,
-                Padding = new Padding(8, 4, 8, 4),
-                Margin = new Padding(0, 0, 0, 15)
-            };
-            _btnSaveApi.Click += (s, e) => SaveTelegramApiKeys();
+            var btnSaveApi = UIFactory.CreateButton("💾 Сохранить параметры Telegram", (s, e) => SaveTelegramApiKeys(), isPrimary: true, height: UITheme.ButtonHeightDefault);
+            btnSaveApi.Margin = new Padding(0, 6, 0, 2);
 
-            var lblSeparator = new Label
-            {
-                BorderStyle = BorderStyle.Fixed3D,
-                Height = 2,
-                Width = 510,
-                Margin = new Padding(0, 0, 0, 15)
-            };
+            pnlTgApiInner.Controls.AddRange(new Control[] { rowApiId, rowApiHash, rowChannel, btnSaveApi });
+            grpTelegramApi.Controls.Add(pnlTgApiInner);
+
+            // 2. Рамка: Текущая сессия Telegram
+            var grpTelegramSession = UIFactory.CreateGroupBox("Текущая сессия Telegram");
+            var pnlTgSessionInner = UIFactory.CreateVerticalContainer();
 
             _lblStatus = new Label
             {
                 Text = "Статус: Проверка сессии...",
                 AutoSize = true,
-                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
-                Margin = new Padding(0, 0, 0, 10)
+                Font = UITheme.HeaderFont,
+                Margin = new Padding(0, 0, 0, 6)
             };
 
             _lblInstruction = new Label
             {
                 Text = "Введите номер телефона в международном формате (+7...):",
                 AutoSize = true,
-                Margin = new Padding(0, 0, 0, 5)
+                Font = UITheme.BaseFont,
+                Margin = new Padding(0, 0, 0, 6)
             };
 
-            _txtInput = new TextBox { Width = 320, Margin = new Padding(0, 0, 0, 10) };
+            _txtInput = new TextBox { Width = UITheme.ContentWidth - 25, Font = UITheme.BaseFont, Margin = new Padding(0, 0, 0, 8) };
 
-            var pnlTgButtons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 5, 0, 10) };
-            _btnAction = new Button { Text = "Отправить", AutoSize = true, Padding = new Padding(10, 5, 10, 5), Margin = new Padding(0, 0, 10, 0) };
-            _btnAction.Click += async (s, e) => await HandleTelegramActionAsync();
+            _btnAction = UIFactory.CreateButton("Отправить", async (s, e) => await HandleTelegramActionAsync(), isPrimary: true, height: UITheme.ButtonHeightDefault, width: 180);
+            _btnLogout = UIFactory.CreateButton("Выйти из аккаунта", (s, e) => HandleTelegramLogout(), isPrimary: false, height: UITheme.ButtonHeightDefault, width: 160);
+            _btnLogout.ForeColor = UITheme.TextDanger;
 
-            _btnLogout = new Button { Text = "Выйти из аккаунта", AutoSize = true, Padding = new Padding(10, 5, 10, 5), ForeColor = Color.DarkRed };
-            _btnLogout.Click += (s, e) => HandleTelegramLogout();
-
+            var pnlTgButtons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 4, 0, 4) };
             pnlTgButtons.Controls.AddRange(new Control[] { _btnAction, _btnLogout });
 
-            pnlTg.Controls.AddRange(new Control[] {
-                lblApiTitle, pnlApiId, pnlApiHash, pnlChannel, _btnSaveApi, lblSeparator, _lblStatus, _lblInstruction, _txtInput, pnlTgButtons
-            });
+            pnlTgSessionInner.Controls.AddRange(new Control[] { _lblStatus, _lblInstruction, _txtInput, pnlTgButtons });
+            grpTelegramSession.Controls.Add(pnlTgSessionInner);
+
+            pnlTg.Controls.AddRange(new Control[] { grpTelegramApi, grpTelegramSession });
             _tabTelegram.Controls.Add(pnlTg);
 
-            // === Вкладка 3: Патч реестра Windows ===
+            // =========================================================================
+            // === Вкладка 3: Патч реестра Windows =====================================
+            // =========================================================================
             _tabRegistry = new TabPage("Патч реестра Windows");
             var pnlReg = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
-                Padding = new Padding(15),
+                Padding = new Padding(12),
                 AutoScroll = true
             };
+
+            var grpRegistry = UIFactory.CreateGroupBox("Системные твики службы Windows WebClient и UAC");
+            var pnlRegInner = UIFactory.CreateVerticalContainer();
 
             _lblRegStatus = new Label
             {
@@ -523,15 +365,16 @@ namespace TelegramWebDAV.UI
                        "3. EnableLinkedConnections = 1 — сквозная видимость дисков между сессиями пользователя и Администратора.\n" +
                        "4. ZoneMap (Местная интрасеть) — устранение системных предупреждений безопасности при копировании файлов.",
                 AutoSize = true,
-                MaximumSize = new Size(520, 0),
-                Margin = new Padding(0, 5, 0, 15)
+                Width = UITheme.ContentWidth - 30,
+                Font = UITheme.BaseFont,
+                Margin = new Padding(0, 2, 0, 12)
             };
 
-            var lblRegCurrentState = new Label
+            _lblRegCurrentState = new Label
             {
                 AutoSize = true,
-                Font = new Font(this.Font, FontStyle.Bold),
-                Margin = new Padding(0, 0, 0, 15)
+                Font = UITheme.HeaderFont,
+                Margin = new Padding(0, 0, 0, 12)
             };
 
             Action refreshRegState = () =>
@@ -539,24 +382,19 @@ namespace TelegramWebDAV.UI
                 bool isApplied = WindowsRegistryFixer.IsAllFixesApplied();
                 if (isApplied)
                 {
-                    lblRegCurrentState.Text = "Статус: Все системные патчи успешно применены ✔";
-                    lblRegCurrentState.ForeColor = Color.DarkGreen;
+                    _lblRegCurrentState.Text = "Статус: Все системные патчи успешно применены ✔";
+                    _lblRegCurrentState.ForeColor = UITheme.TextSuccess;
                 }
                 else
                 {
-                    lblRegCurrentState.Text = "Статус: Рекомендуется применить системные патчи реестра ⚠";
-                    lblRegCurrentState.ForeColor = Color.DarkOrange;
+                    _lblRegCurrentState.Text = "Статус: Рекомендуется применить системные патчи реестра ⚠";
+                    _lblRegCurrentState.ForeColor = Color.DarkOrange;
                 }
             };
             refreshRegState();
 
-            _btnApplyRegFix = new Button
-            {
-                Text = "🛡 Применить комплексный фикс реестра (с запросом UAC)",
-                AutoSize = true,
-                Padding = new Padding(12, 10, 12, 10),
-                Font = new Font(this.Font.FontFamily, 9.5f, FontStyle.Bold)
-            };
+            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, isPrimary: true, height: 38);
+            _btnApplyRegFix.Width = UITheme.ContentWidth - 25;
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
@@ -588,182 +426,59 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            pnlReg.Controls.AddRange(new Control[] { _lblRegStatus, lblRegCurrentState, _btnApplyRegFix });
+            pnlRegInner.Controls.AddRange(new Control[] { _lblRegStatus, _lblRegCurrentState, _btnApplyRegFix });
+            grpRegistry.Controls.Add(pnlRegInner);
+
+            pnlReg.Controls.Add(grpRegistry);
             _tabRegistry.Controls.Add(pnlReg);
 
-            // === Вкладка 4: Логирование ===
+            // =========================================================================
+            // === Вкладка 4: Логирование ==============================================
+            // =========================================================================
             _tabLogs = new TabPage("Логирование");
-
-            // Нижняя панель для кнопки «Сохранить» в правом нижнем углу окна
-            var pnlSaveBar = new TableLayoutPanel
-            {
-                Dock = DockStyle.Bottom,
-                Height = 44,
-                ColumnCount = 2,
-                RowCount = 1,
-                Padding = new Padding(0, 0, 15, 10)
-            };
-            pnlSaveBar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
-            pnlSaveBar.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 120f));
-
-            var btnSaveLogs = new Button
-            {
-                Text = "Сохранить",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(0)
-            };
-
-            pnlSaveBar.Controls.Add(btnSaveLogs, 1, 0);
-
             var pnlLogs = new FlowLayoutPanel
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
-                Padding = new Padding(15),
+                Padding = new Padding(12),
                 AutoScroll = true
             };
 
-            // 1. Рамка: Уровни логирования (уменьшенные отступы)
-            var grpLogLevels = new GroupBox
-            {
-                Text = "Уровни логирования",
-                Width = 510,
-                MinimumSize = new Size(510, 110),
-                AutoSize = true,
-                Margin = new Padding(0, 0, 0, 8),
-                Padding = new Padding(8)
-            };
+            // 1. Рамка: Уровни логирования
+            var grpLogLevels = UIFactory.CreateGroupBox("Уровни логирования", minHeight: 110);
+            var pnlLogLevels = UIFactory.CreateVerticalContainer();
 
-            var pnlLogLevels = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                AutoSize = true,
-                FlowDirection = FlowDirection.TopDown,
-                WrapContents = false
-            };
-
-            _chkLogDebug = new CheckBox
-            {
-                Text = "Debug — подробная техническая отладка (COM-интерфейсы, внутренние вызовы)",
-                Checked = _settings.Logging.EnableDebug,
-                AutoSize = true,
-                Margin = new Padding(0, 1, 0, 2)
-            };
-
-            _chkLogInfo = new CheckBox
-            {
-                Text = "Info — стандартные информационные события (файлы, загрузки, запуски)",
-                Checked = _settings.Logging.EnableInfo,
-                AutoSize = true,
-                Margin = new Padding(0, 1, 0, 2)
-            };
-
-            _chkLogWarn = new CheckBox
-            {
-                Text = "Warn — предупреждения и некритичные отклонения",
-                Checked = _settings.Logging.EnableWarn,
-                AutoSize = true,
-                Margin = new Padding(0, 1, 0, 2)
-            };
-
-            _chkLogError = new CheckBox
-            {
-                Text = "Error — ошибки приложения и сбои операций",
-                Checked = _settings.Logging.EnableError,
-                AutoSize = true,
-                Margin = new Padding(0, 1, 0, 2)
-            };
+            _chkLogDebug = UIFactory.CreateCheckBox("Debug — подробная техническая отладка (COM-интерфейсы, внутренние вызовы)", _settings.Logging.EnableDebug);
+            _chkLogInfo = UIFactory.CreateCheckBox("Info — стандартные информационные события (файлы, загрузки, запуски)", _settings.Logging.EnableInfo);
+            _chkLogWarn = UIFactory.CreateCheckBox("Warn — предупреждения и некритичные отклонения", _settings.Logging.EnableWarn);
+            _chkLogError = UIFactory.CreateCheckBox("Error — ошибки приложения и сбои операций", _settings.Logging.EnableError);
 
             pnlLogLevels.Controls.AddRange(new Control[] { _chkLogDebug, _chkLogInfo, _chkLogWarn, _chkLogError });
             grpLogLevels.Controls.Add(pnlLogLevels);
 
-            // 2. Рамка: Параметры хранения и ротации (уменьшенные отступы)
-            var grpRotation = new GroupBox
-            {
-                Text = "Параметры хранения и ротации лог-файлов",
-                Width = 510,
-                MinimumSize = new Size(510, 80),
-                AutoSize = true,
-                Margin = new Padding(0, 0, 0, 8),
-                Padding = new Padding(8)
-            };
+            // 2. Рамка: Параметры хранения и ротации
+            var grpRotation = UIFactory.CreateGroupBox("Параметры хранения и ротации лог-файлов", minHeight: 80);
+            var pnlRotation = UIFactory.CreateVerticalContainer();
 
-            var tblRotation = new TableLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                AutoSize = true,
-                ColumnCount = 2,
-                RowCount = 2,
-                Margin = new Padding(0)
-            };
-            tblRotation.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 72f));
-            tblRotation.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 28f));
+            _numMaxLogMb = UIFactory.CreateNumericInput(1, 50, Math.Clamp(_settings.Logging.MaxLogFileSizeMb > 0 ? _settings.Logging.MaxLogFileSizeMb : 5, 1, 50), 90);
+            var rowMaxMb = UIFactory.CreateSettingRow("Максимальный размер одного файла лога (МБ):", _numMaxLogMb, 330);
 
-            var lblMaxMb = new Label
-            {
-                Text = "Максимальный размер одного файла лога (МБ):",
-                AutoSize = true,
-                Anchor = AnchorStyles.Left,
-                Margin = new Padding(0, 4, 10, 4)
-            };
+            _numMaxLogFiles = UIFactory.CreateNumericInput(1, 10, Math.Clamp(_settings.Logging.MaxArchivedFiles > 0 ? _settings.Logging.MaxArchivedFiles : 3, 1, 10), 90);
+            var rowMaxFiles = UIFactory.CreateSettingRow("Количество хранящихся архивных файлов:", _numMaxLogFiles, 330);
 
-            _numMaxLogMb = new NumericUpDown
-            {
-                Minimum = 1,
-                Maximum = 50,
-                Value = Math.Clamp(_settings.Logging.MaxLogFileSizeMb > 0 ? _settings.Logging.MaxLogFileSizeMb : 5, 1, 50),
-                Width = 90,
-                Anchor = AnchorStyles.Right
-            };
+            pnlRotation.Controls.AddRange(new Control[] { rowMaxMb, rowMaxFiles });
+            grpRotation.Controls.Add(pnlRotation);
 
-            var lblMaxFiles = new Label
-            {
-                Text = "Количество хранящихся архивных файлов:",
-                AutoSize = true,
-                Anchor = AnchorStyles.Left,
-                Margin = new Padding(0, 4, 10, 4)
-            };
-
-            _numMaxLogFiles = new NumericUpDown
-            {
-                Minimum = 1,
-                Maximum = 10,
-                Value = Math.Clamp(_settings.Logging.MaxArchivedFiles > 0 ? _settings.Logging.MaxArchivedFiles : 3, 1, 10),
-                Width = 90,
-                Anchor = AnchorStyles.Right
-            };
-
-            tblRotation.Controls.Add(lblMaxMb, 0, 0);
-            tblRotation.Controls.Add(_numMaxLogMb, 1, 0);
-            tblRotation.Controls.Add(lblMaxFiles, 0, 1);
-            tblRotation.Controls.Add(_numMaxLogFiles, 1, 1);
-            grpRotation.Controls.Add(tblRotation);
-
-            // 3. Рамка: Текущая информация и действия (увеличенные отступы "воздух")
-            var grpStats = new GroupBox
-            {
-                Text = "Текущая информация и действия",
-                Width = 510,
-                MinimumSize = new Size(510, 140),
-                AutoSize = true,
-                Margin = new Padding(0, 0, 0, 12),
-                Padding = new Padding(12, 12, 12, 12)
-            };
-
-            var pnlStatsInner = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                AutoSize = true,
-                FlowDirection = FlowDirection.TopDown,
-                WrapContents = false
-            };
+            // 3. Рамка: Текущая информация и действия
+            var grpStats = UIFactory.CreateGroupBox("Текущая информация и действия", minHeight: 130);
+            var pnlStatsInner = UIFactory.CreateVerticalContainer();
 
             _lblLogStats = new Label
             {
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 14),
-                Font = new Font("Segoe UI", 8.5F, FontStyle.Regular)
+                Margin = new Padding(0, 2, 0, 10),
+                Font = UITheme.SmallFont
             };
 
             Action updateLogStats = () =>
@@ -796,25 +511,7 @@ namespace TelegramWebDAV.UI
             };
             updateLogStats();
 
-            // Табличное ровное размещение 3 кнопок действия
-            var tblLogActions = new TableLayoutPanel
-            {
-                Width = 485,
-                Height = 36,
-                ColumnCount = 3,
-                RowCount = 1,
-                Margin = new Padding(0)
-            };
-            tblLogActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33f));
-            tblLogActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33f));
-            tblLogActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.34f));
-
-            var btnOpenLogDir = new Button
-            {
-                Text = "📁 Папка с логами",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(0, 0, 3, 0)
-            };
+            var btnOpenLogDir = UIFactory.CreateButton("📁 Папка с логами");
             btnOpenLogDir.Click += (s, e) =>
             {
                 try
@@ -828,12 +525,7 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            var btnOpenLogFile = new Button
-            {
-                Text = "📄 Открыть app.log",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(3, 0, 3, 0)
-            };
+            var btnOpenLogFile = UIFactory.CreateButton("📄 Открыть app.log");
             btnOpenLogFile.Click += (s, e) =>
             {
                 try
@@ -857,13 +549,8 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            var btnClearLogs = new Button
-            {
-                Text = "🗑 Очистить логи",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(3, 0, 0, 0),
-                ForeColor = Color.DarkRed
-            };
+            var btnClearLogs = UIFactory.CreateButton("🗑 Очистить логи");
+            btnClearLogs.ForeColor = UITheme.TextDanger;
             btnClearLogs.Click += (s, e) =>
             {
                 if (MessageBox.Show("Вы действительно хотите очистить текущий лог и все его архивы?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -874,32 +561,16 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            tblLogActions.Controls.Add(btnOpenLogDir, 0, 0);
-            tblLogActions.Controls.Add(btnOpenLogFile, 1, 0);
-            tblLogActions.Controls.Add(btnClearLogs, 2, 0);
-
-            pnlStatsInner.Controls.AddRange(new Control[] { _lblLogStats, tblLogActions });
+            var rowLogActions = UIFactory.CreateActionRow(btnOpenLogDir, btnOpenLogFile, btnClearLogs);
+            pnlStatsInner.Controls.AddRange(new Control[] { _lblLogStats, rowLogActions });
             grpStats.Controls.Add(pnlStatsInner);
 
-            btnSaveLogs.Click += (s, e) =>
-            {
-                _settings.Logging.EnableDebug = _chkLogDebug.Checked;
-                _settings.Logging.EnableInfo = _chkLogInfo.Checked;
-                _settings.Logging.EnableWarn = _chkLogWarn.Checked;
-                _settings.Logging.EnableError = _chkLogError.Checked;
-                _settings.Logging.MaxLogFileSizeMb = (int)_numMaxLogMb.Value;
-                _settings.Logging.MaxArchivedFiles = (int)_numMaxLogFiles.Value;
-
-                _configManager.Save(_settings);
-                updateLogStats();
-                MessageBox.Show("Настройки логирования успешно сохранены!", "Логирование", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            };
-
             pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats });
-            _tabLogs.Controls.AddRange(new Control[] { pnlLogs, pnlSaveBar });
+            _tabLogs.Controls.Add(pnlLogs);
 
             _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry, _tabLogs });
             this.Controls.Add(_tabControl);
+            this.Controls.Add(pnlBottomBar);
         }
 
         private void SaveTelegramApiKeys()
@@ -945,7 +616,7 @@ namespace TelegramWebDAV.UI
                 var user = _telegramService.CurrentUser;
                 string userInfo = user != null ? $" ({user.FirstName} {user.LastName} | @{user.Username})" : "";
                 _lblStatus.Text = $"Статус: Авторизован в Telegram ✔{userInfo}";
-                _lblStatus.ForeColor = Color.DarkGreen;
+                _lblStatus.ForeColor = UITheme.TextSuccess;
                 _lblInstruction.Text = "Сессия активна. Мультимедиа файлы и папки доступны через WebDAV.";
                 _txtInput.Visible = false;
                 _btnAction.Visible = false;
@@ -954,7 +625,7 @@ namespace TelegramWebDAV.UI
             else
             {
                 _lblStatus.Text = "Статус: Не авторизован ❌";
-                _lblStatus.ForeColor = Color.DarkRed;
+                _lblStatus.ForeColor = UITheme.TextDanger;
                 _txtInput.Visible = hasApiKeys;
                 _btnAction.Visible = hasApiKeys;
                 _btnLogout.Visible = false;
@@ -966,7 +637,7 @@ namespace TelegramWebDAV.UI
                 }
                 else
                 {
-                    _lblInstruction.ForeColor = Color.Black;
+                    _lblInstruction.ForeColor = UITheme.TextMain;
                     switch (_telegramService.CurrentStep)
                     {
                         case AuthStep.NeedsPhone:
@@ -1025,7 +696,7 @@ namespace TelegramWebDAV.UI
             }
         }
 
-        private void SaveGeneralSettings()
+        private void SaveAllSettings()
         {
             var oldEngine = _settings.Server.Engine;
             _settings.Server.Engine = _cmbEngine.SelectedIndex == 0 ? DriveEngine.WinFsp : DriveEngine.WebDav;
@@ -1049,6 +720,13 @@ namespace TelegramWebDAV.UI
             _settings.Server.AudioPrefetchWindowMb = (int)_numAudioWindowMb.Value;
             _settings.Server.StreamingPrefetchWindowMb = (int)_numStreamingWindowMb.Value;
 
+            _settings.Logging.EnableDebug = _chkLogDebug.Checked;
+            _settings.Logging.EnableInfo = _chkLogInfo.Checked;
+            _settings.Logging.EnableWarn = _chkLogWarn.Checked;
+            _settings.Logging.EnableError = _chkLogError.Checked;
+            _settings.Logging.MaxLogFileSizeMb = (int)_numMaxLogMb.Value;
+            _settings.Logging.MaxArchivedFiles = (int)_numMaxLogFiles.Value;
+
             if (_chkContextMenu.Checked)
             {
                 ShellContextMenuHelper.RegisterTrashContextMenu(_settings.Server.DriveLetter);
@@ -1060,7 +738,7 @@ namespace TelegramWebDAV.UI
 
             _configManager.Save(_settings);
 
-            string msg = "Настройки успешно сохранены в appsettings.json!";
+            string msg = "Все настройки успешно сохранены!";
             if (oldEngine != _settings.Server.Engine)
             {
                 msg += $"\n\nДрайвер диска изменен на {_settings.Server.Engine}. Выполните «Переподключить сетевой диск» в трее или перезапустите сервис для применения изменений.";

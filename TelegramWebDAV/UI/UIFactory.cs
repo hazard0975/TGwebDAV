@@ -46,9 +46,9 @@ namespace TelegramWebDAV.UI
         }
 
         /// <summary>
-        /// Создает строку параметра: слева метка с описанием, справа поле ввода/переключатель, прижатый к правому краю.
+        /// Создает строку параметра: компактная колонка названия слева + контрол сразу справа (без дыр через всё окно).
         /// </summary>
-        public static TableLayoutPanel CreateSettingRow(string labelText, Control control, string? hintText = null, int width = UITheme.ContentWidth - 25)
+        public static TableLayoutPanel CreateSettingRow(string labelText, Control control, int labelWidth = 270, int width = UITheme.ContentWidth - 25)
         {
             var tbl = new TableLayoutPanel
             {
@@ -59,7 +59,7 @@ namespace TelegramWebDAV.UI
                 Margin = UITheme.RowMargin,
                 Padding = Padding.Empty
             };
-            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
+            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, labelWidth));
             tbl.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
 
             var lbl = new Label
@@ -74,52 +74,53 @@ namespace TelegramWebDAV.UI
             };
 
             control.Margin = new Padding(0, 2, 0, 2);
-            control.Anchor = AnchorStyles.Right;
+            control.Anchor = AnchorStyles.Left;
 
             tbl.Controls.Add(lbl, 0, 0);
             tbl.Controls.Add(control, 1, 0);
-
-            if (!string.IsNullOrWhiteSpace(hintText))
-            {
-                var lblHint = new Label
-                {
-                    Text = hintText,
-                    AutoSize = true,
-                    Font = UITheme.SmallFont,
-                    ForeColor = UITheme.TextMuted,
-                    Dock = DockStyle.Top,
-                    Margin = new Padding(0, 0, 0, 4)
-                };
-                
-                var container = new FlowLayoutPanel
-                {
-                    Width = width,
-                    AutoSize = true,
-                    FlowDirection = FlowDirection.TopDown,
-                    WrapContents = false,
-                    Margin = UITheme.RowMargin
-                };
-                container.Controls.Add(tbl);
-                container.Controls.Add(lblHint);
-                
-                var wrapperTbl = new TableLayoutPanel
-                {
-                    Width = width,
-                    AutoSize = true,
-                    ColumnCount = 1,
-                    RowCount = 1,
-                    Margin = Padding.Empty
-                };
-                wrapperTbl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
-                wrapperTbl.Controls.Add(container, 0, 0);
-                return wrapperTbl;
-            }
 
             return tbl;
         }
 
         /// <summary>
-        /// Создает числовое поле NumericUpDown с выравниванием по правому краю и единым шрифтом.
+        /// Создает строку для текстового поля ввода на всю оставшуюся ширину.
+        /// </summary>
+        public static TableLayoutPanel CreateInputRow(string labelText, Control control, int labelWidth = 140, int width = UITheme.ContentWidth - 25)
+        {
+            var tbl = new TableLayoutPanel
+            {
+                Width = width,
+                AutoSize = true,
+                ColumnCount = 2,
+                RowCount = 1,
+                Margin = UITheme.RowMargin,
+                Padding = Padding.Empty
+            };
+            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, labelWidth));
+            tbl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
+
+            var lbl = new Label
+            {
+                Text = labelText,
+                AutoSize = true,
+                Font = UITheme.BaseFont,
+                ForeColor = UITheme.TextMain,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 4, 8, 4)
+            };
+
+            control.Margin = new Padding(0, 2, 0, 2);
+            control.Dock = DockStyle.Fill;
+
+            tbl.Controls.Add(lbl, 0, 0);
+            tbl.Controls.Add(control, 1, 0);
+
+            return tbl;
+        }
+
+        /// <summary>
+        /// Создает числовое поле NumericUpDown с компактной шириной и единым шрифтом.
         /// </summary>
         public static NumericUpDown CreateNumericInput(decimal min, decimal max, decimal val, int width = UITheme.InputNumberWidth, int decimalPlaces = 0)
         {
@@ -130,7 +131,6 @@ namespace TelegramWebDAV.UI
                 Value = Math.Max(min, Math.Min(max, val)),
                 Width = width,
                 DecimalPlaces = decimalPlaces,
-                TextAlign = HorizontalAlignment.Right,
                 Font = UITheme.BaseFont,
                 Margin = UITheme.ControlMargin
             };
@@ -172,7 +172,7 @@ namespace TelegramWebDAV.UI
                 AutoSize = true,
                 Font = UITheme.BaseFont,
                 ForeColor = UITheme.TextMain,
-                Margin = new Padding(0, 4, 0, 6)
+                Margin = new Padding(0, 3, 0, 5)
             };
             if (onCheckedChanged != null)
             {
@@ -218,6 +218,42 @@ namespace TelegramWebDAV.UI
                 tbl.Controls.Add(buttons[i], i, 0);
             }
             return tbl;
+        }
+
+        /// <summary>
+        /// Создает нижнюю фиксированную панель окна с кнопками Сохранить / Закрыть.
+        /// </summary>
+        public static TableLayoutPanel CreateBottomBar(Button saveBtn, Button? closeBtn = null)
+        {
+            var pnl = new TableLayoutPanel
+            {
+                Dock = DockStyle.Bottom,
+                Height = 48,
+                ColumnCount = 3,
+                RowCount = 1,
+                Padding = new Padding(12, 6, 15, 8),
+                BackColor = SystemColors.Control
+            };
+            pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
+            pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150f));
+            if (closeBtn != null)
+            {
+                pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100f));
+                closeBtn.Dock = DockStyle.Fill;
+                closeBtn.Margin = new Padding(6, 0, 0, 0);
+                pnl.Controls.Add(closeBtn, 2, 0);
+            }
+            else
+            {
+                pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 0f));
+            }
+
+            saveBtn.Dock = DockStyle.Fill;
+            saveBtn.Font = UITheme.BoldFont;
+            saveBtn.Height = UITheme.ButtonHeightPrimary;
+            pnl.Controls.Add(saveBtn, 1, 0);
+
+            return pnl;
         }
     }
 }
