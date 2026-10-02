@@ -285,20 +285,20 @@ namespace TelegramWebDAV.UI
                 AutoScroll = true
             };
 
-            // 1. Рамка: Параметры API Telegram
+            // 1. Рамка: Параметры приложения (my.telegram.org)
             var grpTelegramApi = UIFactory.CreateGroupBox("Параметры приложения (my.telegram.org)");
             var pnlTgApiInner = UIFactory.CreateVerticalContainer();
 
-            _txtApiId = new TextBox { Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "", Font = UITheme.BaseFont };
-            var rowApiId = UIFactory.CreateInputRow("API ID:", _txtApiId, 90);
+            _txtApiId = new TextBox { Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "", Width = 150, Font = UITheme.BaseFont };
+            var rowApiId = UIFactory.CreateSettingRow("API ID:", _txtApiId, 90, 240);
 
-            _txtApiHash = new TextBox { Text = _settings.Telegram.ApiHash ?? "", UseSystemPasswordChar = true, Font = UITheme.BaseFont };
-            var rowApiHash = UIFactory.CreateInputRow("API Hash:", _txtApiHash, 90);
+            _txtApiHash = new TextBox { Text = _settings.Telegram.ApiHash ?? "", Width = 150, UseSystemPasswordChar = true, Font = UITheme.BaseFont };
+            var rowApiHash = UIFactory.CreateSettingRow("API Hash:", _txtApiHash, 90, 240);
 
-            _txtChannelTitle = new TextBox { Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle, Font = UITheme.BaseFont };
-            var rowChannel = UIFactory.CreateInputRow("Имя канала:", _txtChannelTitle, 90);
+            _txtChannelTitle = new TextBox { Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle, Width = 150, Font = UITheme.BaseFont };
+            var rowChannel = UIFactory.CreateSettingRow("Имя канала:", _txtChannelTitle, 90, 240);
 
-            var btnSaveApi = UIFactory.CreateButton("Сохранить параметры Telegram", (s, e) => SaveTelegramApiKeys(), autoSize: true);
+            var btnSaveApi = UIFactory.CreateButton("Сохранить параметры Telegram", (s, e) => SaveTelegramApiKeys(), width: 240);
 
             pnlTgApiInner.Controls.AddRange(new Control[] { rowApiId, rowApiHash, rowChannel, btnSaveApi });
             grpTelegramApi.Controls.Add(pnlTgApiInner);
@@ -323,7 +323,7 @@ namespace TelegramWebDAV.UI
                 Margin = new Padding(0, 0, 0, 6)
             };
 
-            _txtInput = new TextBox { Width = UITheme.ContentWidth - 25, Font = UITheme.BaseFont, Margin = new Padding(0, 0, 0, 8) };
+            _txtInput = new TextBox { Width = UITheme.ContentWidth - 24, Font = UITheme.BaseFont, Margin = new Padding(0, 0, 0, 8) };
 
             _btnAction = UIFactory.CreateButton("Отправить", async (s, e) => await HandleTelegramActionAsync(), width: 180);
             _btnLogout = UIFactory.CreateButton("Выйти из аккаунта", (s, e) => HandleTelegramLogout(), width: 160, foreColor: UITheme.TextDanger);
@@ -350,7 +350,7 @@ namespace TelegramWebDAV.UI
                 AutoScroll = true
             };
 
-            var grpRegistry = UIFactory.CreateGroupBox("Системные твики службы Windows WebClient и UAC", minHeight: 240);
+            var grpRegistry = UIFactory.CreateGroupBox("Системные твики службы Windows WebClient и UAC");
             var pnlRegInner = UIFactory.CreateVerticalContainer();
 
             _lblRegStatus = new Label
@@ -361,7 +361,7 @@ namespace TelegramWebDAV.UI
                        "3. EnableLinkedConnections = 1 — сквозная видимость дисков между сессиями пользователя и Администратора.\n" +
                        "4. ZoneMap (Местная интрасеть) — устранение системных предупреждений безопасности при копировании файлов.",
                 AutoSize = true,
-                Width = UITheme.ContentWidth - 30,
+                Width = UITheme.ContentWidth - 24,
                 Font = UITheme.BaseFont,
                 Margin = new Padding(0, 2, 0, 10)
             };
@@ -389,7 +389,8 @@ namespace TelegramWebDAV.UI
             };
             refreshRegState();
 
-            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, dock: DockStyle.Top);
+            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: UITheme.ContentWidth - 24);
+            _btnApplyRegFix.Margin = new Padding(0, 8, 0, 8);
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
