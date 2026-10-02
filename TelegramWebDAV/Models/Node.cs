@@ -21,18 +21,7 @@ namespace TelegramWebDAV.Models
         public bool IsDeleted { get; set; }
         public int? OriginalNodeId { get; set; }
 
-        // Audio Metadata
-        public string? Artist { get; set; }
-        public string? Title { get; set; }
-        public string? Album { get; set; }
-        public int? Year { get; set; }
-        public string? Genre { get; set; }
-        public int? TrackNumber { get; set; }
-        public int? DurationSeconds { get; set; }
-        public int? Bitrate { get; set; }
-
-        // Cache
-        public byte[]? HeaderCacheBytes { get; set; }
-        public byte[]? AlbumCoverBytes { get; set; }
+        // Local payload for small files (<= 1 byte or unuploaded placeholders)
+        public byte[]? InlineData { get; set; }
     }
 }

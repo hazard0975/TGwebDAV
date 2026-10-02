@@ -797,8 +797,7 @@ namespace TelegramWebDAV.Services
                                 nodeName, 
                                 finalLength, 
                                 uploadResult.MessageId, 
-                                uploadResult.PreviewMessageId,
-                                metadata: fspAudioMeta
+                                uploadResult.PreviewMessageId
                             );
                             AppLogger.Info("WinFsp", $"Файл '{nodeName}' успешно сохранен в Telegram (Msg ID: {uploadResult.MessageId}" + (uploadResult.PreviewMessageId != null ? $", Preview ID: {uploadResult.PreviewMessageId}" : "") + ").");
                         }
@@ -934,6 +933,17 @@ namespace TelegramWebDAV.Services
             {
                 if (node.TgMessageId == null)
                 {
+                    if (node.InlineData != null && node.InlineData.Length > 0)
+                    {
+                        if (offset < (ulong)node.InlineData.Length)
+                        {
+                            uint count = (uint)Math.Min((ulong)toRead, (ulong)node.InlineData.Length - offset);
+                            System.Runtime.InteropServices.Marshal.Copy(node.InlineData, (int)offset, buffer, (int)count);
+                            bytesTransferred = count;
+                            return STATUS_SUCCESS;
+                        }
+                    }
+
                     bytesTransferred = 0;
                     return NT_STATUS_UNSUCCESSFUL;
                 }

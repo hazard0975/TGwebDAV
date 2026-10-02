@@ -709,9 +709,9 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Создание или перезапись файла с поддержкой версионирования, метаданных и сохранения оригинальных дат
+        /// Создание или перезапись файла с поддержкой версионирования, локального inline_data для микрофайлов и сохранения оригинальных дат
         /// </summary>
-        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, int? tgPreviewMessageId = null, AudioMetadataResult? metadata = null, byte[]? inlineBytes = null, DateTime? lastModified = null, DateTime? creationDate = null)
+        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, int? tgPreviewMessageId = null, byte[]? inlineData = null, DateTime? lastModified = null, DateTime? creationDate = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
@@ -737,16 +737,7 @@ namespace TelegramWebDAV.Database
                                     size = @size,
                                     tg_message_id = @tgMessageId,
                                     tg_preview_message_id = @tgPreviewMessageId,
-                                    artist = @artist,
-                                    title = @title,
-                                    album = @album,
-                                    year = @year,
-                                    genre = @genre,
-                                    track_number = @trackNumber,
-                                    duration_seconds = @duration,
-                                    bitrate = @bitrate,
-                                    header_cache_bytes = @headerCache,
-                                    album_cover_bytes = @albumCover,
+                                    inline_data = @inlineData,
                                     updated_at = " + (lastModified.HasValue ? "@updatedAt" : "CURRENT_TIMESTAMP") + @"
                                 WHERE id = @nodeId;";
 
@@ -754,12 +745,12 @@ namespace TelegramWebDAV.Database
                             updateCmd.Parameters.AddWithValue("@size", size);
                             updateCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
+                            updateCmd.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
                             if (lastModified.HasValue)
                             {
                                 updateCmd.Parameters.AddWithValue("@updatedAt", lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
                             }
-                            AddMetadataParameters(updateCmd, metadata, inlineBytes);
                             updateCmd.ExecuteNonQuery();
                         }
                         return;
@@ -798,12 +789,10 @@ namespace TelegramWebDAV.Database
                             insertCmd.CommandText = @"
                                 INSERT INTO nodes (
                                     parent_id, name, is_dir, size, version, original_node_id, tg_message_id, tg_preview_message_id,
-                                    artist, title, album, year, genre, track_number, duration_seconds, bitrate,
-                                    header_cache_bytes, album_cover_bytes, created_at, updated_at
+                                    inline_data, created_at, updated_at
                                 ) VALUES (
                                     @parentId, @name, 0, @size, @version, @originalId, @tgMessageId, @tgPreviewMessageId,
-                                    @artist, @title, @album, @year, @genre, @trackNumber, @duration, @bitrate,
-                                    @headerCache, @albumCover, @createdAt, @updatedAt
+                                    @inlineData, @createdAt, @updatedAt
                                 );";
                             insertCmd.Parameters.AddWithValue("@parentId", parentId);
                             insertCmd.Parameters.AddWithValue("@name", name);
@@ -812,6 +801,7 @@ namespace TelegramWebDAV.Database
                             insertCmd.Parameters.AddWithValue("@originalId", existingNode.Id);
                             insertCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
+                            insertCmd.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                                 ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                                 : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -819,7 +809,6 @@ namespace TelegramWebDAV.Database
                                 ? lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                                 : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                             
-                            AddMetadataParameters(insertCmd, metadata, inlineBytes);
                             insertCmd.ExecuteNonQuery();
                         }
 
@@ -843,18 +832,17 @@ namespace TelegramWebDAV.Database
                         command.CommandText = @"
                             INSERT INTO nodes (
                                 parent_id, name, is_dir, size, version, tg_message_id, tg_preview_message_id,
-                                artist, title, album, year, genre, track_number, duration_seconds, bitrate,
-                                header_cache_bytes, album_cover_bytes, created_at, updated_at
+                                inline_data, created_at, updated_at
                             ) VALUES (
                                 @parentId, @name, 0, @size, 1, @tgMessageId, @tgPreviewMessageId,
-                                @artist, @title, @album, @year, @genre, @trackNumber, @duration, @bitrate,
-                                @headerCache, @albumCover, @createdAt, @updatedAt
+                                @inlineData, @createdAt, @updatedAt
                             );";
                         command.Parameters.AddWithValue("@parentId", parentId);
                         command.Parameters.AddWithValue("@name", name);
                         command.Parameters.AddWithValue("@size", size);
                         command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                         command.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                         command.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                             ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                             : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -862,50 +850,9 @@ namespace TelegramWebDAV.Database
                             ? lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
                             : DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss"));
                         
-                        AddMetadataParameters(command, metadata, inlineBytes);
                         command.ExecuteNonQuery();
                     }
                 }
-            }
-        }
-
-        private void AddMetadataParameters(SqliteCommand command, AudioMetadataResult? metadata, byte[]? inlineBytes = null)
-        {
-
-            command.Parameters.AddWithValue("@artist", (object?)metadata?.Artist ?? DBNull.Value);
-            command.Parameters.AddWithValue("@title", (object?)metadata?.Title ?? DBNull.Value);
-            command.Parameters.AddWithValue("@album", (object?)metadata?.Album ?? DBNull.Value);
-            command.Parameters.AddWithValue("@year", (object?)metadata?.Year ?? DBNull.Value);
-            command.Parameters.AddWithValue("@genre", (object?)metadata?.Genre ?? DBNull.Value);
-            command.Parameters.AddWithValue("@trackNumber", (object?)metadata?.TrackNumber ?? DBNull.Value);
-            command.Parameters.AddWithValue("@duration", (object?)metadata?.DurationSeconds ?? DBNull.Value);
-            command.Parameters.AddWithValue("@bitrate", (object?)metadata?.Bitrate ?? DBNull.Value);
-
-            // Не сохраняем тяжелые BLOB-байты в базу данных, чтобы база на 60 000 треков оставалась легкой (~20 МБ)
-            command.Parameters.AddWithValue("@headerCache", DBNull.Value);
-            command.Parameters.AddWithValue("@albumCover", (object?)metadata?.AlbumCover ?? DBNull.Value);
-        }
-
-        /// <summary>
-        /// Обновляет аудио-метаданные для существующего узла
-        /// </summary>
-        public void UpdateAudioMetadata(int nodeId, AudioMetadataResult metadata)
-        {
-            if (metadata == null) return;
-            using (var connection = _dbManager.GetConnection())
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = @"
-                    UPDATE nodes SET 
-                        artist = @artist, title = @title, album = @album, year = @year,
-                        genre = @genre, track_number = @trackNumber, duration_seconds = @duration,
-                        bitrate = @bitrate, header_cache_bytes = COALESCE(@headerCache, header_cache_bytes),
-                        album_cover_bytes = COALESCE(@albumCover, album_cover_bytes),
-                        updated_at = CURRENT_TIMESTAMP
-                    WHERE id = @nodeId;";
-                command.Parameters.AddWithValue("@nodeId", nodeId);
-                AddMetadataParameters(command, metadata);
-                command.ExecuteNonQuery();
             }
         }
 
@@ -1040,22 +987,14 @@ namespace TelegramWebDAV.Database
                 IsDeleted = Convert.ToInt32(reader["is_deleted"]) == 1
             };
 
-            // Чтение аудио-метаданных, если столбцы присутствуют
+            // Чтение локальных байтов для файлов без tg_message_id (<= 1 байт или плейсхолдеры)
             try
             {
-                if (reader["artist"] != DBNull.Value) node.Artist = Convert.ToString(reader["artist"]);
-                if (reader["title"] != DBNull.Value) node.Title = Convert.ToString(reader["title"]);
-                if (reader["album"] != DBNull.Value) node.Album = Convert.ToString(reader["album"]);
-                if (reader["year"] != DBNull.Value) node.Year = Convert.ToInt32(reader["year"]);
-                if (reader["genre"] != DBNull.Value) node.Genre = Convert.ToString(reader["genre"]);
-                if (reader["track_number"] != DBNull.Value) node.TrackNumber = Convert.ToInt32(reader["track_number"]);
-                if (reader["duration_seconds"] != DBNull.Value) node.DurationSeconds = Convert.ToInt32(reader["duration_seconds"]);
-                if (reader["bitrate"] != DBNull.Value) node.Bitrate = Convert.ToInt32(reader["bitrate"]);
-                if (reader["album_cover_bytes"] != DBNull.Value) node.AlbumCoverBytes = (byte[])reader["album_cover_bytes"];
+                if (reader["inline_data"] != DBNull.Value) node.InlineData = (byte[])reader["inline_data"];
             }
             catch
             {
-                // Игнорируем отсутствие колонок при частичных SELECT
+                // Игнорируем отсутствие колонки при старой схеме или частичных SELECT
             }
 
             return node;

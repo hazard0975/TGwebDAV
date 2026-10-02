@@ -20,19 +20,8 @@ CREATE TABLE IF NOT EXISTS nodes (
     is_deleted INTEGER NOT NULL DEFAULT 0,
     original_node_id INTEGER, -- Ссылка на актуальный файл, если это старая версия в корзине
     
-    -- Метаданные аудио
-    artist TEXT,
-    title TEXT,
-    album TEXT,
-    year INTEGER,
-    genre TEXT,
-    track_number INTEGER,
-    duration_seconds INTEGER,
-    bitrate INTEGER,
-    
-    -- Кэш (заголовки и обложки)
-    header_cache_bytes BLOB,
-    album_cover_bytes BLOB,
+    -- Локальные данные для микрофайлов/заглушек (<= 1 байт или без загрузки в Telegram)
+    inline_data BLOB,
     
     FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE,
     FOREIGN KEY (original_node_id) REFERENCES nodes(id) ON DELETE CASCADE

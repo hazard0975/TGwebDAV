@@ -217,6 +217,22 @@ namespace TelegramWebDAV.Server
                     AppLogger.Debug("WebDAV", $"[GET] Передача '{node.Name}' завершена/прервана: {ex.Message}");
                 }
             }
+            else if (node.InlineData != null && node.InlineData.Length > 0)
+            {
+                try
+                {
+                    int offset = (int)Math.Min(start, (long)node.InlineData.Length);
+                    int count = (int)Math.Min(length, (long)(node.InlineData.Length - offset));
+                    if (count > 0)
+                    {
+                        await context.Response.OutputStream.WriteAsync(node.InlineData, offset, count);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("WebDAV", $"[GET Inline] Ошибка передачи inline данных '{node.Name}': {ex.Message}");
+                }
+            }
             
             try { context.Response.OutputStream.Close(); } catch { }
         }
@@ -472,8 +488,8 @@ namespace TelegramWebDAV.Server
                             }
                         }
 
-                        // Записываем инфу в базу с метаданными и встроенными байтами при необходимости
-                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, tgPreviewMessageId, audioMeta, inlineBytes, headerLastModified);
+                        // Записываем инфу в базу с встроенными байтами при необходимости (без аудио-тегов в БД)
+                        repository.CreateOrUpdateFile(parentNode.Id, name, totalSize, tgMessageId, tgPreviewMessageId, inlineBytes, headerLastModified);
 
                         context.Response.StatusCode = (int)HttpStatusCode.Created;
                     }
@@ -669,40 +685,6 @@ namespace TelegramWebDAV.Server
 
             repository.MoveNode(sourceNode.Id, destParentNode.Id, destName);
             AppLogger.Info("WebDAV", $"Узел '{sourceNode.Name}' успешно перемещен/переименован в '{destName}'.");
-
-            // 2. Если файл переименован из .tmp в аудиоформат, обогащаем аудио-метаданные из настоящего имени файла
-            if (AudioMetadataExtractor.IsAudioFile(destName) && string.IsNullOrEmpty(sourceNode.Artist))
-            {
-                try
-                {
-                    string nameNoExt = Path.GetFileNameWithoutExtension(destName);
-                    var meta = new AudioMetadataResult
-                    {
-                        Album = "Telegram Cloud Music",
-                        Bitrate = sourceNode.Bitrate ?? 320,
-                        DurationSeconds = sourceNode.DurationSeconds ?? 210,
-                        Year = DateTime.Now.Year
-                    };
-
-                    if (nameNoExt.Contains(" - "))
-                    {
-                        var parts = nameNoExt.Split(new[] { " - " }, 2, StringSplitOptions.None);
-                        meta.Artist = parts[0].Trim();
-                        meta.Title = parts[1].Trim();
-                    }
-                    else
-                    {
-                        meta.Title = nameNoExt;
-                        meta.Artist = "Unknown Artist";
-                    }
-
-                    repository.UpdateAudioMetadata(sourceNode.Id, meta);
-                }
-                catch
-                {
-                    // Игнорируем некритичные ошибки автозаполнения тегов
-                }
-            }
 
             context.Response.StatusCode = (int)HttpStatusCode.Created;
             return Task.CompletedTask;

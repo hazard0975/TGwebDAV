@@ -85,17 +85,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     is_deleted INTEGER NOT NULL DEFAULT 0,
     original_node_id INTEGER,
     
-    artist TEXT,
-    title TEXT,
-    album TEXT,
-    year INTEGER,
-    genre TEXT,
-    track_number INTEGER,
-    duration_seconds INTEGER,
-    bitrate INTEGER,
-    
-    header_cache_bytes BLOB,
-    album_cover_bytes BLOB,
+    inline_data BLOB,
     
     FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE,
     FOREIGN KEY (original_node_id) REFERENCES nodes(id) ON DELETE CASCADE
@@ -176,16 +166,7 @@ CREATE TABLE IF NOT EXISTS pending_caption_updates (
             AddColumnIfMissing("version", "INTEGER NOT NULL DEFAULT 1");
             AddColumnIfMissing("is_deleted", "INTEGER NOT NULL DEFAULT 0");
             AddColumnIfMissing("original_node_id", "INTEGER");
-            AddColumnIfMissing("artist", "TEXT");
-            AddColumnIfMissing("title", "TEXT");
-            AddColumnIfMissing("album", "TEXT");
-            AddColumnIfMissing("year", "INTEGER");
-            AddColumnIfMissing("genre", "TEXT");
-            AddColumnIfMissing("track_number", "INTEGER");
-            AddColumnIfMissing("duration_seconds", "INTEGER");
-            AddColumnIfMissing("bitrate", "INTEGER");
-            AddColumnIfMissing("header_cache_bytes", "BLOB");
-            AddColumnIfMissing("album_cover_bytes", "BLOB");
+            AddColumnIfMissing("inline_data", "BLOB");
             AddColumnIfMissing("tg_preview_message_id", "INTEGER");
         }
 
