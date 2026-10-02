@@ -91,7 +91,7 @@ namespace TelegramWebDAV.UI
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Font = UITheme.BaseFont;
 
-            // Нижняя фиксированная панель действий формы
+            // Нижняя фиксированная панель действий формы со стандартными кнопками
             var btnSaveAll = UIFactory.CreateButton("Сохранить", (s, e) => SaveAllSettings());
             var btnClose = UIFactory.CreateButton("Закрыть", (s, e) => this.Close());
             var pnlBottomBar = UIFactory.CreateBottomBar(btnSaveAll, btnClose);
@@ -117,32 +117,32 @@ namespace TelegramWebDAV.UI
 
             _chkWebDavEnabled = UIFactory.CreateCheckBox("Включить встроенный WebDAV сервер", _settings.Server.WebDavEnabled);
             _numPort = UIFactory.CreateNumericInput(1024, 65535, _settings.Server.Port, 80);
-            var rowPort = UIFactory.CreateSettingRow("HTTP Порт:", _numPort, 200);
+            var rowPort = UIFactory.CreateSettingRow("HTTP Порт:", _numPort, 140);
 
-            _cmbEngine = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 280, Font = UITheme.BaseFont };
+            _chkMountDrive = UIFactory.CreateCheckBox("Автоматически монтировать сетевой диск в Windows", _settings.Server.MountDrive);
+
+            _cmbEngine = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 275, Font = UITheme.BaseFont };
             _cmbEngine.Items.Add("WinFsp (Прямой стриминг в ОЗУ)");
             _cmbEngine.Items.Add("WebDAV (Служба Windows WebClient)");
             _cmbEngine.SelectedIndex = _settings.Server.Engine == DriveEngine.WinFsp ? 0 : 1;
-            var rowEngine = UIFactory.CreateSettingRow("Драйвер диска:", _cmbEngine, 200);
-
-            _chkMountDrive = UIFactory.CreateCheckBox("Автоматически монтировать сетевой диск в Windows", _settings.Server.MountDrive);
+            var rowEngine = UIFactory.CreateSettingRow("Драйвер диска:", _cmbEngine, 140);
 
             _cmbDriveLetter = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 80, Font = UITheme.BaseFont };
             _cmbDriveLetter.Items.AddRange(new object[] { "Z:", "T:", "Y:", "X:", "W:", "AUTO" });
             _cmbDriveLetter.SelectedItem = _settings.Server.DriveLetter ?? "Z:";
-            var rowDriveLetter = UIFactory.CreateSettingRow("Буква диска:", _cmbDriveLetter, 200);
+            var rowDriveLetter = UIFactory.CreateSettingRow("Буква диска:", _cmbDriveLetter, 140);
 
-            _txtVolumeName = new TextBox { Text = _settings.Server.DriveName ?? "Telegram Drive", Width = 180, Font = UITheme.BaseFont };
-            var rowVolumeName = UIFactory.CreateSettingRow("Имя тома:", _txtVolumeName, 200);
+            _txtVolumeName = new TextBox { Text = _settings.Server.DriveName ?? "Telegram Drive", Width = 275, Font = UITheme.BaseFont };
+            var rowVolumeName = UIFactory.CreateSettingRow("Имя тома:", _txtVolumeName, 140);
 
-            _numCapacityGb = UIFactory.CreateNumericInput(10, 1048576, _settings.Server.VirtualDiskCapacityGb > 0 ? _settings.Server.VirtualDiskCapacityGb : 1024, 90);
-            var rowCapacity = UIFactory.CreateSettingRow("Размер диска (ГБ):", _numCapacityGb, 200);
+            _numCapacityGb = UIFactory.CreateNumericInput(10, 1048576, _settings.Server.VirtualDiskCapacityGb > 0 ? _settings.Server.VirtualDiskCapacityGb : 1024, 80);
+            var rowCapacity = UIFactory.CreateSettingRow("Размер диска (ГБ):", _numCapacityGb, 140);
 
             _chkAutoExpand = UIFactory.CreateCheckBox("Автоматически расширять диск при заполнении > 70%", _settings.Server.AutoExpandDiskCapacity);
             _chkIncludeTrashInSpace = UIFactory.CreateCheckBox("Учитывать файлы в корзине (.Trash) в занятом месте", _settings.Server.IncludeTrashInUsedSpace);
 
             pnlServerInner.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, rowPort, rowEngine, _chkMountDrive, rowDriveLetter, rowVolumeName, rowCapacity, _chkAutoExpand, _chkIncludeTrashInSpace
+                _chkWebDavEnabled, rowPort, _chkMountDrive, rowEngine, rowDriveLetter, rowVolumeName, rowCapacity, _chkAutoExpand, _chkIncludeTrashInSpace
             });
             grpServerDrive.Controls.Add(pnlServerInner);
 

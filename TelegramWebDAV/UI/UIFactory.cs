@@ -48,7 +48,7 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает строку параметра: компактная колонка названия слева + контрол сразу справа (без дыр через всё окно).
         /// </summary>
-        public static TableLayoutPanel CreateSettingRow(string labelText, Control control, int labelWidth = 270, int width = UITheme.ContentWidth - 25)
+        public static TableLayoutPanel CreateSettingRow(string labelText, Control control, int labelWidth = 140, int width = UITheme.ContentWidth - 25)
         {
             var tbl = new TableLayoutPanel
             {
@@ -158,7 +158,7 @@ namespace TelegramWebDAV.UI
                 AutoSize = autoSize,
                 Dock = dock,
                 Padding = autoSize ? new Padding(12, 4, 12, 4) : Padding.Empty,
-                Margin = new Padding(0, 4, 4, 4)
+                Margin = new Padding(0, 2, 4, 2)
             };
             if (foreColor.HasValue)
             {
@@ -236,28 +236,28 @@ namespace TelegramWebDAV.UI
         }
 
         /// <summary>
-        /// Создает нижнюю фиксированную панель окна со стандартными кнопками (не жирными, единой высоты).
+        /// Создает нижнюю фиксированную панель окна со строго одинаковыми кнопками стандартного размера (88x27).
         /// </summary>
         public static TableLayoutPanel CreateBottomBar(Button saveBtn, Button? closeBtn = null)
         {
             var pnl = new TableLayoutPanel
             {
                 Dock = DockStyle.Bottom,
-                Height = 44,
+                Height = 46,
                 ColumnCount = 3,
                 RowCount = 1,
-                Padding = new Padding(12, 6, 12, 8),
+                Padding = new Padding(12, 9, 22, 9),
                 BackColor = SystemColors.Control
             };
             pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
-            pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 110f));
+            pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 92f));
             if (closeBtn != null)
             {
-                pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 95f));
+                pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 92f));
                 closeBtn.Dock = DockStyle.Fill;
                 closeBtn.Font = UITheme.BaseFont;
-                closeBtn.Height = UITheme.ButtonHeightDefault;
-                closeBtn.Margin = new Padding(6, 0, 0, 0);
+                closeBtn.Height = 27;
+                closeBtn.Margin = new Padding(4, 0, 0, 0);
                 pnl.Controls.Add(closeBtn, 2, 0);
             }
             else
@@ -267,7 +267,8 @@ namespace TelegramWebDAV.UI
 
             saveBtn.Dock = DockStyle.Fill;
             saveBtn.Font = UITheme.BaseFont;
-            saveBtn.Height = UITheme.ButtonHeightDefault;
+            saveBtn.Height = 27;
+            saveBtn.Margin = new Padding(0, 0, 4, 0);
             pnl.Controls.Add(saveBtn, 1, 0);
 
             return pnl;
