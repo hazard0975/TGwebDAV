@@ -280,6 +280,7 @@ namespace TelegramWebDAV.UI
             {
                 Text = "База данных SQLite (base.db)",
                 Width = 510,
+                MinimumSize = new Size(510, 95),
                 AutoSize = true,
                 Margin = new Padding(0, 15, 0, 5),
                 Padding = new Padding(10)
