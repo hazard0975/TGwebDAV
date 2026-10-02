@@ -70,7 +70,7 @@ namespace TelegramWebDAV.UI
                 ForeColor = UITheme.TextMain,
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft,
-                Margin = new Padding(0, 4, 8, 4)
+                Margin = new Padding(0, 4, 4, 4)
             };
 
             control.Margin = new Padding(0, 2, 0, 2);
@@ -85,7 +85,7 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает строку для текстового поля ввода на всю оставшуюся ширину.
         /// </summary>
-        public static TableLayoutPanel CreateInputRow(string labelText, Control control, int labelWidth = 140, int width = UITheme.ContentWidth - 25)
+        public static TableLayoutPanel CreateInputRow(string labelText, Control control, int labelWidth = 95, int width = UITheme.ContentWidth - 25)
         {
             var tbl = new TableLayoutPanel
             {
@@ -107,7 +107,7 @@ namespace TelegramWebDAV.UI
                 ForeColor = UITheme.TextMain,
                 Dock = DockStyle.Fill,
                 TextAlign = ContentAlignment.MiddleLeft,
-                Margin = new Padding(0, 4, 8, 4)
+                Margin = new Padding(0, 4, 4, 4)
             };
 
             control.Margin = new Padding(0, 2, 0, 2);
@@ -205,7 +205,7 @@ namespace TelegramWebDAV.UI
             var tbl = new TableLayoutPanel
             {
                 Width = UITheme.ContentWidth - 25,
-                Height = UITheme.ButtonHeightDefault + 6,
+                Height = UITheme.ButtonHeightDefault + 4,
                 ColumnCount = buttons.Length,
                 RowCount = 1,
                 Margin = new Padding(0, 2, 0, 2)
@@ -221,25 +221,27 @@ namespace TelegramWebDAV.UI
         }
 
         /// <summary>
-        /// Создает нижнюю фиксированную панель окна с кнопками Сохранить / Закрыть.
+        /// Создает нижнюю фиксированную панель окна со стандартными кнопками (не жирными, единой высоты).
         /// </summary>
         public static TableLayoutPanel CreateBottomBar(Button saveBtn, Button? closeBtn = null)
         {
             var pnl = new TableLayoutPanel
             {
                 Dock = DockStyle.Bottom,
-                Height = 48,
+                Height = 44,
                 ColumnCount = 3,
                 RowCount = 1,
-                Padding = new Padding(12, 6, 15, 8),
+                Padding = new Padding(12, 6, 12, 8),
                 BackColor = SystemColors.Control
             };
             pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
-            pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150f));
+            pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 110f));
             if (closeBtn != null)
             {
-                pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 100f));
+                pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 95f));
                 closeBtn.Dock = DockStyle.Fill;
+                closeBtn.Font = UITheme.BaseFont;
+                closeBtn.Height = UITheme.ButtonHeightDefault;
                 closeBtn.Margin = new Padding(6, 0, 0, 0);
                 pnl.Controls.Add(closeBtn, 2, 0);
             }
@@ -249,8 +251,8 @@ namespace TelegramWebDAV.UI
             }
 
             saveBtn.Dock = DockStyle.Fill;
-            saveBtn.Font = UITheme.BoldFont;
-            saveBtn.Height = UITheme.ButtonHeightPrimary;
+            saveBtn.Font = UITheme.BaseFont;
+            saveBtn.Height = UITheme.ButtonHeightDefault;
             pnl.Controls.Add(saveBtn, 1, 0);
 
             return pnl;

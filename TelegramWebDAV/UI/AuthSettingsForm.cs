@@ -92,9 +92,9 @@ namespace TelegramWebDAV.UI
             this.Font = UITheme.BaseFont;
 
             // Нижняя фиксированная панель действий
-            var btnSaveAll = new Button { Text = "Сохранить" };
+            var btnSaveAll = new Button { Text = "Сохранить", Height = UITheme.ButtonHeightDefault, Font = UITheme.BaseFont };
             btnSaveAll.Click += (s, e) => SaveAllSettings();
-            var btnClose = new Button { Text = "Закрыть", Height = UITheme.ButtonHeightPrimary };
+            var btnClose = new Button { Text = "Закрыть", Height = UITheme.ButtonHeightDefault, Font = UITheme.BaseFont };
             btnClose.Click += (s, e) => this.Close();
             var pnlBottomBar = UIFactory.CreateBottomBar(btnSaveAll, btnClose);
 
@@ -292,16 +292,25 @@ namespace TelegramWebDAV.UI
             var pnlTgApiInner = UIFactory.CreateVerticalContainer();
 
             _txtApiId = new TextBox { Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "", Font = UITheme.BaseFont };
-            var rowApiId = UIFactory.CreateInputRow("API ID:", _txtApiId, 120);
+            var rowApiId = UIFactory.CreateInputRow("API ID:", _txtApiId, 90);
 
             _txtApiHash = new TextBox { Text = _settings.Telegram.ApiHash ?? "", UseSystemPasswordChar = true, Font = UITheme.BaseFont };
-            var rowApiHash = UIFactory.CreateInputRow("API Hash:", _txtApiHash, 120);
+            var rowApiHash = UIFactory.CreateInputRow("API Hash:", _txtApiHash, 90);
 
             _txtChannelTitle = new TextBox { Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle, Font = UITheme.BaseFont };
-            var rowChannel = UIFactory.CreateInputRow("Имя канала:", _txtChannelTitle, 120);
+            var rowChannel = UIFactory.CreateInputRow("Имя канала:", _txtChannelTitle, 90);
 
-            var btnSaveApi = UIFactory.CreateButton("💾 Сохранить параметры Telegram", (s, e) => SaveTelegramApiKeys(), isPrimary: true, height: UITheme.ButtonHeightDefault);
-            btnSaveApi.Margin = new Padding(0, 6, 0, 2);
+            var btnSaveApi = new Button
+            {
+                Text = "Сохранить параметры Telegram",
+                Font = UITheme.BaseFont,
+                Height = UITheme.ButtonHeightDefault,
+                AutoSize = true,
+                Padding = new Padding(12, 4, 12, 4),
+                Margin = new Padding(0, 6, 0, 2),
+                UseVisualStyleBackColor = true
+            };
+            btnSaveApi.Click += (s, e) => SaveTelegramApiKeys();
 
             pnlTgApiInner.Controls.AddRange(new Control[] { rowApiId, rowApiHash, rowChannel, btnSaveApi });
             grpTelegramApi.Controls.Add(pnlTgApiInner);
@@ -328,7 +337,7 @@ namespace TelegramWebDAV.UI
 
             _txtInput = new TextBox { Width = UITheme.ContentWidth - 25, Font = UITheme.BaseFont, Margin = new Padding(0, 0, 0, 8) };
 
-            _btnAction = UIFactory.CreateButton("Отправить", async (s, e) => await HandleTelegramActionAsync(), isPrimary: true, height: UITheme.ButtonHeightDefault, width: 180);
+            _btnAction = UIFactory.CreateButton("Отправить", async (s, e) => await HandleTelegramActionAsync(), isPrimary: false, height: UITheme.ButtonHeightDefault, width: 180);
             _btnLogout = UIFactory.CreateButton("Выйти из аккаунта", (s, e) => HandleTelegramLogout(), isPrimary: false, height: UITheme.ButtonHeightDefault, width: 160);
             _btnLogout.ForeColor = UITheme.TextDanger;
 
@@ -354,7 +363,7 @@ namespace TelegramWebDAV.UI
                 AutoScroll = true
             };
 
-            var grpRegistry = UIFactory.CreateGroupBox("Системные твики службы Windows WebClient и UAC");
+            var grpRegistry = UIFactory.CreateGroupBox("Системные твики службы Windows WebClient и UAC", minHeight: 240);
             var pnlRegInner = UIFactory.CreateVerticalContainer();
 
             _lblRegStatus = new Label
@@ -367,14 +376,14 @@ namespace TelegramWebDAV.UI
                 AutoSize = true,
                 Width = UITheme.ContentWidth - 30,
                 Font = UITheme.BaseFont,
-                Margin = new Padding(0, 2, 0, 12)
+                Margin = new Padding(0, 2, 0, 10)
             };
 
             _lblRegCurrentState = new Label
             {
                 AutoSize = true,
                 Font = UITheme.HeaderFont,
-                Margin = new Padding(0, 0, 0, 12)
+                Margin = new Padding(0, 0, 0, 10)
             };
 
             Action refreshRegState = () =>
@@ -393,8 +402,16 @@ namespace TelegramWebDAV.UI
             };
             refreshRegState();
 
-            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, isPrimary: true, height: 38);
-            _btnApplyRegFix.Width = UITheme.ContentWidth - 25;
+            _btnApplyRegFix = new Button
+            {
+                Text = "🛡 Применить комплексный фикс реестра (с запросом UAC)",
+                Dock = DockStyle.Top,
+                Width = UITheme.ContentWidth - 25,
+                Height = 34,
+                Font = UITheme.BaseFont,
+                Margin = new Padding(0, 4, 0, 4),
+                UseVisualStyleBackColor = true
+            };
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
