@@ -1142,22 +1142,23 @@ namespace TelegramWebDAV.Services
                 else
                 {
                     TL.Message? photoMessage = null;
+                    string previewFileName = $"{Path.GetFileNameWithoutExtension(effectiveFileName)}_preview.jpg";
                     if (galleryPhotoBytes != null && galleryPhotoBytes.Length > 0)
                     {
                         try
                         {
                             using var photoMs = new MemoryStream(galleryPhotoBytes, false);
-                            var photoInput = await _client.UploadFileAsync(photoMs, "photo.jpg");
+                            var photoInput = await _client.UploadFileAsync(photoMs, previewFileName);
                             var photoMedia = new TL.InputMediaUploadedPhoto { file = photoInput };
                             photoMessage = await _client.SendMessageAsync(peer, effectiveCaption, photoMedia);
-                            AppLogger.Info("TelegramService", $"Фото-превью для галереи успешно опубликовано в Telegram (Message ID: {photoMessage.ID}).");
+                            AppLogger.Info("TelegramService", $"Фото-превью для галереи успешно опубликовано в Telegram (Message ID: {photoMessage.ID}, имя: '{previewFileName}').");
                         }
                         catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
                         {
                             InvalidateStoragePeer();
                             peer = await GetStoragePeerAsync();
                             using var photoMs = new MemoryStream(galleryPhotoBytes, false);
-                            var photoInput = await _client.UploadFileAsync(photoMs, "photo.jpg");
+                            var photoInput = await _client.UploadFileAsync(photoMs, previewFileName);
                             var photoMedia = new TL.InputMediaUploadedPhoto { file = photoInput };
                             photoMessage = await _client.SendMessageAsync(peer, effectiveCaption, photoMedia);
                         }
@@ -1174,6 +1175,26 @@ namespace TelegramWebDAV.Services
                     };
                     var attributes = new TL.DocumentAttribute[] { fileNameAttr };
                     var mediaDoc = new TL.InputMediaUploadedDocument(inputFile, mimeType, attributes);
+
+                    // Если размер файла больше 10 МБ, Telegram не создает серверное превью для документов - прикрепляем локально созданный thumb
+                    if (galleryPhotoBytes != null && galleryPhotoBytes.Length > 0 && uploadStream.Length > 10 * 1024 * 1024)
+                    {
+                        try
+                        {
+                            using var thumbMs = new MemoryStream(galleryPhotoBytes, false);
+                            var thumbFile = await _client.UploadFileAsync(thumbMs, previewFileName);
+                            if (thumbFile != null)
+                            {
+                                mediaDoc.thumb = thumbFile;
+                                mediaDoc.flags |= TL.InputMediaUploadedDocument.Flags.has_thumb;
+                                AppLogger.Info("TelegramService", $"К документу >10 МБ '{effectiveFileName}' успешно прикреплена миниатюра (thumb).");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Debug("TelegramService", $"Не удалось прикрепить thumb к документу >10 МБ: {ex.Message}");
+                        }
+                    }
 
                     int replyToId = photoMessage != null ? photoMessage.ID : 0;
                     string docCaption = photoMessage != null ? string.Empty : effectiveCaption;
