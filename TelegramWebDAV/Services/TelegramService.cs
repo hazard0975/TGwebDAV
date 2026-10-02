@@ -1317,8 +1317,12 @@ namespace TelegramWebDAV.Services
                 long origin = stream.Position;
                 stream.Seek(0, SeekOrigin.Begin);
 
-                using var originalBmp = System.Drawing.Image.FromStream(stream, false, false);
+                using var memStream = new MemoryStream();
+                stream.CopyTo(memStream);
                 stream.Seek(origin, SeekOrigin.Begin);
+                memStream.Seek(0, SeekOrigin.Begin);
+
+                using var originalBmp = System.Drawing.Image.FromStream(memStream, false, false);
 
                 int origW = originalBmp.Width;
                 int origH = originalBmp.Height;
@@ -1339,7 +1343,7 @@ namespace TelegramWebDAV.Services
                     g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                     g.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
                     g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-                    g.DrawImage(originalBmp, 0, 0, newW, newH);
+                    g.DrawImage(originalBmp, new System.Drawing.Rectangle(0, 0, newW, newH), 0, 0, origW, origH, System.Drawing.GraphicsUnit.Pixel);
                 }
 
                 using var outMs = new MemoryStream();
@@ -1366,7 +1370,7 @@ namespace TelegramWebDAV.Services
 
         private static System.Drawing.Imaging.ImageCodecInfo? GetEncoder(System.Drawing.Imaging.ImageFormat format)
         {
-            var codecs = System.Drawing.Imaging.ImageCodecInfo.GetImageDecoders();
+            var codecs = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders();
             foreach (var codec in codecs)
             {
                 if (codec.FormatID == format.Guid)
