@@ -121,19 +121,19 @@ namespace TelegramWebDAV.UI
 
             _chkMountDrive = UIFactory.CreateCheckBox("Автоматически монтировать сетевой диск в Windows", _settings.Server.MountDrive);
 
-            _cmbEngine = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 275, Font = UITheme.BaseFont };
+            _cmbEngine = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 260, Font = UITheme.BaseFont };
             _cmbEngine.Items.Add("WinFsp (Прямой стриминг в ОЗУ)");
             _cmbEngine.Items.Add("WebDAV (Служба Windows WebClient)");
             _cmbEngine.SelectedIndex = _settings.Server.Engine == DriveEngine.WinFsp ? 0 : 1;
             var rowEngine = UIFactory.CreateSettingRow("Драйвер диска:", _cmbEngine, 140);
 
+            _txtVolumeName = new TextBox { Text = _settings.Server.DriveName ?? "Telegram Drive", Width = 260, Font = UITheme.BaseFont };
+            var rowVolumeName = UIFactory.CreateSettingRow("Имя тома:", _txtVolumeName, 140);
+
             _cmbDriveLetter = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 80, Font = UITheme.BaseFont };
             _cmbDriveLetter.Items.AddRange(new object[] { "Z:", "T:", "Y:", "X:", "W:", "AUTO" });
             _cmbDriveLetter.SelectedItem = _settings.Server.DriveLetter ?? "Z:";
             var rowDriveLetter = UIFactory.CreateSettingRow("Буква диска:", _cmbDriveLetter, 140);
-
-            _txtVolumeName = new TextBox { Text = _settings.Server.DriveName ?? "Telegram Drive", Width = 275, Font = UITheme.BaseFont };
-            var rowVolumeName = UIFactory.CreateSettingRow("Имя тома:", _txtVolumeName, 140);
 
             _numCapacityGb = UIFactory.CreateNumericInput(10, 1048576, _settings.Server.VirtualDiskCapacityGb > 0 ? _settings.Server.VirtualDiskCapacityGb : 1024, 80);
             var rowCapacity = UIFactory.CreateSettingRow("Размер диска (ГБ):", _numCapacityGb, 140);
@@ -142,7 +142,7 @@ namespace TelegramWebDAV.UI
             _chkIncludeTrashInSpace = UIFactory.CreateCheckBox("Учитывать файлы в корзине (.Trash) в занятом месте", _settings.Server.IncludeTrashInUsedSpace);
 
             pnlServerInner.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, rowPort, _chkMountDrive, rowEngine, rowDriveLetter, rowVolumeName, rowCapacity, _chkAutoExpand, _chkIncludeTrashInSpace
+                _chkWebDavEnabled, rowPort, _chkMountDrive, rowEngine, rowVolumeName, rowDriveLetter, rowCapacity, _chkAutoExpand, _chkIncludeTrashInSpace
             });
             grpServerDrive.Controls.Add(pnlServerInner);
 
