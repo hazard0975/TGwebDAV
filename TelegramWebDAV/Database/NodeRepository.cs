@@ -16,6 +16,12 @@ namespace TelegramWebDAV.Database
             _dbManager = dbManager;
         }
 
+        public string DatabasePath => _dbManager.DatabasePath;
+
+        public void VacuumDatabase() => _dbManager.VacuumDatabase();
+
+        public void ScheduleVacuum(int delayMs = 3000) => _dbManager.ScheduleVacuum(delayMs);
+
         /// <summary>
         /// Возвращает корневую директорию (диск).
         /// </summary>

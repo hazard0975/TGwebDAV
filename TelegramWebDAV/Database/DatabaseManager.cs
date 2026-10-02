@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Microsoft.Data.Sqlite;
+using TelegramWebDAV.Services;
 
 namespace TelegramWebDAV.Database
 {
@@ -227,6 +228,57 @@ CREATE TABLE IF NOT EXISTS pending_caption_updates (
                     WHERE NOT EXISTS (SELECT 1 FROM nodes WHERE parent_id IS NULL AND name = 'Root');
                 ";
                 command.ExecuteNonQuery();
+            }
+        }
+
+        public string DatabasePath => _dbPath;
+
+        private static readonly object _vacuumLock = new object();
+        private static System.Threading.Timer? _debounceVacuumTimer;
+
+        /// <summary>
+        /// Выполняет дефрагментацию и оптимизацию базы данных (VACUUM), освобождая дисковое пространство.
+        /// </summary>
+        public void VacuumDatabase()
+        {
+            lock (_vacuumLock)
+            {
+                try
+                {
+                    AppLogger.Info("Database", "Запуск оптимизации базы данных SQLite (VACUUM)...");
+                    using var connection = GetConnection();
+                    using var command = connection.CreateCommand();
+                    command.CommandText = "VACUUM;";
+                    command.ExecuteNonQuery();
+                    AppLogger.Info("Database", "Оптимизация базы данных (VACUUM) успешно завершена.");
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Error("Database", $"Ошибка при выполнении VACUUM: {ex.Message}", ex);
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Отложенный запуск VACUUM с дебаунсом (сжатие выполняется один раз после завершения пачки удалений).
+        /// </summary>
+        public void ScheduleVacuum(int delayMs = 3000)
+        {
+            lock (_vacuumLock)
+            {
+                _debounceVacuumTimer?.Dispose();
+                _debounceVacuumTimer = new System.Threading.Timer(_ =>
+                {
+                    try
+                    {
+                        VacuumDatabase();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Warn("Database", $"Фоновый отложенный VACUUM завершился с ошибкой: {ex.Message}");
+                    }
+                }, null, delayMs, System.Threading.Timeout.Infinite);
             }
         }
 

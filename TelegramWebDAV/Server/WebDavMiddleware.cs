@@ -615,6 +615,9 @@ namespace TelegramWebDAV.Server
 
                 repository.PermanentDeleteNodes(dbNodeIds);
                 AppLogger.Info("WebDAV", $"Успешно удалено {dbNodeIds.Count} узлов из базы данных навсегда.");
+
+                // Автоматическое фоновое сжатие базы SQLite с дебаунсом (через 3 сек спокойствия)
+                repository.ScheduleVacuum(3000);
             }
             else
             {

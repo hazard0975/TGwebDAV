@@ -171,7 +171,7 @@ namespace TelegramWebDAV.UI
                 return;
             }
 
-            _settingsForm = new AuthSettingsForm(_configManager, _telegramService);
+            _settingsForm = new AuthSettingsForm(_configManager, _telegramService, _repository);
             _settingsForm.FormClosed += (s, e) =>
             {
                 _settingsForm = null;

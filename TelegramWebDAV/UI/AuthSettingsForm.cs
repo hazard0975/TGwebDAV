@@ -15,6 +15,7 @@ namespace TelegramWebDAV.UI
     {
         private readonly ConfigManager _configManager;
         private readonly TelegramService _telegramService;
+        private readonly Database.NodeRepository _repository;
         private AppSettings _settings;
 
         // UI Controls
@@ -70,10 +71,11 @@ namespace TelegramWebDAV.UI
         private NumericUpDown _numMaxLogFiles = null!;
         private Label _lblLogStats = null!;
 
-        public AuthSettingsForm(ConfigManager configManager, TelegramService telegramService)
+        public AuthSettingsForm(ConfigManager configManager, TelegramService telegramService, Database.NodeRepository repository)
         {
             _configManager = configManager;
             _telegramService = telegramService;
+            _repository = repository;
             _settings = _configManager.Load();
 
             InitializeComponents();
@@ -273,6 +275,125 @@ namespace TelegramWebDAV.UI
             };
             pnlStreamWindow.Controls.Add(_numStreamingWindowMb);
 
+            // Секция: База данных SQLite (base.db)
+            var grpDb = new GroupBox
+            {
+                Text = "База данных SQLite (base.db)",
+                Width = 510,
+                AutoSize = true,
+                Margin = new Padding(0, 15, 0, 5),
+                Padding = new Padding(10)
+            };
+
+            var pnlDbInner = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false
+            };
+
+            var lblDbStats = new Label
+            {
+                AutoSize = true,
+                Margin = new Padding(0, 2, 0, 8),
+                Font = new Font("Segoe UI", 8.5F, FontStyle.Regular)
+            };
+
+            Action updateDbStats = () =>
+            {
+                try
+                {
+                    string dbPath = _repository.DatabasePath;
+                    if (File.Exists(dbPath))
+                    {
+                        var fi = new FileInfo(dbPath);
+                        double sizeMb = (double)fi.Length / (1024 * 1024);
+                        lblDbStats.Text = $"Размер базы на диске: {sizeMb:F2} МБ   |   Файл: {Path.GetFileName(dbPath)}";
+                    }
+                    else
+                    {
+                        lblDbStats.Text = $"Файл базы данных: {dbPath} (еще не создан)";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    lblDbStats.Text = $"Ошибка получения статуса БД: {ex.Message}";
+                }
+            };
+            updateDbStats();
+
+            var tblDbActions = new TableLayoutPanel
+            {
+                Width = 485,
+                Height = 34,
+                ColumnCount = 2,
+                RowCount = 1,
+                Margin = new Padding(0, 0, 0, 2)
+            };
+            tblDbActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55f));
+            tblDbActions.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45f));
+
+            var btnVacuum = new Button
+            {
+                Text = "🗜 Сжать базу (VACUUM)",
+                Dock = DockStyle.Fill,
+                Margin = new Padding(0, 0, 4, 0)
+            };
+            btnVacuum.Click += async (s, e) =>
+            {
+                btnVacuum.Enabled = false;
+                btnVacuum.Text = "Сжатие базы...";
+                try
+                {
+                    await System.Threading.Tasks.Task.Run(() => _repository.VacuumDatabase());
+                    updateDbStats();
+                    MessageBox.Show("Оптимизация базы данных (VACUUM) успешно завершена!\nНеиспользуемое дисковое пространство освобождено.", "База данных", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка сжатия базы данных:\n{ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                finally
+                {
+                    btnVacuum.Text = "🗜 Сжать базу (VACUUM)";
+                    btnVacuum.Enabled = true;
+                }
+            };
+
+            var btnOpenDbFolder = new Button
+            {
+                Text = "📁 Папка с базой данных",
+                Dock = DockStyle.Fill,
+                Margin = new Padding(4, 0, 0, 0)
+            };
+            btnOpenDbFolder.Click += (s, e) =>
+            {
+                try
+                {
+                    string fullPath = Path.GetFullPath(_repository.DatabasePath);
+                    string? dir = Path.GetDirectoryName(fullPath);
+                    if (!string.IsNullOrEmpty(dir) && Directory.Exists(dir))
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe", dir);
+                    }
+                    else
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe", AppDomain.CurrentDomain.BaseDirectory);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Не удалось открыть папку: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            };
+
+            tblDbActions.Controls.Add(btnVacuum, 0, 0);
+            tblDbActions.Controls.Add(btnOpenDbFolder, 1, 0);
+
+            pnlDbInner.Controls.AddRange(new Control[] { lblDbStats, tblDbActions });
+            grpDb.Controls.Add(pnlDbInner);
+
             var btnSaveGeneral = new Button
             {
                 Text = "Сохранить настройки",
@@ -283,7 +404,7 @@ namespace TelegramWebDAV.UI
             btnSaveGeneral.Click += (s, e) => SaveGeneralSettings();
 
             pnlGeneral.Controls.AddRange(new Control[] {
-                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkGalleryPreview, _chkEnableDiskCache, pnlMemCache, pnlChunkTtl, pnlFullTrack, pnlAudioWindow, pnlStreamWindow, btnSaveGeneral
+                _chkWebDavEnabled, pnlPort, pnlEngine, _chkMountDrive, pnlDrive, pnlVol, pnlCapacity, _chkAutoExpand, _chkIncludeTrashInSpace, _chkAutoStart, _chkHideTrash, _chkContextMenu, _chkAutoShowPopup, _chkGalleryPreview, _chkEnableDiskCache, pnlMemCache, pnlChunkTtl, pnlFullTrack, pnlAudioWindow, pnlStreamWindow, grpDb, btnSaveGeneral
             });
             _tabGeneral.Controls.Add(pnlGeneral);
 
