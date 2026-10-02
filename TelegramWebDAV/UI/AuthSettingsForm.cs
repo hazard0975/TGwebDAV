@@ -91,11 +91,9 @@ namespace TelegramWebDAV.UI
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Font = UITheme.BaseFont;
 
-            // Нижняя фиксированная панель действий
-            var btnSaveAll = new Button { Text = "Сохранить", Height = UITheme.ButtonHeightDefault, Font = UITheme.BaseFont };
-            btnSaveAll.Click += (s, e) => SaveAllSettings();
-            var btnClose = new Button { Text = "Закрыть", Height = UITheme.ButtonHeightDefault, Font = UITheme.BaseFont };
-            btnClose.Click += (s, e) => this.Close();
+            // Нижняя фиксированная панель действий формы
+            var btnSaveAll = UIFactory.CreateButton("Сохранить", (s, e) => SaveAllSettings());
+            var btnClose = UIFactory.CreateButton("Закрыть", (s, e) => this.Close());
             var pnlBottomBar = UIFactory.CreateBottomBar(btnSaveAll, btnClose);
 
             _tabControl = new TabControl { Dock = DockStyle.Fill };
@@ -300,17 +298,7 @@ namespace TelegramWebDAV.UI
             _txtChannelTitle = new TextBox { Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle, Font = UITheme.BaseFont };
             var rowChannel = UIFactory.CreateInputRow("Имя канала:", _txtChannelTitle, 90);
 
-            var btnSaveApi = new Button
-            {
-                Text = "Сохранить параметры Telegram",
-                Font = UITheme.BaseFont,
-                Height = UITheme.ButtonHeightDefault,
-                AutoSize = true,
-                Padding = new Padding(12, 4, 12, 4),
-                Margin = new Padding(0, 6, 0, 2),
-                UseVisualStyleBackColor = true
-            };
-            btnSaveApi.Click += (s, e) => SaveTelegramApiKeys();
+            var btnSaveApi = UIFactory.CreateButton("Сохранить параметры Telegram", (s, e) => SaveTelegramApiKeys(), autoSize: true);
 
             pnlTgApiInner.Controls.AddRange(new Control[] { rowApiId, rowApiHash, rowChannel, btnSaveApi });
             grpTelegramApi.Controls.Add(pnlTgApiInner);
@@ -337,9 +325,8 @@ namespace TelegramWebDAV.UI
 
             _txtInput = new TextBox { Width = UITheme.ContentWidth - 25, Font = UITheme.BaseFont, Margin = new Padding(0, 0, 0, 8) };
 
-            _btnAction = UIFactory.CreateButton("Отправить", async (s, e) => await HandleTelegramActionAsync(), isPrimary: false, height: UITheme.ButtonHeightDefault, width: 180);
-            _btnLogout = UIFactory.CreateButton("Выйти из аккаунта", (s, e) => HandleTelegramLogout(), isPrimary: false, height: UITheme.ButtonHeightDefault, width: 160);
-            _btnLogout.ForeColor = UITheme.TextDanger;
+            _btnAction = UIFactory.CreateButton("Отправить", async (s, e) => await HandleTelegramActionAsync(), width: 180);
+            _btnLogout = UIFactory.CreateButton("Выйти из аккаунта", (s, e) => HandleTelegramLogout(), width: 160, foreColor: UITheme.TextDanger);
 
             var pnlTgButtons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 4, 0, 4) };
             pnlTgButtons.Controls.AddRange(new Control[] { _btnAction, _btnLogout });
@@ -402,16 +389,7 @@ namespace TelegramWebDAV.UI
             };
             refreshRegState();
 
-            _btnApplyRegFix = new Button
-            {
-                Text = "🛡 Применить комплексный фикс реестра (с запросом UAC)",
-                Dock = DockStyle.Top,
-                Width = UITheme.ContentWidth - 25,
-                Height = 34,
-                Font = UITheme.BaseFont,
-                Margin = new Padding(0, 4, 0, 4),
-                UseVisualStyleBackColor = true
-            };
+            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, dock: DockStyle.Top);
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
@@ -566,8 +544,7 @@ namespace TelegramWebDAV.UI
                 }
             };
 
-            var btnClearLogs = UIFactory.CreateButton("🗑 Очистить логи");
-            btnClearLogs.ForeColor = UITheme.TextDanger;
+            var btnClearLogs = UIFactory.CreateButton("🗑 Очистить логи", foreColor: UITheme.TextDanger);
             btnClearLogs.Click += (s, e) =>
             {
                 if (MessageBox.Show("Вы действительно хотите очистить текущий лог и все его архивы?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)

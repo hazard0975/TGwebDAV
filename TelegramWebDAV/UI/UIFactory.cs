@@ -85,7 +85,7 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает строку для текстового поля ввода на всю оставшуюся ширину.
         /// </summary>
-        public static TableLayoutPanel CreateInputRow(string labelText, Control control, int labelWidth = 95, int width = UITheme.ContentWidth - 25)
+        public static TableLayoutPanel CreateInputRow(string labelText, Control control, int labelWidth = 90, int width = UITheme.ContentWidth - 25)
         {
             var tbl = new TableLayoutPanel
             {
@@ -137,9 +137,17 @@ namespace TelegramWebDAV.UI
         }
 
         /// <summary>
-        /// Создает стандартную кнопку действия.
+        /// Создает стандартную кнопку действия через единую фабрику.
         /// </summary>
-        public static Button CreateButton(string text, EventHandler? onClick = null, bool isPrimary = false, int height = UITheme.ButtonHeightDefault, int? width = null)
+        public static Button CreateButton(
+            string text, 
+            EventHandler? onClick = null, 
+            bool isPrimary = false, 
+            int height = UITheme.ButtonHeightDefault, 
+            int? width = null, 
+            bool autoSize = false,
+            DockStyle dock = DockStyle.None,
+            Color? foreColor = null)
         {
             var btn = new Button
             {
@@ -147,8 +155,15 @@ namespace TelegramWebDAV.UI
                 Height = height,
                 Font = isPrimary ? UITheme.BoldFont : UITheme.BaseFont,
                 UseVisualStyleBackColor = true,
-                Margin = new Padding(0, 2, 4, 2)
+                AutoSize = autoSize,
+                Dock = dock,
+                Padding = autoSize ? new Padding(12, 4, 12, 4) : Padding.Empty,
+                Margin = new Padding(0, 4, 4, 4)
             };
+            if (foreColor.HasValue)
+            {
+                btn.ForeColor = foreColor.Value;
+            }
             if (width.HasValue)
             {
                 btn.Width = width.Value;
