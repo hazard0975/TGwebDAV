@@ -983,14 +983,15 @@ namespace TelegramWebDAV.Services
                     return null;
                 }
 
+                long fileLength = uploadStream.Length;
                 byte[]? galleryPhotoBytes = null;
-                if (isGallery && uploadStream.CanSeek && uploadStream.Length > 1)
+                if (isGallery && uploadStream.CanSeek && fileLength > 1)
                 {
                     galleryPhotoBytes = CreateOptimizedGalleryThumbnail(uploadStream);
                     uploadStream.Seek(0, SeekOrigin.Begin);
                 }
 
-                AppLogger.Info("TelegramService", $"Прямая потоковая передача файла '{effectiveFileName}' ({uploadStream.Length} байт) в Telegram...");
+                AppLogger.Info("TelegramService", $"Прямая потоковая передача файла '{effectiveFileName}' ({fileLength} байт) в Telegram...");
                 
                 // Передаем прогресс-колбэк также в WTelegramClient для детального трекинга MTProto частей
                 var inputFile = await _client.UploadFileAsync(
@@ -1177,7 +1178,7 @@ namespace TelegramWebDAV.Services
                     var mediaDoc = new TL.InputMediaUploadedDocument(inputFile, mimeType, attributes);
 
                     // Если размер файла больше 10 МБ, Telegram не создает серверное превью для документов - прикрепляем локально созданный thumb
-                    if (galleryPhotoBytes != null && galleryPhotoBytes.Length > 0 && uploadStream.Length > 10 * 1024 * 1024)
+                    if (galleryPhotoBytes != null && galleryPhotoBytes.Length > 0 && fileLength > 10 * 1024 * 1024)
                     {
                         try
                         {
