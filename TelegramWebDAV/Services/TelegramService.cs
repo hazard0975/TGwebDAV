@@ -27,7 +27,52 @@ namespace TelegramWebDAV.Services
         public string? LastName { get; set; }
         public string? Phone { get; set; }
         public bool IsPremium { get; set; }
+        public int DcId { get; set; }
         public int FloodWaitSecondsRemaining { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                string fn = (FirstName ?? "").Trim();
+                string ln = (LastName ?? "").Trim();
+                if (!string.IsNullOrEmpty(fn) && !string.IsNullOrEmpty(ln)) return $"{fn} {ln}";
+                if (!string.IsNullOrEmpty(fn)) return fn;
+                if (!string.IsNullOrEmpty(ln)) return ln;
+                return "Без имени";
+            }
+        }
+
+        public string FormattedUsername => !string.IsNullOrWhiteSpace(Username) ? $"@{Username.TrimStart('@')}" : "Не задан";
+
+        public string FormattedPhone
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(Phone)) return "Не указан";
+                return Phone.StartsWith("+") ? Phone : "+" + Phone;
+            }
+        }
+
+        public string PremiumDescription => IsPremium
+            ? "⭐ Telegram Premium (лимит 1 файла: 4 ГБ)"
+            : "Базовый аккаунт (лимит 1 файла: 2 ГБ)";
+
+        public string DcDescription
+        {
+            get
+            {
+                return DcId switch
+                {
+                    1 => "DC 1 (Майами, США)",
+                    2 => "DC 2 (Амстердам, Нидерланды)",
+                    3 => "DC 3 (Майами, США)",
+                    4 => "DC 4 (Амстердам, Нидерланды)",
+                    5 => "DC 5 (Сингапур)",
+                    _ => DcId > 0 ? $"DC {DcId}" : "Автоопределение"
+                };
+            }
+        }
     }
 
     public class FileUploadResult
@@ -630,7 +675,8 @@ namespace TelegramWebDAV.Services
                         FirstName = u.first_name,
                         LastName = u.last_name,
                         Phone = u.phone,
-                        IsPremium = u.flags.HasFlag(TL.User.Flags.premium)
+                        IsPremium = u.flags.HasFlag(TL.User.Flags.premium),
+                        DcId = 0
                     };
                     AppLogger.Info("TelegramService", $"Успешная авторизация пользователя: {u.first_name} (ID: {u.ID})");
 
@@ -644,10 +690,23 @@ namespace TelegramWebDAV.Services
                         }
                     }
 
-                    // Фоновый прогрев канала-хранилища сразу после успешной авторизации,
+                    // Фоновый прогрев канала-хранилища и получение конфигурации DC сразу после успешной авторизации,
                     // чтобы первая операция копирования/чтения файлов выполнялась мгновенно
                     _ = Task.Run(async () =>
                     {
+                        try
+                        {
+                            if (_client != null)
+                            {
+                                var config = await _client.Help_GetConfig();
+                                if (config != null && CurrentUser != null)
+                                {
+                                    CurrentUser.DcId = config.this_dc;
+                                }
+                            }
+                        }
+                        catch { }
+
                         try
                         {
                             await GetStoragePeerAsync();

@@ -49,6 +49,13 @@ namespace TelegramWebDAV.UI
 
         // Telegram Tab
         private Label _lblStatus = null!;
+        private TableLayoutPanel _pnlUserDetails = null!;
+        private Label _lblUserName = null!;
+        private Label _lblUserTag = null!;
+        private Label _lblUserId = null!;
+        private Label _lblUserPhone = null!;
+        private Label _lblUserPremium = null!;
+        private Label _lblUserDc = null!;
         private Label _lblInstruction = null!;
         private TextBox _txtApiId = null!;
         private TextBox _txtApiHash = null!;
@@ -318,8 +325,70 @@ namespace TelegramWebDAV.UI
                 Text = "Статус: Проверка сессии...",
                 AutoSize = true,
                 Font = UITheme.HeaderFont,
-                Margin = new Padding(0, 0, 0, 6)
+                Margin = new Padding(0, 0, 0, 8)
             };
+
+            // Информационная карточка профиля пользователя Telegram
+            _pnlUserDetails = new TableLayoutPanel
+            {
+                Width = UIFactory.DefaultInnerWidth,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                ColumnCount = 2,
+                RowCount = 6,
+                Margin = new Padding(0, 0, 0, 8),
+                Padding = new Padding(8, 6, 8, 6),
+                BackColor = UITheme.BackgroundLight
+            };
+            _pnlUserDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 150));
+            _pnlUserDetails.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
+
+            Label createDetailHeader(string title) => new Label
+            {
+                Text = title,
+                AutoSize = true,
+                Font = UITheme.BoldFont,
+                ForeColor = UITheme.TextMain,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 3, 4, 3)
+            };
+
+            Label createDetailValue() => new Label
+            {
+                Text = "—",
+                AutoSize = true,
+                Font = UITheme.BaseFont,
+                ForeColor = UITheme.TextMain,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(0, 3, 0, 3)
+            };
+
+            _lblUserName = createDetailValue();
+            _lblUserTag = createDetailValue();
+            _lblUserId = createDetailValue();
+            _lblUserPhone = createDetailValue();
+            _lblUserPremium = createDetailValue();
+            _lblUserDc = createDetailValue();
+
+            _pnlUserDetails.Controls.Add(createDetailHeader("👤 Имя и фамилия:"), 0, 0);
+            _pnlUserDetails.Controls.Add(_lblUserName, 1, 0);
+
+            _pnlUserDetails.Controls.Add(createDetailHeader("🏷 Никнейм:"), 0, 1);
+            _pnlUserDetails.Controls.Add(_lblUserTag, 1, 1);
+
+            _pnlUserDetails.Controls.Add(createDetailHeader("🆔 Telegram User ID:"), 0, 2);
+            _pnlUserDetails.Controls.Add(_lblUserId, 1, 2);
+
+            _pnlUserDetails.Controls.Add(createDetailHeader("📱 Номер телефона:"), 0, 3);
+            _pnlUserDetails.Controls.Add(_lblUserPhone, 1, 3);
+
+            _pnlUserDetails.Controls.Add(createDetailHeader("⭐ Подписка:"), 0, 4);
+            _pnlUserDetails.Controls.Add(_lblUserPremium, 1, 4);
+
+            _pnlUserDetails.Controls.Add(createDetailHeader("🌐 Дата-центр (DC):"), 0, 5);
+            _pnlUserDetails.Controls.Add(_lblUserDc, 1, 5);
 
             _lblInstruction = new Label
             {
@@ -337,7 +406,7 @@ namespace TelegramWebDAV.UI
             var pnlTgButtons = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.LeftToRight, WrapContents = false, Margin = new Padding(0, 4, 0, 4) };
             pnlTgButtons.Controls.AddRange(new Control[] { _btnAction, _btnLogout });
 
-            pnlTgSessionInner.Controls.AddRange(new Control[] { _lblStatus, _lblInstruction, _txtInput, pnlTgButtons });
+            pnlTgSessionInner.Controls.AddRange(new Control[] { _lblStatus, _pnlUserDetails, _lblInstruction, _txtInput, pnlTgButtons });
             grpTelegramSession.Controls.Add(pnlTgSessionInner);
 
             pnlTg.Controls.AddRange(new Control[] { 
@@ -629,10 +698,31 @@ namespace TelegramWebDAV.UI
             if (_telegramService.IsAuthorized)
             {
                 var user = _telegramService.CurrentUser;
-                string userInfo = user != null ? $" ({user.FirstName} {user.LastName} | @{user.Username})" : "";
-                _lblStatus.Text = $"Статус: Авторизован в Telegram ✔{userInfo}";
+                _lblStatus.Text = "Статус: Авторизован в Telegram ✔";
                 _lblStatus.ForeColor = UITheme.TextSuccess;
+
+                if (user != null)
+                {
+                    _lblUserName.Text = user.FullName;
+                    _lblUserTag.Text = user.FormattedUsername;
+                    _lblUserId.Text = user.Id.ToString();
+                    _lblUserPhone.Text = user.FormattedPhone;
+                    _lblUserPremium.Text = user.PremiumDescription;
+                    if (user.IsPremium)
+                    {
+                        _lblUserPremium.ForeColor = Color.FromArgb(170, 95, 0);
+                    }
+                    else
+                    {
+                        _lblUserPremium.ForeColor = UITheme.TextMain;
+                    }
+                    _lblUserDc.Text = user.DcDescription;
+                }
+
+                _pnlUserDetails.Visible = true;
                 _lblInstruction.Text = "Сессия активна. Мультимедиа файлы и папки доступны через WebDAV.";
+                _lblInstruction.ForeColor = UITheme.TextMuted;
+                _lblInstruction.Visible = true;
                 _txtInput.Visible = false;
                 _btnAction.Visible = false;
                 _btnLogout.Visible = true;
@@ -641,6 +731,7 @@ namespace TelegramWebDAV.UI
             {
                 _lblStatus.Text = "Статус: Не авторизован ❌";
                 _lblStatus.ForeColor = UITheme.TextDanger;
+                _pnlUserDetails.Visible = false;
                 _txtInput.Visible = hasApiKeys;
                 _btnAction.Visible = hasApiKeys;
                 _btnLogout.Visible = false;
@@ -649,10 +740,12 @@ namespace TelegramWebDAV.UI
                 {
                     _lblInstruction.Text = "Сначала укажите и сохраните API ID и API Hash (получить на my.telegram.org).";
                     _lblInstruction.ForeColor = Color.DarkOrange;
+                    _lblInstruction.Visible = true;
                 }
                 else
                 {
                     _lblInstruction.ForeColor = UITheme.TextMain;
+                    _lblInstruction.Visible = true;
                     switch (_telegramService.CurrentStep)
                     {
                         case AuthStep.NeedsPhone:
