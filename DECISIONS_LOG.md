@@ -518,6 +518,26 @@
 - **Проблема**: `WTelegramClient.UploadFileAsync(uploadStream, ...)` автоматически диспоузит переданный поток `uploadStream` после завершения выгрузки байтов. Последующее обращение `uploadStream.Length > 10 * 1024 * 1024` выбрасывало `ObjectDisposedException: Cannot access a closed file`, прерывая отправку документа-оригинала.
 - **Исправление**: Длина `long fileLength = uploadStream.Length;` фиксируется до вызова `UploadFileAsync`, полностью предотвращая падение при проверке порога 10 МБ.
 
+---
+
+## 11. Сохранение оригинальных системных дат файлов (CreationTime / LastWriteTime) в драйвере WinFsp
+
+### Бизнес-цель:
+При копировании файлов с локального накопителя (например, `D:\Music\Track.mp3`) на виртуальный диск `Y:` через Проводник Windows должны сохраняться точные исторические даты создания и изменения исходного файла (например, 2023 год), а не подставляться текущая дата и время выгрузки в Telegram.
+
+### Симптом:
+У скопированного на виртуальный диск файла даты «Создан» и «Изменен» устанавливались на момент копирования и завершения загрузки в Telegram.
+
+### Первопричина (Root Cause Analysis):
+1. **Игнорирование `creationTime` в `SetBasicInfo`**: Метод `SetBasicInfo` в `WinFspServer.cs` считывал только `lastWriteTime`, пропуская `creationTime`.
+2. **Отсутствие записи дат в SQLite**: В `SetBasicInfo` новые даты не передавались в базу данных через `_repository.UpdateNodeTimestamps(node.Id, ...)`.
+3. **Затирание дат в `Cleanup`**: При финализации отправки файла в Telegram метод `Cleanup` вызывал `CreateOrUpdateFile` без передачи сохранённых таймстампов (SQLite выставлял `CURRENT_TIMESTAMP`), а затем строка `node.UpdatedAt = DateTime.UtcNow;` принудительно затирала дату изменения текущим моментом.
+
+### Принятое решение:
+1. В `SetBasicInfo` реализовано извлечение и валидация как `lastWriteTime`, так и `creationTime` с немедленным вызовом `_repository.UpdateNodeTimestamps(node.Id, newUpdatedAt, newCreatedAt)`.
+2. В `Cleanup` перед запуском асинхронного таска выгрузки фиксируются `targetUpdatedAt = node.UpdatedAt` и `targetCreatedAt = node.CreatedAt`, которые передаются в `CreateOrUpdateFile` и сохраняются в `Node` без принудительной перезаписи на `DateTime.UtcNow`.
+3. В `NodeRepository.CreateOrUpdateFile` добавлена поддержка обновления `created_at` наряду с `updated_at` при заполнении 0-байтовых плейсхолдеров от Проводника.
+
 
 
 

@@ -744,7 +744,8 @@ namespace TelegramWebDAV.Database
                                     tg_message_id = @tgMessageId,
                                     tg_preview_message_id = @tgPreviewMessageId,
                                     inline_data = @inlineData,
-                                    updated_at = " + (lastModified.HasValue ? "@updatedAt" : "CURRENT_TIMESTAMP") + @"
+                                    updated_at = " + (lastModified.HasValue ? "@updatedAt" : "CURRENT_TIMESTAMP") +
+                                    (creationDate.HasValue ? ", created_at = @createdAt" : "") + @"
                                 WHERE id = @nodeId;";
 
                             updateCmd.CommandText = updateSql;
@@ -756,6 +757,10 @@ namespace TelegramWebDAV.Database
                             if (lastModified.HasValue)
                             {
                                 updateCmd.Parameters.AddWithValue("@updatedAt", lastModified.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
+                            }
+                            if (creationDate.HasValue)
+                            {
+                                updateCmd.Parameters.AddWithValue("@createdAt", creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss"));
                             }
                             updateCmd.ExecuteNonQuery();
                         }
