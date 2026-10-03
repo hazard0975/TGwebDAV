@@ -10,7 +10,7 @@ namespace TelegramWebDAV.UI
     /// </summary>
     public static class UIFactory
     {
-        public const int DefaultInnerWidth = 494;
+        public const int DefaultInnerWidth = 475;
 
         /// <summary>
         /// Создает рамку GroupBox с защитой от сжатия (MinimumSize) и компактными отступами.
