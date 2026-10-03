@@ -10,6 +10,8 @@ namespace TelegramWebDAV.UI
     /// </summary>
     public static class UIFactory
     {
+        public const int DefaultInnerWidth = 494;
+
         /// <summary>
         /// Создает рамку GroupBox с защитой от сжатия (MinimumSize) и компактными отступами.
         /// </summary>
@@ -24,7 +26,7 @@ namespace TelegramWebDAV.UI
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Font = UITheme.BaseFont,
                 Margin = UITheme.GroupBoxMargin,
-                Padding = new Padding(8, 6, 8, 8)
+                Padding = new Padding(8, 6, 8, 12)
             };
             return grp;
         }
@@ -32,7 +34,7 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает внутренний контейнер FlowLayoutPanel для GroupBox с направлением сверху вниз.
         /// </summary>
-        public static FlowLayoutPanel CreateVerticalContainer(int width = 474)
+        public static FlowLayoutPanel CreateVerticalContainer(int width = DefaultInnerWidth)
         {
             return new FlowLayoutPanel
             {
@@ -50,7 +52,7 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает строку параметра: компактная колонка названия слева + контрол сразу справа.
         /// </summary>
-        public static TableLayoutPanel CreateSettingRow(string labelText, Control control, int labelWidth = 140, int width = 474)
+        public static TableLayoutPanel CreateSettingRow(string labelText, Control control, int labelWidth = 140, int width = DefaultInnerWidth)
         {
             var tbl = new TableLayoutPanel
             {
@@ -88,7 +90,7 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает строку для текстового поля ввода на всю оставшуюся ширину.
         /// </summary>
-        public static TableLayoutPanel CreateInputRow(string labelText, Control control, int labelWidth = 90, int width = 474)
+        public static TableLayoutPanel CreateInputRow(string labelText, Control control, int labelWidth = 90, int width = DefaultInnerWidth)
         {
             var tbl = new TableLayoutPanel
             {
@@ -204,7 +206,7 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает информационную подпись или подсказку мелким приглушенным шрифтом.
         /// </summary>
-        public static Label CreateHintLabel(string text, int width = 474)
+        public static Label CreateHintLabel(string text, int width = DefaultInnerWidth)
         {
             return new Label
             {
@@ -219,20 +221,21 @@ namespace TelegramWebDAV.UI
         }
 
         /// <summary>
-        /// Создает панель кнопок с равномерным распределением колонок.
+        /// Создает панель кнопок с равномерным распределением колонок на всю ширину блока.
         /// </summary>
         public static TableLayoutPanel CreateActionRow(params Control[] buttons)
         {
             var tbl = new TableLayoutPanel
             {
-                Width = 474,
+                Width = DefaultInnerWidth,
                 Height = UITheme.ButtonHeightDefault + 4,
-                MinimumSize = new Size(474, UITheme.ButtonHeightDefault + 4),
+                MinimumSize = new Size(DefaultInnerWidth, UITheme.ButtonHeightDefault + 4),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = buttons.Length,
                 RowCount = 1,
-                Margin = new Padding(0, 2, 0, 2)
+                Margin = new Padding(0, 2, 0, 2),
+                Padding = Padding.Empty
             };
             float percentPerCol = 100f / buttons.Length;
             for (int i = 0; i < buttons.Length; i++)

@@ -323,7 +323,7 @@ namespace TelegramWebDAV.UI
                 Margin = new Padding(0, 0, 0, 6)
             };
 
-            _txtInput = new TextBox { Width = 474, Font = UITheme.BaseFont, Margin = new Padding(0, 0, 0, 8) };
+            _txtInput = new TextBox { Width = UIFactory.DefaultInnerWidth, Font = UITheme.BaseFont, Margin = new Padding(0, 0, 0, 8) };
 
             _btnAction = UIFactory.CreateButton("Отправить", async (s, e) => await HandleTelegramActionAsync(), width: 180);
             _btnLogout = UIFactory.CreateButton("Выйти из аккаунта", (s, e) => HandleTelegramLogout(), width: 160, foreColor: UITheme.TextDanger);
@@ -361,8 +361,8 @@ namespace TelegramWebDAV.UI
                        "3. EnableLinkedConnections = 1 — сквозная видимость дисков между сессиями пользователя и Администратора.\n" +
                        "4. ZoneMap (Местная интрасеть) — устранение системных предупреждений безопасности при копировании файлов.",
                 AutoSize = true,
-                Width = 465,
-                MaximumSize = new Size(465, 0),
+                Width = UIFactory.DefaultInnerWidth,
+                MaximumSize = new Size(UIFactory.DefaultInnerWidth, 0),
                 Font = UITheme.BaseFont,
                 Margin = new Padding(0, 2, 0, 10)
             };
@@ -370,7 +370,7 @@ namespace TelegramWebDAV.UI
             _lblRegCurrentState = new Label
             {
                 AutoSize = true,
-                MaximumSize = new Size(465, 0),
+                MaximumSize = new Size(UIFactory.DefaultInnerWidth, 0),
                 Font = UITheme.HeaderFont,
                 Margin = new Padding(0, 0, 0, 10)
             };
@@ -391,7 +391,7 @@ namespace TelegramWebDAV.UI
             };
             refreshRegState();
 
-            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: 465);
+            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: UIFactory.DefaultInnerWidth);
             _btnApplyRegFix.Margin = new Padding(0, 6, 0, 2);
             _btnApplyRegFix.Click += (s, e) =>
             {
