@@ -21,9 +21,10 @@ namespace TelegramWebDAV.UI
                 Width = width,
                 MinimumSize = new Size(width, minHeight),
                 AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Font = UITheme.BaseFont,
                 Margin = UITheme.GroupBoxMargin,
-                Padding = new Padding(12, 16, 12, 12)
+                Padding = new Padding(12, 18, 12, 12)
             };
             return grp;
         }
@@ -35,11 +36,12 @@ namespace TelegramWebDAV.UI
         {
             return new FlowLayoutPanel
             {
-                Dock = DockStyle.Top,
                 Width = width,
                 AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
+                Location = new Point(12, 18),
                 Margin = Padding.Empty,
                 Padding = Padding.Empty
             };
@@ -54,6 +56,7 @@ namespace TelegramWebDAV.UI
             {
                 Width = width,
                 AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 2,
                 RowCount = 1,
                 Margin = UITheme.RowMargin,
@@ -91,6 +94,7 @@ namespace TelegramWebDAV.UI
             {
                 Width = width,
                 AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 2,
                 RowCount = 1,
                 Margin = UITheme.RowMargin,
@@ -137,7 +141,7 @@ namespace TelegramWebDAV.UI
         }
 
         /// <summary>
-        /// Создает стандартную кнопку действия через единую фабрику.
+        /// Создает стандартную кнопку действия через единую фабрику с защитой от сплющивания (MinimumSize).
         /// </summary>
         public static Button CreateButton(
             string text, 
@@ -153,6 +157,7 @@ namespace TelegramWebDAV.UI
             {
                 Text = text,
                 Height = height,
+                MinimumSize = new Size(width ?? 0, height),
                 Font = isPrimary ? UITheme.BoldFont : UITheme.BaseFont,
                 UseVisualStyleBackColor = true,
                 AutoSize = autoSize,
@@ -221,6 +226,9 @@ namespace TelegramWebDAV.UI
             {
                 Width = UITheme.ContentWidth - 24,
                 Height = UITheme.ButtonHeightDefault + 4,
+                MinimumSize = new Size(UITheme.ContentWidth - 24, UITheme.ButtonHeightDefault + 4),
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = buttons.Length,
                 RowCount = 1,
                 Margin = new Padding(0, 2, 0, 2)
@@ -257,6 +265,7 @@ namespace TelegramWebDAV.UI
                 closeBtn.Dock = DockStyle.Fill;
                 closeBtn.Font = UITheme.BaseFont;
                 closeBtn.Height = 27;
+                closeBtn.MinimumSize = new Size(88, 27);
                 closeBtn.Margin = new Padding(4, 0, 0, 0);
                 pnl.Controls.Add(closeBtn, 2, 0);
             }
@@ -268,6 +277,7 @@ namespace TelegramWebDAV.UI
             saveBtn.Dock = DockStyle.Fill;
             saveBtn.Font = UITheme.BaseFont;
             saveBtn.Height = 27;
+            saveBtn.MinimumSize = new Size(88, 27);
             saveBtn.Margin = new Padding(0, 0, 4, 0);
             pnl.Controls.Add(saveBtn, 1, 0);
 

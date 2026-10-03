@@ -361,7 +361,7 @@ namespace TelegramWebDAV.UI
                        "3. EnableLinkedConnections = 1 — сквозная видимость дисков между сессиями пользователя и Администратора.\n" +
                        "4. ZoneMap (Местная интрасеть) — устранение системных предупреждений безопасности при копировании файлов.",
                 AutoSize = true,
-                Width = UITheme.ContentWidth - 24,
+                Width = 480,
                 Font = UITheme.BaseFont,
                 Margin = new Padding(0, 2, 0, 10)
             };
@@ -389,8 +389,8 @@ namespace TelegramWebDAV.UI
             };
             refreshRegState();
 
-            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: UITheme.ContentWidth - 24);
-            _btnApplyRegFix.Margin = new Padding(0, 8, 0, 8);
+            _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: 480);
+            _btnApplyRegFix.Margin = new Padding(0, 8, 0, 4);
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
