@@ -424,7 +424,10 @@ namespace TelegramWebDAV.Services
         {
             try
             {
-                _deletionSignal.Release();
+                if (_deletionSignal.CurrentCount == 0)
+                {
+                    _deletionSignal.Release();
+                }
             }
             catch { }
         }
@@ -434,60 +437,88 @@ namespace TelegramWebDAV.Services
             if (_deletionQueueCts != null) return;
             _deletionQueueCts = new System.Threading.CancellationTokenSource();
             Task.Run(() => ProcessDeletionQueueAsync(_deletionQueueCts.Token));
+            TriggerDeletionQueueProcessing();
         }
 
         private async Task ProcessDeletionQueueAsync(System.Threading.CancellationToken token)
         {
             while (!token.IsCancellationRequested)
             {
+                // 1. Ожидаем сигнала на удаление. Когда очередь пуста — поток спит без таймаутов и холостых опросов SQLite!
                 try
                 {
-                    if (IsAuthorized && _client != null && _repository != null)
-                    {
-                        var batch = _repository.GetPendingDeletions(limit: 100);
-                        if (batch.Count > 0)
-                        {
-                            AppLogger.Info("TelegramService", $"[DeletionQueue] Фоновое перманентное удаление {batch.Count} сообщений из Telegram...");
-                            bool success = await DeleteFilesFromTelegramAsync(batch);
-                            if (success)
-                            {
-                                _repository.RemovePendingDeletions(batch);
-                                AppLogger.Info("TelegramService", $"[DeletionQueue] Пакет из {batch.Count} сообщений успешно очищен из очереди.");
-                                continue;
-                            }
-                            else
-                            {
-                                AppLogger.Warn("TelegramService", $"[DeletionQueue] Не удалось завершить пакетное удаление сообщений из Telegram. Повтор через 5 секунд...");
-                                await Task.Delay(5000, token);
-                            }
-                        }
-                    }
+                    await _deletionSignal.WaitAsync(token);
                 }
                 catch (OperationCanceledException)
                 {
                     break;
                 }
-                catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
-                {
-                    AppLogger.Warn("TelegramService", $"[DeletionQueue] FloodWait при удалении сообщений: пауза {rpcEx.X} сек...");
-                    await Task.Delay(Math.Max(5000, rpcEx.X * 1000), token);
-                }
-                catch (Exception ex)
-                {
-                    AppLogger.Debug("TelegramService", $"[DeletionQueue] Ошибка при обработке очереди удаления: {ex.Message}");
-                    await Task.Delay(3000, token);
-                }
 
-                // Ожидаем сигнала нового удаления или фонового интервала в 30 секунд
-                try
+                // 2. Обрабатываем очередь до тех пор, пока она не опустеет
+                while (!token.IsCancellationRequested)
                 {
-                    using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(token);
-                    timeoutCts.CancelAfter(30000);
-                    await _deletionSignal.WaitAsync(timeoutCts.Token);
-                }
-                catch (OperationCanceledException) when (!token.IsCancellationRequested)
-                {
-                    // Истек 30-секундный таймер
+                    if (!IsAuthorized || _client == null || _repository == null)
+                    {
+                        // Не авторизованы — прерываем цикл, обработка возобновится при успешном входе
+                        break;
+                    }
+
+                    List<int> batch;
+                    try
+                    {
+                        batch = _repository.GetPendingDeletions(limit: 100);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("TelegramService", $"[DeletionQueue] Ошибка чтения очереди: {ex.Message}");
+                        await Task.Delay(3000, token);
+                        break;
+                    }
+
+                    // Если очередь пуста — выходим из внутреннего цикла и спим глубоким сном до следующего сигнала
+                    if (batch.Count == 0)
+                    {
+                        break;
+                    }
+
+                    AppLogger.Info("TelegramService", $"[DeletionQueue] Фоновое перманентное удаление {batch.Count} сообщений из Telegram...");
+
+                    bool success = false;
+                    try
+                    {
+                        success = await DeleteFilesFromTelegramAsync(batch);
+                    }
+                    catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                    {
+                        AppLogger.Warn("TelegramService", $"[DeletionQueue] FloodWait при удалении сообщений: пауза {rpcEx.X} сек...");
+                        await Task.Delay(Math.Max(5000, rpcEx.X * 1000), token);
+                        continue;
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("TelegramService", $"[DeletionQueue] Ошибка при обращении к Telegram: {ex.Message}");
+                        await Task.Delay(5000, token);
+                        continue;
+                    }
+
+                    if (success)
+                    {
+                        try
+                        {
+                            _repository.RemovePendingDeletions(batch);
+                            AppLogger.Info("TelegramService", $"[DeletionQueue] Пакет из {batch.Count} сообщений успешно очищен из очереди.");
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Debug("TelegramService", $"[DeletionQueue] Ошибка удаления из базы: {ex.Message}");
+                        }
+                    }
+                    else
+                    {
+                        // При неудаче в сети/биссекции повторяем попытку через 5 секунд только пока в очереди есть записи
+                        AppLogger.Warn("TelegramService", $"[DeletionQueue] Не удалось завершить пакетное удаление сообщений из Telegram. Повтор через 5 секунд...");
+                        await Task.Delay(5000, token);
+                    }
                 }
             }
         }
@@ -790,6 +821,7 @@ namespace TelegramWebDAV.Services
                         try
                         {
                             await GetStoragePeerAsync();
+                            TriggerDeletionQueueProcessing();
                         }
                         catch (Exception ex)
                         {
