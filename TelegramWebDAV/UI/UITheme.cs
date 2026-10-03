@@ -34,7 +34,7 @@ namespace TelegramWebDAV.UI
 
         // === Отступы (Margins & Paddings) ===
         public static readonly Padding GroupBoxMargin = new Padding(0, 0, 0, 10);
-        public static readonly Padding GroupBoxPadding = new Padding(10, 8, 10, 8);
+        public static readonly Padding GroupBoxPadding = new Padding(10, 8, 10, 10);
         public static readonly Padding RowMargin = new Padding(0, 2, 0, 4);
         public static readonly Padding ControlMargin = new Padding(0, 2, 0, 2);
     }
