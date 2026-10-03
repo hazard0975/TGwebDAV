@@ -194,7 +194,7 @@ namespace TelegramWebDAV.UI
             var lblDbStats = new Label
             {
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 10),
+                Margin = new Padding(0, 2, 0, 4),
                 Font = UITheme.SmallFont
             };
 
@@ -402,7 +402,7 @@ namespace TelegramWebDAV.UI
             refreshRegState();
 
             _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: UIFactory.DefaultInnerWidth);
-            _btnApplyRegFix.Margin = new Padding(0, 6, 0, 4);
+            _btnApplyRegFix.Margin = new Padding(0, 6, 0, 8);
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
@@ -488,7 +488,7 @@ namespace TelegramWebDAV.UI
             _lblLogStats = new Label
             {
                 AutoSize = true,
-                Margin = new Padding(0, 2, 0, 10),
+                Margin = new Padding(0, 2, 0, 4),
                 Font = UITheme.SmallFont
             };
 

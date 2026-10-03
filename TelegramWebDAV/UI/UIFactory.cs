@@ -15,13 +15,13 @@ namespace TelegramWebDAV.UI
         /// <summary>
         /// Создает рамку GroupBox с защитой от сжатия (MinimumSize) и компактными отступами.
         /// </summary>
-        public static GroupBox CreateGroupBox(string title, int width = UITheme.ContentWidth, int minHeight = 0)
+        public static GroupBox CreateGroupBox(string title, int width = UITheme.ContentWidth)
         {
             var grp = new GroupBox
             {
                 Text = title,
                 Width = width,
-                MinimumSize = new Size(width, minHeight),
+                MinimumSize = new Size(width, 0),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Font = UITheme.BaseFont,
@@ -45,7 +45,7 @@ namespace TelegramWebDAV.UI
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
                 Margin = Padding.Empty,
-                Padding = new Padding(0, 0, 0, 10)
+                Padding = new Padding(0, 0, 0, 3)
             };
         }
 
@@ -228,13 +228,13 @@ namespace TelegramWebDAV.UI
             var tbl = new TableLayoutPanel
             {
                 Width = DefaultInnerWidth,
-                Height = UITheme.ButtonHeightDefault + 8,
-                MinimumSize = new Size(DefaultInnerWidth, UITheme.ButtonHeightDefault + 8),
+                Height = UITheme.ButtonHeightDefault + 4,
+                MinimumSize = new Size(DefaultInnerWidth, UITheme.ButtonHeightDefault + 4),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = buttons.Length,
                 RowCount = 1,
-                Margin = new Padding(0, 4, 0, 8),
+                Margin = new Padding(0, 2, 0, 2),
                 Padding = Padding.Empty
             };
             float percentPerCol = 100f / buttons.Length;
@@ -244,7 +244,7 @@ namespace TelegramWebDAV.UI
                 buttons[i].Dock = DockStyle.Fill;
                 int leftMargin = i == 0 ? 0 : 3;
                 int rightMargin = i == buttons.Length - 1 ? 0 : 3;
-                buttons[i].Margin = new Padding(leftMargin, 2, rightMargin, 2);
+                buttons[i].Margin = new Padding(leftMargin, 1, rightMargin, 1);
                 tbl.Controls.Add(buttons[i], i, 0);
             }
             return tbl;
