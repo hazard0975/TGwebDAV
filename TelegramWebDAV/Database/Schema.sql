@@ -44,3 +44,12 @@ CREATE INDEX IF NOT EXISTS idx_nodes_parent_id ON nodes(parent_id);
 CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
 CREATE INDEX IF NOT EXISTS idx_nodes_is_deleted ON nodes(is_deleted);
 CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_id);
+
+-- Таблица персистентной очереди гарантированного удаления файлов из Telegram
+CREATE TABLE IF NOT EXISTS pending_deletions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tg_message_id INTEGER NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_message_id);
+

@@ -404,12 +404,92 @@ namespace TelegramWebDAV.Services
             _repository = repository;
             _currentSettings = _configManager.Load();
             StartCaptionQueueWorker();
+            StartDeletionQueueWorker();
         }
 
         public void SetRepository(NodeRepository repository)
         {
             _repository = repository;
             StartCaptionQueueWorker();
+            StartDeletionQueueWorker();
+        }
+
+        private System.Threading.CancellationTokenSource? _deletionQueueCts;
+        private readonly SemaphoreSlim _deletionSignal = new SemaphoreSlim(0, int.MaxValue);
+
+        /// <summary>
+        /// Сигнализирует фоновому воркеру об отправке новых сообщений в очередь перманентного удаления
+        /// </summary>
+        public void TriggerDeletionQueueProcessing()
+        {
+            try
+            {
+                _deletionSignal.Release();
+            }
+            catch { }
+        }
+
+        private void StartDeletionQueueWorker()
+        {
+            if (_deletionQueueCts != null) return;
+            _deletionQueueCts = new System.Threading.CancellationTokenSource();
+            Task.Run(() => ProcessDeletionQueueAsync(_deletionQueueCts.Token));
+        }
+
+        private async Task ProcessDeletionQueueAsync(System.Threading.CancellationToken token)
+        {
+            while (!token.IsCancellationRequested)
+            {
+                try
+                {
+                    if (IsAuthorized && _client != null && _repository != null)
+                    {
+                        var batch = _repository.GetPendingDeletions(limit: 100);
+                        if (batch.Count > 0)
+                        {
+                            AppLogger.Info("TelegramService", $"[DeletionQueue] Фоновое перманентное удаление {batch.Count} сообщений из Telegram...");
+                            bool success = await DeleteFilesFromTelegramAsync(batch);
+                            if (success)
+                            {
+                                _repository.RemovePendingDeletions(batch);
+                                AppLogger.Info("TelegramService", $"[DeletionQueue] Пакет из {batch.Count} сообщений успешно очищен из очереди.");
+                                continue;
+                            }
+                            else
+                            {
+                                AppLogger.Warn("TelegramService", $"[DeletionQueue] Не удалось завершить пакетное удаление сообщений из Telegram. Повтор через 5 секунд...");
+                                await Task.Delay(5000, token);
+                            }
+                        }
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                {
+                    AppLogger.Warn("TelegramService", $"[DeletionQueue] FloodWait при удалении сообщений: пауза {rpcEx.X} сек...");
+                    await Task.Delay(Math.Max(5000, rpcEx.X * 1000), token);
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("TelegramService", $"[DeletionQueue] Ошибка при обработке очереди удаления: {ex.Message}");
+                    await Task.Delay(3000, token);
+                }
+
+                // Ожидаем сигнала нового удаления или фонового интервала в 30 секунд
+                try
+                {
+                    using var timeoutCts = CancellationTokenSource.CreateLinkedTokenSource(token);
+                    timeoutCts.CancelAfter(30000);
+                    await _deletionSignal.WaitAsync(timeoutCts.Token);
+                }
+                catch (OperationCanceledException) when (!token.IsCancellationRequested)
+                {
+                    // Истек 30-секундный таймер
+                }
+            }
         }
 
         private void StartCaptionQueueWorker()
@@ -2285,6 +2365,13 @@ namespace TelegramWebDAV.Services
 
         public void Dispose()
         {
+            try
+            {
+                _deletionQueueCts?.Cancel();
+                _deletionQueueCts?.Dispose();
+                _deletionQueueCts = null;
+            }
+            catch { }
             try
             {
                 foreach (var cts in _activeFilePrefetches.Values)

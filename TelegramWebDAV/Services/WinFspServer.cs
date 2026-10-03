@@ -289,6 +289,7 @@ namespace TelegramWebDAV.Services
         private const int NT_STATUS_OBJECT_PATH_NOT_FOUND = unchecked((int)0xC000003A);
         private const int NT_STATUS_FILE_IS_A_DIRECTORY = unchecked((int)0xC00000BA);
         private const int NT_STATUS_DIRECTORY_NOT_EMPTY = unchecked((int)0xC0000101);
+        private const int NT_STATUS_CANNOT_DELETE = unchecked((int)0xC0000121);
 
         public TelegramWinFspFileSystem(
             ConfigManager configManager,
@@ -689,6 +690,14 @@ namespace TelegramWebDAV.Services
         public override int CanDelete(object fileNode, object fileDesc, string fileName)
         {
             var node = (Node)fileNode;
+
+            // Защита системной папки .Trash от удаления снаружи
+            if (_repository.IsTrashFolder(node.Id) || string.Equals(fileName.Trim('/', '\\'), ".Trash", StringComparison.OrdinalIgnoreCase))
+            {
+                AppLogger.Warn("WinFsp", "Попытка удаления системной папки '.Trash' отклонена: корзина защищена от удаления.");
+                return NT_STATUS_CANNOT_DELETE;
+            }
+
             if (node.IsDir)
             {
                 var children = _repository.GetChildren(node.Id);
@@ -752,8 +761,54 @@ namespace TelegramWebDAV.Services
 
             if ((flags & CleanupDelete) != 0 || ctx.DeleteOnClose)
             {
-                AppLogger.Info("WinFsp", $"Удаление элемента '{node.Name}' (ID {node.Id})...");
-                _repository.SoftDeleteNode(node.Id);
+                // Защита от удаления системной папки корзины
+                if (_repository.IsTrashFolder(node.Id) || string.Equals(fileName.Trim('/', '\\'), ".Trash", StringComparison.OrdinalIgnoreCase))
+                {
+                    AppLogger.Warn("WinFsp", "Отклонено удаление системной папки корзины '.Trash'.");
+                    ctx.Dispose();
+                    return;
+                }
+
+                // Проверяем, находится ли элемент уже в корзине (.Trash) или помечен ли он как удаленный
+                bool isPermanent = node.IsDeleted || _repository.IsNodeInTrash(node.Id);
+
+                if (isPermanent)
+                {
+                    AppLogger.Info("WinFsp", $"Перманентное удаление элемента '{node.Name}' (ID {node.Id}) из корзины...");
+                    var subtree = _repository.GetSubtreeNodes(node.Id);
+                    var dbNodeIds = new List<int>();
+                    var tgMessageIds = new List<int>();
+
+                    foreach (var n in subtree)
+                    {
+                        dbNodeIds.Add(n.Id);
+                        if (n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
+                        {
+                            tgMessageIds.Add(n.TgMessageId.Value);
+                        }
+                        if (n.TgPreviewMessageId.HasValue && n.TgPreviewMessageId.Value > 0)
+                        {
+                            tgMessageIds.Add(n.TgPreviewMessageId.Value);
+                        }
+                    }
+
+                    // Атомарно помещаем сообщения в гарантированную очередь удаления и удаляем узлы из базы
+                    _repository.EnqueuePermanentDeletion(tgMessageIds, dbNodeIds);
+                    AppLogger.Info("WinFsp", $"Удалено {dbNodeIds.Count} узлов из базы; {tgMessageIds.Count} сообщений отправлено в очередь удаления Telegram.");
+
+                    if (tgMessageIds.Count > 0)
+                    {
+                        _telegramService.TriggerDeletionQueueProcessing();
+                    }
+
+                    _repository.ScheduleVacuum(3000);
+                }
+                else
+                {
+                    AppLogger.Info("WinFsp", $"Перемещение элемента '{node.Name}' (ID {node.Id}) в корзину (.Trash)...");
+                    _repository.SoftDeleteNode(node.Id);
+                }
+
                 ctx.Dispose();
                 return;
             }

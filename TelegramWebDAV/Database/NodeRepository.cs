@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Data.Sqlite;
 using TelegramWebDAV.Models;
 using TelegramWebDAV.Services;
@@ -444,6 +445,13 @@ namespace TelegramWebDAV.Database
             var node = GetNodeById(nodeId);
             if (node == null) return;
 
+            // Защита: если узел уже удален или находится в корзине, повторное мягкое удаление не требуется
+            if (node.IsDeleted || IsNodeInTrash(node.Id))
+            {
+                AppLogger.Warn("NodeRepository", $"Попытка мягкого удаления узла ID {node.Id} ('{node.Name}'), который уже находится в корзине. Операция пропущена.");
+                return;
+            }
+
             var root = GetRootNode();
             int originalParentId = node.ParentId ?? root?.Id ?? 1;
 
@@ -596,6 +604,145 @@ namespace TelegramWebDAV.Database
                         foreach (var id in nodeIds)
                         {
                             idParam.Value = id;
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Рекурсивно собирает узел и всех его потомков (всю ветку поддерева)
+        /// </summary>
+        public List<Node> GetSubtreeNodes(int rootNodeId)
+        {
+            var result = new List<Node>();
+            var rootNode = GetNodeById(rootNodeId);
+            if (rootNode == null) return result;
+
+            result.Add(rootNode);
+            if (rootNode.IsDir)
+            {
+                CollectSubtreeRecursive(rootNode.Id, result);
+            }
+            return result;
+        }
+
+        private void CollectSubtreeRecursive(int parentId, List<Node> result)
+        {
+            var children = GetChildren(parentId);
+            foreach (var child in children)
+            {
+                result.Add(child);
+                if (child.IsDir)
+                {
+                    CollectSubtreeRecursive(child.Id, result);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Атомарно помещает ID сообщений Telegram в персистентную очередь pending_deletions
+        /// и удаляет сами узлы из таблицы nodes в единой транзакции SQLite.
+        /// Гарантирует мгновенное исчезновение файлов из файловой системы и надежное фоновое удаление из Telegram.
+        /// </summary>
+        public void EnqueuePermanentDeletion(List<int> tgMessageIds, List<int> dbNodeIds)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    if (tgMessageIds != null && tgMessageIds.Count > 0)
+                    {
+                        var uniqueMsgIds = tgMessageIds.Where(id => id > 0).Distinct().ToList();
+                        using (var insertCmd = connection.CreateCommand())
+                        {
+                            insertCmd.Transaction = transaction;
+                            insertCmd.CommandText = "INSERT INTO pending_deletions (tg_message_id) VALUES (@msgId);";
+                            var msgIdParam = insertCmd.Parameters.Add("@msgId", SqliteType.Integer);
+
+                            foreach (var msgId in uniqueMsgIds)
+                            {
+                                msgIdParam.Value = msgId;
+                                insertCmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+
+                    if (dbNodeIds != null && dbNodeIds.Count > 0)
+                    {
+                        using (var deleteCmd = connection.CreateCommand())
+                        {
+                            deleteCmd.Transaction = transaction;
+                            deleteCmd.CommandText = "DELETE FROM nodes WHERE id = @id;";
+                            var idParam = deleteCmd.Parameters.Add("@id", SqliteType.Integer);
+
+                            foreach (var id in dbNodeIds)
+                            {
+                                idParam.Value = id;
+                                deleteCmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Получает порцию сообщений Telegram, ожидающих перманентного удаления
+        /// </summary>
+        public List<int> GetPendingDeletions(int limit = 100)
+        {
+            var result = new List<int>();
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT DISTINCT tg_message_id FROM pending_deletions LIMIT @limit;";
+                command.Parameters.AddWithValue("@limit", limit);
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(reader.GetInt32(0));
+                    }
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Удаляет успешно очищенные ID сообщений из таблицы очереди pending_deletions
+        /// </summary>
+        public void RemovePendingDeletions(List<int> tgMessageIds)
+        {
+            if (tgMessageIds == null || tgMessageIds.Count == 0) return;
+            using (var connection = _dbManager.GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.Transaction = transaction;
+                        command.CommandText = "DELETE FROM pending_deletions WHERE tg_message_id = @msgId;";
+                        var param = command.Parameters.Add("@msgId", SqliteType.Integer);
+                        foreach (var id in tgMessageIds)
+                        {
+                            param.Value = id;
                             command.ExecuteNonQuery();
                         }
                     }

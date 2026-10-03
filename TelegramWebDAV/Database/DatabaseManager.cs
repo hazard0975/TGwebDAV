@@ -116,6 +116,13 @@ CREATE TABLE IF NOT EXISTS pending_caption_updates (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     status INTEGER NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS pending_deletions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tg_message_id INTEGER NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_message_id);
 ";
 
         private void EnsureColumnsExist(SqliteConnection connection)
@@ -134,6 +141,20 @@ CREATE TABLE IF NOT EXISTS pending_caption_updates (
                     );
                 ";
                 createTableCmd.ExecuteNonQuery();
+            }
+
+            // Гарантируем наличие таблицы pending_deletions в существующих БД
+            using (var createDeletionsTableCmd = connection.CreateCommand())
+            {
+                createDeletionsTableCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS pending_deletions (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        tg_message_id INTEGER NOT NULL,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    );
+                    CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_message_id);
+                ";
+                createDeletionsTableCmd.ExecuteNonQuery();
             }
 
             var existingColumns = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);

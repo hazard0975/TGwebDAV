@@ -553,7 +553,7 @@ namespace TelegramWebDAV.Server
             return Task.CompletedTask;
         }
 
-        public static async Task HandleDeleteAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService telegramService)
+        public static Task HandleDeleteAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService telegramService)
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
@@ -562,7 +562,7 @@ namespace TelegramWebDAV.Server
             if (node == null)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                return;
+                return Task.CompletedTask;
             }
 
             // Защита системной папки .Trash от удаления снаружи (например, при Ctrl+A в корне):
@@ -571,7 +571,7 @@ namespace TelegramWebDAV.Server
             {
                 AppLogger.Warn("WebDAV", "Запрос на удаление папки '.Trash' отклонен: системная корзина защищена от удаления.");
                 context.Response.StatusCode = (int)HttpStatusCode.NoContent;
-                return;
+                return Task.CompletedTask;
             }
 
             // Проверяем, находится ли файл уже в корзине или помечен ли он как удаленный.
@@ -580,9 +580,8 @@ namespace TelegramWebDAV.Server
 
             if (isPermanent)
             {
-                // По рекурсии получаем все дочерние узлы, если это папка, чтобы очистить их файлы в Telegram
-                var nodesToDelete = new List<Models.Node> { node };
-                GetNodesRecursive(node, repository, nodesToDelete);
+                // По рекурсии получаем все узлы поддерева
+                var nodesToDelete = repository.GetSubtreeNodes(node.Id);
 
                 // Собираем все непустые ID сообщений в Telegram для пакетного удаления
                 var tgMessageIds = new List<int>();
@@ -601,20 +600,14 @@ namespace TelegramWebDAV.Server
                     }
                 }
 
+                // Атомарно помещаем сообщения в гарантированную очередь удаления и удаляем узлы из базы
+                repository.EnqueuePermanentDeletion(tgMessageIds, dbNodeIds);
+                AppLogger.Info("WebDAV", $"Перманентное удаление '{node.Name}': удалено {dbNodeIds.Count} узлов из базы, {tgMessageIds.Count} сообщений отправлено в очередь очистки Telegram.");
+
                 if (tgMessageIds.Count > 0)
                 {
-                    AppLogger.Info("WebDAV", $"Перманентное удаление: сначала пакетно удаляем {tgMessageIds.Count} сообщений из Telegram...");
-                    bool tgSuccess = await telegramService.DeleteFilesFromTelegramAsync(tgMessageIds);
-                    if (!tgSuccess)
-                    {
-                        AppLogger.Error("WebDAV", "Сбой при удалении файлов из Telegram. Отменяем удаление из базы данных, чтобы избежать расхождений.");
-                        context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                        return;
-                    }
+                    telegramService.TriggerDeletionQueueProcessing();
                 }
-
-                repository.PermanentDeleteNodes(dbNodeIds);
-                AppLogger.Info("WebDAV", $"Успешно удалено {dbNodeIds.Count} узлов из базы данных навсегда.");
 
                 // Автоматическое фоновое сжатие базы SQLite с дебаунсом (через 3 сек спокойствия)
                 repository.ScheduleVacuum(3000);
@@ -627,20 +620,7 @@ namespace TelegramWebDAV.Server
             }
 
             context.Response.StatusCode = (int)HttpStatusCode.NoContent;
-        }
-
-        private static void GetNodesRecursive(Models.Node parentNode, NodeRepository repository, List<Models.Node> result)
-        {
-            if (!parentNode.IsDir) return;
-            var children = repository.GetChildren(parentNode.Id);
-            foreach (var child in children)
-            {
-                result.Add(child);
-                if (child.IsDir)
-                {
-                    GetNodesRecursive(child, repository, result);
-                }
-            }
+            return Task.CompletedTask;
         }
 
         public static Task HandleMoveAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService? telegramService = null)

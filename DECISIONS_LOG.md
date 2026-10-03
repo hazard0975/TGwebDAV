@@ -538,6 +538,38 @@
 2. В `Cleanup` перед запуском асинхронного таска выгрузки фиксируются `targetUpdatedAt = node.UpdatedAt` и `targetCreatedAt = node.CreatedAt`, которые передаются в `CreateOrUpdateFile` и сохраняются в `Node` без принудительной перезаписи на `DateTime.UtcNow`.
 3. В `NodeRepository.CreateOrUpdateFile` добавлена поддержка обновления `created_at` наряду с `updated_at` при заполнении 0-байтовых плейсхолдеров от Проводника.
 
+---
+
+## 17. Гарантированная перманентная очистка файлов из Telegram (Transactional Deletion Queue / Outbox Pattern)
+
+### Проблема:
+При удалении папок и файлов из корзины `.Trash` через виртуальный диск WinFsp в Telegram ничего не удалялось (сообщения оставались в канале-хранилище, а в логах Telegram была тишина).
+
+### Первопричина (Root Cause Analysis):
+1. **Отсутствие перманентного удаления в драйвере WinFsp**:
+   В методе `WinFspServer.Cleanup` при удалении вызывался исключительно `_repository.SoftDeleteNode(node.Id)`. В коде вообще отсутствовала проверка нахождения в корзине (`node.IsDeleted` или `IsNodeInTrash`), вызов `_telegramService.DeleteFilesFromTelegramAsync` и физическое удаление `_repository.PermanentDeleteNodes`.
+2. **Паразитное удаление родительской папки без дочерних файлов**:
+   Когда `SoftDeleteNode` вызывался для элемента, который уже лежал в `.Trash`, SQL-запрос `SELECT id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_dir = 1 AND is_deleted = 1` находил саму эту папку. В итоге выполнялся `DELETE FROM nodes WHERE id = @nodeId` только для самой папки, оставляя все её вложенные файлы сиротами (`orphans`) в SQLite и нетронутыми в канале Telegram.
+3. **Отсутствие защиты `.Trash` в WinFsp `CanDelete`**:
+   Системная папка `.Trash` не проверялась на запрет удаления, что позволяло Проводнику попытаться удалить саму корзину.
+
+### Архитектурное решение (Transactional Deletion Queue):
+1. **Атомарная транзакция в SQLite (Outbox Pattern)**:
+   - Создана таблица `pending_deletions (id, tg_message_id, created_at)`.
+   - Метод `_repository.EnqueuePermanentDeletion(tgMessageIds, dbNodeIds)` в единой транзакции переносит все `tg_message_id` и `tg_preview_message_id` в очередь `pending_deletions` и физически удаляет записи из таблицы `nodes`.
+   - Для Проводника Windows и файловой системы операция завершается мгновенно (1 мс) без блокировок интерфейса.
+2. **Фоновый воркер `ProcessDeletionQueueAsync` в `TelegramService`**:
+   - Реализован фоновый процесс с межпоточным сигналом `_deletionSignal` и периодическим таймером (30 секунд).
+   - Пакетно удаляет сообщения из Telegram (до 100 за запрос с биссекцией).
+   - После подтверждения удаления из Telegram очищает записи из таблицы `pending_deletions`.
+   - При сбое сети или `FLOOD_WAIT` записи сохраняются в базе и автоматически дочищаются при восстановлении связи или следующем запуске приложения.
+3. **Рекурсивный сбор дерева (`GetSubtreeNodes`)**:
+   - `NodeRepository.GetSubtreeNodes(rootId)` полностью обходит дерево каталога и собирает все вложенные файлы и папки, исключая появление потерянных записей.
+4. **Защитные барьеры**:
+   - `WinFspServer.CanDelete`: возврат `NT_STATUS_CANNOT_DELETE` при попытке удалить `.Trash`.
+   - `NodeRepository.SoftDeleteNode`: guard clause `if (node.IsDeleted || IsNodeInTrash(node.Id)) return;` защищает дерево базы данных от повреждений.
+   - Унифицирована логика для обоих протоколов доступа (WinFsp и WebDAV).
+
 
 
 
