@@ -269,7 +269,13 @@ namespace TelegramWebDAV.UI
             pnlDbInner.Controls.AddRange(new Control[] { lblDbStats, rowDbButtons });
             grpDb.Controls.Add(pnlDbInner);
 
-            pnlGeneral.Controls.AddRange(new Control[] { grpServerDrive, grpIntegration, grpCache, grpDb });
+            pnlGeneral.Controls.AddRange(new Control[] { 
+                grpServerDrive, 
+                grpIntegration, 
+                grpCache, 
+                grpDb, 
+                new Panel { Height = 10, Width = 10, Margin = Padding.Empty } 
+            });
             _tabGeneral.Controls.Add(pnlGeneral);
 
             // =========================================================================
@@ -334,7 +340,11 @@ namespace TelegramWebDAV.UI
             pnlTgSessionInner.Controls.AddRange(new Control[] { _lblStatus, _lblInstruction, _txtInput, pnlTgButtons });
             grpTelegramSession.Controls.Add(pnlTgSessionInner);
 
-            pnlTg.Controls.AddRange(new Control[] { grpTelegramApi, grpTelegramSession });
+            pnlTg.Controls.AddRange(new Control[] { 
+                grpTelegramApi, 
+                grpTelegramSession, 
+                new Panel { Height = 10, Width = 10, Margin = Padding.Empty } 
+            });
             _tabTelegram.Controls.Add(pnlTg);
 
             // =========================================================================
@@ -392,7 +402,7 @@ namespace TelegramWebDAV.UI
             refreshRegState();
 
             _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: UIFactory.DefaultInnerWidth);
-            _btnApplyRegFix.Margin = new Padding(0, 6, 0, 2);
+            _btnApplyRegFix.Margin = new Padding(0, 6, 0, 8);
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
@@ -427,7 +437,10 @@ namespace TelegramWebDAV.UI
             pnlRegInner.Controls.AddRange(new Control[] { _lblRegStatus, _lblRegCurrentState, _btnApplyRegFix });
             grpRegistry.Controls.Add(pnlRegInner);
 
-            pnlReg.Controls.Add(grpRegistry);
+            pnlReg.Controls.AddRange(new Control[] { 
+                grpRegistry, 
+                new Panel { Height = 10, Width = 10, Margin = Padding.Empty } 
+            });
             _tabRegistry.Controls.Add(pnlReg);
 
             // =========================================================================
@@ -562,7 +575,12 @@ namespace TelegramWebDAV.UI
             pnlStatsInner.Controls.AddRange(new Control[] { _lblLogStats, rowLogActions });
             grpStats.Controls.Add(pnlStatsInner);
 
-            pnlLogs.Controls.AddRange(new Control[] { grpLogLevels, grpRotation, grpStats });
+            pnlLogs.Controls.AddRange(new Control[] { 
+                grpLogLevels, 
+                grpRotation, 
+                grpStats, 
+                new Panel { Height = 10, Width = 10, Margin = Padding.Empty } 
+            });
             _tabLogs.Controls.Add(pnlLogs);
 
             _tabControl.TabPages.AddRange(new TabPage[] { _tabGeneral, _tabTelegram, _tabRegistry, _tabLogs });

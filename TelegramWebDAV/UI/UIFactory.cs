@@ -26,13 +26,13 @@ namespace TelegramWebDAV.UI
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Font = UITheme.BaseFont,
                 Margin = UITheme.GroupBoxMargin,
-                Padding = new Padding(8, 6, 8, 12)
+                Padding = new Padding(8, 6, 8, 8)
             };
             return grp;
         }
 
         /// <summary>
-        /// Создает внутренний контейнер FlowLayoutPanel для GroupBox с направлением сверху вниз.
+        /// Создает внутренний контейнер FlowLayoutPanel для GroupBox с направлением сверху вниз и гарантированным нижним зазором.
         /// </summary>
         public static FlowLayoutPanel CreateVerticalContainer(int width = DefaultInnerWidth)
         {
@@ -45,7 +45,7 @@ namespace TelegramWebDAV.UI
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
                 Margin = Padding.Empty,
-                Padding = Padding.Empty
+                Padding = new Padding(0, 0, 0, 8)
             };
         }
 
@@ -228,13 +228,13 @@ namespace TelegramWebDAV.UI
             var tbl = new TableLayoutPanel
             {
                 Width = DefaultInnerWidth,
-                Height = UITheme.ButtonHeightDefault + 4,
-                MinimumSize = new Size(DefaultInnerWidth, UITheme.ButtonHeightDefault + 4),
+                Height = UITheme.ButtonHeightDefault + 6,
+                MinimumSize = new Size(DefaultInnerWidth, UITheme.ButtonHeightDefault + 6),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = buttons.Length,
                 RowCount = 1,
-                Margin = new Padding(0, 2, 0, 2),
+                Margin = new Padding(0, 2, 0, 6),
                 Padding = Padding.Empty
             };
             float percentPerCol = 100f / buttons.Length;
@@ -248,17 +248,17 @@ namespace TelegramWebDAV.UI
         }
 
         /// <summary>
-        /// Создает нижнюю фиксированную панель окна со строго одинаковыми кнопками стандартного размера (88x27).
+        /// Создает нижнюю фиксированную панель окна с компактным центрированием кнопок (высота 40px).
         /// </summary>
         public static TableLayoutPanel CreateBottomBar(Button saveBtn, Button? closeBtn = null)
         {
             var pnl = new TableLayoutPanel
             {
                 Dock = DockStyle.Bottom,
-                Height = 46,
+                Height = 40,
                 ColumnCount = 3,
                 RowCount = 1,
-                Padding = new Padding(12, 9, 22, 9),
+                Padding = new Padding(12, 6, 22, 6),
                 BackColor = SystemColors.Control
             };
             pnl.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100f));
