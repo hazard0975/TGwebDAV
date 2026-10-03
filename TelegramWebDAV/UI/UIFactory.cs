@@ -13,26 +13,25 @@ namespace TelegramWebDAV.UI
         public const int DefaultInnerWidth = 485;
 
         /// <summary>
-        /// Создает рамку GroupBox с защитой от сжатия (MinimumSize) и компактными отступами.
+        /// Создает рамку GroupBox с компактными отступами и естественным расчетом высоты без искусственных подвалов.
         /// </summary>
-        public static GroupBox CreateGroupBox(string title, int width = UITheme.ContentWidth, int minHeight = 0)
+        public static GroupBox CreateGroupBox(string title, int width = UITheme.ContentWidth)
         {
             var grp = new GroupBox
             {
                 Text = title,
                 Width = width,
-                MinimumSize = new Size(width, minHeight),
                 AutoSize = true,
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Font = UITheme.BaseFont,
                 Margin = UITheme.GroupBoxMargin,
-                Padding = new Padding(8, 6, 8, 8)
+                Padding = new Padding(8, 6, 8, 6)
             };
             return grp;
         }
 
         /// <summary>
-        /// Создает внутренний контейнер FlowLayoutPanel для GroupBox с направлением сверху вниз и гарантированным нижним зазором.
+        /// Создает внутренний контейнер FlowLayoutPanel для GroupBox с направлением сверху вниз.
         /// </summary>
         public static FlowLayoutPanel CreateVerticalContainer(int width = DefaultInnerWidth)
         {
@@ -45,7 +44,7 @@ namespace TelegramWebDAV.UI
                 FlowDirection = FlowDirection.TopDown,
                 WrapContents = false,
                 Margin = Padding.Empty,
-                Padding = new Padding(0, 0, 0, 8)
+                Padding = Padding.Empty
             };
         }
 
@@ -234,7 +233,7 @@ namespace TelegramWebDAV.UI
                 AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = buttons.Length,
                 RowCount = 1,
-                Margin = new Padding(0, 2, 0, 6),
+                Margin = new Padding(0, 2, 0, 4),
                 Padding = Padding.Empty
             };
             float percentPerCol = 100f / buttons.Length;

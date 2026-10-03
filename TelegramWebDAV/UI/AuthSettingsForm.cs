@@ -402,7 +402,7 @@ namespace TelegramWebDAV.UI
             refreshRegState();
 
             _btnApplyRegFix = UIFactory.CreateButton("🛡 Применить комплексный фикс реестра (с запросом UAC)", null, height: 34, width: UIFactory.DefaultInnerWidth);
-            _btnApplyRegFix.Margin = new Padding(0, 6, 0, 8);
+            _btnApplyRegFix.Margin = new Padding(0, 6, 0, 4);
             _btnApplyRegFix.Click += (s, e) =>
             {
                 _btnApplyRegFix.Enabled = false;
@@ -457,7 +457,7 @@ namespace TelegramWebDAV.UI
             };
 
             // 1. Рамка: Уровни логирования
-            var grpLogLevels = UIFactory.CreateGroupBox("Уровни логирования", minHeight: 110);
+            var grpLogLevels = UIFactory.CreateGroupBox("Уровни логирования");
             var pnlLogLevels = UIFactory.CreateVerticalContainer();
 
             _chkLogDebug = UIFactory.CreateCheckBox("Debug — подробная техническая отладка (COM-интерфейсы, внутренние вызовы)", _settings.Logging.EnableDebug);
@@ -469,7 +469,7 @@ namespace TelegramWebDAV.UI
             grpLogLevels.Controls.Add(pnlLogLevels);
 
             // 2. Рамка: Параметры хранения и ротации
-            var grpRotation = UIFactory.CreateGroupBox("Параметры хранения и ротации лог-файлов", minHeight: 80);
+            var grpRotation = UIFactory.CreateGroupBox("Параметры хранения и ротации лог-файлов");
             var pnlRotation = UIFactory.CreateVerticalContainer();
 
             _numMaxLogMb = UIFactory.CreateNumericInput(1, 50, Math.Clamp(_settings.Logging.MaxLogFileSizeMb > 0 ? _settings.Logging.MaxLogFileSizeMb : 5, 1, 50), 90);
@@ -482,7 +482,7 @@ namespace TelegramWebDAV.UI
             grpRotation.Controls.Add(pnlRotation);
 
             // 3. Рамка: Текущая информация и действия
-            var grpStats = UIFactory.CreateGroupBox("Текущая информация и действия", minHeight: 130);
+            var grpStats = UIFactory.CreateGroupBox("Текущая информация и действия");
             var pnlStatsInner = UIFactory.CreateVerticalContainer();
 
             _lblLogStats = new Label
