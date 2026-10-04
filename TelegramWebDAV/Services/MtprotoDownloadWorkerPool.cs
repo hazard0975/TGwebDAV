@@ -35,6 +35,7 @@ namespace TelegramWebDAV.Services
 
         // Единая таблица активных задач на скачивание чанков для 100% дедупликации: ключ = "{messageId}:{chunkOffset}"
         private readonly ConcurrentDictionary<string, Task<byte[]?>> _inFlightChunks = new();
+        private readonly ConcurrentDictionary<string, ChunkDownloadRequest> _activeRequests = new();
 
         public class ChunkDownloadRequest
         {
@@ -123,6 +124,16 @@ namespace TelegramWebDAV.Services
             // Проверяем, есть ли чанк уже в очереди или в процессе загрузки
             if (_inFlightChunks.TryGetValue(key, out var existingTask))
             {
+                if (isHighPriority && _activeRequests.TryGetValue(key, out var activeReq))
+                {
+                    activeReq.IsCancelled = false;
+                    if (!activeReq.IsHighPriority)
+                    {
+                        activeReq.IsHighPriority = true;
+                        _highPriorityQueue.Enqueue(activeReq);
+                        _workSignal.Release();
+                    }
+                }
                 return existingTask;
             }
 
@@ -145,6 +156,8 @@ namespace TelegramWebDAV.Services
                     OnChunkReceived = onChunkReceived,
                     OnProgress = onProgress
                 };
+
+                _activeRequests[key] = request;
 
                 if (isHighPriority)
                 {
@@ -211,6 +224,7 @@ namespace TelegramWebDAV.Services
                 if (request.IsCancelled || token.IsCancellationRequested)
                 {
                     _inFlightChunks.TryRemove(key, out _);
+                    _activeRequests.TryRemove(key, out _);
                     request.Completion.TrySetResult(null);
                     continue;
                 }
@@ -232,6 +246,7 @@ namespace TelegramWebDAV.Services
                 if (existingBytes != null && existingBytes.Length == expectedChunkSize)
                 {
                     _inFlightChunks.TryRemove(key, out _);
+                    _activeRequests.TryRemove(key, out _);
                     request.OnChunkReceived?.Invoke(existingBytes, request.ChunkOffset);
                     request.Completion.TrySetResult(existingBytes);
                     return;
@@ -311,6 +326,7 @@ namespace TelegramWebDAV.Services
                         AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{request.ChunkIndex}/{totalFileChunks} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
 
                         _inFlightChunks.TryRemove(key, out _);
+                        _activeRequests.TryRemove(key, out _);
                         request.OnChunkReceived?.Invoke(finalChunkBytes, request.ChunkOffset);
                         request.OnProgress?.Invoke(receivedLen, request.FileTotalSize);
                         request.Completion.TrySetResult(finalChunkBytes);
@@ -385,6 +401,7 @@ namespace TelegramWebDAV.Services
             if (!completedSuccessfully)
             {
                 _inFlightChunks.TryRemove(key, out _);
+                _activeRequests.TryRemove(key, out _);
                 request.Completion.TrySetResult(null);
             }
         }
