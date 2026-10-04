@@ -1,225 +1,179 @@
-[2026-10-02 18:46:34.635] [INFO ] [WinFsp] Открыт каталог: '/тест7' (ID 871)
-[2026-10-02 18:46:34.669] [INFO ] [WinFsp] Создан новый каталог: '/тест7/image' (ID 1559)
-[2026-10-02 18:46:34.680] [INFO ] [WinFsp] Создан файл для записи: '/тест7/image/DSC_0270 __ (6 mb) __.JPG' (ID 1560)
-[2026-10-02 18:46:34.689] [INFO ] [WinFsp] Начало фоновой отправки файла 'DSC_0270 __ (6 mb) __.JPG' (6195435 байт) в Telegram (подпись: '/тест7/image/DSC_0270 __ (6 mb) ___v1.JPG')...
-[2026-10-02 18:46:34.692] [INFO ] [WinFsp] Создан файл для записи: '/тест7/image/IMG_20201018_131419 (12 mb).jpg' (ID 1561)
-[2026-10-02 18:46:34.703] [INFO ] [WinFsp] Начало фоновой отправки файла 'IMG_20201018_131419 (12 mb).jpg' (12414274 байт) в Telegram (подпись: '/тест7/image/IMG_20201018_131419 (12 mb)_v1.jpg')...
-[2026-10-02 18:46:35.087] [INFO ] [TelegramService] Прямая потоковая передача файла 'DSC_0270 __ (6 mb) __.JPG' (6195435 байт) в Telegram...
-[2026-10-02 18:46:35.092] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:34Z (svc)
-[2026-10-02 18:46:35.093] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #E5B3
-[2026-10-02 18:46:35.093] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:35.101] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C5F7
-[2026-10-02 18:46:35.365] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6AA3
-[2026-10-02 18:46:35.373] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #061F
-[2026-10-02 18:46:35.380] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.380] [DEBUG] [WTelegram]              → Boolean                               #E5B3
-[2026-10-02 18:46:35.382] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Upload] для DSC_0270 __ (6 mb) __.JPG (524288/6195435)
-[2026-10-02 18:46:35.437] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C26B
-[2026-10-02 18:46:35.452] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.452] [DEBUG] [WTelegram]              → Boolean                               #C5F7
-[2026-10-02 18:46:35.465] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5877
-[2026-10-02 18:46:35.471] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #51EB
-[2026-10-02 18:46:35.477] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #8037
-[2026-10-02 18:46:35.489] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.489] [DEBUG] [WTelegram]              → Boolean                               #6AA3
-[2026-10-02 18:46:35.492] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E8BF
-[2026-10-02 18:46:35.508] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.508] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EE1F
-[2026-10-02 18:46:35.508] [DEBUG] [WTelegram]              → Boolean                               #061F
-[2026-10-02 18:46:35.521] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.521] [DEBUG] [WTelegram]              → Boolean                               #C26B
-[2026-10-02 18:46:35.535] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:34Z (svc)
-[2026-10-02 18:46:35.535] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B21B
-[2026-10-02 18:46:35.536] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:35.551] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.551] [DEBUG] [WTelegram]              → Boolean                               #5877
-[2026-10-02 18:46:35.555] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:34Z (svc)
-[2026-10-02 18:46:35.555] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #CFFB
-[2026-10-02 18:46:35.555] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:35.566] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.566] [DEBUG] [WTelegram]              → Boolean                               #51EB
-[2026-10-02 18:46:35.593] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.593] [DEBUG] [WTelegram]              → Boolean                               #8037
-[2026-10-02 18:46:35.611] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.611] [DEBUG] [WTelegram]              → Boolean                               #E8BF
-[2026-10-02 18:46:35.632] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:34Z
-[2026-10-02 18:46:35.632] [DEBUG] [WTelegram]              → Boolean                               #EE1F
-[2026-10-02 18:46:35.656] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:35.656] [DEBUG] [WTelegram]              → Boolean                               #B21B
-[2026-10-02 18:46:35.677] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:35.677] [DEBUG] [WTelegram]              → Boolean                               #CFFB
-[2026-10-02 18:46:35.678] [INFO ] [TelegramService] Файл 'DSC_0270 __ (6 mb) __.JPG' загружен в MTProto, финализация сообщения в канале (подпись: '/тест7/image/DSC_0270 __ (6 mb) ___v1.JPG')...
-[2026-10-02 18:46:35.678] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:35.679] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #30E0
-[2026-10-02 18:46:35.679] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:35.687] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E048
-[2026-10-02 18:46:35.755] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:35.756] [DEBUG] [WTelegram]             → RpcResult                              2026-10-02 15:46:35Z
-[2026-10-02 18:46:35.756] [DEBUG] [WTelegram]              → Boolean                               #E048
-[2026-10-02 18:46:35.756] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-02 15:46:35Z (svc) 
-[2026-10-02 18:46:35.766] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:35.766] [DEBUG] [WTelegram]              → Boolean                               #30E0
-[2026-10-02 18:46:35.769] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:35.769] [DEBUG] [WTelegram]             → Messages_SendMedia                     #DF88
-[2026-10-02 18:46:35.769] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:35.875] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:35.876] [DEBUG] [WTelegram]              → Updates                               #DF88
-[2026-10-02 18:46:35.877] [INFO ] [TelegramService] Фото-превью для галереи успешно опубликовано в Telegram (Message ID: 1332, имя: 'DSC_0270 __ (6 mb) ___preview.jpg').
-[2026-10-02 18:46:35.878] [INFO ] [TrayContext] Событие OnUploadCompleted для 'DSC_0270 __ (6 mb) __.JPG' получено из TelegramService.
-[2026-10-02 18:46:35.879] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'DSC_0270 __ (6 mb) __.JPG'. Запуск _completionTimer...
-[2026-10-02 18:46:35.890] [ERROR] [WinFsp] Ошибка фоновой загрузки 'DSC_0270 __ (6 mb) __.JPG' в Telegram: Cannot access a closed file. | Ex: Cannot access a closed file.
-   at System.IO.FileStream.get_Length()
-   at TelegramWebDAV.Services.TelegramService.UploadFileAsync(Stream source, String fileName, Int64 length, String displayFileName, String caption, AudioMetadataResult audioMeta, VideoMetadataResult videoMeta)
-   at TelegramWebDAV.Services.TelegramWinFspFileSystem.<>c__DisplayClass27_0.<<Cleanup>b__0>d.MoveNext()
-[2026-10-02 18:46:36.300] [INFO ] [TelegramService] Прямая потоковая передача файла 'IMG_20201018_131419 (12 mb).jpg' (12414274 байт) в Telegram...
-[2026-10-02 18:46:36.301] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.301] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3548
-[2026-10-02 18:46:36.302] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.314] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #E85C
-[2026-10-02 18:46:36.321] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1318
-[2026-10-02 18:46:36.327] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #7CCC
-[2026-10-02 18:46:36.333] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #96E8
-[2026-10-02 18:46:36.379] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1F00
-[2026-10-02 18:46:36.400] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #5520
-[2026-10-02 18:46:36.402] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.402] [DEBUG] [WTelegram]             → RpcResult                              2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.402] [DEBUG] [WTelegram]              → Boolean                               #3548
-[2026-10-02 18:46:36.402] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-02 15:46:35Z (svc) 
-[2026-10-02 18:46:36.402] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла IMG_20201018_131419 (12 mb).jpg
-[2026-10-02 18:46:36.424] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6934
-[2026-10-02 18:46:36.424] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.424] [DEBUG] [WTelegram]              → Boolean                               #E85C
-[2026-10-02 18:46:36.439] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.439] [DEBUG] [WTelegram]              → Boolean                               #1318
-[2026-10-02 18:46:36.443] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #076C
-[2026-10-02 18:46:36.463] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.463] [DEBUG] [WTelegram]              → Boolean                               #7CCC
-[2026-10-02 18:46:36.470] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6010
-[2026-10-02 18:46:36.484] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.484] [DEBUG] [WTelegram]              → Boolean                               #96E8
-[2026-10-02 18:46:36.492] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.492] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1E40
-[2026-10-02 18:46:36.492] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.514] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.514] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #753C
-[2026-10-02 18:46:36.514] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.518] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.518] [DEBUG] [WTelegram]             → RpcResult                              2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.518] [DEBUG] [WTelegram]              → Boolean                               #1F00
-[2026-10-02 18:46:36.518] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-02 15:46:35Z (svc) 
-[2026-10-02 18:46:36.527] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.527] [DEBUG] [WTelegram]              → Boolean                               #5520
-[2026-10-02 18:46:36.538] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.538] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8598
-[2026-10-02 18:46:36.538] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.559] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.559] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #ABBC
-[2026-10-02 18:46:36.560] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.563] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.563] [DEBUG] [WTelegram]              → Boolean                               #6934
-[2026-10-02 18:46:36.576] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.576] [DEBUG] [WTelegram]              → Boolean                               #076C
-[2026-10-02 18:46:36.585] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.585] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2238
-[2026-10-02 18:46:36.586] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.604] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.604] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #870C
-[2026-10-02 18:46:36.604] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.617] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.617] [DEBUG] [WTelegram]             → RpcResult                              2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.617] [DEBUG] [WTelegram]              → Boolean                               #6010
-[2026-10-02 18:46:36.617] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-02 15:46:35Z (svc) 
-[2026-10-02 18:46:36.629] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:35Z
-[2026-10-02 18:46:36.629] [DEBUG] [WTelegram]              → Boolean                               #1E40
-[2026-10-02 18:46:36.630] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.630] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8FE0
-[2026-10-02 18:46:36.630] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.648] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.648] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B17C
-[2026-10-02 18:46:36.648] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.665] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:36.665] [DEBUG] [WTelegram]             → RpcResult                              2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.665] [DEBUG] [WTelegram]              → Boolean                               #753C
-[2026-10-02 18:46:36.665] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-02 15:46:36Z (svc) 
-[2026-10-02 18:46:36.668] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.668] [DEBUG] [WTelegram]              → Boolean                               #8598
-[2026-10-02 18:46:36.672] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:35Z (svc)
-[2026-10-02 18:46:36.672] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1F48
-[2026-10-02 18:46:36.672] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.691] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:36.691] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4DF5
-[2026-10-02 18:46:36.691] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.695] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.695] [DEBUG] [WTelegram]              → Boolean                               #ABBC
-[2026-10-02 18:46:36.706] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.706] [DEBUG] [WTelegram]              → Boolean                               #2238
-[2026-10-02 18:46:36.734] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:36.735] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E4D5
-[2026-10-02 18:46:36.735] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.759] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.759] [DEBUG] [WTelegram]              → Boolean                               #870C
-[2026-10-02 18:46:36.771] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:36.771] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #80F1
-[2026-10-02 18:46:36.771] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.790] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.790] [DEBUG] [WTelegram]              → Boolean                               #8FE0
-[2026-10-02 18:46:36.828] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:36.828] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #54D1
-[2026-10-02 18:46:36.829] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.853] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.853] [DEBUG] [WTelegram]              → Boolean                               #B17C
-[2026-10-02 18:46:36.876] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:36.876] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #67E9
-[2026-10-02 18:46:36.876] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:36.891] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.891] [DEBUG] [WTelegram]              → Boolean                               #1F48
-[2026-10-02 18:46:36.986] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:36.986] [DEBUG] [WTelegram]              → Boolean                               #4DF5
-[2026-10-02 18:46:37.024] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.024] [DEBUG] [WTelegram]              → Boolean                               #E4D5
-[2026-10-02 18:46:37.076] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.076] [DEBUG] [WTelegram]              → Boolean                               #80F1
-[2026-10-02 18:46:37.150] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.150] [DEBUG] [WTelegram]              → Boolean                               #54D1
-[2026-10-02 18:46:37.187] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.187] [DEBUG] [WTelegram]              → Boolean                               #67E9
-[2026-10-02 18:46:37.188] [INFO ] [TelegramService] Файл 'IMG_20201018_131419 (12 mb).jpg' загружен в MTProto, финализация сообщения в канале (подпись: '/тест7/image/IMG_20201018_131419 (12 mb)_v1.jpg')...
-[2026-10-02 18:46:37.188] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:37.188] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D43D
-[2026-10-02 18:46:37.189] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:37.196] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EF75
-[2026-10-02 18:46:37.203] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5B35
-[2026-10-02 18:46:37.301] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.301] [DEBUG] [WTelegram]              → Boolean                               #D43D
-[2026-10-02 18:46:37.353] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.353] [DEBUG] [WTelegram]              → Boolean                               #EF75
-[2026-10-02 18:46:37.383] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.383] [DEBUG] [WTelegram]              → Boolean                               #5B35
-[2026-10-02 18:46:37.383] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:46:36Z (svc)
-[2026-10-02 18:46:37.383] [DEBUG] [WTelegram]             → Messages_SendMedia                     #DF05
-[2026-10-02 18:46:37.383] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:46:37.496] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-02 15:46:36Z
-[2026-10-02 18:46:37.496] [DEBUG] [WTelegram]              → Updates                               #DF05
-[2026-10-02 18:46:37.496] [INFO ] [TelegramService] Фото-превью для галереи успешно опубликовано в Telegram (Message ID: 1333, имя: 'IMG_20201018_131419 (12 mb)_preview.jpg').
-[2026-10-02 18:46:37.497] [INFO ] [TrayContext] Событие OnUploadCompleted для 'IMG_20201018_131419 (12 mb).jpg' получено из TelegramService.
-[2026-10-02 18:46:37.497] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'IMG_20201018_131419 (12 mb).jpg'. Запуск _completionTimer...
-[2026-10-02 18:46:37.497] [ERROR] [WinFsp] Ошибка фоновой загрузки 'IMG_20201018_131419 (12 mb).jpg' в Telegram: Cannot access a closed file. | Ex: Cannot access a closed file.
-   at System.IO.FileStream.get_Length()
-   at TelegramWebDAV.Services.TelegramService.UploadFileAsync(Stream source, String fileName, Int64 length, String displayFileName, String caption, AudioMetadataResult audioMeta, VideoMetadataResult videoMeta)
-   at TelegramWebDAV.Services.TelegramWinFspFileSystem.<>c__DisplayClass27_0.<<Cleanup>b__0>d.MoveNext()
-[2026-10-02 18:46:38.907] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
-[2026-10-02 18:46:38.909] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
-[2026-10-02 18:46:39.096] [DEBUG] [WTelegram] 2>Receiving Updates                                  2026-10-02 15:46:38Z  
-[2026-10-02 18:46:53.354] [DEBUG] [WTelegram] 2>Receiving UpdateShort                              2026-10-02 15:46:52Z  
-[2026-10-02 18:46:59.239] [DEBUG] [WTelegram] 2>Receiving UpdateShort                              2026-10-02 15:46:58Z  
-[2026-10-02 18:47:04.797] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:47:04Z (svc)
-[2026-10-02 18:47:04.797] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #9991
-[2026-10-02 18:47:04.797] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:47:04.839] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-02 15:47:04Z (svc) 
-[2026-10-02 18:47:35.263] [DEBUG] [WTelegram] 2>Receiving UpdateShort                              2026-10-02 15:47:34Z  
-[2026-10-02 18:48:04.071] [DEBUG] [WTelegram] 2>Receiving UpdateShort                              2026-10-02 15:48:03Z  
-[2026-10-02 18:48:04.842] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-02 15:48:04Z (svc)
-[2026-10-02 18:48:04.843] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #F449
-[2026-10-02 18:48:04.843] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-02 18:48:04.884] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-02 15:48:04Z (svc) 
-[2026-10-02 18:48:13.143] [DEBUG] [WTelegram] 2>Receiving UpdateShort                              2026-10-02 15:48:12Z  
+[2026-10-04 03:34:06.280] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 0, размер 256 КБ...
+[2026-10-04 03:34:06.280] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:05Z (svc)
+[2026-10-04 03:34:06.280] [DEBUG] [WTelegram]             → Upload_GetFile                         #54F6
+[2026-10-04 03:34:06.280] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:06.345] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:05Z
+[2026-10-04 03:34:06.345] [DEBUG] [WTelegram]              → Upload_File                           #54F6
+[2026-10-04 03:34:06.346] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 0, размер 256 КБ. Скачано всего: 0 из 14 чанков (0%).
+[2026-10-04 03:34:06.347] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 03:34:06.355] [INFO ] [TelegramService] [MTProto] Запрос чанка #13/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 13 631 488, размер 256 КБ...
+[2026-10-04 03:34:06.355] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:05Z (svc)
+[2026-10-04 03:34:06.355] [DEBUG] [WTelegram]             → Upload_GetFile                         #6DE6
+[2026-10-04 03:34:06.355] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:06.416] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:05Z
+[2026-10-04 03:34:06.416] [DEBUG] [WTelegram]              → Upload_File                           #6DE6
+[2026-10-04 03:34:06.416] [INFO ] [TelegramService] [MTProto] Получен чанк #13/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 13 631 488, размер 228 КБ. Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:06.416] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 32 768, 32 768 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:06.417] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 65 536, 32 768 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:07.754] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-04 03:34:07.757] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-10-04 03:34:10.794] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 864 960, 509 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:10.798] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 864 960, 509 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:10.802] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 864 960, 509 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:10.807] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 864 960, 509 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:16.660] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 864 960, 509 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.013] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 0, 4 096 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.020] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 0, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.020] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 828 096, 37 373 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.020] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 0, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.021] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 65 536, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.022] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 131 072, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.022] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 196 608, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.368] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 0, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.369] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 65 536, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.369] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 131 072, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.369] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 196 608, 65 536 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 03:34:17.369] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 262 144, размер 256 КБ...
+[2026-10-04 03:34:17.369] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:16Z (svc)
+[2026-10-04 03:34:17.369] [DEBUG] [WTelegram]             → Upload_GetFile                         #0CE9
+[2026-10-04 03:34:17.369] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:17.434] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:16Z
+[2026-10-04 03:34:17.434] [DEBUG] [WTelegram]              → Upload_File                           #0CE9
+[2026-10-04 03:34:17.434] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 262 144, размер 256 КБ. Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:17.435] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 327 680, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:17.435] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 393 216, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:17.435] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 458 752, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:17.441] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 524 288, размер 256 КБ...
+[2026-10-04 03:34:17.441] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:16Z (svc)
+[2026-10-04 03:34:17.441] [DEBUG] [WTelegram]             → Upload_GetFile                         #EE1D
+[2026-10-04 03:34:17.441] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:17.501] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:16Z
+[2026-10-04 03:34:17.501] [DEBUG] [WTelegram]              → Upload_File                           #EE1D
+[2026-10-04 03:34:17.501] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 524 288, размер 256 КБ. Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:17.502] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 589 824, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:17.502] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 655 360, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:18.964] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 864 960, 509 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.242] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 720 896, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.242] [INFO ] [TelegramService] [MTProto] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 786 432, размер 256 КБ...
+[2026-10-04 03:34:25.243] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:24Z (svc)
+[2026-10-04 03:34:25.243] [DEBUG] [WTelegram]             → Upload_GetFile                         #CCB5
+[2026-10-04 03:34:25.243] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:25.306] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:24Z
+[2026-10-04 03:34:25.306] [DEBUG] [WTelegram]              → Upload_File                           #CCB5
+[2026-10-04 03:34:25.307] [INFO ] [TelegramService] [MTProto] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 786 432, размер 256 КБ. Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.307] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 851 968, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.307] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 917 504, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.307] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 983 040, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.318] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 1 048 576, размер 256 КБ...
+[2026-10-04 03:34:25.319] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:24Z (svc)
+[2026-10-04 03:34:25.319] [DEBUG] [WTelegram]             → Upload_GetFile                         #9665
+[2026-10-04 03:34:25.319] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:25.459] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:24Z
+[2026-10-04 03:34:25.459] [DEBUG] [WTelegram]              → Upload_File                           #9665
+[2026-10-04 03:34:25.459] [INFO ] [TelegramService] [MTProto] Получен чанк #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 1 048 576, размер 256 КБ. Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.460] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 114 112, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:25.460] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 179 648, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:29.430] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #13 (смещение 13 864 960, 509 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:38.373] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 245 184, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:38.373] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 1 310 720, размер 256 КБ...
+[2026-10-04 03:34:38.373] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:37Z (svc)
+[2026-10-04 03:34:38.373] [DEBUG] [WTelegram]             → Upload_GetFile                         #82A2
+[2026-10-04 03:34:38.373] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:38.434] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:37Z
+[2026-10-04 03:34:38.435] [DEBUG] [WTelegram]              → Upload_File                           #82A2
+[2026-10-04 03:34:38.435] [INFO ] [TelegramService] [MTProto] Получен чанк #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 1 310 720, размер 256 КБ. Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:38.435] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 376 256, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:38.436] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 441 792, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:38.436] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 507 328, 65 536 байт). Скачано всего: 2 из 14 чанков (14,3%).
+[2026-10-04 03:34:38.451] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 1 572 864, размер 256 КБ...
+[2026-10-04 03:34:38.452] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:37Z (svc)
+[2026-10-04 03:34:38.452] [DEBUG] [WTelegram]             → Upload_GetFile                         #A932
+[2026-10-04 03:34:38.452] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:38.511] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:37Z
+[2026-10-04 03:34:38.511] [DEBUG] [WTelegram]              → Upload_File                           #A932
+[2026-10-04 03:34:38.511] [INFO ] [TelegramService] [MTProto] Получен чанк #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 1 572 864, размер 256 КБ. Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:38.512] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 638 400, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:38.512] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 703 936, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.480] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 769 472, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.480] [INFO ] [TelegramService] [MTProto] Запрос чанка #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 1 835 008, размер 256 КБ...
+[2026-10-04 03:34:51.480] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:50Z (svc)
+[2026-10-04 03:34:51.480] [DEBUG] [WTelegram]             → Upload_GetFile                         #233F
+[2026-10-04 03:34:51.480] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:51.554] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:51Z
+[2026-10-04 03:34:51.554] [DEBUG] [WTelegram]              → Upload_File                           #233F
+[2026-10-04 03:34:51.554] [INFO ] [TelegramService] [MTProto] Получен чанк #1/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 1 835 008, размер 256 КБ. Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.555] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 900 544, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.555] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 1 966 080, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.555] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #1 (смещение 2 031 616, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.555] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 2 097 152, размер 256 КБ...
+[2026-10-04 03:34:51.556] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:34:51Z (svc)
+[2026-10-04 03:34:51.556] [DEBUG] [WTelegram]             → Upload_GetFile                         #08A0
+[2026-10-04 03:34:51.556] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:34:51.630] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:34:51Z
+[2026-10-04 03:34:51.630] [DEBUG] [WTelegram]              → Upload_File                           #08A0
+[2026-10-04 03:34:51.630] [INFO ] [TelegramService] [MTProto] Получен чанк #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 2 097 152, размер 256 КБ. Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.631] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 162 688, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:34:51.631] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 228 224, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:35:04.450] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:35:03Z (svc)
+[2026-10-04 03:35:04.450] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #4940
+[2026-10-04 03:35:04.450] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:35:04.482] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 293 760, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:35:04.482] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 2 359 296, размер 256 КБ...
+[2026-10-04 03:35:04.482] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #2C74
+[2026-10-04 03:35:04.495] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 00:35:03Z (svc) 
+[2026-10-04 03:35:04.557] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:35:04Z
+[2026-10-04 03:35:04.557] [DEBUG] [WTelegram]              → Upload_File                           #2C74
+[2026-10-04 03:35:04.557] [INFO ] [TelegramService] [MTProto] Получен чанк #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 2 359 296, размер 256 КБ. Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:35:04.558] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 424 832, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:35:04.558] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 490 368, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:35:04.558] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 555 904, 65 536 байт). Скачано всего: 3 из 14 чанков (21,4%).
+[2026-10-04 03:35:04.558] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 2 621 440, размер 256 КБ...
+[2026-10-04 03:35:04.559] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:35:04Z (svc)
+[2026-10-04 03:35:04.559] [DEBUG] [WTelegram]             → Upload_GetFile                         #0319
+[2026-10-04 03:35:04.559] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:35:04.620] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:35:04Z
+[2026-10-04 03:35:04.620] [DEBUG] [WTelegram]              → Upload_File                           #0319
+[2026-10-04 03:35:04.620] [INFO ] [TelegramService] [MTProto] Получен чанк #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 2 621 440, размер 256 КБ. Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:04.621] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 686 976, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:04.621] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 752 512, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.707] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 818 048, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.707] [INFO ] [TelegramService] [MTProto] Запрос чанка #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 2 883 584, размер 256 КБ...
+[2026-10-04 03:35:17.707] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:35:17Z (svc)
+[2026-10-04 03:35:17.707] [DEBUG] [WTelegram]             → Upload_GetFile                         #20CE
+[2026-10-04 03:35:17.707] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:35:17.770] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:35:17Z
+[2026-10-04 03:35:17.770] [DEBUG] [WTelegram]              → Upload_File                           #20CE
+[2026-10-04 03:35:17.770] [INFO ] [TelegramService] [MTProto] Получен чанк #2/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 2 883 584, размер 256 КБ. Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.771] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 2 949 120, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.771] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 3 014 656, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.771] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #2 (смещение 3 080 192, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.784] [INFO ] [TelegramService] [MTProto] Запрос чанка #3/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 3 145 728, размер 256 КБ...
+[2026-10-04 03:35:17.784] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:35:17Z (svc)
+[2026-10-04 03:35:17.784] [DEBUG] [WTelegram]             → Upload_GetFile                         #544A
+[2026-10-04 03:35:17.784] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:35:17.863] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:35:17Z
+[2026-10-04 03:35:17.864] [DEBUG] [WTelegram]              → Upload_File                           #544A
+[2026-10-04 03:35:17.864] [INFO ] [TelegramService] [MTProto] Получен чанк #3/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 3 145 728, размер 256 КБ. Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.864] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 211 264, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:17.864] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 276 800, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:22.588] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (4,7 сек). Скрытие оверлея.
+[2026-10-04 03:35:30.828] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 342 336, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:30.829] [INFO ] [TelegramService] [MTProto] Запрос чанка #3/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 3 407 872, размер 256 КБ...
+[2026-10-04 03:35:30.829] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:35:30Z (svc)
+[2026-10-04 03:35:30.829] [DEBUG] [WTelegram]             → Upload_GetFile                         #50AB
+[2026-10-04 03:35:30.829] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:35:30.891] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:35:30Z
+[2026-10-04 03:35:30.891] [DEBUG] [WTelegram]              → Upload_File                           #50AB
+[2026-10-04 03:35:30.892] [INFO ] [TelegramService] [MTProto] Получен чанк #3/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 3 407 872, размер 256 КБ. Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:30.892] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 473 408, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:30.892] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 538 944, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:30.892] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 604 480, 65 536 байт). Скачано всего: 4 из 14 чанков (28,6%).
+[2026-10-04 03:35:30.904] [INFO ] [TelegramService] [MTProto] Запрос чанка #3/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): смещение 3 670 016, размер 256 КБ...
+[2026-10-04 03:35:30.904] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 00:35:30Z (svc)
+[2026-10-04 03:35:30.904] [DEBUG] [WTelegram]             → Upload_GetFile                         #E02B
+[2026-10-04 03:35:30.904] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 03:35:30.963] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 00:35:30Z
+[2026-10-04 03:35:30.963] [DEBUG] [WTelegram]              → Upload_File                           #E02B
+[2026-10-04 03:35:30.963] [INFO ] [TelegramService] [MTProto] Получен чанк #3/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': смещение 3 670 016, размер 256 КБ. Скачано всего: 5 из 14 чанков (35,7%).
+[2026-10-04 03:35:30.964] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 735 552, 65 536 байт). Скачано всего: 5 из 14 чанков (35,7%).
+[2026-10-04 03:35:30.964] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #3 (смещение 3 801 088, 65 536 байт). Скачано всего: 5 из 14 чанков (35,7%).

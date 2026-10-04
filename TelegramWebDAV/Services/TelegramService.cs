@@ -1697,10 +1697,12 @@ namespace TelegramWebDAV.Services
             audit.FileSize = actualTotalSize;
 
             var readSeq = _fileReadSequences.GetOrAdd(messageId, _ => new FileReadSequence());
+            int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
             lock (readSeq)
             {
                 var now = DateTime.UtcNow;
-                if ((now - readSeq.LastReadTime).TotalSeconds > 10)
+                // Привязываем время жизни непрерывной сессии воспроизведения к TTL кэша в минутах (минимум 10 минут)
+                if ((now - readSeq.LastReadTime).TotalMinutes > cacheTtlMinutes)
                 {
                     readSeq.SequentialCount = 0;
                     readSeq.AccumulatedSequentialBytes = 0;
@@ -1726,16 +1728,24 @@ namespace TelegramWebDAV.Services
                 readSeq.LastReadTime = now;
             }
 
-            // УНИВЕРСАЛЬНАЯ ПРОВЕРКА МЕТАДАННЫХ / ТОЧЕЧНЫХ СЭМПЛОВ (Вариант А):
-            // Считаем операцию сбором метаданных/эскизов/точечным сэмплом (Seek/Thumbnail), если:
-            // 1) Запрос короткий (<= 256 КБ) и еще не зафиксировано длительное последовательное воспроизведение:
-            //    Требуем >= 3 последовательных перехода между чанками ИЛИ суммарно >= 1.5 МБ выкачанных байт.
-            //    Одиночный переход через границу мегабайта (например 5.95 МБ -> 6.10 МБ при чтении кадра) не срывает систему в тяжелый префетч.
+            // ПРОВЕРКА ПОЛНОГО СКАЧИВАНИЯ 1-ГО ЧАНКА И СТРИМИНГА:
+            // 1) Первый 1 МБ чанк (#0) уже скачан полностью в ОЗУ
+            long expectedFirstChunkSize = Math.Min(1048576L, actualTotalSize);
+            bool isFirstChunkFullyCached = TryGetFromMemoryCache(messageId, 0, out var firstChunkData, out _)
+                                          && firstChunkData != null && firstChunkData.Length >= expectedFirstChunkSize;
+
+            // 2) Запрос в хвост файла (последние 512 КБ для ID3v1/тетрисов метаданных)
+            bool isTailProbe = actualTotalSize > 1048576 && offset >= Math.Max(0, actualTotalSize - 524288);
+
+            // 3) Воспроизведение/стриминг: либо 1-й чанк уже скачан на 100%, либо смещение >= 1 МБ (и не в хвосте),
+            //    либо накоплено >= 512 КБ последовательного чтения, либо запрошен длинный диапазон (> 256 КБ).
             bool isShortRead = length <= 262144;
-            bool isSequentialPlayback = !isShortRead || readSeq.SequentialCount >= 3 || readSeq.AccumulatedSequentialBytes >= 1572864;
-            bool isHeadProbe = currentChunkIdx == 0 && isShortRead && !isSequentialPlayback;
-            bool isTailProbe = actualTotalSize > 2097152 && offset >= actualTotalSize - 2097152 && isShortRead && !isSequentialPlayback;
-            bool isIsolatedMiddleProbe = isShortRead && !isSequentialPlayback;
+            bool isSequentialPlayback = !isTailProbe && (isFirstChunkFullyCached 
+                                                        || offset >= 1048576 
+                                                        || !isShortRead 
+                                                        || readSeq.AccumulatedSequentialBytes >= 524288 
+                                                        || readSeq.SequentialCount >= 2);
+
             bool isMetadataProbe = !isSequentialPlayback;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
@@ -2055,7 +2065,6 @@ namespace TelegramWebDAV.Services
                     raw = uploadFile.bytes;
                     audit.AddNetworkBytes(raw.Length);
                     bool allReceived = audit.MarkRangeReceived(chunkOffset, raw.Length);
-                    int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
                     StoreChunkInMemoryCache(messageId, chunkOffset, raw, cacheTtlMinutes);
 
                     AppLogger.Info("TelegramService", $"[MTProto] Получен чанк #{(int)(chunkOffset / 1048576)}/{audit.TotalChunks} для '{fileName}': смещение {chunkOffset:N0}, размер {raw.Length / 1024} КБ. {audit.ProgressSummary}.");
