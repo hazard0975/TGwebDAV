@@ -1743,14 +1743,15 @@ namespace TelegramWebDAV.Services
 
             // 3) Воспроизведение/стриминг:
             //    - Первый чанк (#0) уже скачан на 100% (для аудио/треков),
-            //    - ИЛИ внутри текущего 1 МБ чанка клиент вычитал 1 МБ и более (чанк исчерпан на 100%),
-            //    - ИЛИ в непрерывном потоке суммарно вычитано от 1 МБ и более (1048576 байт),
+            //    - ИЛИ внутри текущего 1 МБ чанка клиент вычитал объём порога (по умолчанию 1 МБ),
+            //    - ИЛИ в непрерывном потоке суммарно вычитано от порога и более (по умолчанию 1 МБ),
             //    - ИЛИ клиент сразу запросил большой блок данных (> 256 КБ).
             //    Одиночные точечные запросы (эскизы видео, теги ID3/moov) с объемом <= 256 КБ не вызывают стриминг.
+            long activationThresholdBytes = Math.Max(1, _currentSettings.Server.StreamingActivationThresholdMb) * 1048576L;
             bool isShortRead = length <= 262144;
             bool isSequentialPlayback = !isTailProbe && (isFirstChunkFullyCached 
-                                                        || currentChunkReadBytes >= 1048576
-                                                        || readSeq.AccumulatedSequentialBytes >= 1048576 
+                                                        || currentChunkReadBytes >= activationThresholdBytes
+                                                        || readSeq.AccumulatedSequentialBytes >= activationThresholdBytes 
                                                         || !isShortRead);
 
             bool isMetadataProbe = !isSequentialPlayback;
