@@ -175,19 +175,19 @@ namespace TelegramWebDAV.UI
             _chkEnableDiskCache = UIFactory.CreateCheckBox("Сохранять прочитанные файлы в дисковый кэш (%TEMP%)", _settings.Server.EnableDiskReadCache);
 
             _numMemoryCacheMb = UIFactory.CreateNumericInput(32, 4096, _settings.Server.MemoryCacheSizeMb > 0 ? _settings.Server.MemoryCacheSizeMb : 128, 80);
-            var rowMemCache = UIFactory.CreateSettingRow("Буфер кэша в ОЗУ (МБ):", _numMemoryCacheMb, 250);
+            var rowMemCache = UIFactory.CreateSettingRow("Буфер кэша в ОЗУ (МБ):", _numMemoryCacheMb, 270);
 
             _numChunkTtlMinutes = UIFactory.CreateNumericInput(1, 120, _settings.Server.ChunkMemoryCacheTtlMinutes > 0 ? _settings.Server.ChunkMemoryCacheTtlMinutes : 10, 80);
-            var rowChunkTtl = UIFactory.CreateSettingRow("Время жизни кэша в ОЗУ (мин):", _numChunkTtlMinutes, 250);
+            var rowChunkTtl = UIFactory.CreateSettingRow("Время жизни кэша в ОЗУ (мин):", _numChunkTtlMinutes, 270);
 
             _numStreamingActivationMb = UIFactory.CreateNumericInput(1, 50, _settings.Server.StreamingActivationThresholdMb > 0 ? _settings.Server.StreamingActivationThresholdMb : 1, 80);
-            var rowStreamingActivation = UIFactory.CreateSettingRow("Старт упреждения после (МБ):", _numStreamingActivationMb, 250);
+            var rowStreamingActivation = UIFactory.CreateSettingRow("Старт упреждения после (МБ):", _numStreamingActivationMb, 270);
 
             _numAudioWindowMb = UIFactory.CreateNumericInput(1, 100, _settings.Server.AudioPrefetchWindowMb > 0 ? _settings.Server.AudioPrefetchWindowMb : 2, 80);
-            var rowAudioWindow = UIFactory.CreateSettingRow("Буфер упреждения для аудио (МБ):", _numAudioWindowMb, 250);
+            var rowAudioWindow = UIFactory.CreateSettingRow("Буфер упреждения для аудио (МБ):", _numAudioWindowMb, 270);
 
             _numStreamingWindowMb = UIFactory.CreateNumericInput(5, 200, _settings.Server.StreamingPrefetchWindowMb > 0 ? _settings.Server.StreamingPrefetchWindowMb : 20, 80);
-            var rowStreamingWindow = UIFactory.CreateSettingRow("Буфер упреждения для видео/файлов (МБ):", _numStreamingWindowMb, 250);
+            var rowStreamingWindow = UIFactory.CreateSettingRow("Буфер упреждения для видео/файлов (МБ):", _numStreamingWindowMb, 270);
 
             pnlCacheInner.Controls.AddRange(new Control[] {
                 _chkEnableDiskCache, rowMemCache, rowChunkTtl, rowStreamingActivation, rowAudioWindow, rowStreamingWindow
