@@ -2123,12 +2123,39 @@ namespace TelegramWebDAV.Services
             long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
             long scanOffset = startChunkOffset;
 
+            var newChunksToQueue = new List<long>();
+            long totalBytesToQueue = 0;
+
             while (scanOffset < maxPrefetchLimit)
             {
                 int expectedSize = (int)Math.Min(1048576L, actualTotalSize - scanOffset);
-                if (!TryGetFromMemoryCache(messageId, scanOffset, out var cachedData, out _) || (cachedData != null && cachedData.Length < expectedSize))
+                bool inRam = TryGetFromMemoryCache(messageId, scanOffset, out var cachedData, out _) && (cachedData != null && cachedData.Length >= expectedSize);
+                bool inFlight = _workerPool.IsChunkInFlight(messageId, scanOffset);
+
+                if (!inRam && !inFlight)
                 {
-                    long chunkOffsetToQueue = scanOffset;
+                    newChunksToQueue.Add(scanOffset);
+                    totalBytesToQueue += expectedSize;
+                }
+                scanOffset += 1048576;
+            }
+
+            if (newChunksToQueue.Count > 0)
+            {
+                int totalChunks = (int)Math.Ceiling((double)actualTotalSize / 1048576.0);
+                int firstChunk = (int)(newChunksToQueue[0] / 1048576);
+                int lastChunk = (int)(newChunksToQueue[^1] / 1048576);
+                double mb = (double)totalBytesToQueue / (1024.0 * 1024.0);
+                int activeWorkers = _workerPool.ActiveWorkerCount;
+
+                string rangeStr = firstChunk == lastChunk
+                    ? $"чанк #{firstChunk}"
+                    : $"чанки #{firstChunk}..#{lastChunk}";
+
+                AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Скачивание {mb:0.00} МБ ({rangeStr} (всего {totalChunks})) для '{fileName}' через {activeWorkers} воркеров MTProto...");
+
+                foreach (var chunkOffsetToQueue in newChunksToQueue)
+                {
                     _workerPool.EnqueueChunk(
                         messageId,
                         document,
@@ -2158,7 +2185,6 @@ namespace TelegramWebDAV.Services
                             }
                         });
                 }
-                scanOffset += 1048576;
             }
         }
 

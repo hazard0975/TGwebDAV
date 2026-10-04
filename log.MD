@@ -1,521 +1,293 @@
 
-[2026-10-04 08:34:44.809] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:34:44Z (svc)
-[2026-10-04 08:34:44.809] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #D5C5
-[2026-10-04 08:34:44.809] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:34:44.853] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:34:44Z (svc) 
-[2026-10-04 08:35:44.864] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #8E45
-[2026-10-04 08:35:44.906] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:35:44Z (svc) 
-[2026-10-04 08:36:44.918] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #182D
-[2026-10-04 08:36:44.963] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:36:44Z (svc) 
-[2026-10-04 08:37:42.970] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #26 (смещение 27 262 976, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
-[2026-10-04 08:37:42.972] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #27 (смещение 28 311 552, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
-[2026-10-04 08:37:42.972] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #31/35 (смещение 32 505 856 б, размер 1 048 576 б)...
-[2026-10-04 08:37:42.972] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #726F
-[2026-10-04 08:37:42.974] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #28 (смещение 29 360 128, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
-[2026-10-04 08:37:42.975] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #29 (смещение 30 408 704, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
-[2026-10-04 08:37:42.977] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #30 (смещение 31 457 280, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
-[2026-10-04 08:37:44.485] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:42Z
-[2026-10-04 08:37:44.485] [DEBUG] [WTelegram]              → Upload_File                           #726F
-[2026-10-04 08:37:44.486] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #31/35 (1 048 576 б за 1513 мс) [Полный].
-[2026-10-04 08:37:44.488] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4 (33554432/36252977)
-[2026-10-04 08:37:44.538] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #32/35 (смещение 33 554 432 б, размер 1 048 576 б)...
-[2026-10-04 08:37:44.540] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:44Z (svc)
-[2026-10-04 08:37:44.540] [DEBUG] [WTelegram]             → Upload_GetFile                         #54C9
-[2026-10-04 08:37:44.540] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:44.973] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #0E9D
-[2026-10-04 08:37:44.984] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:44Z
-[2026-10-04 08:37:44.985] [DEBUG] [WTelegram]              → Upload_File                           #54C9
-[2026-10-04 08:37:44.985] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #32/35 (1 048 576 б за 446 мс) [Полный].
-[2026-10-04 08:37:45.005] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #33/35 (смещение 34 603 008 б, размер 1 048 576 б)...
-[2026-10-04 08:37:45.006] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:44Z (svc)
-[2026-10-04 08:37:45.006] [DEBUG] [WTelegram]             → Upload_GetFile                         #42BD
-[2026-10-04 08:37:45.006] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:45.015] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:37:44Z (svc) 
-[2026-10-04 08:37:45.372] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:44Z
-[2026-10-04 08:37:45.373] [DEBUG] [WTelegram]              → Upload_File                           #42BD
-[2026-10-04 08:37:45.373] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #33/35 (1 048 576 б за 367 мс) [Полный].
-[2026-10-04 08:37:45.401] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #34/35 (смещение 35 651 584 б, размер 1 048 576 б)...
-[2026-10-04 08:37:45.401] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:44Z (svc)
-[2026-10-04 08:37:45.401] [DEBUG] [WTelegram]             → Upload_GetFile                         #F89D
-[2026-10-04 08:37:45.401] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:45.595] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:44Z
-[2026-10-04 08:37:45.595] [DEBUG] [WTelegram]              → Upload_File                           #F89D
-[2026-10-04 08:37:45.595] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #34/35 (601 393 б за 194 мс) [Полный].
-[2026-10-04 08:37:45.596] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4': Размер: 36 252 977 б (34,57 МБ) | Из сети TG: 36 252 977 б (34,57 МБ) | Из ОЗУ: 5 242 880 б (5,00 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
-[2026-10-04 08:37:45.596] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' получено из TelegramService.
-[2026-10-04 08:37:45.597] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4'. Запуск _completionTimer...
-[2026-10-04 08:37:47.022] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
-[2026-10-04 08:37:47.028] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
-[2026-10-04 08:37:58.636] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
-[2026-10-04 08:37:58.636] [DEBUG] [WTelegram]             → Channels_GetMessages                   #CBD7
-[2026-10-04 08:37:58.636] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:58.695] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
-[2026-10-04 08:37:58.695] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #CBD7
-[2026-10-04 08:37:58.696] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/92 (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:37:58.696] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
-[2026-10-04 08:37:58.696] [DEBUG] [WTelegram]             → Upload_GetFile                         #96F3
-[2026-10-04 08:37:58.696] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:58.806] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
-[2026-10-04 08:37:58.807] [DEBUG] [WTelegram]              → Upload_File                           #96F3
-[2026-10-04 08:37:58.807] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/92 (262 144 б за 111 мс) [Полный].
-[2026-10-04 08:37:58.810] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'Kosheen   Harder They Fall.mp4'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
-[2026-10-04 08:37:58.839] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #90/92 (смещение 95 158 272 б, размер 262 144 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:37:58.840] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
-[2026-10-04 08:37:58.840] [DEBUG] [WTelegram]             → Upload_GetFile                         #2F07
-[2026-10-04 08:37:58.840] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:58.945] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
-[2026-10-04 08:37:58.945] [DEBUG] [WTelegram]              → Upload_File                           #2F07
-[2026-10-04 08:37:58.945] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #90/92 (262 144 б за 106 мс) [Полный].
-[2026-10-04 08:37:58.948] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Kosheen   Harder They Fall.mp4' (ID 1477): Глобальный Чанк #90 (смещение 95 260 672, 32 768 байт). Скачано всего: 0 из 92 чанков (0%).
-[2026-10-04 08:37:58.948] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Kosheen   Harder They Fall.mp4' (ID 1477): Глобальный Чанк #90 (смещение 95 293 440, 65 536 байт). Скачано всего: 0 из 92 чанков (0%).
-[2026-10-04 08:37:58.949] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Kosheen   Harder They Fall.mp4' (ID 1477): смещение 95 358 976, отдано 61 440 байт (95 420 416 / 95 441 413 байт, 100,0%). Скачано всего: 0 из 92 чанков (0%).
-[2026-10-04 08:37:58.966] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:37:58.967] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
-[2026-10-04 08:37:58.967] [DEBUG] [WTelegram]             → Upload_GetFile                         #686F
-[2026-10-04 08:37:58.967] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:59.012] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
-[2026-10-04 08:37:59.012] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #686F
-[2026-10-04 08:37:59.013] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:37:59.316] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:37:59.316] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
-[2026-10-04 08:37:59.316] [DEBUG] [WTelegram]             → Upload_GetFile                         #E757
-[2026-10-04 08:37:59.316] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:59.366] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
-[2026-10-04 08:37:59.367] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E757
-[2026-10-04 08:37:59.367] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:37:59.678] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:37:59.678] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
-[2026-10-04 08:37:59.678] [DEBUG] [WTelegram]             → Upload_GetFile                         #FFEC
-[2026-10-04 08:37:59.678] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:37:59.724] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:59Z
-[2026-10-04 08:37:59.724] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #FFEC
-[2026-10-04 08:37:59.725] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:00.037] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:00.037] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
-[2026-10-04 08:38:00.037] [DEBUG] [WTelegram]             → Upload_GetFile                         #E47C
-[2026-10-04 08:38:00.037] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:00.083] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:59Z
-[2026-10-04 08:38:00.083] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E47C
-[2026-10-04 08:38:00.083] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:00.083] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:00.085] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:00.085] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
-[2026-10-04 08:38:00.085] [DEBUG] [WTelegram]             → Upload_GetFile                         #8720
-[2026-10-04 08:38:00.085] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:00.134] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:59Z
-[2026-10-04 08:38:00.134] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #8720
-[2026-10-04 08:38:00.134] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:00.228] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
-[2026-10-04 08:38:00.233] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
-[2026-10-04 08:38:00.448] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:00.449] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
-[2026-10-04 08:38:00.449] [DEBUG] [WTelegram]             → Upload_GetFile                         #FE8C
-[2026-10-04 08:38:00.449] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:00.493] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
-[2026-10-04 08:38:00.493] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #FE8C
-[2026-10-04 08:38:00.493] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:00.808] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:00.809] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:00Z (svc)
-[2026-10-04 08:38:00.809] [DEBUG] [WTelegram]             → Upload_GetFile                         #DE45
-[2026-10-04 08:38:00.809] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:00.918] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
-[2026-10-04 08:38:00.918] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #DE45
-[2026-10-04 08:38:00.918] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:01.229] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:01.229] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:00Z (svc)
-[2026-10-04 08:38:01.229] [DEBUG] [WTelegram]             → Upload_GetFile                         #7929
-[2026-10-04 08:38:01.229] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:01.275] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
-[2026-10-04 08:38:01.275] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #7929
-[2026-10-04 08:38:01.275] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:01.275] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:01.276] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:01.277] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:00Z (svc)
-[2026-10-04 08:38:01.277] [DEBUG] [WTelegram]             → Upload_GetFile                         #A8A5
-[2026-10-04 08:38:01.277] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:01.322] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
-[2026-10-04 08:38:01.322] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A8A5
-[2026-10-04 08:38:01.322] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:01.633] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:01.634] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:01Z (svc)
-[2026-10-04 08:38:01.634] [DEBUG] [WTelegram]             → Upload_GetFile                         #89BA
-[2026-10-04 08:38:01.634] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:01.679] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:01Z
-[2026-10-04 08:38:01.679] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #89BA
-[2026-10-04 08:38:01.679] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:01.982] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:01.983] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:01Z (svc)
-[2026-10-04 08:38:01.983] [DEBUG] [WTelegram]             → Upload_GetFile                         #86CE
-[2026-10-04 08:38:01.983] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:02.075] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:01Z
-[2026-10-04 08:38:02.075] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #86CE
-[2026-10-04 08:38:02.076] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:02.388] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:02.389] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:01Z (svc)
-[2026-10-04 08:38:02.389] [DEBUG] [WTelegram]             → Upload_GetFile                         #74D6
-[2026-10-04 08:38:02.389] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:02.449] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:01Z
-[2026-10-04 08:38:02.449] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #74D6
-[2026-10-04 08:38:02.449] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:02.449] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:02.450] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:02.450] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:02Z (svc)
-[2026-10-04 08:38:02.450] [DEBUG] [WTelegram]             → Upload_GetFile                         #6F7F
-[2026-10-04 08:38:02.450] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:02.644] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:02Z
-[2026-10-04 08:38:02.644] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6F7F
-[2026-10-04 08:38:02.644] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:02.947] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:02.948] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:02Z (svc)
-[2026-10-04 08:38:02.948] [DEBUG] [WTelegram]             → Upload_GetFile                         #B6AF
-[2026-10-04 08:38:02.948] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:02.993] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:02Z
-[2026-10-04 08:38:02.993] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #B6AF
-[2026-10-04 08:38:02.994] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:03.308] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:03.308] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:02Z (svc)
-[2026-10-04 08:38:03.308] [DEBUG] [WTelegram]             → Upload_GetFile                         #6D07
-[2026-10-04 08:38:03.308] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:03.375] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:02Z
-[2026-10-04 08:38:03.375] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6D07
-[2026-10-04 08:38:03.375] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:03.681] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:03.682] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
-[2026-10-04 08:38:03.682] [DEBUG] [WTelegram]             → Upload_GetFile                         #6C68
-[2026-10-04 08:38:03.682] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:03.728] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:03Z
-[2026-10-04 08:38:03.728] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6C68
-[2026-10-04 08:38:03.728] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:03.728] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:03.729] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:03.730] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
-[2026-10-04 08:38:03.730] [DEBUG] [WTelegram]             → Upload_GetFile                         #E97C
-[2026-10-04 08:38:03.730] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:03.773] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:03Z
-[2026-10-04 08:38:03.773] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E97C
-[2026-10-04 08:38:03.773] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:04.084] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:04.085] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
-[2026-10-04 08:38:04.085] [DEBUG] [WTelegram]             → Upload_GetFile                         #A654
-[2026-10-04 08:38:04.085] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:04.130] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:03Z
-[2026-10-04 08:38:04.130] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A654
-[2026-10-04 08:38:04.131] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:04.432] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:04.433] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
-[2026-10-04 08:38:04.433] [DEBUG] [WTelegram]             → Upload_GetFile                         #2510
-[2026-10-04 08:38:04.433] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:04.480] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
-[2026-10-04 08:38:04.480] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #2510
-[2026-10-04 08:38:04.481] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:04.796] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:04.796] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:04Z (svc)
-[2026-10-04 08:38:04.796] [DEBUG] [WTelegram]             → Upload_GetFile                         #4A31
-[2026-10-04 08:38:04.797] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:04.911] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
-[2026-10-04 08:38:04.911] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #4A31
-[2026-10-04 08:38:04.911] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:04.911] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:04.912] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:04.913] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:04Z (svc)
-[2026-10-04 08:38:04.913] [DEBUG] [WTelegram]             → Upload_GetFile                         #FAD1
-[2026-10-04 08:38:04.913] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:04.956] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
-[2026-10-04 08:38:04.956] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #FAD1
-[2026-10-04 08:38:04.956] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:05.258] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:05.258] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:04Z (svc)
-[2026-10-04 08:38:05.258] [DEBUG] [WTelegram]             → Upload_GetFile                         #CEB5
-[2026-10-04 08:38:05.258] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:05.302] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
-[2026-10-04 08:38:05.302] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #CEB5
-[2026-10-04 08:38:05.302] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:05.608] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:05.608] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
-[2026-10-04 08:38:05.608] [DEBUG] [WTelegram]             → Upload_GetFile                         #A632
-[2026-10-04 08:38:05.608] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:05.653] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
-[2026-10-04 08:38:05.653] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A632
-[2026-10-04 08:38:05.653] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:05.959] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:05.959] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
-[2026-10-04 08:38:05.960] [DEBUG] [WTelegram]             → Upload_GetFile                         #48B6
-[2026-10-04 08:38:05.960] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:06.004] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
-[2026-10-04 08:38:06.004] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #48B6
-[2026-10-04 08:38:06.005] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:06.005] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:06.006] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:06.006] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
-[2026-10-04 08:38:06.006] [DEBUG] [WTelegram]             → Upload_GetFile                         #444A
-[2026-10-04 08:38:06.006] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:06.049] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
-[2026-10-04 08:38:06.049] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #444A
-[2026-10-04 08:38:06.050] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:06.351] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:06.351] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
-[2026-10-04 08:38:06.351] [DEBUG] [WTelegram]             → Upload_GetFile                         #219E
-[2026-10-04 08:38:06.351] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:06.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
-[2026-10-04 08:38:06.447] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #219E
-[2026-10-04 08:38:06.447] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:06.757] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:06.758] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:06Z (svc)
-[2026-10-04 08:38:06.758] [DEBUG] [WTelegram]             → Upload_GetFile                         #E44F
-[2026-10-04 08:38:06.758] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:06.803] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:06Z
-[2026-10-04 08:38:06.803] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E44F
-[2026-10-04 08:38:06.804] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:07.118] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:07.118] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:06Z (svc)
-[2026-10-04 08:38:07.118] [DEBUG] [WTelegram]             → Upload_GetFile                         #CDB7
-[2026-10-04 08:38:07.118] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:07.162] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:06Z
-[2026-10-04 08:38:07.163] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #CDB7
-[2026-10-04 08:38:07.163] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:07.163] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:07.164] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:07.165] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:06Z (svc)
-[2026-10-04 08:38:07.165] [DEBUG] [WTelegram]             → Upload_GetFile                         #3C8B
-[2026-10-04 08:38:07.165] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:07.210] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:06Z
-[2026-10-04 08:38:07.210] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #3C8B
-[2026-10-04 08:38:07.211] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:07.524] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:07.525] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
-[2026-10-04 08:38:07.525] [DEBUG] [WTelegram]             → Upload_GetFile                         #99D4
-[2026-10-04 08:38:07.525] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:07.569] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
-[2026-10-04 08:38:07.569] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #99D4
-[2026-10-04 08:38:07.569] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:07.882] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:07.883] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
-[2026-10-04 08:38:07.883] [DEBUG] [WTelegram]             → Upload_GetFile                         #1B04
-[2026-10-04 08:38:07.883] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:07.929] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
-[2026-10-04 08:38:07.929] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #1B04
-[2026-10-04 08:38:07.929] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:08.240] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:08.241] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
-[2026-10-04 08:38:08.241] [DEBUG] [WTelegram]             → Upload_GetFile                         #A660
-[2026-10-04 08:38:08.241] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:08.286] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
-[2026-10-04 08:38:08.286] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A660
-[2026-10-04 08:38:08.286] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:08.286] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:08.287] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:08.288] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
-[2026-10-04 08:38:08.288] [DEBUG] [WTelegram]             → Upload_GetFile                         #6F58
-[2026-10-04 08:38:08.288] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:08.333] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
-[2026-10-04 08:38:08.333] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6F58
-[2026-10-04 08:38:08.334] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:08.646] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:08.647] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
-[2026-10-04 08:38:08.647] [DEBUG] [WTelegram]             → Upload_GetFile                         #E265
-[2026-10-04 08:38:08.647] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:08.692] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
-[2026-10-04 08:38:08.692] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E265
-[2026-10-04 08:38:08.692] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:08.993] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:08.993] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
-[2026-10-04 08:38:08.994] [DEBUG] [WTelegram]             → Upload_GetFile                         #A981
-[2026-10-04 08:38:08.994] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:09.036] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
-[2026-10-04 08:38:09.036] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A981
-[2026-10-04 08:38:09.036] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:09.339] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:09.339] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
-[2026-10-04 08:38:09.340] [DEBUG] [WTelegram]             → Upload_GetFile                         #D1F1
-[2026-10-04 08:38:09.340] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:09.384] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
-[2026-10-04 08:38:09.384] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #D1F1
-[2026-10-04 08:38:09.384] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:09.385] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:09.386] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:09.386] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
-[2026-10-04 08:38:09.386] [DEBUG] [WTelegram]             → Upload_GetFile                         #0361
-[2026-10-04 08:38:09.386] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:09.430] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
-[2026-10-04 08:38:09.430] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #0361
-[2026-10-04 08:38:09.431] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:09.734] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:09.735] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:09Z (svc)
-[2026-10-04 08:38:09.735] [DEBUG] [WTelegram]             → Upload_GetFile                         #DEEA
-[2026-10-04 08:38:09.735] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:09.780] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:09Z
-[2026-10-04 08:38:09.780] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #DEEA
-[2026-10-04 08:38:09.780] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:10.094] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:10.094] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:09Z (svc)
-[2026-10-04 08:38:10.094] [DEBUG] [WTelegram]             → Upload_GetFile                         #6296
-[2026-10-04 08:38:10.095] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:10.140] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:09Z
-[2026-10-04 08:38:10.140] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6296
-[2026-10-04 08:38:10.140] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:10.440] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:10.441] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
-[2026-10-04 08:38:10.441] [DEBUG] [WTelegram]             → Upload_GetFile                         #C497
-[2026-10-04 08:38:10.441] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:10.489] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
-[2026-10-04 08:38:10.489] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #C497
-[2026-10-04 08:38:10.489] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:10.489] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:10.490] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:10.491] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
-[2026-10-04 08:38:10.491] [DEBUG] [WTelegram]             → Upload_GetFile                         #5833
-[2026-10-04 08:38:10.491] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:10.536] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
-[2026-10-04 08:38:10.536] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #5833
-[2026-10-04 08:38:10.536] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:10.845] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:10.845] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
-[2026-10-04 08:38:10.845] [DEBUG] [WTelegram]             → Upload_GetFile                         #0723
-[2026-10-04 08:38:10.845] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:10.891] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
-[2026-10-04 08:38:10.891] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #0723
-[2026-10-04 08:38:10.891] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:11.202] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:11.203] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
-[2026-10-04 08:38:11.203] [DEBUG] [WTelegram]             → Upload_GetFile                         #CF4B
-[2026-10-04 08:38:11.203] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:11.248] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
-[2026-10-04 08:38:11.248] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #CF4B
-[2026-10-04 08:38:11.248] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:11.562] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:11.563] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
-[2026-10-04 08:38:11.563] [DEBUG] [WTelegram]             → Upload_GetFile                         #6E88
-[2026-10-04 08:38:11.563] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:11.608] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
-[2026-10-04 08:38:11.608] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6E88
-[2026-10-04 08:38:11.608] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:11.608] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:11.609] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:11.610] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
-[2026-10-04 08:38:11.610] [DEBUG] [WTelegram]             → Upload_GetFile                         #F8B4
-[2026-10-04 08:38:11.610] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:11.655] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
-[2026-10-04 08:38:11.655] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #F8B4
-[2026-10-04 08:38:11.655] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:11.886] [INFO ] [WinFsp] Размонтирование диска Y:...
-[2026-10-04 08:38:11.956] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:11.957] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
-[2026-10-04 08:38:11.957] [DEBUG] [WTelegram]             → Upload_GetFile                         #E44C
-[2026-10-04 08:38:11.957] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:12.002] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
-[2026-10-04 08:38:12.002] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E44C
-[2026-10-04 08:38:12.002] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:12.305] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:12.306] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
-[2026-10-04 08:38:12.306] [DEBUG] [WTelegram]             → Upload_GetFile                         #DED0
-[2026-10-04 08:38:12.306] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:12.362] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
-[2026-10-04 08:38:12.362] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #DED0
-[2026-10-04 08:38:12.362] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:12.672] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:12.673] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:12Z (svc)
-[2026-10-04 08:38:12.673] [DEBUG] [WTelegram]             → Upload_GetFile                         #3A91
-[2026-10-04 08:38:12.673] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:12.716] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:12Z
-[2026-10-04 08:38:12.717] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #3A91
-[2026-10-04 08:38:12.717] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
-[2026-10-04 08:38:12.717] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
-[2026-10-04 08:38:12.725] [INFO ] [WebDAV] WebDAV Сервер остановлен.
-[2026-10-04 08:38:12.725] [INFO ] [AppLogger] Завершение работы сервиса и сброс буфера логов...
-
-====================================================================================================
-=== 2026-10-04 08:38:27 | Telegram WebDAV & Network Drive Service ===
-====================================================================================================
-[2026-10-04 08:38:27.564] [INFO ] [AppLogger] Инициализирован файловый логгер. Путь: D:\Temp\TG webDAV\logs\app.log (лимит 5 МБ, ротация до 3 файлов).
-[2026-10-04 08:38:27.592] [INFO ] [Program] =================================================
-[2026-10-04 08:38:27.592] [INFO ] [Program]  Telegram WebDAV & Network Drive Service v2.0
-[2026-10-04 08:38:27.592] [INFO ] [Program] =================================================
-[2026-10-04 08:38:27.701] [INFO ] [Program] Конфигурация загружена. Порт: 37000, Диск: Y:
-[2026-10-04 08:38:27.759] [INFO ] [Program] База данных SQLite инициализирована по пути: base.db
-[2026-10-04 08:38:27.768] [INFO ] [TelegramService] Проверка сессии и подключение к Telegram...
-[2026-10-04 08:38:27.770] [INFO ] [TelegramService] [Streaming Config] Воркеры: 1 | Пейсинг: 20 мс | RAM Кэш: 128 МБ (TTL: 10 мин) | Буфер аудио: 2 МБ | Окно стриминга: 5 МБ | Дисковый кэш: ВЫКЛ (100% RAM)
-[2026-10-04 08:38:27.840] [INFO ] [WTelegram] Loaded previous session
-[2026-10-04 08:38:27.846] [DEBUG] [WTelegram] WTelegramClient 4.1.6+e5c6086e1199c947131c2ef44b526ef51501cd67 running under .NET 8.0.31
-[2026-10-04 08:38:27.872] [INFO ] [WTelegram] Connecting to 149.154.167.50:443...
-[2026-10-04 08:38:27.993] [DEBUG] [WTelegram] 2>Sending   InvokeWithLayer`1                        #F330
-[2026-10-04 08:38:28.065] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-04 05:38:28Z (svc)
-[2026-10-04 08:38:28.067] [DEBUG] [WTelegram]             → RpcResult                              2026-10-04 05:38:13Z
-[2026-10-04 08:38:28.147] [DEBUG] [WTelegram]              → RpcError                              for past msgId #3A91
-[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
-[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
-[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
-[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
-[2026-10-04 08:38:28.150] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-04 05:38:28Z (svc) 
-[2026-10-04 08:38:28.156] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:28Z
-[2026-10-04 08:38:28.161] [DEBUG] [WTelegram]              → Config                                #F330
-[2026-10-04 08:38:28.168] [INFO ] [WTelegram] Connected to DC 2... default_p2p_contacts, revoke_pm_inbox
-[2026-10-04 08:38:28.171] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:28Z (svc)
-[2026-10-04 08:38:28.172] [DEBUG] [WTelegram]             → Users_GetUsers                         #F33C
-[2026-10-04 08:38:28.174] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:28.230] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:28Z
-[2026-10-04 08:38:28.232] [DEBUG] [WTelegram]              → UserBase[]                            #F33C
-[2026-10-04 08:38:28.239] [INFO ] [MtprotoWorkerPool] Пул постоянных воркеров запущен: 1 воркеров MTProto готовы к обработке очереди.
-[2026-10-04 08:38:28.240] [INFO ] [TelegramService] Успешная авторизация пользователя: Vitaly (ID: 317057068)
-[2026-10-04 08:38:28.247] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:28Z (svc)
-[2026-10-04 08:38:28.247] [DEBUG] [WTelegram]             → Help_GetConfig                         #F320
-[2026-10-04 08:38:28.247] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:28.269] [INFO ] [WebDAV] WebDAV Сервер запущен на http://localhost:37000/
-[2026-10-04 08:38:28.269] [INFO ] [Program] Встроенный WebDAV сервер запущен: http://localhost:37000/
-[2026-10-04 08:38:28.277] [INFO ] [WinFsp] Нативная библиотека winfsp-x64.dll успешно предзагружена в память процесса из C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll
-[2026-10-04 08:38:28.277] [INFO ] [WinFsp] Зарегистрирован путь к нативным DLL WinFsp: C:\Program Files (x86)\WinFsp\bin
-[2026-10-04 08:38:28.296] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:28Z
-[2026-10-04 08:38:28.297] [DEBUG] [WTelegram]              → Config                                #F320
-[2026-10-04 08:38:28.301] [INFO ] [TelegramService] Подключен канал-хранилище из настроек: 'Telegram WebDAV Drive' (ID: 4323453199).
-[2026-10-04 08:38:28.440] [INFO ] [VirtualDriveManager] Выбран режим диска WinFsp. Подключение Y:...
-[2026-10-04 08:38:28.451] [INFO ] [WinFsp] Попытка монтирования виртуального диска Y: через WinFsp...
-[2026-10-04 08:38:28.475] [INFO ] [WinFsp] Виртуальный диск Y: успешно смонтирован через WinFsp (прямой стриминг в ОЗУ).
-[2026-10-04 08:38:28.478] [INFO ] [Shell] Контекстное меню корзины WebDAV успешно зарегистрировано в реестре для Y:\
-[2026-10-04 08:38:42.171] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
-[2026-10-04 08:38:42.171] [DEBUG] [WTelegram]             → Channels_GetMessages                   #6F7E
-[2026-10-04 08:38:42.172] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:42.248] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
-[2026-10-04 08:38:42.254] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #6F7E
-[2026-10-04 08:38:42.282] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/18 (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:42.283] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
-[2026-10-04 08:38:42.283] [DEBUG] [WTelegram]             → Upload_GetFile                         #F16A
-[2026-10-04 08:38:42.284] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:42.658] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
-[2026-10-04 08:38:42.658] [DEBUG] [WTelegram]              → Upload_File                           #F16A
-[2026-10-04 08:38:42.659] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/18 (262 144 б за 377 мс) [Полный].
-[2026-10-04 08:38:42.674] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'KOMODO- All 4 U (Official video).mp4'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
-[2026-10-04 08:38:42.687] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #16/18 (смещение 17 563 648 б, размер 262 144 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:42.689] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
-[2026-10-04 08:38:42.689] [DEBUG] [WTelegram]             → Upload_GetFile                         #762A
-[2026-10-04 08:38:42.689] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:42.816] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:43Z
-[2026-10-04 08:38:42.816] [DEBUG] [WTelegram]              → Upload_File                           #762A
-[2026-10-04 08:38:42.816] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #16/18 (262 144 б за 129 мс) [Полный].
-[2026-10-04 08:38:42.822] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1468): Глобальный Чанк #16 (смещение 17 752 064, 32 768 байт). Скачано всего: 0 из 18 чанков (0%).
-[2026-10-04 08:38:42.823] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1468): смещение 17 784 832, отдано 40 960 байт (17 825 792 / 17 915 288 байт, 99,5%). Скачано всего: 0 из 18 чанков (0%).
-[2026-10-04 08:38:42.843] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:42.844] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
-[2026-10-04 08:38:42.844] [DEBUG] [WTelegram]             → Upload_GetFile                         #7233
-[2026-10-04 08:38:42.844] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:42.985] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
-[2026-10-04 08:38:42.986] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #7233
-[2026-10-04 08:38:42.987] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #17/18 (смещение 17 825 792 б): LIMIT_INVALID
-[2026-10-04 08:38:43.298] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:43.300] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
-[2026-10-04 08:38:43.300] [DEBUG] [WTelegram]             → Upload_GetFile                         #9BD3
-[2026-10-04 08:38:43.300] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:43.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
-[2026-10-04 08:38:43.400] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #9BD3
-[2026-10-04 08:38:43.400] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #17/18 (смещение 17 825 792 б): LIMIT_INVALID
-[2026-10-04 08:38:43.710] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:43.711] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
-[2026-10-04 08:38:43.711] [DEBUG] [WTelegram]             → Upload_GetFile                         #2F9B
-[2026-10-04 08:38:43.711] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:43.763] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:43Z
-[2026-10-04 08:38:43.763] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #2F9B
-[2026-10-04 08:38:43.764] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #17/18 (смещение 17 825 792 б): LIMIT_INVALID
-[2026-10-04 08:38:44.073] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:38:44.073] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:43Z (svc)
-[2026-10-04 08:38:44.074] [DEBUG] [WTelegram]             → Upload_GetFile                         #587C
-[2026-10-04 08:38:44.074] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:38:44.106] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
-[2026-10-04 08:38:44.110] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-10-04 08:49:54.840] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 887 296, 4 017 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.545] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.546] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.547] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.548] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 5, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.549] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 6, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.549] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 7, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.779] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.779] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.780] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.781] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.781] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 5, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.781] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 6, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.782] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 7, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.782] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.783] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.783] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.784] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.785] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.785] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.786] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.786] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.787] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.787] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.788] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.788] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.789] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.789] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.790] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.790] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.791] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.791] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.792] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.793] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.793] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.794] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.794] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.795] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.795] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.796] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.796] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.797] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.797] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.797] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.798] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.798] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.798] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.799] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.799] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 3, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.799] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.800] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.800] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.802] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.802] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 5, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.802] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 6, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.803] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 7, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.804] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.805] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.805] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.806] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.806] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.807] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.808] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.808] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.809] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.810] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.810] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.811] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.811] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.812] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.813] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.813] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.814] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.814] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.815] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.815] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.816] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.817] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.817] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.817] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.818] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.819] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.820] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.820] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.821] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.821] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.822] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.823] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.823] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.826] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.827] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 735 007, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.828] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 800 543, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.829] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 866 079, 25 234 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:56.868] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 4 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:57.358] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 48, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:57.359] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 65 584, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:57.404] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 131 120, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:57.996] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 196 656, отдано 65 488 байт (262 144 / 24 891 313 байт, 1,1%). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:57.996] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/24 (смещение 262 144 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:49:57.997] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:49:57Z (svc)
+[2026-10-04 08:49:57.997] [DEBUG] [WTelegram]             → Upload_GetFile                         #616A
+[2026-10-04 08:49:57.997] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:49:58.085] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:49:57Z
+[2026-10-04 08:49:58.085] [DEBUG] [WTelegram]              → Upload_File                           #616A
+[2026-10-04 08:49:58.085] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/24 (262 144 б за 89 мс) [Полный].
+[2026-10-04 08:49:58.206] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 262 192, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:58.448] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 327 728, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
+[2026-10-04 08:49:58.773] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 393 264, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-04 08:49:59.234] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 458 800, отдано 65 488 байт (524 288 / 24 891 313 байт, 2,1%). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-04 08:49:59.234] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/24 (смещение 524 288 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:49:59.235] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:49:58Z (svc)
+[2026-10-04 08:49:59.235] [DEBUG] [WTelegram]             → Upload_GetFile                         #2093
+[2026-10-04 08:49:59.235] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:49:59.311] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:49:58Z
+[2026-10-04 08:49:59.311] [DEBUG] [WTelegram]              → Upload_File                           #2093
+[2026-10-04 08:49:59.311] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/24 (262 144 б за 77 мс) [Полный].
+[2026-10-04 08:49:59.570] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 524 336, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-04 08:50:00.108] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 589 872, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-04 08:50:00.489] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 655 408, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-04 08:50:01.150] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 720 944, отдано 65 488 байт (786 432 / 24 891 313 байт, 3,2%). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-04 08:50:01.151] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/24 (смещение 786 432 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:50:01.152] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:00Z (svc)
+[2026-10-04 08:50:01.152] [DEBUG] [WTelegram]             → Upload_GetFile                         #BF45
+[2026-10-04 08:50:01.152] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:01.260] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:00Z
+[2026-10-04 08:50:01.260] [DEBUG] [WTelegram]              → Upload_File                           #BF45
+[2026-10-04 08:50:01.260] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/24 (262 144 б за 109 мс) [Полный].
+[2026-10-04 08:50:01.863] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 786 480, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
+[2026-10-04 08:50:01.865] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/24 (смещение 1 048 576 б, размер 1 048 576 б)...
+[2026-10-04 08:50:01.866] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:01Z (svc)
+[2026-10-04 08:50:01.866] [DEBUG] [WTelegram]             → Upload_GetFile                         #FA3E
+[2026-10-04 08:50:01.866] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:02.115] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:01Z
+[2026-10-04 08:50:02.116] [DEBUG] [WTelegram]              → Upload_File                           #FA3E
+[2026-10-04 08:50:02.116] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/24 (1 048 576 б за 250 мс) [Полный].
+[2026-10-04 08:50:02.121] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (2097152/24891313)
+[2026-10-04 08:50:02.140] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #2/24 (смещение 2 097 152 б, размер 1 048 576 б)...
+[2026-10-04 08:50:02.140] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:01Z (svc)
+[2026-10-04 08:50:02.140] [DEBUG] [WTelegram]             → Upload_GetFile                         #0F7E
+[2026-10-04 08:50:02.140] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:02.312] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:01Z
+[2026-10-04 08:50:02.313] [DEBUG] [WTelegram]              → Upload_File                           #0F7E
+[2026-10-04 08:50:02.313] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #2/24 (1 048 576 б за 173 мс) [Полный].
+[2026-10-04 08:50:02.345] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/24 (смещение 3 145 728 б, размер 1 048 576 б)...
+[2026-10-04 08:50:02.346] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:01Z (svc)
+[2026-10-04 08:50:02.346] [DEBUG] [WTelegram]             → Upload_GetFile                         #5A4A
+[2026-10-04 08:50:02.346] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:02.493] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:01Z
+[2026-10-04 08:50:02.495] [DEBUG] [WTelegram]              → Upload_File                           #5A4A
+[2026-10-04 08:50:02.495] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/24 (1 048 576 б за 149 мс) [Полный].
+[2026-10-04 08:50:02.516] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/24 (смещение 4 194 304 б, размер 1 048 576 б)...
+[2026-10-04 08:50:02.516] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:02Z (svc)
+[2026-10-04 08:50:02.516] [DEBUG] [WTelegram]             → Upload_GetFile                         #4723
+[2026-10-04 08:50:02.516] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:02.630] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:02Z
+[2026-10-04 08:50:02.631] [DEBUG] [WTelegram]              → Upload_File                           #4723
+[2026-10-04 08:50:02.631] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/24 (1 048 576 б за 115 мс) [Полный].
+[2026-10-04 08:50:02.658] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #5/24 (смещение 5 242 880 б, размер 1 048 576 б)...
+[2026-10-04 08:50:02.659] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:02Z (svc)
+[2026-10-04 08:50:02.659] [DEBUG] [WTelegram]             → Upload_GetFile                         #0A17
+[2026-10-04 08:50:02.659] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:02.733] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 852 016, 65 536 байт). Скачано всего: 5 из 24 чанков (20,8%).
+[2026-10-04 08:50:02.768] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:02Z
+[2026-10-04 08:50:02.769] [DEBUG] [WTelegram]              → Upload_File                           #0A17
+[2026-10-04 08:50:02.769] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #5/24 (1 048 576 б за 110 мс) [Полный].
+[2026-10-04 08:50:03.068] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 917 552, 65 536 байт). Скачано всего: 6 из 24 чанков (25%).
+[2026-10-04 08:50:03.651] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 983 088, отдано 65 488 байт (1 048 576 / 24 891 313 байт, 4,2%). Скачано всего: 6 из 24 чанков (25%).
+[2026-10-04 08:50:03.651] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 1 048 576, отдано 48 байт (1 048 624 / 24 891 313 байт, 4,2%). Скачано всего: 6 из 24 чанков (25%).
+[2026-10-04 08:50:03.652] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #6/24 (смещение 6 291 456 б, размер 1 048 576 б)...
+[2026-10-04 08:50:03.652] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:03Z (svc)
+[2026-10-04 08:50:03.652] [DEBUG] [WTelegram]             → Upload_GetFile                         #7408
+[2026-10-04 08:50:03.652] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:03.763] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:03Z
+[2026-10-04 08:50:03.764] [DEBUG] [WTelegram]              → Upload_File                           #7408
+[2026-10-04 08:50:03.764] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #6/24 (1 048 576 б за 111 мс) [Полный].
+[2026-10-04 08:50:03.988] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 048 624, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:04.617] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 114 160, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:04.995] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 179 696, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:05.384] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
+[2026-10-04 08:50:06.030] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 245 232, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:06.739] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 310 768, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:07.494] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 376 304, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:07.783] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 441 840, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:08.030] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 507 376, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:08.411] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 572 912, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:08.667] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 638 448, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:09.410] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 703 984, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:10.366] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 769 520, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:10.871] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 835 056, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:11.456] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 900 592, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:11.659] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 966 128, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:11.995] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 2 031 664, отдано 65 488 байт (2 097 152 / 24 891 313 байт, 8,4%). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:11.995] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 2 097 152, отдано 48 байт (2 097 200 / 24 891 313 байт, 8,4%). Скачано всего: 7 из 24 чанков (29,2%).
+[2026-10-04 08:50:11.995] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/24 (смещение 7 340 032 б, размер 1 048 576 б)...
+[2026-10-04 08:50:11.995] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:11Z (svc)
+[2026-10-04 08:50:11.995] [DEBUG] [WTelegram]             → Upload_GetFile                         #4274
+[2026-10-04 08:50:11.995] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:12.187] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:11Z
+[2026-10-04 08:50:12.187] [DEBUG] [WTelegram]              → Upload_File                           #4274
+[2026-10-04 08:50:12.187] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/24 (1 048 576 б за 192 мс) [Полный].
+[2026-10-04 08:50:12.188] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (8388608/24891313)
+[2026-10-04 08:50:12.620] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 097 200, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:12.996] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 162 736, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:13.751] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 228 272, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:13.818] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
+[2026-10-04 08:50:14.127] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 293 808, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:14.662] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 359 344, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:15.040] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 424 880, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:15.505] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 490 416, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:15.965] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 555 952, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:16.461] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 621 488, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:17.087] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 687 024, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:17.421] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 752 560, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:17.724] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:17Z (svc)
+[2026-10-04 08:50:17.724] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #24BA
+[2026-10-04 08:50:17.724] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:17.765] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:50:17Z (svc) 
+[2026-10-04 08:50:18.253] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 818 096, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:18.920] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 883 632, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:20.090] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 949 168, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:20.584] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 3 014 704, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:20.927] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 3 080 240, отдано 65 488 байт (3 145 728 / 24 891 313 байт, 12,6%). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:20.927] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 3 145 728, отдано 48 байт (3 145 776 / 24 891 313 байт, 12,6%). Скачано всего: 8 из 24 чанков (33,3%).
+[2026-10-04 08:50:20.927] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #8/24 (смещение 8 388 608 б, размер 1 048 576 б)...
+[2026-10-04 08:50:20.927] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #7279
+[2026-10-04 08:50:21.036] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:20Z
+[2026-10-04 08:50:21.037] [DEBUG] [WTelegram]              → Upload_File                           #7279
+[2026-10-04 08:50:21.037] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #8/24 (1 048 576 б за 109 мс) [Полный].
+[2026-10-04 08:50:21.038] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (9437184/24891313)
+[2026-10-04 08:50:21.173] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 145 776, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:21.549] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 211 312, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:21.839] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 276 848, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:22.218] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 342 384, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:22.682] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
+[2026-10-04 08:50:22.840] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 407 920, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:23.633] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 473 456, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:24.633] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 538 992, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:25.008] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 604 528, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:25.515] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 670 064, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:25.925] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 735 600, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:26.426] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 801 136, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:27.263] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 866 672, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:27.810] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 932 208, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:28.178] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 997 744, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:28.558] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 4 063 280, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:29.139] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 4 128 816, отдано 65 488 байт (4 194 304 / 24 891 313 байт, 16,9%). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:29.139] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 4 194 304, отдано 48 байт (4 194 352 / 24 891 313 байт, 16,9%). Скачано всего: 9 из 24 чанков (37,5%).
+[2026-10-04 08:50:29.140] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #9/24 (смещение 9 437 184 б, размер 1 048 576 б)...
+[2026-10-04 08:50:29.140] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:28Z (svc)
+[2026-10-04 08:50:29.140] [DEBUG] [WTelegram]             → Upload_GetFile                         #5165
+[2026-10-04 08:50:29.140] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:29.253] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:28Z
+[2026-10-04 08:50:29.254] [DEBUG] [WTelegram]              → Upload_File                           #5165
+[2026-10-04 08:50:29.254] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #9/24 (1 048 576 б за 114 мс) [Полный].
+[2026-10-04 08:50:29.255] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (10485760/24891313)
+[2026-10-04 08:50:29.521] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 194 352, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:30.012] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 259 888, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:30.516] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 325 424, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:30.897] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
+[2026-10-04 08:50:31.097] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 390 960, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:31.644] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 456 496, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:32.391] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 522 032, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:32.896] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 587 568, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:33.270] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 653 104, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:33.731] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 718 640, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:34.311] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 784 176, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:34.891] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 849 712, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:35.390] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 915 248, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:35.852] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 980 784, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:36.519] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 5 046 320, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:36.893] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 5 111 856, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:37.525] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 5 177 392, отдано 65 488 байт (5 242 880 / 24 891 313 байт, 21,1%). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:37.525] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 5 242 880, отдано 48 байт (5 242 928 / 24 891 313 байт, 21,1%). Скачано всего: 10 из 24 чанков (41,7%).
+[2026-10-04 08:50:37.525] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/24 (смещение 10 485 760 б, размер 1 048 576 б)...
+[2026-10-04 08:50:37.526] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:37Z (svc)
+[2026-10-04 08:50:37.526] [DEBUG] [WTelegram]             → Upload_GetFile                         #AB92
+[2026-10-04 08:50:37.526] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:50:37.619] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:37Z
+[2026-10-04 08:50:37.619] [DEBUG] [WTelegram]              → Upload_File                           #AB92
+[2026-10-04 08:50:37.619] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/24 (1 048 576 б за 93 мс) [Полный].
+[2026-10-04 08:50:37.619] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (11534336/24891313)
+[2026-10-04 08:50:37.942] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 242 928, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:38.479] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 308 464, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:39.028] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 374 000, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:39.248] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
+[2026-10-04 08:50:39.314] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 439 536, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:39.688] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 505 072, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:40.531] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 570 608, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:41.234] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 636 144, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:41.857] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 701 680, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:42.693] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 767 216, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 08:50:42.945] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 832 752, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
