@@ -29,13 +29,11 @@ namespace TelegramWebDAV.Services
         private Task[] _workerTasks = Array.Empty<Task>();
         private readonly SemaphoreSlim _workSignal = new(0, int.MaxValue);
 
-        // Очереди задач: синхронное чтение плеером имеет приоритет над фоновым упреждением
-        private readonly ConcurrentQueue<ChunkDownloadRequest> _highPriorityQueue = new();
-        private readonly ConcurrentQueue<ChunkDownloadRequest> _normalPriorityQueue = new();
-
-        // Единая таблица активных задач на скачивание чанков для 100% дедупликации: ключ = "{messageId}:{chunkOffset}"
-        private readonly ConcurrentDictionary<string, Task<byte[]?>> _inFlightChunks = new();
-        private readonly ConcurrentDictionary<string, ChunkDownloadRequest> _activeRequests = new();
+        // Потокобезопасная единая приоритетная очередь задач
+        private readonly object _queueLock = new();
+        private readonly LinkedList<ChunkDownloadRequest> _queue = new();
+        private readonly Dictionary<string, LinkedListNode<ChunkDownloadRequest>> _waitingRequests = new();
+        private readonly Dictionary<string, ChunkDownloadRequest> _inProgressRequests = new();
 
         public class ChunkDownloadRequest
         {
@@ -46,9 +44,7 @@ namespace TelegramWebDAV.Services
             public int ChunkIndex { get; set; }
             public long ChunkOffset { get; set; }
             public int RequestLimit { get; set; }
-            public volatile bool IsHighPriority;
-            public volatile bool IsCancelled;
-            public int IsProcessing;
+            public bool IsHighPriority { get; set; }
             public int RetryCount { get; set; }
             public TaskCompletionSource<byte[]?> Completion { get; set; } = null!;
             public Action<byte[], long>? OnChunkReceived { get; set; }
@@ -74,11 +70,15 @@ namespace TelegramWebDAV.Services
         public int ActiveWorkerCount => _workerCount;
 
         /// <summary>
-        /// Проверяет, находится ли данный чанк уже в очереди или в процессе сетевой загрузки.
+        /// Проверяет, находится ли данный чанк уже в очереди ожидания или в процессе активной загрузки воркером.
         /// </summary>
         public bool IsChunkInFlight(int messageId, long chunkOffset)
         {
-            return _inFlightChunks.ContainsKey($"{messageId}:{chunkOffset}");
+            string key = $"{messageId}:{chunkOffset}";
+            lock (_queueLock)
+            {
+                return _waitingRequests.ContainsKey(key) || _inProgressRequests.ContainsKey(key);
+            }
         }
 
         /// <summary>
@@ -137,28 +137,41 @@ namespace TelegramWebDAV.Services
         {
             string key = $"{messageId}:{chunkOffset}";
 
-            // Проверяем, есть ли чанк уже в очереди или в процессе загрузки
-            if (_inFlightChunks.TryGetValue(key, out var existingTask))
+            lock (_queueLock)
             {
-                if (isHighPriority && _activeRequests.TryGetValue(key, out var activeReq))
+                // 1. Чанк уже находится в активной сетевой загрузке воркером прямо сейчас
+                if (_inProgressRequests.TryGetValue(key, out var inProgressReq))
                 {
-                    activeReq.IsCancelled = false;
-                    // Если задача еще не взята воркером в работу (IsProcessing == 0) и еще не была в срочной очереди
-                    if (!activeReq.IsHighPriority && Volatile.Read(ref activeReq.IsProcessing) == 0)
-                    {
-                        activeReq.IsHighPriority = true;
-                        _highPriorityQueue.Enqueue(activeReq);
-                        _workSignal.Release();
-                    }
+                    return inProgressReq.Completion.Task;
                 }
-                return existingTask;
-            }
 
-            var tcs = new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously);
+                // 2. Чанк уже ожидает в очереди
+                if (_waitingRequests.TryGetValue(key, out var existingNode))
+                {
+                    // Если плеер требует чанк срочно, а он стоял как фоновый префетч — перемещаем в группу срочных
+                    if (isHighPriority && !existingNode.Value.IsHighPriority)
+                    {
+                        existingNode.Value.IsHighPriority = true;
+                        _queue.Remove(existingNode);
 
-            if (_inFlightChunks.TryAdd(key, tcs.Task))
-            {
+                        // Вставляем после уже имеющихся срочных чанков, но перед обычными
+                        var firstNormal = _queue.First;
+                        while (firstNormal != null && firstNormal.Value.IsHighPriority)
+                        {
+                            firstNormal = firstNormal.Next;
+                        }
+
+                        if (firstNormal != null)
+                            _queue.AddBefore(firstNormal, existingNode);
+                        else
+                            _queue.AddLast(existingNode);
+                    }
+                    return existingNode.Value.Completion.Task;
+                }
+
+                // 3. Новый чанк — создаем единственную задачу
                 int chunkIdx = (int)(chunkOffset / 1048576);
+                var tcs = new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously);
                 var request = new ChunkDownloadRequest
                 {
                     MessageId = messageId,
@@ -174,37 +187,51 @@ namespace TelegramWebDAV.Services
                     OnProgress = onProgress
                 };
 
-                _activeRequests[key] = request;
-
+                LinkedListNode<ChunkDownloadRequest> newNode;
                 if (isHighPriority)
                 {
-                    _highPriorityQueue.Enqueue(request);
+                    var firstNormal = _queue.First;
+                    while (firstNormal != null && firstNormal.Value.IsHighPriority)
+                    {
+                        firstNormal = firstNormal.Next;
+                    }
+
+                    if (firstNormal != null)
+                        newNode = _queue.AddBefore(firstNormal, request);
+                    else
+                        newNode = _queue.AddLast(request);
                 }
                 else
                 {
-                    _normalPriorityQueue.Enqueue(request);
+                    newNode = _queue.AddLast(request);
                 }
 
+                _waitingRequests[key] = newNode;
                 _workSignal.Release();
                 return tcs.Task;
             }
-
-            // Если параллельный поток успел добавить задачу на этой микросекунде
-            return _inFlightChunks.TryGetValue(key, out var concurrentTask) ? concurrentTask : tcs.Task;
         }
 
         /// <summary>
-        /// Отменяет все ожидающие в очереди низкоприоритетные чанки упреждения для указанного файла (например, при перемотке в плеере).
+        /// Отменяет и физически удаляет из очереди все ожидающие низкоприоритетные чанки упреждения для указанного файла (например, при перемотке в плеере).
+        /// Срочные чанки чтения плеера и чанки, уже скачивающиеся воркерами прямо сейчас, не затрагиваются.
         /// </summary>
         public void CancelPendingChunksForFile(int messageId)
         {
-            foreach (var req in _normalPriorityQueue)
+            lock (_queueLock)
             {
-                // Отменяем только незапущенные низкоприоритетные фоновые чанки.
-                // Если чанк срочный (IsHighPriority) или уже качается воркером (IsProcessing == 1) — его трогать нельзя!
-                if (req.MessageId == messageId && !req.IsCancelled && !req.IsHighPriority && Volatile.Read(ref req.IsProcessing) == 0)
+                var node = _queue.First;
+                while (node != null)
                 {
-                    req.IsCancelled = true;
+                    var next = node.Next;
+                    if (node.Value.MessageId == messageId && !node.Value.IsHighPriority)
+                    {
+                        string key = $"{node.Value.MessageId}:{node.Value.ChunkOffset}";
+                        _waitingRequests.Remove(key);
+                        node.Value.Completion.TrySetResult(null);
+                        _queue.Remove(node);
+                    }
+                    node = next;
                 }
             }
         }
@@ -229,34 +256,34 @@ namespace TelegramWebDAV.Services
                 }
 
                 ChunkDownloadRequest? request = null;
+                string key = string.Empty;
 
-                // Сначала забираем срочные чанки плеера (High Priority), затем фоновые упреждающие (Normal Priority)
-                if (!_highPriorityQueue.TryDequeue(out request))
+                lock (_queueLock)
                 {
-                    _normalPriorityQueue.TryDequeue(out request);
+                    if (_queue.First != null)
+                    {
+                        var node = _queue.First;
+                        request = node.Value;
+                        _queue.RemoveFirst();
+                        key = $"{request.MessageId}:{request.ChunkOffset}";
+                        _waitingRequests.Remove(key);
+                        _inProgressRequests[key] = request;
+                    }
                 }
 
                 if (request == null) continue;
 
-                // Атомарно заявляем права на выполнение этого чанка.
-                // Если этот же запрос уже обрабатывается или был обработан другим воркером
-                // (например, дубликат из очереди при повышении приоритета) — мгновенно отбрасываем дубль!
-                if (Interlocked.CompareExchange(ref request.IsProcessing, 1, 0) != 0)
+                try
                 {
-                    continue;
+                    await ProcessChunkRequestAsync(workerId, request, key, token);
                 }
-
-                string key = $"{request.MessageId}:{request.ChunkOffset}";
-
-                if (request.IsCancelled || token.IsCancellationRequested)
+                finally
                 {
-                    _inFlightChunks.TryRemove(key, out _);
-                    _activeRequests.TryRemove(key, out _);
-                    request.Completion.TrySetResult(null);
-                    continue;
+                    lock (_queueLock)
+                    {
+                        _inProgressRequests.Remove(key);
+                    }
                 }
-
-                await ProcessChunkRequestAsync(workerId, request, key, token);
             }
         }
 
@@ -272,8 +299,6 @@ namespace TelegramWebDAV.Services
                 var existingBytes = _existingChunkProvider(request.MessageId, request.ChunkOffset);
                 if (existingBytes != null && existingBytes.Length == expectedChunkSize)
                 {
-                    _inFlightChunks.TryRemove(key, out _);
-                    _activeRequests.TryRemove(key, out _);
                     request.OnChunkReceived?.Invoke(existingBytes, request.ChunkOffset);
                     request.Completion.TrySetResult(existingBytes);
                     return;
@@ -290,7 +315,6 @@ namespace TelegramWebDAV.Services
             catch (Exception ex)
             {
                 AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка подключения к DC {request.Document.dc_id}: {ex.Message}");
-                _inFlightChunks.TryRemove(key, out _);
                 request.Completion.TrySetResult(null);
                 return;
             }
@@ -298,7 +322,7 @@ namespace TelegramWebDAV.Services
             var location = request.Document.ToFileLocation();
             bool completedSuccessfully = false;
 
-            while (!completedSuccessfully && !token.IsCancellationRequested && !request.IsCancelled)
+            while (!completedSuccessfully && !token.IsCancellationRequested)
             {
                 byte[]? partialExisting = null;
                 if (_existingChunkProvider != null)
@@ -376,8 +400,6 @@ namespace TelegramWebDAV.Services
 
                         AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{displayChunkIdx}/{totalFileChunks}{fileTag} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
 
-                        _inFlightChunks.TryRemove(key, out _);
-                        _activeRequests.TryRemove(key, out _);
                         request.OnChunkReceived?.Invoke(finalChunkBytes, request.ChunkOffset);
                         request.OnProgress?.Invoke(receivedLen, request.FileTotalSize);
                         request.Completion.TrySetResult(finalChunkBytes);
@@ -451,8 +473,6 @@ namespace TelegramWebDAV.Services
 
             if (!completedSuccessfully)
             {
-                _inFlightChunks.TryRemove(key, out _);
-                _activeRequests.TryRemove(key, out _);
                 request.Completion.TrySetResult(null);
             }
         }
@@ -576,6 +596,16 @@ namespace TelegramWebDAV.Services
                 _poolCts.Cancel();
                 _poolCts.Dispose();
                 _workSignal.Dispose();
+                lock (_queueLock)
+                {
+                    foreach (var req in _queue)
+                    {
+                        req.Completion.TrySetResult(null);
+                    }
+                    _queue.Clear();
+                    _waitingRequests.Clear();
+                    _inProgressRequests.Clear();
+                }
             }
             catch { }
         }
