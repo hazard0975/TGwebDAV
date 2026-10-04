@@ -176,6 +176,7 @@ namespace TelegramWebDAV.UI
             {
                 _settingsForm = null;
                 _settings = _configManager.Load();
+                _telegramService.UpdateSettings(_settings);
                 _progressOverlay.AutoShowOnUpload = _settings.Server.AutoShowUploadPopup;
                 BuildContextMenu();
             };

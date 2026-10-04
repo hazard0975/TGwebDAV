@@ -119,10 +119,10 @@ namespace TelegramWebDAV.Services
         // Быстрый кольцевой кэш чанков MTProto в оперативной памяти (настраивается в UI, по умолчанию 128 МБ) для мгновенного чтения плеерами без повторных обращений к сети
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, (byte[] data, DateTime expiresAt)> _chunkMemoryCache = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<string, TaskCompletionSource<byte[]?>> _inFlightChunkWaiters = new();
-        private readonly System.Collections.Concurrent.ConcurrentDictionary<int, CancellationTokenSource> _activeFilePrefetches = new();
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, SemaphoreSlim> _fileDownloadLocks = new();
         private readonly SemaphoreSlim _downloadRpcSemaphore = new SemaphoreSlim(1, 1);
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, NetworkTransferAudit> _networkAudits = new();
+        private MtprotoDownloadWorkerPool? _workerPool;
 
         private class FileReadSequence
         {
@@ -695,7 +695,7 @@ namespace TelegramWebDAV.Services
         {
             AppLogger.Info("TelegramService", "Проверка сессии и подключение к Telegram...");
             _currentSettings = _configManager.Load();
-            SetPacingDelay(_currentSettings.Server.PacingDelayMs > 0 ? _currentSettings.Server.PacingDelayMs : 70);
+            SetPacingDelay(_currentSettings.Server.PacingDelayMs);
             AppLogger.Info("TelegramService", $"[Streaming Config] Воркеры: {_currentSettings.Server.DownloadWorkerCount} | Пейсинг: {_globalPacingDelayMs} мс | RAM Кэш: {_currentSettings.Server.MemoryCacheSizeMb} МБ (TTL: {_currentSettings.Server.ChunkMemoryCacheTtlMinutes} мин) | Буфер аудио: {_currentSettings.Server.AudioPrefetchWindowMb} МБ | Окно стриминга: {_currentSettings.Server.StreamingPrefetchWindowMb} МБ | Дисковый кэш: {(_currentSettings.Server.EnableDiskReadCache ? "ВКЛ" : "ВЫКЛ (100% RAM)")}");
             
             if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
@@ -757,6 +757,38 @@ namespace TelegramWebDAV.Services
             });
         }
 
+        private void InitWorkerPool()
+        {
+            if (_client == null) return;
+            int configuredWorkers = Math.Clamp(_currentSettings.Server.DownloadWorkerCount > 0 ? _currentSettings.Server.DownloadWorkerCount : 1, 1, 3);
+            _workerPool?.Dispose();
+            _workerPool = new MtprotoDownloadWorkerPool(
+                _client,
+                workerCount: configuredWorkers,
+                clientProvider: GetWorkerClientAsync,
+                existingChunkProvider: (msgId, off) => TryGetFromMemoryCache(msgId, off, out var d, out _) ? d : null,
+                documentRefresher: async (msgId) => await GetDocumentFromMessageAsync(msgId, forceRefresh: true)
+            );
+        }
+
+        /// <summary>
+        /// Мгновенное применение новых настроек в рантайме без перезапуска сервиса.
+        /// </summary>
+        public void UpdateSettings(AppSettings settings)
+        {
+            _currentSettings = settings;
+            SetPacingDelay(_currentSettings.Server.PacingDelayMs);
+            if (_workerPool != null)
+            {
+                _workerPool.SetWorkerCount(_currentSettings.Server.DownloadWorkerCount);
+            }
+            else if (_client != null && IsAuthorized)
+            {
+                InitWorkerPool();
+            }
+            AppLogger.Info("TelegramService", $"[Config Update] Настройки сервиса обновлены: воркеров={_currentSettings.Server.DownloadWorkerCount}, пейсинг={_currentSettings.Server.PacingDelayMs} мс, RAM кэш={_currentSettings.Server.MemoryCacheSizeMb} МБ.");
+        }
+
         /// <summary>
         /// Возвращает сессию DC основного клиента MTProto для параллельных воркеров пула.
         /// Протокол MTProto поддерживает мультиплексирование параллельных запросов чанков без повторных файловых блокировок.
@@ -777,6 +809,7 @@ namespace TelegramWebDAV.Services
                 IsAuthorized = true;
                 CurrentStep = AuthStep.Authorized;
                 LastError = null;
+                InitWorkerPool();
 
                 if (_client?.User != null)
                 {
@@ -929,6 +962,13 @@ namespace TelegramWebDAV.Services
         {
             try
             {
+                _workerPool?.Dispose();
+                _workerPool = null;
+            }
+            catch { }
+
+            try
+            {
                 _client?.Dispose();
                 _client = null;
             }
@@ -971,7 +1011,7 @@ namespace TelegramWebDAV.Services
         // Глобальный сквозной семафор и таймер пейсинга для всех исходящих запросов Upload_GetFile в приложении
         private static readonly SemaphoreSlim _globalPacingLock = new SemaphoreSlim(1, 1);
         private static DateTime _globalLastRequestUtc = DateTime.MinValue;
-        private static int _globalPacingDelayMs = 70; // Настраивается в UI/конфиге (по умолчанию 70 мс)
+        private static int _globalPacingDelayMs = ServerSettings.DefaultPacingDelayMs;
 
         /// <summary>
         /// Гарантирует минимальный интервал запуска между любыми исходящими запросами Upload_GetFile в Telegram MTProto.
@@ -997,12 +1037,15 @@ namespace TelegramWebDAV.Services
 
         public static void SetPacingDelay(int delayMs)
         {
-            Interlocked.Exchange(ref _globalPacingDelayMs, Math.Clamp(delayMs, 20, 500));
+            int effective = (delayMs >= ServerSettings.MinPacingDelayMs && delayMs <= ServerSettings.MaxPacingDelayMs)
+                ? delayMs
+                : ServerSettings.DefaultPacingDelayMs;
+            Interlocked.Exchange(ref _globalPacingDelayMs, effective);
         }
 
         public static void AdaptPacingDelay(int deltaMs)
         {
-            Interlocked.Exchange(ref _globalPacingDelayMs, Math.Clamp(_globalPacingDelayMs + deltaMs, 20, 500));
+            Interlocked.Exchange(ref _globalPacingDelayMs, Math.Clamp(_globalPacingDelayMs + deltaMs, ServerSettings.MinPacingDelayMs, ServerSettings.MaxPacingDelayMs));
         }
 
         public void TriggerFloodWait(int seconds)
@@ -1744,6 +1787,7 @@ namespace TelegramWebDAV.Services
                 {
                     readSeq.SequentialCount = 1;
                     readSeq.AccumulatedSequentialBytes = length;
+                    _workerPool?.CancelPendingChunksForFile(messageId);
                 }
 
                 currentChunkReadBytes = readSeq.ChunkBytesRead.AddOrUpdate(currentChunkIdx, length, (_, old) => old + length);
@@ -1790,8 +1834,8 @@ namespace TelegramWebDAV.Services
                     {
                         int diskWorkers = Math.Clamp(_currentSettings.Server.DownloadWorkerCount > 0 ? _currentSettings.Server.DownloadWorkerCount : 1, 1, 3);
                         AppLogger.Info("TelegramService", $"[Disk Cache Mode] Скачивание файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт) через {diskWorkers} воркеров в дисковый кэш...");
-                        var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: diskWorkers, clientProvider: GetWorkerClientAsync);
-                        bool success = await workerPool.DownloadFileAsync(
+                        if (_workerPool == null) InitWorkerPool();
+                        bool success = _workerPool != null && await _workerPool.DownloadFileAsync(
                             document,
                             cacheFilePath,
                             onProgress: (transferred, total) => OnDownloadProgress?.Invoke(fileName, transferred, total));
@@ -1958,69 +2002,47 @@ namespace TelegramWebDAV.Services
                     continue;
                 }
 
-                // Если чанк еще качается фоновым воркером префетча — ждем его завершения в ОЗУ (без повторных запросов в сеть!)
-                if (_inFlightChunkWaiters.TryGetValue(blockWaitKey, out var activeWaiter) || _activeFilePrefetches.ContainsKey(messageId))
+                // В режиме Pure RAM стриминга запрашиваем недостающий чанк через единый пул с высоким приоритетом (High Priority)
+                if (!enableDiskCache && !isSmallFile && !isMetadataProbe)
                 {
-                    if (activeWaiter != null)
+                    if (_workerPool == null) InitWorkerPool();
+                    if (_workerPool != null)
                     {
-                        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-                        try
-                        {
-                            await activeWaiter.Task.WaitAsync(cts.Token);
-                        }
-                        catch { }
-                    }
-                    else if (_activeFilePrefetches.ContainsKey(messageId))
-                    {
-                        // Воркер пула еще выполняет или формирует запрос — подождем появления данных в ОЗУ
-                        int waitAttempts = 0;
-                        while (waitAttempts < 600 && !TryGetFromMemoryCache(messageId, currentPos, out _, out _) && _activeFilePrefetches.ContainsKey(messageId))
-                        {
-                            if (_inFlightChunkWaiters.TryGetValue(blockWaitKey, out var newlyAddedWaiter))
+                        var chunkTask = _workerPool.EnqueueChunk(
+                            messageId,
+                            document,
+                            fileName,
+                            actualTotalSize,
+                            alignedCurrentBlock,
+                            requestLimit: 1048576,
+                            isHighPriority: true,
+                            onChunkReceived: (chunkBytes, chunkOffset) =>
                             {
-                                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
-                                try
+                                audit.AddNetworkBytes(chunkBytes.Length);
+                                bool allReceived = audit.MarkRangeReceived(chunkOffset, chunkBytes.Length);
+                                StoreChunkInMemoryCache(messageId, chunkOffset, chunkBytes, cacheTtlMinutes);
+                                OnChunkCached?.Invoke(fileName, chunkOffset + chunkBytes.Length, actualTotalSize);
+                                if (allReceived && audit.LogCompletionOnce())
                                 {
-                                    await newlyAddedWaiter.Task.WaitAsync(cts.Token);
+                                    OnDownloadCompleted?.Invoke(fileName);
                                 }
-                                catch { }
-                                break;
-                            }
-                            await Task.Delay(50);
-                            waitAttempts++;
-                        }
-                    }
+                            },
+                            onProgress: (transferred, total) =>
+                            {
+                                if (!audit.IsAllChunksReceived())
+                                {
+                                    OnDownloadProgress?.Invoke(fileName, alignedCurrentBlock + transferred, actualTotalSize);
+                                }
+                            });
 
-                    // После ожидания воркера отдаем готовые данные из RAM
-                    if (TryGetFromMemoryCache(messageId, currentPos, out cachedRaw, out cachedOffset) && cachedRaw != null)
-                    {
-                        int available = cachedRaw.Length - cachedOffset;
-                        int toSend = (int)Math.Min(available, remainingBytes);
+                        // Запускаем упреждающий префетч следующих чанков вперед плеера
+                        TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
 
-                        try
+                        var downloadedBytes = await chunkTask;
+                        if (downloadedBytes != null)
                         {
-                            await destination.WriteAsync(cachedRaw, cachedOffset, toSend);
-                            await destination.FlushAsync();
+                            continue;
                         }
-                        catch (Exception ex)
-                        {
-                            AppLogger.Debug("TelegramService", $"Клиент прервал соединение для '{fileName}' (ID {messageId}): {ex.Message}");
-                            return;
-                        }
-
-                        currentPos += toSend;
-                        remainingBytes -= toSend;
-                        totalSent += toSend;
-                        audit.AddRamBytes(toSend);
-
-                        bool allReceived = audit.MarkRangeReceived(currentPos - toSend, toSend);
-
-                        AppLogger.Info("TelegramService", $"[Cache RAM] Потоковое чтение из ОЗУ (после ожидания воркера) для '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). {audit.ProgressSummary}.");
-
-                        if (allReceived && audit.LogCompletionOnce())
-                            OnDownloadCompleted?.Invoke(fileName);
-
-                        continue;
                     }
                 }
 
@@ -2190,13 +2212,19 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Запускает непрерывный конвейер из 3 параллельных воркеров MTProto для упреждающей выкачки оставшихся чанков в RAM.
-        /// Гарантирует строго 1 активный пул воркеров на файл, предотвращая параллельные коллизии сессий.
+        /// Постановка упреждающих чанков в единый глобальный пул воркеров MTProto.
+        /// Не создает новых пулов и исключает дублирование сетевых запросов.
         /// </summary>
         private void TriggerContinuousPrefetch(int messageId, TL.Document document, string fileName, long actualTotalSize, long currentReadOffset, NetworkTransferAudit audit)
         {
             bool enableDiskCache = _currentSettings.Server.EnableDiskReadCache;
             if (enableDiskCache || document == null || actualTotalSize <= 262144 || _client == null) return;
+
+            if (_workerPool == null)
+            {
+                InitWorkerPool();
+                if (_workerPool == null) return;
+            }
 
             int cacheTtlMinutes = _currentSettings.Server.ChunkMemoryCacheTtlMinutes;
             bool isAudio = IsAudioFileName(fileName);
@@ -2210,68 +2238,25 @@ namespace TelegramWebDAV.Services
             long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
             long scanOffset = startChunkOffset;
 
-            var missingChunks = new List<long>();
             while (scanOffset < maxPrefetchLimit)
             {
                 int expectedSize = (int)Math.Min(1048576L, actualTotalSize - scanOffset);
                 if (!TryGetFromMemoryCache(messageId, scanOffset, out var cachedData, out _) || (cachedData != null && cachedData.Length < expectedSize))
                 {
-                    missingChunks.Add(scanOffset);
-                }
-                scanOffset += 1048576;
-            }
-
-            if (missingChunks.Count == 0)
-            {
-                return;
-            }
-
-            // СИНХРОННО регистрируем все чанки очереди в _inFlightChunkWaiters ДО проверки наличия активного пула
-            foreach (var cOff in missingChunks)
-            {
-                _inFlightChunkWaiters.GetOrAdd($"{messageId}:{cOff}", _ => new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously));
-            }
-
-            if (_activeFilePrefetches.TryGetValue(messageId, out var existingCts) && !existingCts.IsCancellationRequested)
-            {
-                // Активный конвейер уже выкачивает упреждающие чанки для этого файла.
-                // Не отменяем его на каждом мелком чтении, исключая коллизии и спам отменой задач.
-                return;
-            }
-
-            var cts = new CancellationTokenSource();
-            _activeFilePrefetches[messageId] = cts;
-
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    long prefetchStart = missingChunks[0];
-                    long prefetchEnd = missingChunks[missingChunks.Count - 1] + 1048576;
-                    long prefetchLength = Math.Min(prefetchEnd - prefetchStart, actualTotalSize - prefetchStart);
-
-                    int configuredWorkers = Math.Clamp(_currentSettings.Server.DownloadWorkerCount > 0 ? _currentSettings.Server.DownloadWorkerCount : 1, 1, 3);
-                    var prefetchPool = new MtprotoDownloadWorkerPool(
-                        _client,
-                        workerCount: Math.Min(configuredWorkers, missingChunks.Count),
-                        clientProvider: GetWorkerClientAsync);
-
-                    await prefetchPool.DownloadToStreamAsync(
+                    long chunkOffsetToQueue = scanOffset;
+                    _workerPool.EnqueueChunk(
+                        messageId,
                         document,
-                        Stream.Null,
-                        prefetchStart,
-                        prefetchLength,
+                        fileName,
+                        actualTotalSize,
+                        chunkOffsetToQueue,
+                        requestLimit: 1048576,
+                        isHighPriority: false,
                         onChunkReceived: (chunkBytes, chunkOffset) =>
                         {
                             audit.AddNetworkBytes(chunkBytes.Length);
                             bool allReceived = audit.MarkRangeReceived(chunkOffset, chunkBytes.Length);
                             StoreChunkInMemoryCache(messageId, chunkOffset, chunkBytes, cacheTtlMinutes);
-
-                            string waitKey = $"{messageId}:{chunkOffset}";
-                            if (_inFlightChunkWaiters.TryRemove(waitKey, out var waiter))
-                            {
-                                waiter.TrySetResult(chunkBytes);
-                            }
 
                             OnChunkCached?.Invoke(fileName, chunkOffset + chunkBytes.Length, actualTotalSize);
 
@@ -2284,44 +2269,12 @@ namespace TelegramWebDAV.Services
                         {
                             if (!audit.IsAllChunksReceived())
                             {
-                                OnDownloadProgress?.Invoke(fileName, prefetchStart + transferred, actualTotalSize);
+                                OnDownloadProgress?.Invoke(fileName, chunkOffsetToQueue + transferred, actualTotalSize);
                             }
-                        },
-                        existingChunkProvider: cOff => TryGetFromMemoryCache(messageId, cOff, out var d, out _) ? d : null,
-                        cancellationToken: cts.Token);
-
-                    if (audit.IsAllChunksReceived() && audit.LogCompletionOnce())
-                    {
-                        OnDownloadCompleted?.Invoke(fileName);
-                    }
+                        });
                 }
-                catch (OperationCanceledException) { }
-                catch (Exception ex)
-                {
-                    AppLogger.Debug("TelegramService", $"[RAM Streaming] Фоновый конвейер для '{fileName}' (ID {messageId}) завершился: {ex.Message}");
-                }
-                finally
-                {
-                    foreach (var kvp in _inFlightChunkWaiters)
-                    {
-                        if (kvp.Key.StartsWith($"{messageId}:"))
-                        {
-                            if (_inFlightChunkWaiters.TryRemove(kvp.Key, out var w))
-                            {
-                                w.TrySetResult(null);
-                            }
-                        }
-                    }
-
-                    if (_activeFilePrefetches.TryGetValue(messageId, out var currentCts) && currentCts == cts)
-                    {
-                        if (_activeFilePrefetches.TryRemove(messageId, out var removedCts))
-                        {
-                            try { removedCts.Dispose(); } catch { }
-                        }
-                    }
-                }
-            }, cts.Token);
+                scanOffset += 1048576;
+            }
         }
 
         public async Task<bool> DeleteFileFromTelegramAsync(int messageId)
@@ -2435,11 +2388,8 @@ namespace TelegramWebDAV.Services
             catch { }
             try
             {
-                foreach (var cts in _activeFilePrefetches.Values)
-                {
-                    try { cts.Cancel(); cts.Dispose(); } catch { }
-                }
-                _activeFilePrefetches.Clear();
+                _workerPool?.Dispose();
+                _workerPool = null;
             }
             catch { }
             try

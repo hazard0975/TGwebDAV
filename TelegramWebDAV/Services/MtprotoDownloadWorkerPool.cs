@@ -12,321 +12,380 @@ using WTelegram;
 namespace TelegramWebDAV.Services
 {
     /// <summary>
-    /// Пул параллельных MTProto воркеров для скачивания больших файлов из Telegram (TDLib / Telegram Desktop style).
-    /// Поддерживает автоматический пейсинг вызовов (профилактику FLOOD_WAIT), нумерацию воркеров в логах 
-    /// и детализацию производительности каждого чанка.
+    /// Единый постоянный пул MTProto-воркеров сервиса (Singleton Worker Pool — архитектура TDLib / Telegram Desktop).
+    /// Гарантирует строго N активных воркеров в приложении, сквозной пейсинг запросов, 
+    /// приоритетную обработку синхронного чтения и 100% дедупликацию чанков в точке постановки в очередь.
+    /// Исключает одновременное существование дублирующих пулов.
     /// </summary>
-    public class MtprotoDownloadWorkerPool
+    public class MtprotoDownloadWorkerPool : IDisposable
     {
         private readonly Client _mainClient;
         private readonly Func<int, int, Task<Client>>? _clientProvider;
-        private readonly int _workerCount;
+        private readonly Func<int, long, byte[]?>? _existingChunkProvider;
+        private readonly Func<int, Task<Document?>>? _documentRefresher;
 
-        public MtprotoDownloadWorkerPool(Client mainClient, int workerCount = 3, Func<int, int, Task<Client>>? clientProvider = null)
-        {
-            _mainClient = mainClient ?? throw new ArgumentNullException(nameof(mainClient));
-            _workerCount = Math.Max(1, workerCount);
-            _clientProvider = clientProvider;
-        }
+        private int _workerCount;
+        private CancellationTokenSource _poolCts = new();
+        private Task[] _workerTasks = Array.Empty<Task>();
+        private readonly SemaphoreSlim _workSignal = new(0, int.MaxValue);
 
-        public class DownloadChunkTask
+        // Очереди задач: синхронное чтение плеером имеет приоритет над фоновым упреждением
+        private readonly ConcurrentQueue<ChunkDownloadRequest> _highPriorityQueue = new();
+        private readonly ConcurrentQueue<ChunkDownloadRequest> _normalPriorityQueue = new();
+
+        // Единая таблица активных задач на скачивание чанков для 100% дедупликации: ключ = "{messageId}:{chunkOffset}"
+        private readonly ConcurrentDictionary<string, Task<byte[]?>> _inFlightChunks = new();
+
+        public class ChunkDownloadRequest
         {
+            public int MessageId { get; set; }
+            public Document Document { get; set; } = null!;
+            public string FileName { get; set; } = string.Empty;
+            public long FileTotalSize { get; set; }
             public int ChunkIndex { get; set; }
             public long ChunkOffset { get; set; }
             public int RequestLimit { get; set; }
+            public bool IsHighPriority { get; set; }
+            public volatile bool IsCancelled;
             public int RetryCount { get; set; }
+            public TaskCompletionSource<byte[]?> Completion { get; set; } = null!;
+            public Action<byte[], long>? OnChunkReceived { get; set; }
+            public Action<long, long>? OnProgress { get; set; }
+        }
+
+        public MtprotoDownloadWorkerPool(
+            Client mainClient,
+            int workerCount = 1,
+            Func<int, int, Task<Client>>? clientProvider = null,
+            Func<int, long, byte[]?>? existingChunkProvider = null,
+            Func<int, Task<Document?>>? documentRefresher = null)
+        {
+            _mainClient = mainClient ?? throw new ArgumentNullException(nameof(mainClient));
+            _workerCount = Math.Clamp(workerCount, 1, 3);
+            _clientProvider = clientProvider;
+            _existingChunkProvider = existingChunkProvider;
+            _documentRefresher = documentRefresher;
+
+            StartWorkers();
+        }
+
+        public int ActiveWorkerCount => _workerCount;
+
+        /// <summary>
+        /// Динамическое изменение числа воркеров на лету без перезапуска приложения и без потери очереди.
+        /// </summary>
+        public void SetWorkerCount(int count)
+        {
+            int newCount = Math.Clamp(count, 1, 3);
+            if (newCount == _workerCount) return;
+
+            AppLogger.Info("MtprotoWorkerPool", $"Изменение количества активных воркеров MTProto: {_workerCount} -> {newCount}");
+
+            var oldCts = _poolCts;
+            oldCts.Cancel();
+
+            _workerCount = newCount;
+            _poolCts = new CancellationTokenSource();
+            StartWorkers();
+
+            try { oldCts.Dispose(); } catch { }
+        }
+
+        private void StartWorkers()
+        {
+            var token = _poolCts.Token;
+            _workerTasks = new Task[_workerCount];
+            for (int i = 0; i < _workerCount; i++)
+            {
+                int workerId = i + 1;
+                _workerTasks[i] = Task.Run(() => WorkerLoopAsync(workerId, token), token);
+            }
+            AppLogger.Info("MtprotoWorkerPool", $"Пул постоянных воркеров запущен: {_workerCount} воркеров MTProto готовы к обработке очереди.");
         }
 
         /// <summary>
-        /// Гарантирует микро-интервал между запросами Upload_GetFile (сквозной пейсинг)
-        /// и соблюдает единую паузу пула при возникновении FLOOD_WAIT.
+        /// Постановка чанка в очередь скачивания с атомарной дедупликацией.
+        /// Если чанк уже качается или стоит в очереди — возвращается существующая задача без создания повторных сетевых запросов.
         /// </summary>
+        public Task<byte[]?> EnqueueChunk(
+            int messageId,
+            Document document,
+            string fileName,
+            long fileTotalSize,
+            long chunkOffset,
+            int requestLimit = 1048576,
+            bool isHighPriority = false,
+            Action<byte[], long>? onChunkReceived = null,
+            Action<long, long>? onProgress = null)
+        {
+            string key = $"{messageId}:{chunkOffset}";
+
+            // Проверяем, есть ли чанк уже в очереди или в процессе загрузки
+            if (_inFlightChunks.TryGetValue(key, out var existingTask))
+            {
+                return existingTask;
+            }
+
+            var tcs = new TaskCompletionSource<byte[]?>(TaskCreationOptions.RunContinuationsAsynchronously);
+
+            if (_inFlightChunks.TryAdd(key, tcs.Task))
+            {
+                int chunkIdx = (int)(chunkOffset / 1048576);
+                var request = new ChunkDownloadRequest
+                {
+                    MessageId = messageId,
+                    Document = document,
+                    FileName = fileName,
+                    FileTotalSize = fileTotalSize,
+                    ChunkIndex = chunkIdx,
+                    ChunkOffset = chunkOffset,
+                    RequestLimit = requestLimit,
+                    IsHighPriority = isHighPriority,
+                    Completion = tcs,
+                    OnChunkReceived = onChunkReceived,
+                    OnProgress = onProgress
+                };
+
+                if (isHighPriority)
+                {
+                    _highPriorityQueue.Enqueue(request);
+                }
+                else
+                {
+                    _normalPriorityQueue.Enqueue(request);
+                }
+
+                _workSignal.Release();
+                return tcs.Task;
+            }
+
+            // Если параллельный поток успел добавить задачу на этой микросекунде
+            return _inFlightChunks.TryGetValue(key, out var concurrentTask) ? concurrentTask : tcs.Task;
+        }
+
+        /// <summary>
+        /// Отменяет все ожидающие в очереди низкоприоритетные чанки упреждения для указанного файла (например, при перемотке в плеере).
+        /// </summary>
+        public void CancelPendingChunksForFile(int messageId)
+        {
+            foreach (var req in _normalPriorityQueue)
+            {
+                if (req.MessageId == messageId && !req.IsCancelled)
+                {
+                    req.IsCancelled = true;
+                }
+            }
+        }
+
         private async Task PaceRequestAsync(int workerId, CancellationToken cancellationToken)
         {
-            // 1. Если активна общесистемная пауза FLOOD_WAIT — выжидаем её
             await TelegramService.EnsureFloodWaitDelayAsync(cancellationToken);
-
-            // 2. Сквозной пейсинг для всех запросов приложения
             await TelegramService.EnsurePacingDelayAsync(cancellationToken);
         }
 
-        /// <summary>
-        /// Потоковое скачивание диапазона байт строго через ОЗУ (Pure RAM Mode) без записи на дисковый накопитель.
-        /// Воркеры качают чанки параллельно в оперативную память, строго выравнивая запросы по сетке 1 МБ (1048576 байт),
-        /// что гарантирует совместимость со спецификацией Telegram MTProto (защита от RpcError 400 OFFSET_INVALID)
-        /// и оптимальное заполнение общего RAM-кэша.
-        /// </summary>
-        public async Task<bool> DownloadToStreamAsync(
-            Document document,
-            Stream destinationStream,
-            long offset,
-            long length,
-            Action<byte[], long>? onChunkReceived = null,
-            Action<long, long>? onProgress = null,
-            Func<long, byte[]?>? existingChunkProvider = null,
-            CancellationToken cancellationToken = default)
+        private async Task WorkerLoopAsync(int workerId, CancellationToken token)
         {
-            if (document == null) throw new ArgumentNullException(nameof(document));
-            long totalSize = document.size > 0 ? document.size : offset + length;
-            if (length <= 0) return true;
-
-            const int chunkSize = 1048576; // 1 МБ чанк — стандарт Telegram MTProto
-
-            long requestedEnd = Math.Min(totalSize, offset + length);
-            int startChunkIndex = (int)(offset / chunkSize);
-            int endChunkIndex = (int)((requestedEnd - 1) / chunkSize);
-
-            var requestedChunkTasks = new List<DownloadChunkTask>();
-            var allChunkTasks = new List<DownloadChunkTask>();
-
-            for (int chunkIdx = startChunkIndex; chunkIdx <= endChunkIndex; chunkIdx++)
+            while (!token.IsCancellationRequested)
             {
-                long chunkStart = (long)chunkIdx * chunkSize;
-
-                var task = new DownloadChunkTask
-                {
-                    ChunkIndex = chunkIdx,
-                    ChunkOffset = chunkStart,
-                    RequestLimit = chunkSize // По спецификации MTProto limit обязан быть делителем 1 МБ (1048576)
-                };
-                requestedChunkTasks.Add(task);
-                allChunkTasks.Add(task);
-            }
-
-            // Гарантируем параллелизм всех 3 воркеров: если запрошено меньше 3 чанков, расширяем очередь упреждающими чанками
-            int nextPrefetchChunk = endChunkIndex + 1;
-            while (allChunkTasks.Count < _workerCount && ((long)nextPrefetchChunk * chunkSize) < totalSize)
-            {
-                long chunkStart = (long)nextPrefetchChunk * chunkSize;
-
-                allChunkTasks.Add(new DownloadChunkTask
-                {
-                    ChunkIndex = nextPrefetchChunk,
-                    ChunkOffset = chunkStart,
-                    RequestLimit = chunkSize
-                });
-                nextPrefetchChunk++;
-            }
-
-            var chunkQueue = new ConcurrentQueue<DownloadChunkTask>(allChunkTasks);
-            var downloadedChunks = new ConcurrentDictionary<long, byte[]>();
-            var failedChunks = new ConcurrentDictionary<long, bool>();
-
-            int actualWorkers = Math.Min(_workerCount, chunkQueue.Count);
-            Task[] workerTasks = new Task[actualWorkers];
-
-            long totalDownloadedBytes = 0;
-
-            string workerDesc = actualWorkers switch
-            {
-                1 => "1 воркер",
-                2 or 3 or 4 => $"{actualWorkers} параллельных воркера",
-                _ => $"{actualWorkers} параллельных воркеров"
-            };
-
-            int totalFileChunks = totalSize > 0 ? (int)Math.Ceiling((double)totalSize / chunkSize) : 1;
-
-            string chunkRangeDesc = requestedChunkTasks[0].ChunkIndex == allChunkTasks[allChunkTasks.Count - 1].ChunkIndex
-                ? $"чанк #{requestedChunkTasks[0].ChunkIndex}/{totalFileChunks}"
-                : $"чанки #{requestedChunkTasks[0].ChunkIndex}..#{allChunkTasks[allChunkTasks.Count - 1].ChunkIndex} (всего {totalFileChunks})";
-
-            double lengthMb = length / (1024.0 * 1024.0);
-            AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Скачивание {lengthMb:F2} МБ ({chunkRangeDesc}) через {actualWorkers} воркеров MTProto...");
-
-            for (int w = 0; w < actualWorkers; w++)
-            {
-                int workerId = w + 1;
-                workerTasks[w] = Task.Run(async () =>
-                {
-                    var workerClient = _clientProvider != null
-                        ? await _clientProvider(workerId, document.dc_id)
-                        : (document.dc_id != 0 ? await _mainClient.GetClientForDC(document.dc_id) : _mainClient);
-                    var location = document.ToFileLocation();
-
-                    while (chunkQueue.TryDequeue(out var chunk))
-                    {
-                        if (cancellationToken.IsCancellationRequested) break;
-
-                        // Вычисляем фактический ожидаемый размер для данного чанка
-                        int expectedChunkSize = (int)Math.Min((long)chunk.RequestLimit, totalSize - chunk.ChunkOffset);
-                        if (expectedChunkSize <= 0) expectedChunkSize = chunk.RequestLimit;
-
-                        byte[]? partialExisting = null;
-
-                        // Если чанк уже доступен в памяти (RAM кэш)
-                        if (existingChunkProvider != null)
-                        {
-                            var existingBytes = existingChunkProvider(chunk.ChunkOffset);
-                            if (existingBytes != null && existingBytes.Length > 0)
-                            {
-                                if (existingBytes.Length == expectedChunkSize)
-                                {
-                                    // Чанк уже полностью в памяти (100% данных на месте)
-                                    downloadedChunks[chunk.ChunkOffset] = existingBytes;
-                                    onChunkReceived?.Invoke(existingBytes, chunk.ChunkOffset);
-                                    long currentTotal = Interlocked.Add(ref totalDownloadedBytes, existingBytes.Length);
-                                    onProgress?.Invoke(currentTotal, length);
-                                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б) полностью имеется в RAM ({existingBytes.Length:N0} б), сетевой запрос пропущен.");
-                                    continue;
-                                }
-                                else if (existingBytes.Length < expectedChunkSize)
-                                {
-                                    // В памяти лежит частичный зонд (например, 256 КБ). Не качаем чанк заново, а сохраняем его для докачки хвоста!
-                                    partialExisting = existingBytes;
-                                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Чанк #{chunk.ChunkIndex}/{totalFileChunks}: в RAM обнаружен частичный зонд ({existingBytes.Length:N0} из {expectedChunkSize:N0} б). Запуск докачки недостающего остатка...");
-                                }
-                            }
-                        }
-
-                        try
-                        {
-                            await PaceRequestAsync(workerId, cancellationToken);
-
-                            long reqOffset = chunk.ChunkOffset;
-                            int reqLimit = chunk.RequestLimit;
-
-                            // Если есть частичный зонд, докачиваем только недостающую часть
-                            if (partialExisting != null && partialExisting.Length > 0)
-                            {
-                                reqOffset = chunk.ChunkOffset + partialExisting.Length;
-                                reqLimit = chunk.RequestLimit - partialExisting.Length;
-                            }
-
-                            string probeTag = reqLimit < 1048576 ? " [Докачка остатка/Зонд]" : "";
-                            AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {reqOffset:N0} б, размер {reqLimit:N0} б){probeTag}...");
-                            var sw = Stopwatch.StartNew();
-
-                            var fileBase = await workerClient.Upload_GetFile(location, reqOffset, reqLimit, precise: true);
-                            sw.Stop();
-
-                            if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
-                            {
-                                byte[] finalChunkBytes;
-                                if (partialExisting != null && partialExisting.Length > 0)
-                                {
-                                    // Склеиваем имеющуюся часть из RAM и свежедокачанный остаток из Telegram
-                                    finalChunkBytes = new byte[partialExisting.Length + uploadFile.bytes.Length];
-                                    Buffer.BlockCopy(partialExisting, 0, finalChunkBytes, 0, partialExisting.Length);
-                                    Buffer.BlockCopy(uploadFile.bytes, 0, finalChunkBytes, partialExisting.Length, uploadFile.bytes.Length);
-                                }
-                                else
-                                {
-                                    finalChunkBytes = uploadFile.bytes;
-                                }
-
-                                int receivedLen = finalChunkBytes.Length;
-                                string chunkTag = receivedLen < expectedChunkSize
-                                    ? $" [{receivedLen:N0} б из {expectedChunkSize:N0} б, Хвост EOF]"
-                                    : " [Полный]";
-
-                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{chunk.ChunkIndex}/{totalFileChunks} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
-
-                                downloadedChunks[chunk.ChunkOffset] = finalChunkBytes;
-                                onChunkReceived?.Invoke(finalChunkBytes, chunk.ChunkOffset);
-
-                                long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
-                                onProgress?.Invoke(currentTotal, length);
-                            }
-                            else if (chunk.RetryCount < 3)
-                            {
-                                chunk.RetryCount++;
-                                chunkQueue.Enqueue(chunk);
-                            }
-                            else
-                            {
-                                failedChunks[chunk.ChunkOffset] = true;
-                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Исчерпаны попытки для Чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б).");
-                            }
-                        }
-                        catch (RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
-                        {
-                            int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
-                            TelegramService.TriggerGlobalFloodWait(waitSec);
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Сквозная пауза. Все воркеры приостановлены.");
-                            await Task.Delay(waitSec * 1000, cancellationToken);
-                            chunkQueue.Enqueue(chunk);
-                        }
-                        catch (Exception ex)
-                        {
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{chunk.ChunkIndex}/{totalFileChunks} (смещение {chunk.ChunkOffset:N0} б): {ex.Message}");
-                            if (chunk.RetryCount < 3)
-                            {
-                                chunk.RetryCount++;
-                                chunkQueue.Enqueue(chunk);
-                            }
-                            else
-                            {
-                                failedChunks[chunk.ChunkOffset] = true;
-                            }
-                            await Task.Delay(300, cancellationToken);
-                        }
-                    }
-                }, cancellationToken);
-            }
-
-            // Вывод запрошенных байт в destinationStream (если destinationStream задан)
-            if (destinationStream != null && destinationStream != Stream.Null)
-            {
-                long currentFilePos = offset;
-                long bytesRemaining = length;
-
-                foreach (var task in requestedChunkTasks)
-                {
-                    if (bytesRemaining <= 0) break;
-
-                    byte[]? chunkBytes = null;
-                    while (!downloadedChunks.TryGetValue(task.ChunkOffset, out chunkBytes))
-                    {
-                        if (cancellationToken.IsCancellationRequested) return false;
-                        if (failedChunks.ContainsKey(task.ChunkOffset))
-                        {
-                            AppLogger.Warn("MtprotoWorkerPool", $"Чанк #{task.ChunkIndex} не был загружен после всех попыток. Прерывание RAM-стриминга.");
-                            return false;
-                        }
-                        await Task.Delay(10, cancellationToken);
-                    }
-
-                    if (chunkBytes == null || chunkBytes.Length == 0) continue;
-
-                    // Вычисляем срез внутри скачанного 1 МБ блока
-                    int sliceOffset = (int)(currentFilePos - task.ChunkOffset);
-                    if (sliceOffset < 0 || sliceOffset >= chunkBytes.Length)
-                    {
-                        sliceOffset = 0;
-                    }
-
-                    int availableInChunk = chunkBytes.Length - sliceOffset;
-                    int bytesToWrite = (int)Math.Min(availableInChunk, bytesRemaining);
-
-                    if (bytesToWrite > 0)
-                    {
-                        try
-                        {
-                            await destinationStream.WriteAsync(chunkBytes, sliceOffset, bytesToWrite, cancellationToken);
-                            await destinationStream.FlushAsync(cancellationToken);
-                        }
-                        catch (Exception ex)
-                        {
-                            AppLogger.Debug("MtprotoWorkerPool", $"Клиент прервал RAM-стриминг: {ex.Message}");
-                            return false;
-                        }
-
-                        currentFilePos += bytesToWrite;
-                        bytesRemaining -= bytesToWrite;
-                    }
-                }
-            }
-            else
-            {
-                // Если destinationStream == Stream.Null (фоновый префетч), дожидаемся завершения воркеров этого пула
                 try
                 {
-                    await Task.WhenAll(workerTasks);
+                    await _workSignal.WaitAsync(token);
                 }
-                catch { }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+
+                ChunkDownloadRequest? request = null;
+
+                // Сначала забираем срочные чанки плеера (High Priority), затем фоновые упреждающие (Normal Priority)
+                if (!_highPriorityQueue.TryDequeue(out request))
+                {
+                    _normalPriorityQueue.TryDequeue(out request);
+                }
+
+                if (request == null) continue;
+
+                string key = $"{request.MessageId}:{request.ChunkOffset}";
+
+                if (request.IsCancelled || token.IsCancellationRequested)
+                {
+                    _inFlightChunks.TryRemove(key, out _);
+                    request.Completion.TrySetResult(null);
+                    continue;
+                }
+
+                await ProcessChunkRequestAsync(workerId, request, key, token);
+            }
+        }
+
+        private async Task ProcessChunkRequestAsync(int workerId, ChunkDownloadRequest request, string key, CancellationToken token)
+        {
+            int totalFileChunks = request.FileTotalSize > 0 ? (int)Math.Ceiling((double)request.FileTotalSize / 1048576.0) : 1;
+            int expectedChunkSize = (int)Math.Min((long)request.RequestLimit, request.FileTotalSize - request.ChunkOffset);
+            if (expectedChunkSize <= 0) expectedChunkSize = request.RequestLimit;
+
+            // 1. Проверяем, не появился ли чанк в ОЗУ пока задача стояла в очереди
+            if (_existingChunkProvider != null)
+            {
+                var existingBytes = _existingChunkProvider(request.MessageId, request.ChunkOffset);
+                if (existingBytes != null && existingBytes.Length == expectedChunkSize)
+                {
+                    _inFlightChunks.TryRemove(key, out _);
+                    request.OnChunkReceived?.Invoke(existingBytes, request.ChunkOffset);
+                    request.Completion.TrySetResult(existingBytes);
+                    return;
+                }
             }
 
-            return true;
+            Client? activeClient = null;
+            try
+            {
+                activeClient = _clientProvider != null
+                    ? await _clientProvider(workerId, request.Document.dc_id)
+                    : (request.Document.dc_id != 0 ? await _mainClient.GetClientForDC(request.Document.dc_id) : _mainClient);
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка подключения к DC {request.Document.dc_id}: {ex.Message}");
+                _inFlightChunks.TryRemove(key, out _);
+                request.Completion.TrySetResult(null);
+                return;
+            }
+
+            var location = request.Document.ToFileLocation();
+            bool completedSuccessfully = false;
+
+            while (!completedSuccessfully && !token.IsCancellationRequested && !request.IsCancelled)
+            {
+                byte[]? partialExisting = null;
+                if (_existingChunkProvider != null)
+                {
+                    var existingBytes = _existingChunkProvider(request.MessageId, request.ChunkOffset);
+                    if (existingBytes != null && existingBytes.Length > 0 && existingBytes.Length < expectedChunkSize)
+                    {
+                        partialExisting = existingBytes;
+                    }
+                }
+
+                try
+                {
+                    await PaceRequestAsync(workerId, token);
+
+                    long reqOffset = request.ChunkOffset;
+                    int reqLimit = request.RequestLimit;
+
+                    if (partialExisting != null && partialExisting.Length > 0)
+                    {
+                        reqOffset = request.ChunkOffset + partialExisting.Length;
+                        reqLimit = request.RequestLimit - partialExisting.Length;
+                    }
+
+                    string probeTag = reqLimit < 1048576 ? " [Докачка остатка/Зонд]" : "";
+                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{request.ChunkIndex}/{totalFileChunks} (смещение {reqOffset:N0} б, размер {reqLimit:N0} б){probeTag}...");
+                    var sw = Stopwatch.StartNew();
+
+                    var fileBase = await activeClient.Upload_GetFile(location, reqOffset, reqLimit, precise: true);
+                    sw.Stop();
+
+                    if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
+                    {
+                        byte[] finalChunkBytes;
+                        if (partialExisting != null && partialExisting.Length > 0)
+                        {
+                            finalChunkBytes = new byte[partialExisting.Length + uploadFile.bytes.Length];
+                            Buffer.BlockCopy(partialExisting, 0, finalChunkBytes, 0, partialExisting.Length);
+                            Buffer.BlockCopy(uploadFile.bytes, 0, finalChunkBytes, partialExisting.Length, uploadFile.bytes.Length);
+                        }
+                        else
+                        {
+                            finalChunkBytes = uploadFile.bytes;
+                        }
+
+                        int receivedLen = finalChunkBytes.Length;
+                        string chunkTag = receivedLen < expectedChunkSize
+                            ? $" [{receivedLen:N0} б из {expectedChunkSize:N0} б, Хвост EOF]"
+                            : " [Полный]";
+
+                        AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{request.ChunkIndex}/{totalFileChunks} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
+
+                        _inFlightChunks.TryRemove(key, out _);
+                        request.OnChunkReceived?.Invoke(finalChunkBytes, request.ChunkOffset);
+                        request.OnProgress?.Invoke(receivedLen, request.FileTotalSize);
+                        request.Completion.TrySetResult(finalChunkBytes);
+                        completedSuccessfully = true;
+                    }
+                    else if (request.RetryCount < 3)
+                    {
+                        request.RetryCount++;
+                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Пустой ответ для чанка #{request.ChunkIndex}. Повтор {request.RetryCount}/3...");
+                        await Task.Delay(200, token);
+                    }
+                    else
+                    {
+                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Исчерпаны попытки для Чанка #{request.ChunkIndex}/{totalFileChunks}.");
+                        break;
+                    }
+                }
+                catch (RpcException rpcEx) when (rpcEx.Code == 303) // FILE_MIGRATE_X
+                {
+                    try
+                    {
+                        activeClient = await _mainClient.GetClientForDC(rpcEx.X);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка миграции на DC {rpcEx.X}: {ex.Message}");
+                        break;
+                    }
+                }
+                catch (RpcException rpcEx) when (rpcEx.Code == 400 && rpcEx.Message.Contains("FILE_REFERENCE_EXPIRED"))
+                {
+                    if (_documentRefresher != null)
+                    {
+                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FILE_REFERENCE_EXPIRED для '{request.FileName}'. Обновление дескриптора документа...");
+                        var refreshedDoc = await _documentRefresher(request.MessageId);
+                        if (refreshedDoc != null)
+                        {
+                            request.Document = refreshedDoc;
+                            location = refreshedDoc.ToFileLocation();
+                            activeClient = refreshedDoc.dc_id != 0 ? await _mainClient.GetClientForDC(refreshedDoc.dc_id) : _mainClient;
+                            continue;
+                        }
+                    }
+                    break;
+                }
+                catch (RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+                {
+                    int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
+                    TelegramService.TriggerGlobalFloodWait(waitSec);
+                    AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Сквозная пауза. Все воркеры приостановлены.");
+                    await Task.Delay(waitSec * 1000, token);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{request.ChunkIndex}/{totalFileChunks} (смещение {request.ChunkOffset:N0} б): {ex.Message}");
+                    if (request.RetryCount < 3)
+                    {
+                        request.RetryCount++;
+                        await Task.Delay(300, token);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            if (!completedSuccessfully)
+            {
+                _inFlightChunks.TryRemove(key, out _);
+                request.Completion.TrySetResult(null);
+            }
         }
 
         /// <summary>
@@ -343,17 +402,12 @@ namespace TelegramWebDAV.Services
             if (totalSize <= 0) return false;
 
             int chunkSize = 1048576; // 1 МБ на чанк
-            var chunkQueue = new ConcurrentQueue<DownloadChunkTask>();
+            var chunkQueue = new ConcurrentQueue<long>();
 
             long offset = 0;
             while (offset < totalSize)
             {
-                chunkQueue.Enqueue(new DownloadChunkTask
-                {
-                    ChunkIndex = (int)(offset / chunkSize),
-                    ChunkOffset = offset,
-                    RequestLimit = chunkSize // По спецификации MTProto limit обязан быть делителем 1 МБ (1048576)
-                });
+                chunkQueue.Enqueue(offset);
                 offset += chunkSize;
             }
 
@@ -372,47 +426,43 @@ namespace TelegramWebDAV.Services
                 fileStream.SetLength(totalSize);
 
                 int actualWorkers = Math.Min(_workerCount, chunkQueue.Count);
-                Task[] workerTasks = new Task[actualWorkers];
+                Task[] diskWorkerTasks = new Task[actualWorkers];
 
                 AppLogger.Info("MtprotoWorkerPool", $"Старт фоновой скачки на диск ID {document.id} ({totalSize:N0} байт) через {actualWorkers} воркеров MTProto...");
 
                 for (int w = 0; w < actualWorkers; w++)
                 {
                     int workerId = w + 1;
-                    workerTasks[w] = Task.Run(async () =>
+                    diskWorkerTasks[w] = Task.Run(async () =>
                     {
                         var workerClient = _clientProvider != null
                             ? await _clientProvider(workerId, document.dc_id)
                             : (document.dc_id != 0 ? await _mainClient.GetClientForDC(document.dc_id) : _mainClient);
                         var location = document.ToFileLocation();
 
-                        while (chunkQueue.TryDequeue(out var chunk))
+                        while (chunkQueue.TryDequeue(out var chunkOffset))
                         {
                             if (cancellationToken.IsCancellationRequested) break;
+
+                            int chunkIdx = (int)(chunkOffset / chunkSize);
+                            int reqLimit = (int)Math.Min((long)chunkSize, totalSize - chunkOffset);
 
                             try
                             {
                                 await PaceRequestAsync(workerId, cancellationToken);
 
-                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] [Диск] Запрос чанка #{chunk.ChunkIndex} ({chunk.RequestLimit / 1024} КБ)...");
+                                AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] [Диск] Запрос чанка #{chunkIdx} ({reqLimit / 1024} КБ)...");
                                 var sw = Stopwatch.StartNew();
 
-                                var fileBase = await workerClient.Upload_GetFile(location, chunk.ChunkOffset, chunk.RequestLimit, precise: true);
+                                var fileBase = await workerClient.Upload_GetFile(location, chunkOffset, reqLimit, precise: true);
                                 sw.Stop();
 
                                 if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                                 {
-                                    await RandomAccess.WriteAsync(handle, uploadFile.bytes, chunk.ChunkOffset, cancellationToken);
-
+                                    await RandomAccess.WriteAsync(handle, uploadFile.bytes, chunkOffset, cancellationToken);
                                     long currentTotal = Interlocked.Add(ref totalDownloadedBytes, uploadFile.bytes.Length);
                                     onProgress?.Invoke(currentTotal, totalSize);
-
-                                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] [Диск] Сохранен чанк #{chunk.ChunkIndex} ({uploadFile.bytes.Length / 1024} КБ за {sw.ElapsedMilliseconds} мс).");
-                                }
-                                else if (chunk.RetryCount < 3)
-                                {
-                                    chunk.RetryCount++;
-                                    chunkQueue.Enqueue(chunk);
+                                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] [Диск] Сохранен чанк #{chunkIdx} ({uploadFile.bytes.Length / 1024} КБ за {sw.ElapsedMilliseconds} мс).");
                                 }
                             }
                             catch (RpcException rpcEx) when (rpcEx.Code == 420)
@@ -421,23 +471,18 @@ namespace TelegramWebDAV.Services
                                 TelegramService.TriggerGlobalFloodWait(waitSec);
                                 AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Сквозная пауза. Все воркеры приостановлены.");
                                 await Task.Delay(waitSec * 1000, cancellationToken);
-                                chunkQueue.Enqueue(chunk);
+                                chunkQueue.Enqueue(chunkOffset);
                             }
                             catch (Exception ex)
                             {
-                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{chunk.ChunkIndex}: {ex.Message}");
-                                if (chunk.RetryCount < 3)
-                                {
-                                    chunk.RetryCount++;
-                                    chunkQueue.Enqueue(chunk);
-                                }
+                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{chunkIdx}: {ex.Message}");
                                 await Task.Delay(300, cancellationToken);
                             }
                         }
                     }, cancellationToken);
                 }
 
-                await Task.WhenAll(workerTasks);
+                await Task.WhenAll(diskWorkerTasks);
             }
 
             if (totalDownloadedBytes >= totalSize && File.Exists(tempFilePath))
@@ -452,6 +497,17 @@ namespace TelegramWebDAV.Services
                 try { File.Delete(tempFilePath); } catch { }
             }
             return false;
+        }
+
+        public void Dispose()
+        {
+            try
+            {
+                _poolCts.Cancel();
+                _poolCts.Dispose();
+                _workSignal.Dispose();
+            }
+            catch { }
         }
     }
 }

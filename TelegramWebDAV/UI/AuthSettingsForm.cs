@@ -176,10 +176,18 @@ namespace TelegramWebDAV.UI
 
             _chkEnableDiskCache = UIFactory.CreateCheckBox("Сохранять прочитанные файлы в дисковый кэш (%TEMP%)", _settings.Server.EnableDiskReadCache);
 
-            _numDownloadWorkers = UIFactory.CreateNumericInput(1, 3, Math.Clamp(_settings.Server.DownloadWorkerCount > 0 ? _settings.Server.DownloadWorkerCount : 1, 1, 3), 80);
-            var rowDownloadWorkers = UIFactory.CreateSettingRow("Параллельных воркеров MTProto (1-3):", _numDownloadWorkers, 270);
+            _numDownloadWorkers = UIFactory.CreateNumericInput(
+                ServerSettings.MinDownloadWorkerCount, 
+                ServerSettings.MaxDownloadWorkerCount, 
+                Math.Clamp(_settings.Server.DownloadWorkerCount, ServerSettings.MinDownloadWorkerCount, ServerSettings.MaxDownloadWorkerCount), 
+                80);
+            var rowDownloadWorkers = UIFactory.CreateSettingRow($"Параллельных воркеров MTProto ({ServerSettings.MinDownloadWorkerCount}-{ServerSettings.MaxDownloadWorkerCount}):", _numDownloadWorkers, 270);
 
-            _numPacingDelayMs = UIFactory.CreateNumericInput(20, 500, Math.Clamp(_settings.Server.PacingDelayMs > 0 ? _settings.Server.PacingDelayMs : 70, 20, 500), 80);
+            _numPacingDelayMs = UIFactory.CreateNumericInput(
+                ServerSettings.MinPacingDelayMs, 
+                ServerSettings.MaxPacingDelayMs, 
+                Math.Clamp(_settings.Server.PacingDelayMs, ServerSettings.MinPacingDelayMs, ServerSettings.MaxPacingDelayMs), 
+                80);
             var rowPacingDelay = UIFactory.CreateSettingRow("Задержка между запросами (мс):", _numPacingDelayMs, 270);
 
             _numMemoryCacheMb = UIFactory.CreateNumericInput(32, 4096, _settings.Server.MemoryCacheSizeMb > 0 ? _settings.Server.MemoryCacheSizeMb : 128, 80);
@@ -856,6 +864,7 @@ namespace TelegramWebDAV.UI
             }
 
             _configManager.Save(_settings);
+            _telegramService.UpdateSettings(_settings);
 
             string msg = "Все настройки успешно сохранены!";
             if (oldEngine != _settings.Server.Engine)
