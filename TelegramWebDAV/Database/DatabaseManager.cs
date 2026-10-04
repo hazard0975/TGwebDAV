@@ -10,9 +10,10 @@ namespace TelegramWebDAV.Database
         private readonly string _dbPath;
         private readonly string _connectionString;
 
-        public DatabaseManager(string dbPath = "base.db")
+        public DatabaseManager(string? dbPath = null)
         {
-            _dbPath = dbPath;
+            string path = string.IsNullOrWhiteSpace(dbPath) ? "base.db" : dbPath;
+            _dbPath = Path.IsPathRooted(path) ? path : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
             _connectionString = $"Data Source={_dbPath};";
         }
 

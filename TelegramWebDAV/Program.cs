@@ -20,6 +20,9 @@ namespace TelegramWebDAV
         [STAThread]
         private static async Task Main(string[] args)
         {
+            // Принудительно фиксируем рабочую директорию на папку с исполняемым файлом
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
             // Обработка запроса на применение твиков реестра с повышенными привилегиями (UAC)
             if (args != null && args.Length > 0 && args[0] == "--apply-registry-fix")
             {
@@ -142,16 +145,10 @@ namespace TelegramWebDAV
                 var configManager = new ConfigManager();
                 var settings = configManager.Load();
 
-                string driveLetter = settings.Server.DriveLetter ?? "Z:";
-                if (driveLetter.Equals("AUTO", StringComparison.OrdinalIgnoreCase)) driveLetter = "Z:";
-                string drivePrefix = driveLetter.TrimEnd('\\');
-
-                string relPath = rawPath.Trim();
-                if (relPath.StartsWith(drivePrefix, StringComparison.OrdinalIgnoreCase))
-                {
-                    relPath = relPath.Substring(drivePrefix.Length);
-                }
-                relPath = relPath.Replace('\\', '/');
+                string trimmed = rawPath.Trim();
+                int colonIdx = trimmed.IndexOf(':');
+                string relPath = colonIdx >= 0 ? trimmed.Substring(colonIdx + 1) : trimmed;
+                relPath = relPath.Replace('\\', '/').Trim();
                 if (!relPath.StartsWith("/")) relPath = "/" + relPath;
 
                 var dbManager = new DatabaseManager(settings.Database.Path);

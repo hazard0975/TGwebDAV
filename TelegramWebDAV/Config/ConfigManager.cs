@@ -10,9 +10,20 @@ namespace TelegramWebDAV.Config
         private readonly string _configPath;
         private readonly object _lock = new object();
 
-        public ConfigManager(string configPath = "appsettings.json")
+        public ConfigManager(string? configPath = null)
         {
-            _configPath = configPath;
+            if (string.IsNullOrWhiteSpace(configPath))
+            {
+                _configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
+            }
+            else if (!Path.IsPathRooted(configPath))
+            {
+                _configPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, configPath);
+            }
+            else
+            {
+                _configPath = configPath;
+            }
         }
 
         public AppSettings Load()
