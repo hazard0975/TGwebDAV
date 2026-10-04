@@ -54,7 +54,6 @@ namespace TelegramWebDAV.UI
                 Visible = true
             };
             _notifyIcon.DoubleClick += (s, e) => ShowSettingsDialog();
-            _notifyIcon.MouseMove += (s, e) => _progressOverlay.NotifyTrayHover();
 
             BuildContextMenu();
             CheckDriveMounting();

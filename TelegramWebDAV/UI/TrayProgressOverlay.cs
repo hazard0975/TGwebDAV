@@ -43,7 +43,6 @@ namespace TelegramWebDAV.UI
         private DateTime _lastSpeedCalcTime = DateTime.UtcNow;
         private long _lastSpeedBytes = 0;
         private double _bytesPerSecond = 0;
-        private DateTime _lastHoverTime = DateTime.MinValue;
         private DateTime _lastProgressUpdateTime = DateTime.UtcNow;
         private string? _lastMetadataCompletedFile;
 
@@ -183,7 +182,7 @@ namespace TelegramWebDAV.UI
             if (!Visible)
             {
                 AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса [{_direction}] для {fileName} ({current}/{total})");
-                PositionNearTray(useMouse: false);
+                PositionNearTray();
                 Show();
                 _updateTimer.Start();
                 _hideCheckTimer.Start();
@@ -260,7 +259,7 @@ namespace TelegramWebDAV.UI
 
             if (!Visible)
             {
-                PositionNearTray(useMouse: false);
+                PositionNearTray();
                 Show();
                 _updateTimer.Start();
                 _hideCheckTimer.Start();
@@ -304,55 +303,12 @@ namespace TelegramWebDAV.UI
         // Для обратной совместимости
         public void CompleteUpload(string fileName) => CompleteTransfer(fileName, TransferDirection.Upload);
 
-        public void NotifyTrayHover()
+        private void PositionNearTray()
         {
-            if (_syncContext != null && SynchronizationContext.Current != _syncContext)
-            {
-                _syncContext.Post(_ => NotifyTrayHover(), null);
-                return;
-            }
-
-            _lastHoverTime = DateTime.UtcNow;
-
-            // Показываем окно по наведению на трей только если идет реальная передача
-            if (!Visible && (_isTransferring || _isFinalizing))
-            {
-                PositionNearTray(useMouse: true);
-                Show();
-                Refresh();
-                _updateTimer.Start();
-                _hideCheckTimer.Start();
-            }
-        }
-
-        private void PositionNearTray(bool useMouse)
-        {
-            Rectangle workingArea;
-            int x, y;
-
-            if (useMouse)
-            {
-                var mousePos = Cursor.Position;
-                workingArea = Screen.GetWorkingArea(mousePos);
-
-                x = mousePos.X - (Width / 2);
-                y = mousePos.Y - Height - 16;
-
-                if (x + Width > workingArea.Right - 8)
-                    x = workingArea.Right - Width - 8;
-                if (x < workingArea.Left + 8)
-                    x = workingArea.Left + 8;
-
-                if (y < workingArea.Top + 8)
-                    y = mousePos.Y + 24;
-            }
-            else
-            {
-                // Автоматическое позиционирование в правом нижнем углу над панелью задач
-                workingArea = Screen.PrimaryScreen?.WorkingArea ?? Screen.GetWorkingArea(Point.Empty);
-                x = workingArea.Right - Width - 16;
-                y = workingArea.Bottom - Height - 16;
-            }
+            // Автоматическое позиционирование в правом нижнем углу над панелью задач
+            var workingArea = Screen.PrimaryScreen?.WorkingArea ?? Screen.GetWorkingArea(Point.Empty);
+            int x = workingArea.Right - Width - 16;
+            int y = workingArea.Bottom - Height - 16;
 
             Location = new Point(x, y);
         }
@@ -362,7 +318,7 @@ namespace TelegramWebDAV.UI
             if (!Visible) return;
 
             // Если прошло более 1.5 сек с момента последнего обновления данных при отсутствии активности,
-            // запускаем штатный таймер финализации и скрытия (защита от зависания окна при обрыве потока/завершении чтения)
+            // скрываем оверлей (защита от зависания окна при обрыве потока/завершении чтения)
             var secondsSinceProgress = (DateTime.UtcNow - _lastProgressUpdateTime).TotalSeconds;
             if ((_isTransferring || _isFinalizing) && secondsSinceProgress >= 1.5)
             {
@@ -375,26 +331,6 @@ namespace TelegramWebDAV.UI
                     _hideCheckTimer.Stop();
                     Hide();
                 }
-                return;
-            }
-
-            // Если окно всплыло по автоматическому показу и идет активная загрузка — оно отображается
-            if (AutoShowOnUpload && (_isTransferring || _isFinalizing || _isCompleted))
-            {
-                return;
-            }
-
-            var mousePos = Cursor.Position;
-            var mouseOverOverlay = Bounds.Contains(mousePos);
-            var secondsSinceLastHover = (DateTime.UtcNow - _lastHoverTime).TotalSeconds;
-
-            // В режиме показа только при наведении скрываем окно, если курсор ушел
-            if (!mouseOverOverlay && secondsSinceLastHover > 0.6)
-            {
-                AppLogger.Info("TrayProgressOverlay", $"Скрытие окна по HideCheckTimer (mouseOver={mouseOverOverlay}, secondsSinceLastHover={secondsSinceLastHover:F1})");
-                _updateTimer.Stop();
-                _hideCheckTimer.Stop();
-                Hide();
             }
         }
 
