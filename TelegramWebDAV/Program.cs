@@ -28,6 +28,13 @@ namespace TelegramWebDAV
                 return;
             }
 
+            // Обработка запроса из контекстного меню Проводника «Открыть в Telegram»
+            if (args != null && args.Length >= 2 && args[0] == "--open-in-tg")
+            {
+                HandleOpenInTelegram(args[1]);
+                return;
+            }
+
             // Включаем системную поддержку Assembly.Location в .NET 8 для корректной работы сторонних библиотек (WinFsp)
             AppContext.SetData("Switch.System.Reflection.Assembly.Location.IncludeInSingleFileApp", true);
 
@@ -125,6 +132,65 @@ namespace TelegramWebDAV
                     try { _singleInstanceMutex.ReleaseMutex(); } catch { }
                     _singleInstanceMutex.Dispose();
                 }
+            }
+        }
+
+        private static void HandleOpenInTelegram(string rawPath)
+        {
+            try
+            {
+                var configManager = new ConfigManager();
+                var settings = configManager.Load();
+
+                string driveLetter = settings.Server.DriveLetter ?? "Z:";
+                if (driveLetter.Equals("AUTO", StringComparison.OrdinalIgnoreCase)) driveLetter = "Z:";
+                string drivePrefix = driveLetter.TrimEnd('\\');
+
+                string relPath = rawPath.Trim();
+                if (relPath.StartsWith(drivePrefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    relPath = relPath.Substring(drivePrefix.Length);
+                }
+                relPath = relPath.Replace('\\', '/');
+                if (!relPath.StartsWith("/")) relPath = "/" + relPath;
+
+                var dbManager = new DatabaseManager(settings.Database.Path);
+                dbManager.InitializeDatabase();
+                var repository = new NodeRepository(dbManager);
+                var node = repository.GetNodeByPath(relPath);
+
+                if (node != null && node.TgMessageId.HasValue && node.TgMessageId.Value > 1)
+                {
+                    long channelId = settings.Telegram.StorageChannelId;
+                    if (channelId != 0)
+                    {
+                        string cleanChannel = channelId.ToString().Trim();
+                        if (cleanChannel.StartsWith("-100")) cleanChannel = cleanChannel.Substring(4);
+                        else if (cleanChannel.StartsWith("-")) cleanChannel = cleanChannel.Substring(1);
+
+                        string url = $"https://t.me/c/{cleanChannel}/{node.TgMessageId.Value}";
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = url,
+                            UseShellExecute = true
+                        });
+                        return;
+                    }
+                }
+
+                MessageBox.Show(
+                    $"Файл '{relPath}' не имеет сохраненного Message ID в Telegram или хранится локально.",
+                    "Telegram WebDAV",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Не удалось открыть сообщение в Telegram:\n{ex.Message}",
+                    "Telegram WebDAV",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
             }
         }
     }

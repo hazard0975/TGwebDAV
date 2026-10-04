@@ -558,6 +558,16 @@ namespace TelegramWebDAV.Database
                     throw;
                 }
             }
+
+            // Ставим в очередь обновление подписей на #trash для всех перемещенных в корзину файлов
+            try
+            {
+                EnqueueCaptionUpdatesForSubtree(nodeId);
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Warn("Database", $"Не удалось поставить в очередь обновление подписей корзины для #{nodeId}: {ex.Message}");
+            }
         }
 
         /// <summary>
@@ -970,6 +980,29 @@ namespace TelegramWebDAV.Database
                             insertCmd.ExecuteNonQuery();
                         }
 
+                        // Старая версия отправляется в корзину: обновляем её подпись в Telegram на #trash
+                        if (existingNode.TgMessageId.HasValue && existingNode.TgMessageId.Value > 1)
+                        {
+                            string oldPathWithVersion = GetNodeFullPathWithVersion(existingNode.Id);
+                            string trashCaption = FormatTelegramCaption(oldPathWithVersion, existingNode.TgMessageId.Value, isLatest: false);
+                            using (var captionCmd = connection.CreateCommand())
+                            {
+                                captionCmd.Transaction = transaction;
+                                captionCmd.CommandText = @"
+                                    INSERT INTO pending_caption_updates (node_id, tg_message_id, new_caption)
+                                    VALUES (@nodeId, @tgMessageId, @newCaption)
+                                    ON CONFLICT(node_id) DO UPDATE SET
+                                        tg_message_id = excluded.tg_message_id,
+                                        new_caption = excluded.new_caption,
+                                        status = 0;
+                                ";
+                                captionCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
+                                captionCmd.Parameters.AddWithValue("@tgMessageId", existingNode.TgMessageId.Value);
+                                captionCmd.Parameters.AddWithValue("@newCaption", trashCaption);
+                                captionCmd.ExecuteNonQuery();
+                            }
+                        }
+
                         // Удаляем старый прогресс докачки для перезаписываемого файла
                         using (var clearCmd = connection.CreateCommand())
                         {
@@ -1194,6 +1227,24 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Формирует стандартизированную подпись для сообщения Telegram со статусом, версией, ID сообщения и хэштегом.
+        /// Активный файл: 🟢 /Путь/Файл_vN.ext \nID: 1487 \n#latest
+        /// Мусор / Старая версия: 🗑️ /Путь/Файл_vN.ext \nID: 1487 \n#trash
+        /// </summary>
+        public static string FormatTelegramCaption(string fullPathWithVersion, int? messageId, bool isLatest)
+        {
+            string idLine = messageId.HasValue && messageId.Value > 0 ? $"\nID: {messageId.Value}" : "";
+            if (isLatest)
+            {
+                return $"🟢 {fullPathWithVersion}{idLine}\n#latest";
+            }
+            else
+            {
+                return $"🗑️ {fullPathWithVersion}{idLine}\n#trash";
+            }
+        }
+
+        /// <summary>
         /// Помещает в стойкую очередь SQLite все файлы указанного поддерева для фонового обновления подписей в Telegram.
         /// Гарантирует устойчивость к выключению ПК или перезапуску приложения.
         /// </summary>
@@ -1213,7 +1264,8 @@ namespace TelegramWebDAV.Database
                     {
                         if (file.TgMessageId.HasValue && file.TgMessageId.Value > 1)
                         {
-                            string newCaption = GetNodeFullPathWithVersion(file.Id);
+                            string pathWithVersion = GetNodeFullPathWithVersion(file.Id);
+                            string newCaption = FormatTelegramCaption(pathWithVersion, file.TgMessageId.Value, !file.IsDeleted);
                             using (var cmd = connection.CreateCommand())
                             {
                                 cmd.Transaction = transaction;

@@ -1201,7 +1201,10 @@ namespace TelegramWebDAV.Services
             Interlocked.Increment(ref _pendingUploadsCount);
             await _uploadSemaphore.WaitAsync();
             string effectiveFileName = !string.IsNullOrEmpty(displayFileName) ? displayFileName : fileName;
-            string effectiveCaption = !string.IsNullOrEmpty(caption) ? caption : effectiveFileName;
+            string rawCaptionPath = !string.IsNullOrEmpty(caption) ? caption : effectiveFileName;
+            string effectiveCaption = rawCaptionPath.StartsWith("🟢") || rawCaptionPath.StartsWith("🗑️")
+                ? rawCaptionPath
+                : NodeRepository.FormatTelegramCaption(rawCaptionPath, null, isLatest: true);
 
             Stream uploadStream = source;
             string? tempFilePath = null;
@@ -1497,6 +1500,27 @@ namespace TelegramWebDAV.Services
 
                     if (message != null)
                     {
+                        // Обновляем подпись в Telegram, добавляя точный ID сообщения
+                        if (message.ID > 0)
+                        {
+                            try
+                            {
+                                string finalizedCaption = NodeRepository.FormatTelegramCaption(rawCaptionPath, message.ID, isLatest: true);
+                                var editReq = new TL.Methods.Messages_EditMessage
+                                {
+                                    flags = TL.Methods.Messages_EditMessage.Flags.has_message,
+                                    peer = peer,
+                                    id = message.ID,
+                                    message = finalizedCaption
+                                };
+                                await _client.Invoke(editReq);
+                            }
+                            catch (Exception ex)
+                            {
+                                AppLogger.Debug("TelegramService", $"Не удалось обновить финальную подпись с ID для #{message.ID}: {ex.Message}");
+                            }
+                        }
+
                         AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' успешно сохранен в Telegram. Message ID: {message.ID}" + (photoMessage != null ? $", Preview ID: {photoMessage.ID}" : ""));
                         return new FileUploadResult(message.ID, photoMessage?.ID);
                     }
@@ -1504,6 +1528,26 @@ namespace TelegramWebDAV.Services
 
                 if (message != null)
                 {
+                    if (message.ID > 0)
+                    {
+                        try
+                        {
+                            string finalizedCaption = NodeRepository.FormatTelegramCaption(rawCaptionPath, message.ID, isLatest: true);
+                            var editReq = new TL.Methods.Messages_EditMessage
+                            {
+                                flags = TL.Methods.Messages_EditMessage.Flags.has_message,
+                                peer = peer,
+                                id = message.ID,
+                                message = finalizedCaption
+                            };
+                            await _client.Invoke(editReq);
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Debug("TelegramService", $"Не удалось обновить финальную подпись с ID для #{message.ID}: {ex.Message}");
+                        }
+                    }
+
                     AppLogger.Info("TelegramService", $"Файл '{effectiveFileName}' успешно сохранен в Telegram. Message ID: {message.ID}");
                     return new FileUploadResult(message.ID);
                 }

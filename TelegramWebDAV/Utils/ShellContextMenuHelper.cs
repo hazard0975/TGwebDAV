@@ -7,14 +7,17 @@ using TelegramWebDAV.Services;
 namespace TelegramWebDAV.Utils
 {
     /// <summary>
-    /// Утилита для интеграции корзины WebDAV в контекстное меню Проводника Windows (HKCU).
-    /// Позволяет открывать корзину по правому клику мыши на сетевой диск или пустую область папки без прав администратора.
+    /// Утилита для интеграции корзины WebDAV и перехода к сообщению в Telegram в контекстное меню Проводника Windows (HKCU).
+    /// Позволяет открывать корзину и сообщения Telegram по правому клику мыши на сетевой диск и файлы без прав администратора.
     /// </summary>
     public static class ShellContextMenuHelper
     {
-        private const string MenuKeyName = "TelegramWebDAVTrash";
-        private const string DriveKeyPath = @"Software\Classes\Drive\shell\" + MenuKeyName;
-        private const string BackgroundKeyPath = @"Software\Classes\Directory\Background\shell\" + MenuKeyName;
+        private const string TrashMenuKeyName = "TelegramWebDAVTrash";
+        private const string OpenInTgMenuKeyName = "TelegramWebDAVOpenInTg";
+        
+        private const string DriveKeyPath = @"Software\Classes\Drive\shell\" + TrashMenuKeyName;
+        private const string BackgroundKeyPath = @"Software\Classes\Directory\Background\shell\" + TrashMenuKeyName;
+        private const string FileOpenInTgKeyPath = @"Software\Classes\*\shell\" + OpenInTgMenuKeyName;
 
         /// <summary>
         /// Проверяет, зарегистрирован ли пункт контекстного меню в реестре Windows.
@@ -33,7 +36,7 @@ namespace TelegramWebDAV.Utils
         }
 
         /// <summary>
-        /// Регистрирует пункт «Открыть корзину WebDAV» в контекстном меню Windows.
+        /// Регистрирует пункты «Открыть корзину WebDAV» и «Открыть в Telegram» в контекстном меню Windows.
         /// </summary>
         public static bool RegisterTrashContextMenu(string driveLetter)
         {
@@ -47,15 +50,14 @@ namespace TelegramWebDAV.Utils
                 string trashLocalPath = Path.Combine(cleanDrive, ".Trash");
                 string menuText = "Открыть корзину WebDAV";
                 string explorerCommand = $"explorer.exe \"{trashLocalPath}\"";
+                string exePath = Environment.ProcessPath ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TelegramWebDAV.exe");
 
                 // 1. Контекстное меню для диска (ПКМ по диску Z: в Компьютере)
-                // AppliesTo ограничивает отображение пункта ТОЛЬКО выбранным диском WebDAV
                 using (var driveKey = Registry.CurrentUser.CreateSubKey(DriveKeyPath))
                 {
                     if (driveKey != null)
                     {
                         driveKey.SetValue("", menuText);
-                        // Используем стандартную системную иконку корзины Windows
                         driveKey.SetValue("Icon", "shell32.dll,31");
                         driveKey.SetValue("AppliesTo", $"System.ItemFolderPathDisplay:~< \"{cleanDrive}\" OR System.ItemPathDisplay:~< \"{driveWithoutSlash}\"");
                         using var cmdKey = driveKey.CreateSubKey("command");
@@ -64,7 +66,6 @@ namespace TelegramWebDAV.Utils
                 }
 
                 // 2. Контекстное меню для фона папки (ПКМ в пустом месте Проводника)
-                // AppliesTo гарантирует, что пункт появится ТОЛЬКО при нахождении внутри диска Z:\, исключая C:\, D:\ и Рабочий стол
                 using (var bgKey = Registry.CurrentUser.CreateSubKey(BackgroundKeyPath))
                 {
                     if (bgKey != null)
@@ -77,18 +78,31 @@ namespace TelegramWebDAV.Utils
                     }
                 }
 
-                AppLogger.Info("Shell", $"Контекстное меню корзины WebDAV успешно зарегистрировано в реестре для {cleanDrive}");
+                // 3. Контекстное меню для файлов на диске: «Открыть в Telegram»
+                using (var tgKey = Registry.CurrentUser.CreateSubKey(FileOpenInTgKeyPath))
+                {
+                    if (tgKey != null)
+                    {
+                        tgKey.SetValue("", "Открыть в Telegram");
+                        tgKey.SetValue("Icon", File.Exists(exePath) ? $"\"{exePath}\",0" : "shell32.dll,14");
+                        tgKey.SetValue("AppliesTo", $"System.ItemFolderPathDisplay:\"{cleanDrive}*\"");
+                        using var cmdKey = tgKey.CreateSubKey("command");
+                        cmdKey?.SetValue("", $"\"{exePath}\" --open-in-tg \"%1\"");
+                    }
+                }
+
+                AppLogger.Info("Shell", $"Контекстное меню WebDAV и 'Открыть в Telegram' успешно зарегистрировано в реестре для {cleanDrive}");
                 return true;
             }
             catch (Exception ex)
             {
-                AppLogger.Error("Shell", $"Не удалось зарегистрировать контекстное меню корзины: {ex.Message}", ex);
+                AppLogger.Error("Shell", $"Не удалось зарегистрировать контекстное меню: {ex.Message}", ex);
                 return false;
             }
         }
 
         /// <summary>
-        /// Удаляет пункт корзины WebDAV из контекстного меню Windows.
+        /// Удаляет пункты WebDAV из контекстного меню Windows.
         /// </summary>
         public static bool UnregisterTrashContextMenu()
         {
@@ -96,20 +110,25 @@ namespace TelegramWebDAV.Utils
             {
                 using (var driveShellKey = Registry.CurrentUser.OpenSubKey(@"Software\Classes\Drive\shell", true))
                 {
-                    driveShellKey?.DeleteSubKeyTree(MenuKeyName, false);
+                    driveShellKey?.DeleteSubKeyTree(TrashMenuKeyName, false);
                 }
 
                 using (var bgShellKey = Registry.CurrentUser.OpenSubKey(@"Software\Classes\Directory\Background\shell", true))
                 {
-                    bgShellKey?.DeleteSubKeyTree(MenuKeyName, false);
+                    bgShellKey?.DeleteSubKeyTree(TrashMenuKeyName, false);
                 }
 
-                AppLogger.Info("Shell", "Контекстное меню корзины WebDAV удалено из реестра.");
+                using (var fileShellKey = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell", true))
+                {
+                    fileShellKey?.DeleteSubKeyTree(OpenInTgMenuKeyName, false);
+                }
+
+                AppLogger.Info("Shell", "Контекстное меню WebDAV и 'Открыть в Telegram' удалено из реестра.");
                 return true;
             }
             catch (Exception ex)
             {
-                AppLogger.Error("Shell", $"Не удалось удалить контекстное меню корзины: {ex.Message}", ex);
+                AppLogger.Error("Shell", $"Не удалось удалить контекстное меню: {ex.Message}", ex);
                 return false;
             }
         }
