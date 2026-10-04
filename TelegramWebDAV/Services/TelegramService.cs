@@ -2152,7 +2152,13 @@ namespace TelegramWebDAV.Services
                     ? $"чанк #{firstChunk}"
                     : $"чанки #{firstChunk}..#{lastChunk}";
 
-                AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Скачивание {mb:0.00} МБ ({rangeStr} из {totalChunks}) для '{fileName}' через {activeWorkers} воркеров MTProto...");
+                string workerWord = activeWorkers switch
+                {
+                    >= 1 and <= 4 => "воркера",
+                    _ => "воркеров"
+                };
+
+                AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Скачивание {mb:0.00} МБ ({rangeStr} из {totalChunks}) для '{fileName}' через {activeWorkers} {workerWord} MTProto...");
 
                 foreach (var chunkOffsetToQueue in newChunksToQueue)
                 {

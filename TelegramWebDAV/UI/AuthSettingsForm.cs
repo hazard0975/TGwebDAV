@@ -18,6 +18,8 @@ namespace TelegramWebDAV.UI
         private readonly Database.NodeRepository _repository;
         private AppSettings _settings;
 
+        public event Action? SettingsSaved;
+
         // UI Controls
         private TabControl _tabControl = null!;
         private TabPage _tabGeneral = null!;
@@ -865,6 +867,7 @@ namespace TelegramWebDAV.UI
 
             _configManager.Save(_settings);
             _telegramService.UpdateSettings(_settings);
+            SettingsSaved?.Invoke();
 
             string msg = "Все настройки успешно сохранены!";
             if (oldEngine != _settings.Server.Engine)

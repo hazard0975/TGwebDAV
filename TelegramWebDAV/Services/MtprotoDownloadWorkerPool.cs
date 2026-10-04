@@ -46,8 +46,9 @@ namespace TelegramWebDAV.Services
             public int ChunkIndex { get; set; }
             public long ChunkOffset { get; set; }
             public int RequestLimit { get; set; }
-            public bool IsHighPriority { get; set; }
+            public volatile bool IsHighPriority;
             public volatile bool IsCancelled;
+            public int IsProcessing;
             public int RetryCount { get; set; }
             public TaskCompletionSource<byte[]?> Completion { get; set; } = null!;
             public Action<byte[], long>? OnChunkReceived { get; set; }
@@ -109,7 +110,14 @@ namespace TelegramWebDAV.Services
                 int workerId = i + 1;
                 _workerTasks[i] = Task.Run(() => WorkerLoopAsync(workerId, token), token);
             }
-            AppLogger.Info("MtprotoWorkerPool", $"Пул постоянных воркеров запущен: {_workerCount} воркеров MTProto готовы к обработке очереди.");
+            string workerWord = _workerCount switch
+            {
+                1 => "воркер",
+                >= 2 and <= 4 => "воркера",
+                _ => "воркеров"
+            };
+            string readyWord = _workerCount == 1 ? "готов" : "готовы";
+            AppLogger.Info("MtprotoWorkerPool", $"Пул постоянных воркеров запущен: {_workerCount} {workerWord} MTProto {readyWord} к обработке очереди.");
         }
 
         /// <summary>
@@ -135,7 +143,8 @@ namespace TelegramWebDAV.Services
                 if (isHighPriority && _activeRequests.TryGetValue(key, out var activeReq))
                 {
                     activeReq.IsCancelled = false;
-                    if (!activeReq.IsHighPriority)
+                    // Если задача еще не взята воркером в работу (IsProcessing == 0) и еще не была в срочной очереди
+                    if (!activeReq.IsHighPriority && Volatile.Read(ref activeReq.IsProcessing) == 0)
                     {
                         activeReq.IsHighPriority = true;
                         _highPriorityQueue.Enqueue(activeReq);
@@ -191,7 +200,9 @@ namespace TelegramWebDAV.Services
         {
             foreach (var req in _normalPriorityQueue)
             {
-                if (req.MessageId == messageId && !req.IsCancelled)
+                // Отменяем только незапущенные низкоприоритетные фоновые чанки.
+                // Если чанк срочный (IsHighPriority) или уже качается воркером (IsProcessing == 1) — его трогать нельзя!
+                if (req.MessageId == messageId && !req.IsCancelled && !req.IsHighPriority && Volatile.Read(ref req.IsProcessing) == 0)
                 {
                     req.IsCancelled = true;
                 }
@@ -226,6 +237,14 @@ namespace TelegramWebDAV.Services
                 }
 
                 if (request == null) continue;
+
+                // Атомарно заявляем права на выполнение этого чанка.
+                // Если этот же запрос уже обрабатывается или был обработан другим воркером
+                // (например, дубликат из очереди при повышении приоритета) — мгновенно отбрасываем дубль!
+                if (Interlocked.CompareExchange(ref request.IsProcessing, 1, 0) != 0)
+                {
+                    continue;
+                }
 
                 string key = $"{request.MessageId}:{request.ChunkOffset}";
 
