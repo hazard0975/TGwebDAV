@@ -605,7 +605,7 @@
    Метод `IsChunkInFlight(messageId, chunkOffset)` проверяет наличие чанка в активной очереди воркеров. Это предотвращает повторные вызовы лога для чанков, которые уже скачиваются в данный момент.
 2. **Восстановление строки старта упреждения в `TriggerContinuousPrefetch`**:
    При постановке в очередь новых чанков вычисляется их точный диапазон (`#first..#last`), общий объем в МБ и выводится историческая запись:
-   `[MtprotoWorkerPool] [RAM Streaming] Скачивание {mb:0.00} МБ ({rangeStr} (всего {totalChunks})) для '{fileName}' через {activeWorkers} воркеров MTProto...`
+   `[MtprotoWorkerPool] [RAM Streaming] Скачивание {mb:0.00} МБ ({rangeStr} из {totalChunks}) для '{fileName}' через {activeWorkers} воркеров MTProto...`
 3. **Идентификация файлов в логах воркеров**:
    В `ProcessChunkRequestAsync` в логи запроса, получения чанков и исчерпания попыток добавлен тег `для '{request.FileName}'`.
 

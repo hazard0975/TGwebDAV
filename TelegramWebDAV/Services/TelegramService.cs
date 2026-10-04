@@ -152,7 +152,7 @@ namespace TelegramWebDAV.Services
                 get
                 {
                     double pct = TotalChunks > 0 ? (double)ReceivedChunksCount * 100.0 / TotalChunks : 100.0;
-                    return $"Скачано всего: {ReceivedChunksCount} из {TotalChunks} чанков ({pct:0.#}%)";
+                    return $"Скачано {ReceivedChunksCount} из {TotalChunks} чанков ({pct:0.#}%)";
                 }
             }
 
@@ -2152,7 +2152,7 @@ namespace TelegramWebDAV.Services
                     ? $"чанк #{firstChunk}"
                     : $"чанки #{firstChunk}..#{lastChunk}";
 
-                AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Скачивание {mb:0.00} МБ ({rangeStr} (всего {totalChunks})) для '{fileName}' через {activeWorkers} воркеров MTProto...");
+                AppLogger.Info("MtprotoWorkerPool", $"[RAM Streaming] Скачивание {mb:0.00} МБ ({rangeStr} из {totalChunks}) для '{fileName}' через {activeWorkers} воркеров MTProto...");
 
                 foreach (var chunkOffsetToQueue in newChunksToQueue)
                 {
