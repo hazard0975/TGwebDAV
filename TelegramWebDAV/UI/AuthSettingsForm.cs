@@ -43,7 +43,6 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkEnableDiskCache = null!;
         private NumericUpDown _numMemoryCacheMb = null!;
         private NumericUpDown _numChunkTtlMinutes = null!;
-        private NumericUpDown _numFullTrackMaxMb = null!;
         private NumericUpDown _numStreamingActivationMb = null!;
         private NumericUpDown _numAudioWindowMb = null!;
         private NumericUpDown _numStreamingWindowMb = null!;
@@ -176,25 +175,22 @@ namespace TelegramWebDAV.UI
             _chkEnableDiskCache = UIFactory.CreateCheckBox("Сохранять прочитанные файлы в дисковый кэш (%TEMP%)", _settings.Server.EnableDiskReadCache);
 
             _numMemoryCacheMb = UIFactory.CreateNumericInput(32, 4096, _settings.Server.MemoryCacheSizeMb > 0 ? _settings.Server.MemoryCacheSizeMb : 128, 80);
-            var rowMemCache = UIFactory.CreateSettingRow("Буфер кэша в ОЗУ (МБ):", _numMemoryCacheMb, 290);
+            var rowMemCache = UIFactory.CreateSettingRow("Буфер кэша в ОЗУ (МБ):", _numMemoryCacheMb, 250);
 
             _numChunkTtlMinutes = UIFactory.CreateNumericInput(1, 120, _settings.Server.ChunkMemoryCacheTtlMinutes > 0 ? _settings.Server.ChunkMemoryCacheTtlMinutes : 10, 80);
-            var rowChunkTtl = UIFactory.CreateSettingRow("Время жизни кэша в ОЗУ (мин):", _numChunkTtlMinutes, 290);
-
-            _numFullTrackMaxMb = UIFactory.CreateNumericInput(1, 500, _settings.Server.FullTrackPrefetchMaxFileSizeMb > 0 ? _settings.Server.FullTrackPrefetchMaxFileSizeMb : 2, 80);
-            var rowFullTrack = UIFactory.CreateSettingRow("Качать мелкие медиа целиком до (МБ):", _numFullTrackMaxMb, 290);
+            var rowChunkTtl = UIFactory.CreateSettingRow("Время жизни кэша в ОЗУ (мин):", _numChunkTtlMinutes, 250);
 
             _numStreamingActivationMb = UIFactory.CreateNumericInput(1, 50, _settings.Server.StreamingActivationThresholdMb > 0 ? _settings.Server.StreamingActivationThresholdMb : 1, 80);
-            var rowStreamingActivation = UIFactory.CreateSettingRow("Старт упреждения после (МБ):", _numStreamingActivationMb, 290);
+            var rowStreamingActivation = UIFactory.CreateSettingRow("Старт упреждения после (МБ):", _numStreamingActivationMb, 250);
 
             _numAudioWindowMb = UIFactory.CreateNumericInput(1, 100, _settings.Server.AudioPrefetchWindowMb > 0 ? _settings.Server.AudioPrefetchWindowMb : 2, 80);
-            var rowAudioWindow = UIFactory.CreateSettingRow("Буфер упреждения для аудио (МБ):", _numAudioWindowMb, 290);
+            var rowAudioWindow = UIFactory.CreateSettingRow("Буфер упреждения для аудио (МБ):", _numAudioWindowMb, 250);
 
             _numStreamingWindowMb = UIFactory.CreateNumericInput(5, 200, _settings.Server.StreamingPrefetchWindowMb > 0 ? _settings.Server.StreamingPrefetchWindowMb : 20, 80);
-            var rowStreamingWindow = UIFactory.CreateSettingRow("Буфер упреждения для видео/файлов (МБ):", _numStreamingWindowMb, 290);
+            var rowStreamingWindow = UIFactory.CreateSettingRow("Буфер упреждения для видео/файлов (МБ):", _numStreamingWindowMb, 250);
 
             pnlCacheInner.Controls.AddRange(new Control[] {
-                _chkEnableDiskCache, rowMemCache, rowChunkTtl, rowFullTrack, rowStreamingActivation, rowAudioWindow, rowStreamingWindow
+                _chkEnableDiskCache, rowMemCache, rowChunkTtl, rowStreamingActivation, rowAudioWindow, rowStreamingWindow
             });
             grpCache.Controls.Add(pnlCacheInner);
 
@@ -828,7 +824,6 @@ namespace TelegramWebDAV.UI
             _settings.Server.EnableDiskReadCache = _chkEnableDiskCache.Checked;
             _settings.Server.MemoryCacheSizeMb = (int)_numMemoryCacheMb.Value;
             _settings.Server.ChunkMemoryCacheTtlMinutes = (int)_numChunkTtlMinutes.Value;
-            _settings.Server.FullTrackPrefetchMaxFileSizeMb = (int)_numFullTrackMaxMb.Value;
             _settings.Server.StreamingActivationThresholdMb = (int)_numStreamingActivationMb.Value;
             _settings.Server.AudioPrefetchWindowMb = (int)_numAudioWindowMb.Value;
             _settings.Server.StreamingPrefetchWindowMb = (int)_numStreamingWindowMb.Value;

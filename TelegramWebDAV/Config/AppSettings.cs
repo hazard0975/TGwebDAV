@@ -65,7 +65,6 @@ namespace TelegramWebDAV.Config
         public int MemoryCacheSizeMb { get; set; } = 128; // Динамический RAM-буфер 128 МБ
         public int ChunkMemoryCacheTtlMinutes { get; set; } = 10; // Время жизни чанков в ОЗУ (минут)
         public int AudioPrefetchWindowMb { get; set; } = 2; // Буфер претча для аудиофайлов (.mp3, .flac, .ogg и т.д.) - по умолчанию 2 МБ
-        public int FullTrackPrefetchMaxFileSizeMb { get; set; } = 2; // До какого размера трека качать целиком до 100%
         public int StreamingActivationThresholdMb { get; set; } = 1; // Объем вычитанных данных (МБ) для старта упреждения/префетча
         public int StreamingPrefetchWindowMb { get; set; } = 20; // Окно упреждения для видео и крупных файлов
     }

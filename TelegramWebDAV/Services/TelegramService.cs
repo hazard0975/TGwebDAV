@@ -695,7 +695,7 @@ namespace TelegramWebDAV.Services
         {
             AppLogger.Info("TelegramService", "Проверка сессии и подключение к Telegram...");
             _currentSettings = _configManager.Load();
-            AppLogger.Info("TelegramService", $"[Streaming Config] RAM Кэш: {_currentSettings.Server.MemoryCacheSizeMb} МБ (TTL: {_currentSettings.Server.ChunkMemoryCacheTtlMinutes} мин) | Автовыкачка треков до: {_currentSettings.Server.FullTrackPrefetchMaxFileSizeMb} МБ | Окно стриминга: {_currentSettings.Server.StreamingPrefetchWindowMb} МБ | Дисковый кэш: {(_currentSettings.Server.EnableDiskReadCache ? "ВКЛ" : "ВЫКЛ (100% RAM)")}");
+            AppLogger.Info("TelegramService", $"[Streaming Config] RAM Кэш: {_currentSettings.Server.MemoryCacheSizeMb} МБ (TTL: {_currentSettings.Server.ChunkMemoryCacheTtlMinutes} мин) | Буфер аудио: {_currentSettings.Server.AudioPrefetchWindowMb} МБ | Окно стриминга: {_currentSettings.Server.StreamingPrefetchWindowMb} МБ | Дисковый кэш: {(_currentSettings.Server.EnableDiskReadCache ? "ВКЛ" : "ВЫКЛ (100% RAM)")}");
             
             if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
             {
@@ -2181,23 +2181,16 @@ namespace TelegramWebDAV.Services
             if (enableDiskCache || document == null || actualTotalSize <= 262144 || _client == null) return;
 
             int cacheTtlMinutes = _currentSettings.Server.ChunkMemoryCacheTtlMinutes;
-            int fullTrackMaxMb = _currentSettings.Server.FullTrackPrefetchMaxFileSizeMb;
             bool isAudio = IsAudioFileName(fileName);
             int windowMb = isAudio
                 ? _currentSettings.Server.AudioPrefetchWindowMb
                 : _currentSettings.Server.StreamingPrefetchWindowMb;
 
-            long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
             long windowBytes = (long)windowMb * 1024 * 1024;
-
-            // Для аудио и любых других файлов <= fullTrackMaxMb качаем файл целиком до 100%
-            // Для очень больших файлов (> fullTrackMaxMb) держим буфер упреждения windowMb вперед
-            long maxPrefetchLimit = actualTotalSize <= fullTrackMaxBytes
-                ? actualTotalSize
-                : Math.Min(actualTotalSize, currentReadOffset + windowBytes);
+            long maxPrefetchLimit = Math.Min(actualTotalSize, currentReadOffset + windowBytes);
 
             long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
-            long scanOffset = actualTotalSize <= fullTrackMaxBytes ? 0 : startChunkOffset;
+            long scanOffset = startChunkOffset;
 
             var missingChunks = new List<long>();
             while (scanOffset < maxPrefetchLimit)
