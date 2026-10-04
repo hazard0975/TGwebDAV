@@ -1769,7 +1769,7 @@ namespace TelegramWebDAV.Services
 
             var readSeq = _fileReadSequences.GetOrAdd(messageId, _ => new FileReadSequence());
             int cacheTtlMinutes = _currentSettings.Server.ChunkMemoryCacheTtlMinutes;
-            long currentChunkReadBytes = 0;
+            long activationThresholdBytes = Math.Max(1, _currentSettings.Server.StreamingActivationThresholdMb) * 1048576L;
             lock (readSeq)
             {
                 var now = DateTime.UtcNow;
@@ -1782,53 +1782,35 @@ namespace TelegramWebDAV.Services
                     readSeq.ChunkBytesRead.Clear();
                 }
 
-                if (readSeq.LastChunkIndex != -1 && currentChunkIdx == readSeq.LastChunkIndex + 1)
+                if (readSeq.LastChunkIndex != -1 && (currentChunkIdx == readSeq.LastChunkIndex || currentChunkIdx == readSeq.LastChunkIndex + 1))
                 {
-                    readSeq.SequentialCount++;
-                    readSeq.AccumulatedSequentialBytes += length;
-                }
-                else if (readSeq.LastChunkIndex == currentChunkIdx)
-                {
-                    readSeq.AccumulatedSequentialBytes += length;
+                    if (currentChunkIdx == readSeq.LastChunkIndex + 1)
+                    {
+                        readSeq.SequentialCount++;
+                    }
                 }
                 else
                 {
+                    // Перемотка (Seek) или новый старт: сбрасываем накопленные байты и отменяем старый префетч
                     readSeq.SequentialCount = 1;
-                    readSeq.AccumulatedSequentialBytes = length;
+                    readSeq.AccumulatedSequentialBytes = 0;
+                    readSeq.ChunkBytesRead.Clear();
                     if (readSeq.LastChunkIndex != -1)
                     {
                         _workerPool?.CancelPendingChunksForFile(messageId);
                     }
                 }
 
-                currentChunkReadBytes = readSeq.ChunkBytesRead.AddOrUpdate(currentChunkIdx, length, (_, old) => old + length);
                 readSeq.LastChunkIndex = currentChunkIdx;
                 readSeq.LastReadTime = now;
             }
 
-            // ПРОВЕРКА ПОЛНОГО СКАЧИВАНИЯ 1-ГО ЧАНКА И СТРИМИНГА:
-            // 1) Первый 1 МБ чанк (#0) уже скачан полностью в ОЗУ
-            long expectedFirstChunkSize = Math.Min(1048576L, actualTotalSize);
-            bool isFirstChunkFullyCached = TryGetFromMemoryCache(messageId, 0, out var firstChunkData, out _)
-                                          && firstChunkData != null && firstChunkData.Length >= expectedFirstChunkSize;
-
-            // 2) Запрос в хвост файла (последние 512 КБ для ID3v1/тетрисов метаданных)
+            // ПРОВЕРКА ЗОНДОВ МЕТАДАННЫХ И СТРИМИНГА:
+            // 1) Запрос в хвост файла (последние 512 КБ для ID3v1/тетрисов метаданных)
             bool isTailProbe = actualTotalSize > 1048576 && offset >= Math.Max(0, actualTotalSize - 524288);
 
-            // 3) Воспроизведение/стриминг:
-            //    - Первый чанк (#0) уже скачан на 100% (для аудио/треков),
-            //    - ИЛИ внутри текущего 1 МБ чанка клиент вычитал объём порога (по умолчанию 1 МБ),
-            //    - ИЛИ в непрерывном потоке суммарно вычитано от порога и более (по умолчанию 1 МБ),
-            //    - ИЛИ клиент сразу запросил большой блок данных (> 256 КБ).
-            //    Одиночные точечные запросы (эскизы видео, теги ID3/moov) с объемом <= 256 КБ не вызывают стриминг.
-            long activationThresholdBytes = Math.Max(1, _currentSettings.Server.StreamingActivationThresholdMb) * 1048576L;
-            bool isShortRead = length <= 262144;
-            bool isSequentialPlayback = !isTailProbe && (isFirstChunkFullyCached 
-                                                        || currentChunkReadBytes >= activationThresholdBytes
-                                                        || readSeq.AccumulatedSequentialBytes >= activationThresholdBytes 
-                                                        || !isShortRead);
-
-            bool isMetadataProbe = !isSequentialPlayback;
+            // 2) Зонд метаданных: хвостовой запрос или короткий запрос (<= 256 КБ), пока не достигнут порог активации стриминга
+            bool isMetadataProbe = isTailProbe || (length <= 262144 && readSeq.AccumulatedSequentialBytes < activationThresholdBytes);
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -1891,6 +1873,12 @@ namespace TelegramWebDAV.Services
                         await destination.WriteAsync(ramCachedRaw, ramCachedOffset, bytesToSend);
                         await destination.FlushAsync();
                         audit.AddRamBytes(bytesToSend);
+                        lock (readSeq)
+                        {
+                            readSeq.AccumulatedSequentialBytes += bytesToSend;
+                            readSeq.ChunkBytesRead.AddOrUpdate(offset / 1048576, bytesToSend, (_, old) => old + bytesToSend);
+                            readSeq.LastReadTime = DateTime.UtcNow;
+                        }
                         bool allReceived = audit.MarkRangeReceived(offset, bytesToSend);
                         AppLogger.Info("TelegramService", $"[Cache RAM] Точечное чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{(offset / 1048576) + 1} (смещение {offset:N0}, {bytesToSend:N0} байт). {audit.ProgressSummary}.");
 
@@ -1918,13 +1906,6 @@ namespace TelegramWebDAV.Services
             long remainingBytes = length;
             long totalSent = 0;
 
-            if (!enableDiskCache && !isSmallFile && !isMetadataProbe && remainingBytes > 262144)
-            {
-                // Запускаем фоновый конвейер воркеров MTProto ДО входа в цикл чтения,
-                // чтобы все чанки очереди (#1..#N) были СИНХРОННО зарегистрированы в _inFlightChunkWaiters
-                TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
-            }
-
             while (remainingBytes > 0)
             {
                 await EnsureFloodWaitDelayAsync();
@@ -1951,6 +1932,13 @@ namespace TelegramWebDAV.Services
                     totalSent += toSend;
                     audit.AddRamBytes(toSend);
 
+                    lock (readSeq)
+                    {
+                        readSeq.AccumulatedSequentialBytes += toSend;
+                        readSeq.ChunkBytesRead.AddOrUpdate(currentPos / 1048576, toSend, (_, old) => old + toSend);
+                        readSeq.LastReadTime = DateTime.UtcNow;
+                    }
+
                     bool allReceived = audit.MarkRangeReceived(currentPos - toSend, toSend);
 
                     AppLogger.Info("TelegramService", $"[Cache RAM] Потоковое чтение из ОЗУ для '{fileName}' (ID {messageId}): смещение {currentPos - toSend:N0}, отдано {toSend:N0} байт ({currentPos:N0} / {actualTotalSize:N0} байт, {(double)currentPos * 100 / Math.Max(1, actualTotalSize):F1}%). {audit.ProgressSummary}.");
@@ -1960,7 +1948,7 @@ namespace TelegramWebDAV.Services
                         OnDownloadCompleted?.Invoke(fileName);
                     }
 
-                    // Если мы в режиме стриминга и префетч еще не запущен, запускаем префетч
+                    // Если мы в режиме стриминга, проверяем необходимость запуска префетча
                     if (!enableDiskCache && !isSmallFile && !isMetadataProbe && remainingBytes > 0)
                     {
                         TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
@@ -2011,12 +1999,6 @@ namespace TelegramWebDAV.Services
                             }
                         });
 
-                    // Запускаем упреждающий префетч следующих чанков ТОЛЬКО для стриминга (НЕ для зондов метаданных!)
-                    if (!enableDiskCache && !isSmallFile && !isMetadataProbe && remainingBytes > 0)
-                    {
-                        TriggerContinuousPrefetch(messageId, document, fileName, actualTotalSize, currentPos, audit);
-                    }
-
                     var raw = await chunkTask;
                     if (raw != null && raw.Length > 0)
                     {
@@ -2043,6 +2025,13 @@ namespace TelegramWebDAV.Services
                         currentPos += toSend;
                         remainingBytes -= toSend;
                         totalSent += toSend;
+
+                        lock (readSeq)
+                        {
+                            readSeq.AccumulatedSequentialBytes += toSend;
+                            readSeq.ChunkBytesRead.AddOrUpdate(currentPos / 1048576, toSend, (_, old) => old + toSend);
+                            readSeq.LastReadTime = DateTime.UtcNow;
+                        }
 
                         if (!isMetadataProbe && !audit.IsAllChunksReceived())
                         {
@@ -2105,6 +2094,19 @@ namespace TelegramWebDAV.Services
             bool enableDiskCache = _currentSettings.Server.EnableDiskReadCache;
             if (enableDiskCache || document == null || actualTotalSize <= 262144 || _client == null) return;
 
+            // Проверяем порог активации упреждения: пока не вычитано N МБ от точки старта/перемотки, префетч не запускается
+            long activationThresholdBytes = Math.Max(1, _currentSettings.Server.StreamingActivationThresholdMb) * 1048576L;
+            if (_fileReadSequences.TryGetValue(messageId, out var seq))
+            {
+                lock (seq)
+                {
+                    if (seq.AccumulatedSequentialBytes < activationThresholdBytes)
+                    {
+                        return;
+                    }
+                }
+            }
+
             if (_workerPool == null)
             {
                 InitWorkerPool();
@@ -2118,10 +2120,9 @@ namespace TelegramWebDAV.Services
                 : _currentSettings.Server.StreamingPrefetchWindowMb;
 
             long windowBytes = (long)windowMb * 1024 * 1024;
-            long maxPrefetchLimit = Math.Min(actualTotalSize, currentReadOffset + windowBytes);
-
             long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
-            long scanOffset = startChunkOffset;
+            long scanOffset = startChunkOffset + 1048576; // Сканирование строго со следующего чанка!
+            long maxPrefetchLimit = Math.Min(actualTotalSize, scanOffset + windowBytes);
 
             var newChunksToQueue = new List<long>();
             long totalBytesToQueue = 0;
