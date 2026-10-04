@@ -130,6 +130,7 @@ namespace TelegramWebDAV.Services
             public int SequentialCount { get; set; } = 0;
             public long AccumulatedSequentialBytes { get; set; } = 0;
             public DateTime LastReadTime { get; set; } = DateTime.UtcNow;
+            public System.Collections.Concurrent.ConcurrentDictionary<long, long> ChunkBytesRead { get; } = new();
         }
 
         private readonly System.Collections.Concurrent.ConcurrentDictionary<int, FileReadSequence> _fileReadSequences = new();
@@ -1697,16 +1698,18 @@ namespace TelegramWebDAV.Services
             audit.FileSize = actualTotalSize;
 
             var readSeq = _fileReadSequences.GetOrAdd(messageId, _ => new FileReadSequence());
-            int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
+            int cacheTtlMinutes = _currentSettings.Server.ChunkMemoryCacheTtlMinutes;
+            long currentChunkReadBytes = 0;
             lock (readSeq)
             {
                 var now = DateTime.UtcNow;
-                // Привязываем время жизни непрерывной сессии воспроизведения к TTL кэша в минутах (минимум 10 минут)
+                // Время жизни непрерывной сессии воспроизведения привязано к TTL кэша из настроек
                 if ((now - readSeq.LastReadTime).TotalMinutes > cacheTtlMinutes)
                 {
                     readSeq.SequentialCount = 0;
                     readSeq.AccumulatedSequentialBytes = 0;
                     readSeq.LastChunkIndex = -1;
+                    readSeq.ChunkBytesRead.Clear();
                 }
 
                 if (readSeq.LastChunkIndex != -1 && currentChunkIdx == readSeq.LastChunkIndex + 1)
@@ -1724,6 +1727,7 @@ namespace TelegramWebDAV.Services
                     readSeq.AccumulatedSequentialBytes = length;
                 }
 
+                currentChunkReadBytes = readSeq.ChunkBytesRead.AddOrUpdate(currentChunkIdx, length, (_, old) => old + length);
                 readSeq.LastChunkIndex = currentChunkIdx;
                 readSeq.LastReadTime = now;
             }
@@ -1737,14 +1741,17 @@ namespace TelegramWebDAV.Services
             // 2) Запрос в хвост файла (последние 512 КБ для ID3v1/тетрисов метаданных)
             bool isTailProbe = actualTotalSize > 1048576 && offset >= Math.Max(0, actualTotalSize - 524288);
 
-            // 3) Воспроизведение/стриминг: либо 1-й чанк уже скачан на 100%, либо смещение >= 1 МБ (и не в хвосте),
-            //    либо накоплено >= 512 КБ последовательного чтения, либо запрошен длинный диапазон (> 256 КБ).
+            // 3) Воспроизведение/стриминг:
+            //    - Первый чанк (#0) уже скачан на 100% (для аудио/треков),
+            //    - ИЛИ внутри текущего 1 МБ чанка клиент вычитал 1 МБ и более (чанк исчерпан на 100%),
+            //    - ИЛИ в непрерывном потоке суммарно вычитано от 1 МБ и более (1048576 байт),
+            //    - ИЛИ клиент сразу запросил большой блок данных (> 256 КБ).
+            //    Одиночные точечные запросы (эскизы видео, теги ID3/moov) с объемом <= 256 КБ не вызывают стриминг.
             bool isShortRead = length <= 262144;
             bool isSequentialPlayback = !isTailProbe && (isFirstChunkFullyCached 
-                                                        || offset >= 1048576 
-                                                        || !isShortRead 
-                                                        || readSeq.AccumulatedSequentialBytes >= 524288 
-                                                        || readSeq.SequentialCount >= 2);
+                                                        || currentChunkReadBytes >= 1048576
+                                                        || readSeq.AccumulatedSequentialBytes >= 1048576 
+                                                        || !isShortRead);
 
             bool isMetadataProbe = !isSequentialPlayback;
 
@@ -2169,15 +2176,15 @@ namespace TelegramWebDAV.Services
         /// </summary>
         private void TriggerContinuousPrefetch(int messageId, TL.Document document, string fileName, long actualTotalSize, long currentReadOffset, NetworkTransferAudit audit)
         {
-            bool enableDiskCache = _configManager?.CurrentSettings?.Server?.EnableDiskReadCache ?? false;
+            bool enableDiskCache = _currentSettings.Server.EnableDiskReadCache;
             if (enableDiskCache || document == null || actualTotalSize <= 262144 || _client == null) return;
 
-            int cacheTtlMinutes = _configManager?.CurrentSettings?.Server?.ChunkMemoryCacheTtlMinutes ?? 10;
-            int fullTrackMaxMb = _configManager?.CurrentSettings?.Server?.FullTrackPrefetchMaxFileSizeMb ?? 2;
+            int cacheTtlMinutes = _currentSettings.Server.ChunkMemoryCacheTtlMinutes;
+            int fullTrackMaxMb = _currentSettings.Server.FullTrackPrefetchMaxFileSizeMb;
             bool isAudio = IsAudioFileName(fileName);
             int windowMb = isAudio
-                ? (_configManager?.CurrentSettings?.Server?.AudioPrefetchWindowMb ?? 2)
-                : (_configManager?.CurrentSettings?.Server?.StreamingPrefetchWindowMb ?? 20);
+                ? _currentSettings.Server.AudioPrefetchWindowMb
+                : _currentSettings.Server.StreamingPrefetchWindowMb;
 
             long fullTrackMaxBytes = (long)fullTrackMaxMb * 1024 * 1024;
             long windowBytes = (long)windowMb * 1024 * 1024;
