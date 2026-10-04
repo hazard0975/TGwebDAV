@@ -287,6 +287,7 @@ namespace TelegramWebDAV.Services
 
                     var fileBase = await activeClient.Upload_GetFile(location, reqOffset, reqLimit, precise: true);
                     sw.Stop();
+                    TelegramService.NotifyRequestCompleted();
 
                     if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                     {
@@ -456,6 +457,7 @@ namespace TelegramWebDAV.Services
 
                                 var fileBase = await workerClient.Upload_GetFile(location, chunkOffset, reqLimit, precise: true);
                                 sw.Stop();
+                                TelegramService.NotifyRequestCompleted();
 
                                 if (fileBase is Upload_File uploadFile && uploadFile.bytes != null && uploadFile.bytes.Length > 0)
                                 {
