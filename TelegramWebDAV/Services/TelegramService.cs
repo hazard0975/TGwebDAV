@@ -1979,7 +1979,7 @@ namespace TelegramWebDAV.Services
                 long chunkAlignment = quantum;
                 long chunkOffset = (currentPos / chunkAlignment) * chunkAlignment;
                 int internalOffset = (int)(currentPos - chunkOffset);
-                int requestLimit = (int)Math.Min((long)quantum, actualTotalSize - chunkOffset);
+                int requestLimit = quantum;
 
                 if (_workerPool == null) InitWorkerPool();
                 if (_workerPool != null)

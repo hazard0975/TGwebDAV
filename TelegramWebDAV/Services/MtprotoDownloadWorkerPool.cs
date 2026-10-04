@@ -296,11 +296,16 @@ namespace TelegramWebDAV.Services
                         reqLimit = request.RequestLimit - partialExisting.Length;
                     }
 
+                    // Требование Telegram MTProto API: лимит должен быть строго кратен 4096 байтам
+                    int alignedLimit = (int)(Math.Ceiling(reqLimit / 4096.0) * 4096);
+                    if (alignedLimit < 4096) alignedLimit = 4096;
+                    if (alignedLimit > 1048576) alignedLimit = 1048576;
+
                     string probeTag = reqLimit < 1048576 ? " [Докачка остатка/Зонд]" : "";
-                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{request.ChunkIndex}/{totalFileChunks} (смещение {reqOffset:N0} б, размер {reqLimit:N0} б){probeTag}...");
+                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{request.ChunkIndex}/{totalFileChunks} (смещение {reqOffset:N0} б, размер {alignedLimit:N0} б){probeTag}...");
                     var sw = Stopwatch.StartNew();
 
-                    var fileBase = await activeClient.Upload_GetFile(location, reqOffset, reqLimit, precise: true);
+                    var fileBase = await activeClient.Upload_GetFile(location, reqOffset, alignedLimit, precise: true);
                     sw.Stop();
                     TelegramService.NotifyRequestCompleted();
 

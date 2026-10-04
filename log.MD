@@ -1,743 +1,521 @@
 
-[2026-10-04 08:33:28.594] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #63A5
-[2026-10-04 08:33:28.595] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #6D11
-[2026-10-04 08:33:28.596] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #3009
-[2026-10-04 08:33:28.650] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:28Z
-[2026-10-04 08:33:28.652] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #63A5
-[2026-10-04 08:33:28.664] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/67 (смещение 1 048 576 б, размер 1 048 576 б)...
-[2026-10-04 08:33:28.665] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:28Z (svc)
-[2026-10-04 08:33:28.665] [DEBUG] [WTelegram]             → Upload_GetFile                         #6421
-[2026-10-04 08:33:28.665] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:28.704] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-04 05:33:28Z (svc)
-[2026-10-04 08:33:28.705] [DEBUG] [WTelegram]             → RpcResult                              2026-10-04 05:33:28Z
-[2026-10-04 08:33:28.705] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #3009
-[2026-10-04 08:33:28.705] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-04 05:33:28Z (svc) 
-[2026-10-04 08:33:28.705] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:28Z
-[2026-10-04 08:33:28.705] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #6D11
-[2026-10-04 08:33:29.055] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:28Z
-[2026-10-04 08:33:29.058] [DEBUG] [WTelegram]              → Upload_File                           #6421
-[2026-10-04 08:33:29.058] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/67 (1 048 576 б за 393 мс) [Полный].
-[2026-10-04 08:33:29.064] [WARN ] [TelegramService] Не удалось получить чанк смещением 2097152 для 'Alar & Korolova feat Krismi - Without You.webm' (ID 1474) из пула воркеров.
-[2026-10-04 08:33:29.065] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Alar & Korolova feat Krismi - Without You.webm (2097152/70198676)
-[2026-10-04 08:33:29.092] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/67 (смещение 0 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.093] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:28Z (svc)
-[2026-10-04 08:33:29.093] [DEBUG] [WTelegram]             → Upload_GetFile                         #AA6D
-[2026-10-04 08:33:29.093] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:29.217] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:28Z
-[2026-10-04 08:33:29.218] [DEBUG] [WTelegram]              → Upload_File                           #AA6D
-[2026-10-04 08:33:29.218] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/67 (1 048 576 б за 125 мс) [Полный].
-[2026-10-04 08:33:29.249] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #2/67 (смещение 2 097 152 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.250] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:28Z (svc)
-[2026-10-04 08:33:29.250] [DEBUG] [WTelegram]             → Upload_GetFile                         #CA75
-[2026-10-04 08:33:29.250] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:29.347] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:28Z
-[2026-10-04 08:33:29.348] [DEBUG] [WTelegram]              → Upload_File                           #CA75
-[2026-10-04 08:33:29.348] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #2/67 (1 048 576 б за 98 мс) [Полный].
-[2026-10-04 08:33:29.348] [WARN ] [TelegramService] Не удалось получить чанк смещением 3145728 для 'Alar & Korolova feat Krismi - Without You.webm' (ID 1474) из пула воркеров.
-[2026-10-04 08:33:29.348] [WARN ] [TelegramService] Не удалось получить чанк смещением 5242880 для 'Alar & Korolova feat Krismi - Without You.webm' (ID 1474) из пула воркеров.
-[2026-10-04 08:33:29.348] [WARN ] [TelegramService] Не удалось получить чанк смещением 4194304 для 'Alar & Korolova feat Krismi - Without You.webm' (ID 1474) из пула воркеров.
-[2026-10-04 08:33:29.374] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/67 (смещение 7 340 032 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.375] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:28Z (svc)
-[2026-10-04 08:33:29.375] [DEBUG] [WTelegram]             → Upload_GetFile                         #CA35
-[2026-10-04 08:33:29.375] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:29.465] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:28Z
-[2026-10-04 08:33:29.466] [DEBUG] [WTelegram]              → Upload_File                           #CA35
-[2026-10-04 08:33:29.466] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/67 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:29.501] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #8/67 (смещение 8 388 608 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.502] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:28Z (svc)
-[2026-10-04 08:33:29.502] [DEBUG] [WTelegram]             → Upload_GetFile                         #0F0D
-[2026-10-04 08:33:29.502] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:29.589] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:29.589] [DEBUG] [WTelegram]              → Upload_File                           #0F0D
-[2026-10-04 08:33:29.589] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #8/67 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:29.611] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #9/67 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.612] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:29.612] [DEBUG] [WTelegram]             → Upload_GetFile                         #C0BA
-[2026-10-04 08:33:29.612] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:29.701] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:29.701] [DEBUG] [WTelegram]              → Upload_File                           #C0BA
-[2026-10-04 08:33:29.701] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #9/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:29.720] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/67 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.720] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:29.720] [DEBUG] [WTelegram]             → Upload_GetFile                         #EA3A
-[2026-10-04 08:33:29.720] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:29.806] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:29.807] [DEBUG] [WTelegram]              → Upload_File                           #EA3A
-[2026-10-04 08:33:29.807] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/67 (1 048 576 б за 87 мс) [Полный].
-[2026-10-04 08:33:29.829] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/67 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.829] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:29.829] [DEBUG] [WTelegram]             → Upload_GetFile                         #54AE
-[2026-10-04 08:33:29.829] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:29.930] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:29.930] [DEBUG] [WTelegram]              → Upload_File                           #54AE
-[2026-10-04 08:33:29.930] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/67 (1 048 576 б за 101 мс) [Полный].
-[2026-10-04 08:33:29.953] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #5/67 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-04 08:33:29.954] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:29.954] [DEBUG] [WTelegram]             → Upload_GetFile                         #EA5A
-[2026-10-04 08:33:29.954] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.070] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:30.070] [DEBUG] [WTelegram]              → Upload_File                           #EA5A
-[2026-10-04 08:33:30.070] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #5/67 (1 048 576 б за 116 мс) [Полный].
-[2026-10-04 08:33:30.093] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #6/67 (смещение 6 291 456 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.093] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:30.093] [DEBUG] [WTelegram]             → Upload_GetFile                         #81E6
-[2026-10-04 08:33:30.093] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.181] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:30.182] [DEBUG] [WTelegram]              → Upload_File                           #81E6
-[2026-10-04 08:33:30.182] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #6/67 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:30.184] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alar & Korolova feat Krismi - Without You.webm' (ID 1474): Глобальный Чанк #9 (смещение 9 437 184, 1 048 576 байт). Скачано всего: 10 из 67 чанков (14,9%).
-[2026-10-04 08:33:30.204] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/67 (смещение 10 485 760 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.204] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:30.204] [DEBUG] [WTelegram]             → Upload_GetFile                         #0B36
-[2026-10-04 08:33:30.204] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.303] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:30.303] [DEBUG] [WTelegram]              → Upload_File                           #0B36
-[2026-10-04 08:33:30.303] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/67 (1 048 576 б за 99 мс) [Полный].
-[2026-10-04 08:33:30.328] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #11/67 (смещение 11 534 336 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.329] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:30.329] [DEBUG] [WTelegram]             → Upload_GetFile                         #0E12
-[2026-10-04 08:33:30.329] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.418] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:29Z
-[2026-10-04 08:33:30.418] [DEBUG] [WTelegram]              → Upload_File                           #0E12
-[2026-10-04 08:33:30.418] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #11/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:30.438] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #12/67 (смещение 12 582 912 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.439] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:29Z (svc)
-[2026-10-04 08:33:30.439] [DEBUG] [WTelegram]             → Upload_GetFile                         #883A
-[2026-10-04 08:33:30.439] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.527] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:30.527] [DEBUG] [WTelegram]              → Upload_File                           #883A
-[2026-10-04 08:33:30.528] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #12/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:30.548] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #13/67 (смещение 13 631 488 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.549] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:30.549] [DEBUG] [WTelegram]             → Upload_GetFile                         #DACB
-[2026-10-04 08:33:30.549] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.638] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:30.639] [DEBUG] [WTelegram]              → Upload_File                           #DACB
-[2026-10-04 08:33:30.639] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #13/67 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:30.673] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #14/67 (смещение 14 680 064 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.673] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:30.673] [DEBUG] [WTelegram]             → Upload_GetFile                         #F533
-[2026-10-04 08:33:30.673] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.761] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:30.761] [DEBUG] [WTelegram]              → Upload_File                           #F533
-[2026-10-04 08:33:30.761] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #14/67 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:30.783] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #15/67 (смещение 15 728 640 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.784] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:30.784] [DEBUG] [WTelegram]             → Upload_GetFile                         #901F
-[2026-10-04 08:33:30.784] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.869] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:30.869] [DEBUG] [WTelegram]              → Upload_File                           #901F
-[2026-10-04 08:33:30.869] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #15/67 (1 048 576 б за 85 мс) [Полный].
-[2026-10-04 08:33:30.892] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #16/67 (смещение 16 777 216 б, размер 1 048 576 б)...
-[2026-10-04 08:33:30.892] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:30.892] [DEBUG] [WTelegram]             → Upload_GetFile                         #0ACF
-[2026-10-04 08:33:30.892] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:30.992] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:30.992] [DEBUG] [WTelegram]              → Upload_File                           #0ACF
-[2026-10-04 08:33:30.993] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #16/67 (1 048 576 б за 100 мс) [Полный].
-[2026-10-04 08:33:31.018] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/67 (смещение 17 825 792 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.018] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:31.018] [DEBUG] [WTelegram]             → Upload_GetFile                         #9373
-[2026-10-04 08:33:31.018] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:31.133] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:31.133] [DEBUG] [WTelegram]              → Upload_File                           #9373
-[2026-10-04 08:33:31.133] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #17/67 (1 048 576 б за 115 мс) [Полный].
-[2026-10-04 08:33:31.160] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #18/67 (смещение 18 874 368 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.160] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:31.160] [DEBUG] [WTelegram]             → Upload_GetFile                         #1B97
-[2026-10-04 08:33:31.160] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:31.255] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:31.255] [DEBUG] [WTelegram]              → Upload_File                           #1B97
-[2026-10-04 08:33:31.255] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #18/67 (1 048 576 б за 95 мс) [Полный].
-[2026-10-04 08:33:31.287] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #19/67 (смещение 19 922 944 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.287] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:31.287] [DEBUG] [WTelegram]             → Upload_GetFile                         #2BF3
-[2026-10-04 08:33:31.287] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:31.383] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:31.383] [DEBUG] [WTelegram]              → Upload_File                           #2BF3
-[2026-10-04 08:33:31.383] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #19/67 (1 048 576 б за 96 мс) [Полный].
-[2026-10-04 08:33:31.411] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #20/67 (смещение 20 971 520 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.412] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:30Z (svc)
-[2026-10-04 08:33:31.412] [DEBUG] [WTelegram]             → Upload_GetFile                         #7017
-[2026-10-04 08:33:31.412] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:31.501] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:30Z
-[2026-10-04 08:33:31.501] [DEBUG] [WTelegram]              → Upload_File                           #7017
-[2026-10-04 08:33:31.502] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #20/67 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:31.521] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #21/67 (смещение 22 020 096 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.521] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:31.521] [DEBUG] [WTelegram]             → Upload_GetFile                         #F970
-[2026-10-04 08:33:31.521] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:31.611] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:31.611] [DEBUG] [WTelegram]              → Upload_File                           #F970
-[2026-10-04 08:33:31.611] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #21/67 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:31.631] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #22/67 (смещение 23 068 672 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.631] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:31.632] [DEBUG] [WTelegram]             → Upload_GetFile                         #3AD8
-[2026-10-04 08:33:31.632] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:31.761] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:31.761] [DEBUG] [WTelegram]              → Upload_File                           #3AD8
-[2026-10-04 08:33:31.761] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #22/67 (1 048 576 б за 130 мс) [Полный].
-[2026-10-04 08:33:31.787] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #23/67 (смещение 24 117 248 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.788] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:31.788] [DEBUG] [WTelegram]             → Upload_GetFile                         #C704
-[2026-10-04 08:33:31.788] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:31.900] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:31.901] [DEBUG] [WTelegram]              → Upload_File                           #C704
-[2026-10-04 08:33:31.901] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #23/67 (1 048 576 б за 113 мс) [Полный].
-[2026-10-04 08:33:31.930] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #24/67 (смещение 25 165 824 б, размер 1 048 576 б)...
-[2026-10-04 08:33:31.930] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:31.930] [DEBUG] [WTelegram]             → Upload_GetFile                         #59D4
-[2026-10-04 08:33:31.930] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.018] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:32.018] [DEBUG] [WTelegram]              → Upload_File                           #59D4
-[2026-10-04 08:33:32.018] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #24/67 (1 048 576 б за 87 мс) [Полный].
-[2026-10-04 08:33:32.041] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #25/67 (смещение 26 214 400 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.041] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:32.041] [DEBUG] [WTelegram]             → Upload_GetFile                         #FB80
-[2026-10-04 08:33:32.041] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.127] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:32.127] [DEBUG] [WTelegram]              → Upload_File                           #FB80
-[2026-10-04 08:33:32.127] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #25/67 (1 048 576 б за 86 мс) [Полный].
-[2026-10-04 08:33:32.151] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #26/67 (смещение 27 262 976 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.151] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:32.151] [DEBUG] [WTelegram]             → Upload_GetFile                         #C600
-[2026-10-04 08:33:32.151] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.242] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:32.242] [DEBUG] [WTelegram]              → Upload_File                           #C600
-[2026-10-04 08:33:32.242] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #26/67 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:32.277] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #27/67 (смещение 28 311 552 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.277] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:32.277] [DEBUG] [WTelegram]             → Upload_GetFile                         #2F3C
-[2026-10-04 08:33:32.277] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.377] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:32.377] [DEBUG] [WTelegram]              → Upload_File                           #2F3C
-[2026-10-04 08:33:32.377] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #27/67 (1 048 576 б за 100 мс) [Полный].
-[2026-10-04 08:33:32.403] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #28/67 (смещение 29 360 128 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.403] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:31Z (svc)
-[2026-10-04 08:33:32.403] [DEBUG] [WTelegram]             → Upload_GetFile                         #F938
-[2026-10-04 08:33:32.404] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.490] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:31Z
-[2026-10-04 08:33:32.490] [DEBUG] [WTelegram]              → Upload_File                           #F938
-[2026-10-04 08:33:32.490] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #28/67 (1 048 576 б за 87 мс) [Полный].
-[2026-10-04 08:33:32.512] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #29/67 (смещение 30 408 704 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.512] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:32Z (svc)
-[2026-10-04 08:33:32.512] [DEBUG] [WTelegram]             → Upload_GetFile                         #7C75
-[2026-10-04 08:33:32.512] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.611] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:32Z
-[2026-10-04 08:33:32.611] [DEBUG] [WTelegram]              → Upload_File                           #7C75
-[2026-10-04 08:33:32.611] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #29/67 (1 048 576 б за 99 мс) [Полный].
-[2026-10-04 08:33:32.639] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #30/67 (смещение 31 457 280 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.640] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:32Z (svc)
-[2026-10-04 08:33:32.640] [DEBUG] [WTelegram]             → Upload_GetFile                         #D709
-[2026-10-04 08:33:32.640] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.738] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:32Z
-[2026-10-04 08:33:32.739] [DEBUG] [WTelegram]              → Upload_File                           #D709
-[2026-10-04 08:33:32.739] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #30/67 (1 048 576 б за 99 мс) [Полный].
-[2026-10-04 08:33:32.765] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #31/67 (смещение 32 505 856 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.766] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:32Z (svc)
-[2026-10-04 08:33:32.766] [DEBUG] [WTelegram]             → Upload_GetFile                         #15C9
-[2026-10-04 08:33:32.766] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:32Z
-[2026-10-04 08:33:32.855] [DEBUG] [WTelegram]              → Upload_File                           #15C9
-[2026-10-04 08:33:32.855] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #31/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:32.875] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #32/67 (смещение 33 554 432 б, размер 1 048 576 б)...
-[2026-10-04 08:33:32.875] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:32Z (svc)
-[2026-10-04 08:33:32.875] [DEBUG] [WTelegram]             → Upload_GetFile                         #605D
-[2026-10-04 08:33:32.875] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:32.922] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:32Z
-[2026-10-04 08:33:32.923] [ERROR] [WTelegram]              → RpcError 420 FLOOD_WAIT_2             #605D
-[2026-10-04 08:33:34.362] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,5 сек). Скрытие оверлея.
-[2026-10-04 08:33:34.925] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:34Z (svc)
-[2026-10-04 08:33:34.925] [DEBUG] [WTelegram]             → Upload_GetFile                         #9553
-[2026-10-04 08:33:34.925] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.046] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:34Z
-[2026-10-04 08:33:35.046] [DEBUG] [WTelegram]              → Upload_File                           #9553
-[2026-10-04 08:33:35.046] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #32/67 (1 048 576 б за 2171 мс) [Полный].
-[2026-10-04 08:33:35.048] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Alar & Korolova feat Krismi - Without You.webm (34603008/70198676)
-[2026-10-04 08:33:35.068] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #33/67 (смещение 34 603 008 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.068] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:34Z (svc)
-[2026-10-04 08:33:35.068] [DEBUG] [WTelegram]             → Upload_GetFile                         #4843
-[2026-10-04 08:33:35.068] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.164] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:34Z
-[2026-10-04 08:33:35.165] [DEBUG] [WTelegram]              → Upload_File                           #4843
-[2026-10-04 08:33:35.165] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #33/67 (1 048 576 б за 97 мс) [Полный].
-[2026-10-04 08:33:35.191] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #34/67 (смещение 35 651 584 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.192] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:34Z (svc)
-[2026-10-04 08:33:35.192] [DEBUG] [WTelegram]             → Upload_GetFile                         #D1BF
-[2026-10-04 08:33:35.192] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.286] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:34Z
-[2026-10-04 08:33:35.287] [DEBUG] [WTelegram]              → Upload_File                           #D1BF
-[2026-10-04 08:33:35.287] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #34/67 (1 048 576 б за 95 мс) [Полный].
-[2026-10-04 08:33:35.316] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #35/67 (смещение 36 700 160 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.317] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:34Z (svc)
-[2026-10-04 08:33:35.317] [DEBUG] [WTelegram]             → Upload_GetFile                         #F683
-[2026-10-04 08:33:35.317] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.466] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:34Z
-[2026-10-04 08:33:35.467] [DEBUG] [WTelegram]              → Upload_File                           #F683
-[2026-10-04 08:33:35.467] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #35/67 (1 048 576 б за 150 мс) [Полный].
-[2026-10-04 08:33:35.488] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #36/67 (смещение 37 748 736 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.489] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:35.489] [DEBUG] [WTelegram]             → Upload_GetFile                         #6070
-[2026-10-04 08:33:35.489] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.600] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:35.600] [DEBUG] [WTelegram]              → Upload_File                           #6070
-[2026-10-04 08:33:35.600] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #36/67 (1 048 576 б за 111 мс) [Полный].
-[2026-10-04 08:33:35.630] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #37/67 (смещение 38 797 312 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.630] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:35.630] [DEBUG] [WTelegram]             → Upload_GetFile                         #1B74
-[2026-10-04 08:33:35.630] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.721] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:35.722] [DEBUG] [WTelegram]              → Upload_File                           #1B74
-[2026-10-04 08:33:35.722] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #37/67 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:35.755] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #38/67 (смещение 39 845 888 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.756] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:35.756] [DEBUG] [WTelegram]             → Upload_GetFile                         #6C6C
-[2026-10-04 08:33:35.756] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.843] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:35.844] [DEBUG] [WTelegram]              → Upload_File                           #6C6C
-[2026-10-04 08:33:35.844] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #38/67 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:35.866] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #39/67 (смещение 40 894 464 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.867] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:35.867] [DEBUG] [WTelegram]             → Upload_GetFile                         #6C5C
-[2026-10-04 08:33:35.867] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:35.956] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:35.957] [DEBUG] [WTelegram]              → Upload_File                           #6C5C
-[2026-10-04 08:33:35.957] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #39/67 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:35.991] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #40/67 (смещение 41 943 040 б, размер 1 048 576 б)...
-[2026-10-04 08:33:35.992] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:35.992] [DEBUG] [WTelegram]             → Upload_GetFile                         #FD44
-[2026-10-04 08:33:35.992] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.081] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:36.081] [DEBUG] [WTelegram]              → Upload_File                           #FD44
-[2026-10-04 08:33:36.081] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #40/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:36.115] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #41/67 (смещение 42 991 616 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.115] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:36.115] [DEBUG] [WTelegram]             → Upload_GetFile                         #AB38
-[2026-10-04 08:33:36.115] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.214] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:36.214] [DEBUG] [WTelegram]              → Upload_File                           #AB38
-[2026-10-04 08:33:36.214] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #41/67 (1 048 576 б за 98 мс) [Полный].
-[2026-10-04 08:33:36.241] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #42/67 (смещение 44 040 192 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.241] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:36.241] [DEBUG] [WTelegram]             → Upload_GetFile                         #2A78
-[2026-10-04 08:33:36.241] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.330] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:36.330] [DEBUG] [WTelegram]              → Upload_File                           #2A78
-[2026-10-04 08:33:36.330] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #42/67 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:36.352] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #43/67 (смещение 45 088 768 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.352] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:36.352] [DEBUG] [WTelegram]             → Upload_GetFile                         #033C
-[2026-10-04 08:33:36.352] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.442] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:35Z
-[2026-10-04 08:33:36.442] [DEBUG] [WTelegram]              → Upload_File                           #033C
-[2026-10-04 08:33:36.442] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #43/67 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:36.475] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #44/67 (смещение 46 137 344 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.476] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:35Z (svc)
-[2026-10-04 08:33:36.476] [DEBUG] [WTelegram]             → Upload_GetFile                         #9210
-[2026-10-04 08:33:36.476] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.594] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:36.594] [DEBUG] [WTelegram]              → Upload_File                           #9210
-[2026-10-04 08:33:36.594] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #44/67 (1 048 576 б за 118 мс) [Полный].
-[2026-10-04 08:33:36.616] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #45/67 (смещение 47 185 920 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.616] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:36.616] [DEBUG] [WTelegram]             → Upload_GetFile                         #1151
-[2026-10-04 08:33:36.616] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.705] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:36.705] [DEBUG] [WTelegram]              → Upload_File                           #1151
-[2026-10-04 08:33:36.705] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #45/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:36.726] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #46/67 (смещение 48 234 496 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.726] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:36.726] [DEBUG] [WTelegram]             → Upload_GetFile                         #45CD
-[2026-10-04 08:33:36.726] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.811] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:36.811] [DEBUG] [WTelegram]              → Upload_File                           #45CD
-[2026-10-04 08:33:36.812] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #46/67 (1 048 576 б за 85 мс) [Полный].
-[2026-10-04 08:33:36.837] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #47/67 (смещение 49 283 072 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.838] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:36.838] [DEBUG] [WTelegram]             → Upload_GetFile                         #1479
-[2026-10-04 08:33:36.838] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:36.934] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:36.934] [DEBUG] [WTelegram]              → Upload_File                           #1479
-[2026-10-04 08:33:36.935] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #47/67 (1 048 576 б за 97 мс) [Полный].
-[2026-10-04 08:33:36.960] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #48/67 (смещение 50 331 648 б, размер 1 048 576 б)...
-[2026-10-04 08:33:36.960] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:36.960] [DEBUG] [WTelegram]             → Upload_GetFile                         #A48D
-[2026-10-04 08:33:36.960] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.048] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:37.049] [DEBUG] [WTelegram]              → Upload_File                           #A48D
-[2026-10-04 08:33:37.049] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #48/67 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:37.071] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #49/67 (смещение 51 380 224 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.071] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:37.071] [DEBUG] [WTelegram]             → Upload_GetFile                         #6AD1
-[2026-10-04 08:33:37.071] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.161] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:37.161] [DEBUG] [WTelegram]              → Upload_File                           #6AD1
-[2026-10-04 08:33:37.161] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #49/67 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:37.181] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #50/67 (смещение 52 428 800 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.181] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:37.181] [DEBUG] [WTelegram]             → Upload_GetFile                         #2E19
-[2026-10-04 08:33:37.181] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.272] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:37.272] [DEBUG] [WTelegram]              → Upload_File                           #2E19
-[2026-10-04 08:33:37.272] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #50/67 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:37.291] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #51/67 (смещение 53 477 376 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.292] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:37.292] [DEBUG] [WTelegram]             → Upload_GetFile                         #ADA1
-[2026-10-04 08:33:37.292] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.384] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:36Z
-[2026-10-04 08:33:37.385] [DEBUG] [WTelegram]              → Upload_File                           #ADA1
-[2026-10-04 08:33:37.385] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #51/67 (1 048 576 б за 93 мс) [Полный].
-[2026-10-04 08:33:37.417] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #52/67 (смещение 54 525 952 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.417] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:36Z (svc)
-[2026-10-04 08:33:37.417] [DEBUG] [WTelegram]             → Upload_GetFile                         #4BD1
-[2026-10-04 08:33:37.417] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.519] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:37.519] [DEBUG] [WTelegram]              → Upload_File                           #4BD1
-[2026-10-04 08:33:37.519] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #52/67 (1 048 576 б за 102 мс) [Полный].
-[2026-10-04 08:33:37.541] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #53/67 (смещение 55 574 528 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.542] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:37.542] [DEBUG] [WTelegram]             → Upload_GetFile                         #F0D2
-[2026-10-04 08:33:37.542] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.635] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:37.635] [DEBUG] [WTelegram]              → Upload_File                           #F0D2
-[2026-10-04 08:33:37.635] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #53/67 (1 048 576 б за 93 мс) [Полный].
-[2026-10-04 08:33:37.667] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #54/67 (смещение 56 623 104 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.667] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:37.667] [DEBUG] [WTelegram]             → Upload_GetFile                         #80E2
-[2026-10-04 08:33:37.667] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.755] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:37.755] [DEBUG] [WTelegram]              → Upload_File                           #80E2
-[2026-10-04 08:33:37.755] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #54/67 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:37.776] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #55/67 (смещение 57 671 680 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.776] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:37.776] [DEBUG] [WTelegram]             → Upload_GetFile                         #745E
-[2026-10-04 08:33:37.776] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.866] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:37.867] [DEBUG] [WTelegram]              → Upload_File                           #745E
-[2026-10-04 08:33:37.867] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #55/67 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:37.886] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #56/67 (смещение 58 720 256 б, размер 1 048 576 б)...
-[2026-10-04 08:33:37.886] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:37.886] [DEBUG] [WTelegram]             → Upload_GetFile                         #00B2
-[2026-10-04 08:33:37.886] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:37.981] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:37.982] [DEBUG] [WTelegram]              → Upload_File                           #00B2
-[2026-10-04 08:33:37.982] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #56/67 (1 048 576 б за 95 мс) [Полный].
-[2026-10-04 08:33:38.012] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #57/67 (смещение 59 768 832 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.013] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:38.013] [DEBUG] [WTelegram]             → Upload_GetFile                         #86C6
-[2026-10-04 08:33:38.013] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.099] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:38.099] [DEBUG] [WTelegram]              → Upload_File                           #86C6
-[2026-10-04 08:33:38.099] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #57/67 (1 048 576 б за 87 мс) [Полный].
-[2026-10-04 08:33:38.121] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #58/67 (смещение 60 817 408 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.121] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:38.121] [DEBUG] [WTelegram]             → Upload_GetFile                         #352A
-[2026-10-04 08:33:38.121] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.225] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:38.225] [DEBUG] [WTelegram]              → Upload_File                           #352A
-[2026-10-04 08:33:38.225] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #58/67 (1 048 576 б за 103 мс) [Полный].
-[2026-10-04 08:33:38.247] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #59/67 (смещение 61 865 984 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.247] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:38.247] [DEBUG] [WTelegram]             → Upload_GetFile                         #402A
-[2026-10-04 08:33:38.247] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.344] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:38.345] [DEBUG] [WTelegram]              → Upload_File                           #402A
-[2026-10-04 08:33:38.345] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #59/67 (1 048 576 б за 97 мс) [Полный].
-[2026-10-04 08:33:38.371] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #60/67 (смещение 62 914 560 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.371] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:37Z (svc)
-[2026-10-04 08:33:38.371] [DEBUG] [WTelegram]             → Upload_GetFile                         #D472
-[2026-10-04 08:33:38.371] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.460] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:37Z
-[2026-10-04 08:33:38.460] [DEBUG] [WTelegram]              → Upload_File                           #D472
-[2026-10-04 08:33:38.460] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #60/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:38.481] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #61/67 (смещение 63 963 136 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.481] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:38Z (svc)
-[2026-10-04 08:33:38.481] [DEBUG] [WTelegram]             → Upload_GetFile                         #C48F
-[2026-10-04 08:33:38.481] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.570] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:38Z
-[2026-10-04 08:33:38.570] [DEBUG] [WTelegram]              → Upload_File                           #C48F
-[2026-10-04 08:33:38.570] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #61/67 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:38.590] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #62/67 (смещение 65 011 712 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.591] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:38Z (svc)
-[2026-10-04 08:33:38.591] [DEBUG] [WTelegram]             → Upload_GetFile                         #F9CF
-[2026-10-04 08:33:38.591] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.685] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:38Z
-[2026-10-04 08:33:38.686] [DEBUG] [WTelegram]              → Upload_File                           #F9CF
-[2026-10-04 08:33:38.686] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #62/67 (1 048 576 б за 95 мс) [Полный].
-[2026-10-04 08:33:38.717] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #63/67 (смещение 66 060 288 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.717] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:38Z (svc)
-[2026-10-04 08:33:38.717] [DEBUG] [WTelegram]             → Upload_GetFile                         #CB33
-[2026-10-04 08:33:38.717] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.810] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:38Z
-[2026-10-04 08:33:38.811] [DEBUG] [WTelegram]              → Upload_File                           #CB33
-[2026-10-04 08:33:38.811] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #63/67 (1 048 576 б за 93 мс) [Полный].
-[2026-10-04 08:33:38.842] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #64/67 (смещение 67 108 864 б, размер 1 048 576 б)...
-[2026-10-04 08:33:38.842] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:38Z (svc)
-[2026-10-04 08:33:38.842] [DEBUG] [WTelegram]             → Upload_GetFile                         #BBB7
-[2026-10-04 08:33:38.842] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:38.889] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:38Z
-[2026-10-04 08:33:38.889] [ERROR] [WTelegram]              → RpcError 420 FLOOD_WAIT_2             #BBB7
-[2026-10-04 08:33:40.329] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,5 сек). Скрытие оверлея.
-[2026-10-04 08:33:40.893] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:40Z (svc)
-[2026-10-04 08:33:40.893] [DEBUG] [WTelegram]             → Upload_GetFile                         #4059
-[2026-10-04 08:33:40.893] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:40.981] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:40Z
-[2026-10-04 08:33:40.981] [DEBUG] [WTelegram]              → Upload_File                           #4059
-[2026-10-04 08:33:40.981] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #64/67 (1 048 576 б за 2139 мс) [Полный].
-[2026-10-04 08:33:40.982] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Alar & Korolova feat Krismi - Without You.webm (68157440/70198676)
-[2026-10-04 08:33:41.002] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #65/67 (смещение 68 157 440 б, размер 1 048 576 б)...
-[2026-10-04 08:33:41.002] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:40Z (svc)
-[2026-10-04 08:33:41.002] [DEBUG] [WTelegram]             → Upload_GetFile                         #86CD
-[2026-10-04 08:33:41.002] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:41.126] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:40Z
-[2026-10-04 08:33:41.126] [DEBUG] [WTelegram]              → Upload_File                           #86CD
-[2026-10-04 08:33:41.126] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #65/67 (1 048 576 б за 124 мс) [Полный].
-[2026-10-04 08:33:41.157] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #66/67 (смещение 69 206 016 б, размер 1 048 576 б)...
-[2026-10-04 08:33:41.158] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:40Z (svc)
-[2026-10-04 08:33:41.158] [DEBUG] [WTelegram]             → Upload_GetFile                         #10BD
-[2026-10-04 08:33:41.158] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:41.309] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:40Z
-[2026-10-04 08:33:41.310] [DEBUG] [WTelegram]              → Upload_File                           #10BD
-[2026-10-04 08:33:41.310] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #66/67 (992 660 б за 152 мс) [Полный].
-[2026-10-04 08:33:41.311] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Alar & Korolova feat Krismi - Without You.webm': Размер: 70 198 676 б (66,95 МБ) | Из сети TG: 70 198 676 б (66,95 МБ) | Из ОЗУ: 1 048 576 б (1,00 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
-[2026-10-04 08:33:41.311] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Alar & Korolova feat Krismi - Without You.webm' получено из TelegramService.
-[2026-10-04 08:33:41.311] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Alar & Korolova feat Krismi - Without You.webm'. Запуск _completionTimer...
-[2026-10-04 08:33:41.318] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:40Z (svc)
-[2026-10-04 08:33:41.318] [DEBUG] [WTelegram]             → Channels_GetMessages                   #9A19
-[2026-10-04 08:33:41.318] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:41.319] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #46F9
-[2026-10-04 08:33:41.319] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #46E5
-[2026-10-04 08:33:41.372] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:40Z
-[2026-10-04 08:33:41.373] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #9A19
-[2026-10-04 08:33:41.373] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/35 (смещение 0 б, размер 1 048 576 б)...
-[2026-10-04 08:33:41.373] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:40Z (svc)
-[2026-10-04 08:33:41.373] [DEBUG] [WTelegram]             → Upload_GetFile                         #F6DD
-[2026-10-04 08:33:41.373] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:41.429] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:40Z
-[2026-10-04 08:33:41.429] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #46E5
-[2026-10-04 08:33:41.429] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-04 05:33:40Z (svc)
-[2026-10-04 08:33:41.429] [DEBUG] [WTelegram]             → RpcResult                              2026-10-04 05:33:40Z
-[2026-10-04 08:33:41.429] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #46F9
-[2026-10-04 08:33:41.429] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-04 05:33:40Z (svc) 
-[2026-10-04 08:33:41.522] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:41Z
-[2026-10-04 08:33:41.523] [DEBUG] [WTelegram]              → Upload_File                           #F6DD
-[2026-10-04 08:33:41.523] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/35 (1 048 576 б за 149 мс) [Полный].
-[2026-10-04 08:33:41.523] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4
-[2026-10-04 08:33:41.551] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/35 (смещение 1 048 576 б, размер 1 048 576 б)...
-[2026-10-04 08:33:41.551] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:41Z (svc)
-[2026-10-04 08:33:41.551] [DEBUG] [WTelegram]             → Upload_GetFile                         #48D2
-[2026-10-04 08:33:41.551] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:41.639] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:41Z
-[2026-10-04 08:33:41.640] [DEBUG] [WTelegram]              → Upload_File                           #48D2
-[2026-10-04 08:33:41.640] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/35 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:41.659] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #2/35 (смещение 2 097 152 б, размер 1 048 576 б)...
-[2026-10-04 08:33:41.660] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:41Z (svc)
-[2026-10-04 08:33:41.660] [DEBUG] [WTelegram]             → Upload_GetFile                         #A4EA
-[2026-10-04 08:33:41.660] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:41.773] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:41Z
-[2026-10-04 08:33:41.774] [DEBUG] [WTelegram]              → Upload_File                           #A4EA
-[2026-10-04 08:33:41.774] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #2/35 (1 048 576 б за 114 мс) [Полный].
-[2026-10-04 08:33:41.800] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/35 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-04 08:33:41.801] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:41Z (svc)
-[2026-10-04 08:33:41.801] [DEBUG] [WTelegram]             → Upload_GetFile                         #6BB2
-[2026-10-04 08:33:41.801] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:41.887] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:41Z
-[2026-10-04 08:33:41.888] [DEBUG] [WTelegram]              → Upload_File                           #6BB2
-[2026-10-04 08:33:41.888] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/35 (1 048 576 б за 87 мс) [Полный].
-[2026-10-04 08:33:41.909] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/35 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-04 08:33:41.910] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:41Z (svc)
-[2026-10-04 08:33:41.910] [DEBUG] [WTelegram]             → Upload_GetFile                         #C6BE
-[2026-10-04 08:33:41.910] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:42.071] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:41Z
-[2026-10-04 08:33:42.071] [DEBUG] [WTelegram]              → Upload_File                           #C6BE
-[2026-10-04 08:33:42.071] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/35 (1 048 576 б за 161 мс) [Полный].
-[2026-10-04 08:33:42.096] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #5/35 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-04 08:33:42.097] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:41Z (svc)
-[2026-10-04 08:33:42.097] [DEBUG] [WTelegram]             → Upload_GetFile                         #5712
-[2026-10-04 08:33:42.097] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:42.254] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:41Z
-[2026-10-04 08:33:42.255] [DEBUG] [WTelegram]              → Upload_File                           #5712
-[2026-10-04 08:33:42.255] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #5/35 (1 048 576 б за 158 мс) [Полный].
-[2026-10-04 08:33:42.286] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #6/35 (смещение 6 291 456 б, размер 1 048 576 б)...
-[2026-10-04 08:33:42.286] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:41Z (svc)
-[2026-10-04 08:33:42.286] [DEBUG] [WTelegram]             → Upload_GetFile                         #EFE2
-[2026-10-04 08:33:42.286] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:42.435] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:41Z
-[2026-10-04 08:33:42.435] [DEBUG] [WTelegram]              → Upload_File                           #EFE2
-[2026-10-04 08:33:42.435] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #6/35 (1 048 576 б за 149 мс) [Полный].
-[2026-10-04 08:33:42.457] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/35 (смещение 7 340 032 б, размер 1 048 576 б)...
-[2026-10-04 08:33:42.457] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:41Z (svc)
-[2026-10-04 08:33:42.457] [DEBUG] [WTelegram]             → Upload_GetFile                         #1246
-[2026-10-04 08:33:42.457] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:42.657] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:42Z
-[2026-10-04 08:33:42.657] [DEBUG] [WTelegram]              → Upload_File                           #1246
-[2026-10-04 08:33:42.657] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/35 (1 048 576 б за 200 мс) [Полный].
-[2026-10-04 08:33:42.677] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #8/35 (смещение 8 388 608 б, размер 1 048 576 б)...
-[2026-10-04 08:33:42.677] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:42Z (svc)
-[2026-10-04 08:33:42.677] [DEBUG] [WTelegram]             → Upload_GetFile                         #0F83
-[2026-10-04 08:33:42.677] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:42.845] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:42Z
-[2026-10-04 08:33:42.845] [DEBUG] [WTelegram]              → Upload_File                           #0F83
-[2026-10-04 08:33:42.845] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #8/35 (1 048 576 б за 168 мс) [Полный].
-[2026-10-04 08:33:42.864] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #9/35 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-04 08:33:42.865] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:42Z (svc)
-[2026-10-04 08:33:42.865] [DEBUG] [WTelegram]             → Upload_GetFile                         #770F
-[2026-10-04 08:33:42.865] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.027] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:42Z
-[2026-10-04 08:33:43.028] [DEBUG] [WTelegram]              → Upload_File                           #770F
-[2026-10-04 08:33:43.028] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #9/35 (1 048 576 б за 163 мс) [Полный].
-[2026-10-04 08:33:43.051] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/35 (смещение 10 485 760 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.051] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:42Z (svc)
-[2026-10-04 08:33:43.051] [DEBUG] [WTelegram]             → Upload_GetFile                         #7357
-[2026-10-04 08:33:43.051] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.163] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:42Z
-[2026-10-04 08:33:43.163] [DEBUG] [WTelegram]              → Upload_File                           #7357
-[2026-10-04 08:33:43.163] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/35 (1 048 576 б за 112 мс) [Полный].
-[2026-10-04 08:33:43.193] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #11/35 (смещение 11 534 336 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.193] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:42Z (svc)
-[2026-10-04 08:33:43.193] [DEBUG] [WTelegram]             → Upload_GetFile                         #3D73
-[2026-10-04 08:33:43.193] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.284] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:42Z
-[2026-10-04 08:33:43.284] [DEBUG] [WTelegram]              → Upload_File                           #3D73
-[2026-10-04 08:33:43.284] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #11/35 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:43.316] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #12/35 (смещение 12 582 912 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.317] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:42Z (svc)
-[2026-10-04 08:33:43.317] [DEBUG] [WTelegram]             → Upload_GetFile                         #90DF
-[2026-10-04 08:33:43.317] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.411] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:42Z
-[2026-10-04 08:33:43.411] [DEBUG] [WTelegram]              → Upload_File                           #90DF
-[2026-10-04 08:33:43.411] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #12/35 (1 048 576 б за 94 мс) [Полный].
-[2026-10-04 08:33:43.439] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #13/35 (смещение 13 631 488 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.440] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:42Z (svc)
-[2026-10-04 08:33:43.440] [DEBUG] [WTelegram]             → Upload_GetFile                         #F643
-[2026-10-04 08:33:43.440] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.531] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:43Z
-[2026-10-04 08:33:43.531] [DEBUG] [WTelegram]              → Upload_File                           #F643
-[2026-10-04 08:33:43.531] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #13/35 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:43.565] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #14/35 (смещение 14 680 064 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.565] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:43Z (svc)
-[2026-10-04 08:33:43.565] [DEBUG] [WTelegram]             → Upload_GetFile                         #DA60
-[2026-10-04 08:33:43.565] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.655] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:43Z
-[2026-10-04 08:33:43.655] [DEBUG] [WTelegram]              → Upload_File                           #DA60
-[2026-10-04 08:33:43.655] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #14/35 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:43.675] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #15/35 (смещение 15 728 640 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.675] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:43Z (svc)
-[2026-10-04 08:33:43.675] [DEBUG] [WTelegram]             → Upload_GetFile                         #4594
-[2026-10-04 08:33:43.675] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.769] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:43Z
-[2026-10-04 08:33:43.769] [DEBUG] [WTelegram]              → Upload_File                           #4594
-[2026-10-04 08:33:43.769] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #15/35 (1 048 576 б за 94 мс) [Полный].
-[2026-10-04 08:33:43.798] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #16/35 (смещение 16 777 216 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.798] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:43Z (svc)
-[2026-10-04 08:33:43.798] [DEBUG] [WTelegram]             → Upload_GetFile                         #1534
-[2026-10-04 08:33:43.798] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.888] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:43Z
-[2026-10-04 08:33:43.888] [DEBUG] [WTelegram]              → Upload_File                           #1534
-[2026-10-04 08:33:43.888] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #16/35 (1 048 576 б за 90 мс) [Полный].
-[2026-10-04 08:33:43.907] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/35 (смещение 17 825 792 б, размер 1 048 576 б)...
-[2026-10-04 08:33:43.908] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:43Z (svc)
-[2026-10-04 08:33:43.908] [DEBUG] [WTelegram]             → Upload_GetFile                         #BF34
-[2026-10-04 08:33:43.908] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:43.999] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:43Z
-[2026-10-04 08:33:43.999] [DEBUG] [WTelegram]              → Upload_File                           #BF34
-[2026-10-04 08:33:43.999] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #17/35 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:44.032] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #18/35 (смещение 18 874 368 б, размер 1 048 576 б)...
-[2026-10-04 08:33:44.032] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:43Z (svc)
-[2026-10-04 08:33:44.032] [DEBUG] [WTelegram]             → Upload_GetFile                         #2868
-[2026-10-04 08:33:44.032] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:44.171] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:43Z
-[2026-10-04 08:33:44.171] [DEBUG] [WTelegram]              → Upload_File                           #2868
-[2026-10-04 08:33:44.172] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #18/35 (1 048 576 б за 139 мс) [Полный].
-[2026-10-04 08:33:44.205] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #19/35 (смещение 19 922 944 б, размер 1 048 576 б)...
-[2026-10-04 08:33:44.205] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:43Z (svc)
-[2026-10-04 08:33:44.205] [DEBUG] [WTelegram]             → Upload_GetFile                         #6268
-[2026-10-04 08:33:44.205] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:44.379] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:43Z
-[2026-10-04 08:33:44.380] [DEBUG] [WTelegram]              → Upload_File                           #6268
-[2026-10-04 08:33:44.380] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #19/35 (1 048 576 б за 174 мс) [Полный].
-[2026-10-04 08:33:44.409] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #20/35 (смещение 20 971 520 б, размер 1 048 576 б)...
-[2026-10-04 08:33:44.409] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:43Z (svc)
-[2026-10-04 08:33:44.409] [DEBUG] [WTelegram]             → Upload_GetFile                         #4E1C
-[2026-10-04 08:33:44.409] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:44.551] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:44.552] [DEBUG] [WTelegram]              → Upload_File                           #4E1C
-[2026-10-04 08:33:44.552] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #20/35 (1 048 576 б за 142 мс) [Полный].
-[2026-10-04 08:33:44.582] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #21/35 (смещение 22 020 096 б, размер 1 048 576 б)...
-[2026-10-04 08:33:44.582] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:44.582] [DEBUG] [WTelegram]             → Upload_GetFile                         #9E31
-[2026-10-04 08:33:44.582] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:44.670] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:44.670] [DEBUG] [WTelegram]              → Upload_File                           #9E31
-[2026-10-04 08:33:44.670] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #21/35 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:44.692] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #22/35 (смещение 23 068 672 б, размер 1 048 576 б)...
-[2026-10-04 08:33:44.692] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:44.692] [DEBUG] [WTelegram]             → Upload_GetFile                         #EF75
-[2026-10-04 08:33:44.692] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:44.707] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #B0C5
-[2026-10-04 08:33:44.785] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:44.786] [DEBUG] [WTelegram]              → Upload_File                           #EF75
-[2026-10-04 08:33:44.786] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #22/35 (1 048 576 б за 94 мс) [Полный].
-[2026-10-04 08:33:44.798] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:33:44Z (svc) 
-[2026-10-04 08:33:44.818] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #23/35 (смещение 24 117 248 б, размер 1 048 576 б)...
-[2026-10-04 08:33:44.818] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:44.818] [DEBUG] [WTelegram]             → Upload_GetFile                         #CDD1
-[2026-10-04 08:33:44.818] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:44.906] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:44.907] [DEBUG] [WTelegram]              → Upload_File                           #CDD1
-[2026-10-04 08:33:44.907] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #23/35 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:44.926] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #24/35 (смещение 25 165 824 б, размер 1 048 576 б)...
-[2026-10-04 08:33:44.926] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:44.926] [DEBUG] [WTelegram]             → Upload_GetFile                         #82BD
-[2026-10-04 08:33:44.926] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:45.014] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:45.015] [DEBUG] [WTelegram]              → Upload_File                           #82BD
-[2026-10-04 08:33:45.015] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #24/35 (1 048 576 б за 88 мс) [Полный].
-[2026-10-04 08:33:45.035] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #25/35 (смещение 26 214 400 б, размер 1 048 576 б)...
-[2026-10-04 08:33:45.035] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:45.035] [DEBUG] [WTelegram]             → Upload_GetFile                         #0375
-[2026-10-04 08:33:45.035] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:45.127] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:45.127] [DEBUG] [WTelegram]              → Upload_File                           #0375
-[2026-10-04 08:33:45.127] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #25/35 (1 048 576 б за 92 мс) [Полный].
-[2026-10-04 08:33:45.160] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #26/35 (смещение 27 262 976 б, размер 1 048 576 б)...
-[2026-10-04 08:33:45.161] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:45.161] [DEBUG] [WTelegram]             → Upload_GetFile                         #0939
-[2026-10-04 08:33:45.161] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:45.247] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:45.247] [DEBUG] [WTelegram]              → Upload_File                           #0939
-[2026-10-04 08:33:45.247] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #26/35 (1 048 576 б за 86 мс) [Полный].
-[2026-10-04 08:33:45.270] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #27/35 (смещение 28 311 552 б, размер 1 048 576 б)...
-[2026-10-04 08:33:45.270] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:45.270] [DEBUG] [WTelegram]             → Upload_GetFile                         #3D79
-[2026-10-04 08:33:45.270] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:45.359] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:45.359] [DEBUG] [WTelegram]              → Upload_File                           #3D79
-[2026-10-04 08:33:45.359] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #27/35 (1 048 576 б за 89 мс) [Полный].
-[2026-10-04 08:33:45.381] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #28/35 (смещение 29 360 128 б, размер 1 048 576 б)...
-[2026-10-04 08:33:45.381] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:44Z (svc)
-[2026-10-04 08:33:45.381] [DEBUG] [WTelegram]             → Upload_GetFile                         #AB69
-[2026-10-04 08:33:45.381] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:45.473] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:44Z
-[2026-10-04 08:33:45.473] [DEBUG] [WTelegram]              → Upload_File                           #AB69
-[2026-10-04 08:33:45.473] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #28/35 (1 048 576 б за 92 мс) [Полный].
-[2026-10-04 08:33:45.505] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #29/35 (смещение 30 408 704 б, размер 1 048 576 б)...
-[2026-10-04 08:33:45.505] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:45Z (svc)
-[2026-10-04 08:33:45.505] [DEBUG] [WTelegram]             → Upload_GetFile                         #F13E
-[2026-10-04 08:33:45.505] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:45.552] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:45Z
-[2026-10-04 08:33:45.552] [ERROR] [WTelegram]              → RpcError 420 FLOOD_WAIT_1             #F13E
-[2026-10-04 08:33:46.553] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:46Z (svc)
-[2026-10-04 08:33:46.553] [DEBUG] [WTelegram]             → Upload_GetFile                         #31C7
-[2026-10-04 08:33:46.553] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:46.644] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:46Z
-[2026-10-04 08:33:46.644] [DEBUG] [WTelegram]              → Upload_File                           #31C7
-[2026-10-04 08:33:46.644] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #29/35 (1 048 576 б за 1139 мс) [Полный].
-[2026-10-04 08:33:46.663] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #30/35 (смещение 31 457 280 б, размер 1 048 576 б)...
-[2026-10-04 08:33:46.663] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:33:46Z (svc)
-[2026-10-04 08:33:46.663] [DEBUG] [WTelegram]             → Upload_GetFile                         #4BBF
-[2026-10-04 08:33:46.663] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:33:46.754] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:33:46Z
-[2026-10-04 08:33:46.755] [DEBUG] [WTelegram]              → Upload_File                           #4BBF
-[2026-10-04 08:33:46.755] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #30/35 (1 048 576 б за 91 мс) [Полный].
-[2026-10-04 08:33:48.291] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,5 сек). Скрытие оверлея.
+[2026-10-04 08:34:44.809] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:34:44Z (svc)
+[2026-10-04 08:34:44.809] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #D5C5
+[2026-10-04 08:34:44.809] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:34:44.853] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:34:44Z (svc) 
+[2026-10-04 08:35:44.864] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #8E45
+[2026-10-04 08:35:44.906] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:35:44Z (svc) 
+[2026-10-04 08:36:44.918] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #182D
+[2026-10-04 08:36:44.963] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:36:44Z (svc) 
+[2026-10-04 08:37:42.970] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #26 (смещение 27 262 976, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
+[2026-10-04 08:37:42.972] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #27 (смещение 28 311 552, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
+[2026-10-04 08:37:42.972] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #31/35 (смещение 32 505 856 б, размер 1 048 576 б)...
+[2026-10-04 08:37:42.972] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #726F
+[2026-10-04 08:37:42.974] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #28 (смещение 29 360 128, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
+[2026-10-04 08:37:42.975] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #29 (смещение 30 408 704, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
+[2026-10-04 08:37:42.977] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' (ID 1475): Глобальный Чанк #30 (смещение 31 457 280, 1 048 576 байт). Скачано всего: 31 из 35 чанков (88,6%).
+[2026-10-04 08:37:44.485] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:42Z
+[2026-10-04 08:37:44.485] [DEBUG] [WTelegram]              → Upload_File                           #726F
+[2026-10-04 08:37:44.486] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #31/35 (1 048 576 б за 1513 мс) [Полный].
+[2026-10-04 08:37:44.488] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4 (33554432/36252977)
+[2026-10-04 08:37:44.538] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #32/35 (смещение 33 554 432 б, размер 1 048 576 б)...
+[2026-10-04 08:37:44.540] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:44Z (svc)
+[2026-10-04 08:37:44.540] [DEBUG] [WTelegram]             → Upload_GetFile                         #54C9
+[2026-10-04 08:37:44.540] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:44.973] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #0E9D
+[2026-10-04 08:37:44.984] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:44Z
+[2026-10-04 08:37:44.985] [DEBUG] [WTelegram]              → Upload_File                           #54C9
+[2026-10-04 08:37:44.985] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #32/35 (1 048 576 б за 446 мс) [Полный].
+[2026-10-04 08:37:45.005] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #33/35 (смещение 34 603 008 б, размер 1 048 576 б)...
+[2026-10-04 08:37:45.006] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:44Z (svc)
+[2026-10-04 08:37:45.006] [DEBUG] [WTelegram]             → Upload_GetFile                         #42BD
+[2026-10-04 08:37:45.006] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:45.015] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:37:44Z (svc) 
+[2026-10-04 08:37:45.372] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:44Z
+[2026-10-04 08:37:45.373] [DEBUG] [WTelegram]              → Upload_File                           #42BD
+[2026-10-04 08:37:45.373] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #33/35 (1 048 576 б за 367 мс) [Полный].
+[2026-10-04 08:37:45.401] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #34/35 (смещение 35 651 584 б, размер 1 048 576 б)...
+[2026-10-04 08:37:45.401] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:44Z (svc)
+[2026-10-04 08:37:45.401] [DEBUG] [WTelegram]             → Upload_GetFile                         #F89D
+[2026-10-04 08:37:45.401] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:45.595] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:44Z
+[2026-10-04 08:37:45.595] [DEBUG] [WTelegram]              → Upload_File                           #F89D
+[2026-10-04 08:37:45.595] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #34/35 (601 393 б за 194 мс) [Полный].
+[2026-10-04 08:37:45.596] [INFO ] [TelegramService] [NetworkAudit] Завершено для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4': Размер: 36 252 977 б (34,57 МБ) | Из сети TG: 36 252 977 б (34,57 МБ) | Из ОЗУ: 5 242 880 б (5,00 МБ) | Эффективность сети: 1.00x (Идеально — 0% дублирования)
+[2026-10-04 08:37:45.596] [INFO ] [TrayContext] Событие OnDownloadCompleted для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4' получено из TelegramService.
+[2026-10-04 08:37:45.597] [INFO ] [TrayProgressOverlay] CompleteTransfer [Download] вызван для 'Alex Adair, Delayers - Dominos (Official Video) ft. Samantha Harvey.mp4'. Запуск _completionTimer...
+[2026-10-04 08:37:47.022] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-04 08:37:47.028] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-10-04 08:37:58.636] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
+[2026-10-04 08:37:58.636] [DEBUG] [WTelegram]             → Channels_GetMessages                   #CBD7
+[2026-10-04 08:37:58.636] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:58.695] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
+[2026-10-04 08:37:58.695] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #CBD7
+[2026-10-04 08:37:58.696] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/92 (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:37:58.696] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
+[2026-10-04 08:37:58.696] [DEBUG] [WTelegram]             → Upload_GetFile                         #96F3
+[2026-10-04 08:37:58.696] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:58.806] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
+[2026-10-04 08:37:58.807] [DEBUG] [WTelegram]              → Upload_File                           #96F3
+[2026-10-04 08:37:58.807] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/92 (262 144 б за 111 мс) [Полный].
+[2026-10-04 08:37:58.810] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'Kosheen   Harder They Fall.mp4'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 08:37:58.839] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #90/92 (смещение 95 158 272 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:37:58.840] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
+[2026-10-04 08:37:58.840] [DEBUG] [WTelegram]             → Upload_GetFile                         #2F07
+[2026-10-04 08:37:58.840] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:58.945] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
+[2026-10-04 08:37:58.945] [DEBUG] [WTelegram]              → Upload_File                           #2F07
+[2026-10-04 08:37:58.945] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #90/92 (262 144 б за 106 мс) [Полный].
+[2026-10-04 08:37:58.948] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Kosheen   Harder They Fall.mp4' (ID 1477): Глобальный Чанк #90 (смещение 95 260 672, 32 768 байт). Скачано всего: 0 из 92 чанков (0%).
+[2026-10-04 08:37:58.948] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Kosheen   Harder They Fall.mp4' (ID 1477): Глобальный Чанк #90 (смещение 95 293 440, 65 536 байт). Скачано всего: 0 из 92 чанков (0%).
+[2026-10-04 08:37:58.949] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Kosheen   Harder They Fall.mp4' (ID 1477): смещение 95 358 976, отдано 61 440 байт (95 420 416 / 95 441 413 байт, 100,0%). Скачано всего: 0 из 92 чанков (0%).
+[2026-10-04 08:37:58.966] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:37:58.967] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
+[2026-10-04 08:37:58.967] [DEBUG] [WTelegram]             → Upload_GetFile                         #686F
+[2026-10-04 08:37:58.967] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:59.012] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
+[2026-10-04 08:37:59.012] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #686F
+[2026-10-04 08:37:59.013] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:37:59.316] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:37:59.316] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:58Z (svc)
+[2026-10-04 08:37:59.316] [DEBUG] [WTelegram]             → Upload_GetFile                         #E757
+[2026-10-04 08:37:59.316] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:59.366] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:58Z
+[2026-10-04 08:37:59.367] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E757
+[2026-10-04 08:37:59.367] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:37:59.678] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:37:59.678] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
+[2026-10-04 08:37:59.678] [DEBUG] [WTelegram]             → Upload_GetFile                         #FFEC
+[2026-10-04 08:37:59.678] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:37:59.724] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:59Z
+[2026-10-04 08:37:59.724] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #FFEC
+[2026-10-04 08:37:59.725] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:00.037] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:00.037] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
+[2026-10-04 08:38:00.037] [DEBUG] [WTelegram]             → Upload_GetFile                         #E47C
+[2026-10-04 08:38:00.037] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:00.083] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:59Z
+[2026-10-04 08:38:00.083] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E47C
+[2026-10-04 08:38:00.083] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:00.083] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:00.085] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:00.085] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
+[2026-10-04 08:38:00.085] [DEBUG] [WTelegram]             → Upload_GetFile                         #8720
+[2026-10-04 08:38:00.085] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:00.134] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:37:59Z
+[2026-10-04 08:38:00.134] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #8720
+[2026-10-04 08:38:00.134] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:00.228] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-04 08:38:00.233] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-10-04 08:38:00.448] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:00.449] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:37:59Z (svc)
+[2026-10-04 08:38:00.449] [DEBUG] [WTelegram]             → Upload_GetFile                         #FE8C
+[2026-10-04 08:38:00.449] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:00.493] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
+[2026-10-04 08:38:00.493] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #FE8C
+[2026-10-04 08:38:00.493] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:00.808] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:00.809] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:00Z (svc)
+[2026-10-04 08:38:00.809] [DEBUG] [WTelegram]             → Upload_GetFile                         #DE45
+[2026-10-04 08:38:00.809] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:00.918] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
+[2026-10-04 08:38:00.918] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #DE45
+[2026-10-04 08:38:00.918] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:01.229] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:01.229] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:00Z (svc)
+[2026-10-04 08:38:01.229] [DEBUG] [WTelegram]             → Upload_GetFile                         #7929
+[2026-10-04 08:38:01.229] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:01.275] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
+[2026-10-04 08:38:01.275] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #7929
+[2026-10-04 08:38:01.275] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:01.275] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:01.276] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:01.277] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:00Z (svc)
+[2026-10-04 08:38:01.277] [DEBUG] [WTelegram]             → Upload_GetFile                         #A8A5
+[2026-10-04 08:38:01.277] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:01.322] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:00Z
+[2026-10-04 08:38:01.322] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A8A5
+[2026-10-04 08:38:01.322] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:01.633] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:01.634] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:01Z (svc)
+[2026-10-04 08:38:01.634] [DEBUG] [WTelegram]             → Upload_GetFile                         #89BA
+[2026-10-04 08:38:01.634] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:01.679] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:01Z
+[2026-10-04 08:38:01.679] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #89BA
+[2026-10-04 08:38:01.679] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:01.982] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:01.983] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:01Z (svc)
+[2026-10-04 08:38:01.983] [DEBUG] [WTelegram]             → Upload_GetFile                         #86CE
+[2026-10-04 08:38:01.983] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:02.075] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:01Z
+[2026-10-04 08:38:02.075] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #86CE
+[2026-10-04 08:38:02.076] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:02.388] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:02.389] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:01Z (svc)
+[2026-10-04 08:38:02.389] [DEBUG] [WTelegram]             → Upload_GetFile                         #74D6
+[2026-10-04 08:38:02.389] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:02.449] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:01Z
+[2026-10-04 08:38:02.449] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #74D6
+[2026-10-04 08:38:02.449] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:02.449] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:02.450] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:02.450] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:02Z (svc)
+[2026-10-04 08:38:02.450] [DEBUG] [WTelegram]             → Upload_GetFile                         #6F7F
+[2026-10-04 08:38:02.450] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:02.644] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:02Z
+[2026-10-04 08:38:02.644] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6F7F
+[2026-10-04 08:38:02.644] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:02.947] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:02.948] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:02Z (svc)
+[2026-10-04 08:38:02.948] [DEBUG] [WTelegram]             → Upload_GetFile                         #B6AF
+[2026-10-04 08:38:02.948] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:02.993] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:02Z
+[2026-10-04 08:38:02.993] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #B6AF
+[2026-10-04 08:38:02.994] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:03.308] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:03.308] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:02Z (svc)
+[2026-10-04 08:38:03.308] [DEBUG] [WTelegram]             → Upload_GetFile                         #6D07
+[2026-10-04 08:38:03.308] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:03.375] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:02Z
+[2026-10-04 08:38:03.375] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6D07
+[2026-10-04 08:38:03.375] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:03.681] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:03.682] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
+[2026-10-04 08:38:03.682] [DEBUG] [WTelegram]             → Upload_GetFile                         #6C68
+[2026-10-04 08:38:03.682] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:03.728] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:03Z
+[2026-10-04 08:38:03.728] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6C68
+[2026-10-04 08:38:03.728] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:03.728] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:03.729] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:03.730] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
+[2026-10-04 08:38:03.730] [DEBUG] [WTelegram]             → Upload_GetFile                         #E97C
+[2026-10-04 08:38:03.730] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:03.773] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:03Z
+[2026-10-04 08:38:03.773] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E97C
+[2026-10-04 08:38:03.773] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:04.084] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:04.085] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
+[2026-10-04 08:38:04.085] [DEBUG] [WTelegram]             → Upload_GetFile                         #A654
+[2026-10-04 08:38:04.085] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:04.130] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:03Z
+[2026-10-04 08:38:04.130] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A654
+[2026-10-04 08:38:04.131] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:04.432] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:04.433] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:03Z (svc)
+[2026-10-04 08:38:04.433] [DEBUG] [WTelegram]             → Upload_GetFile                         #2510
+[2026-10-04 08:38:04.433] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:04.480] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
+[2026-10-04 08:38:04.480] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #2510
+[2026-10-04 08:38:04.481] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:04.796] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:04.796] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:04Z (svc)
+[2026-10-04 08:38:04.796] [DEBUG] [WTelegram]             → Upload_GetFile                         #4A31
+[2026-10-04 08:38:04.797] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:04.911] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
+[2026-10-04 08:38:04.911] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #4A31
+[2026-10-04 08:38:04.911] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:04.911] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:04.912] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:04.913] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:04Z (svc)
+[2026-10-04 08:38:04.913] [DEBUG] [WTelegram]             → Upload_GetFile                         #FAD1
+[2026-10-04 08:38:04.913] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:04.956] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
+[2026-10-04 08:38:04.956] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #FAD1
+[2026-10-04 08:38:04.956] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:05.258] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:05.258] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:04Z (svc)
+[2026-10-04 08:38:05.258] [DEBUG] [WTelegram]             → Upload_GetFile                         #CEB5
+[2026-10-04 08:38:05.258] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:05.302] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:04Z
+[2026-10-04 08:38:05.302] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #CEB5
+[2026-10-04 08:38:05.302] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:05.608] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:05.608] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
+[2026-10-04 08:38:05.608] [DEBUG] [WTelegram]             → Upload_GetFile                         #A632
+[2026-10-04 08:38:05.608] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:05.653] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
+[2026-10-04 08:38:05.653] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A632
+[2026-10-04 08:38:05.653] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:05.959] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:05.959] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
+[2026-10-04 08:38:05.960] [DEBUG] [WTelegram]             → Upload_GetFile                         #48B6
+[2026-10-04 08:38:05.960] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:06.004] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
+[2026-10-04 08:38:06.004] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #48B6
+[2026-10-04 08:38:06.005] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:06.005] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:06.006] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:06.006] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
+[2026-10-04 08:38:06.006] [DEBUG] [WTelegram]             → Upload_GetFile                         #444A
+[2026-10-04 08:38:06.006] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:06.049] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
+[2026-10-04 08:38:06.049] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #444A
+[2026-10-04 08:38:06.050] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:06.351] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:06.351] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:05Z (svc)
+[2026-10-04 08:38:06.351] [DEBUG] [WTelegram]             → Upload_GetFile                         #219E
+[2026-10-04 08:38:06.351] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:06.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:05Z
+[2026-10-04 08:38:06.447] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #219E
+[2026-10-04 08:38:06.447] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:06.757] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:06.758] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:06Z (svc)
+[2026-10-04 08:38:06.758] [DEBUG] [WTelegram]             → Upload_GetFile                         #E44F
+[2026-10-04 08:38:06.758] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:06.803] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:06Z
+[2026-10-04 08:38:06.803] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E44F
+[2026-10-04 08:38:06.804] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:07.118] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:07.118] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:06Z (svc)
+[2026-10-04 08:38:07.118] [DEBUG] [WTelegram]             → Upload_GetFile                         #CDB7
+[2026-10-04 08:38:07.118] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:07.162] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:06Z
+[2026-10-04 08:38:07.163] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #CDB7
+[2026-10-04 08:38:07.163] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:07.163] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:07.164] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:07.165] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:06Z (svc)
+[2026-10-04 08:38:07.165] [DEBUG] [WTelegram]             → Upload_GetFile                         #3C8B
+[2026-10-04 08:38:07.165] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:07.210] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:06Z
+[2026-10-04 08:38:07.210] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #3C8B
+[2026-10-04 08:38:07.211] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:07.524] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:07.525] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
+[2026-10-04 08:38:07.525] [DEBUG] [WTelegram]             → Upload_GetFile                         #99D4
+[2026-10-04 08:38:07.525] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:07.569] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
+[2026-10-04 08:38:07.569] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #99D4
+[2026-10-04 08:38:07.569] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:07.882] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:07.883] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
+[2026-10-04 08:38:07.883] [DEBUG] [WTelegram]             → Upload_GetFile                         #1B04
+[2026-10-04 08:38:07.883] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:07.929] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
+[2026-10-04 08:38:07.929] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #1B04
+[2026-10-04 08:38:07.929] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:08.240] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:08.241] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
+[2026-10-04 08:38:08.241] [DEBUG] [WTelegram]             → Upload_GetFile                         #A660
+[2026-10-04 08:38:08.241] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:08.286] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
+[2026-10-04 08:38:08.286] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A660
+[2026-10-04 08:38:08.286] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:08.286] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:08.287] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:08.288] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:07Z (svc)
+[2026-10-04 08:38:08.288] [DEBUG] [WTelegram]             → Upload_GetFile                         #6F58
+[2026-10-04 08:38:08.288] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:08.333] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:07Z
+[2026-10-04 08:38:08.333] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6F58
+[2026-10-04 08:38:08.334] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:08.646] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:08.647] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
+[2026-10-04 08:38:08.647] [DEBUG] [WTelegram]             → Upload_GetFile                         #E265
+[2026-10-04 08:38:08.647] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:08.692] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
+[2026-10-04 08:38:08.692] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E265
+[2026-10-04 08:38:08.692] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:08.993] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:08.993] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
+[2026-10-04 08:38:08.994] [DEBUG] [WTelegram]             → Upload_GetFile                         #A981
+[2026-10-04 08:38:08.994] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:09.036] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
+[2026-10-04 08:38:09.036] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #A981
+[2026-10-04 08:38:09.036] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:09.339] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:09.339] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
+[2026-10-04 08:38:09.340] [DEBUG] [WTelegram]             → Upload_GetFile                         #D1F1
+[2026-10-04 08:38:09.340] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:09.384] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
+[2026-10-04 08:38:09.384] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #D1F1
+[2026-10-04 08:38:09.384] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:09.385] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:09.386] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:09.386] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:08Z (svc)
+[2026-10-04 08:38:09.386] [DEBUG] [WTelegram]             → Upload_GetFile                         #0361
+[2026-10-04 08:38:09.386] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:09.430] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:08Z
+[2026-10-04 08:38:09.430] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #0361
+[2026-10-04 08:38:09.431] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:09.734] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:09.735] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:09Z (svc)
+[2026-10-04 08:38:09.735] [DEBUG] [WTelegram]             → Upload_GetFile                         #DEEA
+[2026-10-04 08:38:09.735] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:09.780] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:09Z
+[2026-10-04 08:38:09.780] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #DEEA
+[2026-10-04 08:38:09.780] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:10.094] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:10.094] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:09Z (svc)
+[2026-10-04 08:38:10.094] [DEBUG] [WTelegram]             → Upload_GetFile                         #6296
+[2026-10-04 08:38:10.095] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:10.140] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:09Z
+[2026-10-04 08:38:10.140] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6296
+[2026-10-04 08:38:10.140] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:10.440] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:10.441] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
+[2026-10-04 08:38:10.441] [DEBUG] [WTelegram]             → Upload_GetFile                         #C497
+[2026-10-04 08:38:10.441] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:10.489] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
+[2026-10-04 08:38:10.489] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #C497
+[2026-10-04 08:38:10.489] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:10.489] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:10.490] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:10.491] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
+[2026-10-04 08:38:10.491] [DEBUG] [WTelegram]             → Upload_GetFile                         #5833
+[2026-10-04 08:38:10.491] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:10.536] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
+[2026-10-04 08:38:10.536] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #5833
+[2026-10-04 08:38:10.536] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:10.845] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:10.845] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
+[2026-10-04 08:38:10.845] [DEBUG] [WTelegram]             → Upload_GetFile                         #0723
+[2026-10-04 08:38:10.845] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:10.891] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
+[2026-10-04 08:38:10.891] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #0723
+[2026-10-04 08:38:10.891] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:11.202] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:11.203] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:10Z (svc)
+[2026-10-04 08:38:11.203] [DEBUG] [WTelegram]             → Upload_GetFile                         #CF4B
+[2026-10-04 08:38:11.203] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:11.248] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:10Z
+[2026-10-04 08:38:11.248] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #CF4B
+[2026-10-04 08:38:11.248] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:11.562] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:11.563] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
+[2026-10-04 08:38:11.563] [DEBUG] [WTelegram]             → Upload_GetFile                         #6E88
+[2026-10-04 08:38:11.563] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:11.608] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
+[2026-10-04 08:38:11.608] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #6E88
+[2026-10-04 08:38:11.608] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:11.608] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:11.609] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:11.610] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
+[2026-10-04 08:38:11.610] [DEBUG] [WTelegram]             → Upload_GetFile                         #F8B4
+[2026-10-04 08:38:11.610] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:11.655] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
+[2026-10-04 08:38:11.655] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #F8B4
+[2026-10-04 08:38:11.655] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:11.886] [INFO ] [WinFsp] Размонтирование диска Y:...
+[2026-10-04 08:38:11.956] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:11.957] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
+[2026-10-04 08:38:11.957] [DEBUG] [WTelegram]             → Upload_GetFile                         #E44C
+[2026-10-04 08:38:11.957] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:12.002] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
+[2026-10-04 08:38:12.002] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #E44C
+[2026-10-04 08:38:12.002] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:12.305] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:12.306] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:11Z (svc)
+[2026-10-04 08:38:12.306] [DEBUG] [WTelegram]             → Upload_GetFile                         #DED0
+[2026-10-04 08:38:12.306] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:12.362] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:11Z
+[2026-10-04 08:38:12.362] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #DED0
+[2026-10-04 08:38:12.362] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:12.672] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #91/92 (смещение 95 420 416 б, размер 20 997 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:12.673] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:12Z (svc)
+[2026-10-04 08:38:12.673] [DEBUG] [WTelegram]             → Upload_GetFile                         #3A91
+[2026-10-04 08:38:12.673] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:12.716] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:12Z
+[2026-10-04 08:38:12.717] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #3A91
+[2026-10-04 08:38:12.717] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #91/92 (смещение 95 420 416 б): LIMIT_INVALID
+[2026-10-04 08:38:12.717] [WARN ] [TelegramService] Не удалось получить чанк смещением 95420416 для 'Kosheen   Harder They Fall.mp4' (ID 1477) из пула воркеров.
+[2026-10-04 08:38:12.725] [INFO ] [WebDAV] WebDAV Сервер остановлен.
+[2026-10-04 08:38:12.725] [INFO ] [AppLogger] Завершение работы сервиса и сброс буфера логов...
+
+====================================================================================================
+=== 2026-10-04 08:38:27 | Telegram WebDAV & Network Drive Service ===
+====================================================================================================
+[2026-10-04 08:38:27.564] [INFO ] [AppLogger] Инициализирован файловый логгер. Путь: D:\Temp\TG webDAV\logs\app.log (лимит 5 МБ, ротация до 3 файлов).
+[2026-10-04 08:38:27.592] [INFO ] [Program] =================================================
+[2026-10-04 08:38:27.592] [INFO ] [Program]  Telegram WebDAV & Network Drive Service v2.0
+[2026-10-04 08:38:27.592] [INFO ] [Program] =================================================
+[2026-10-04 08:38:27.701] [INFO ] [Program] Конфигурация загружена. Порт: 37000, Диск: Y:
+[2026-10-04 08:38:27.759] [INFO ] [Program] База данных SQLite инициализирована по пути: base.db
+[2026-10-04 08:38:27.768] [INFO ] [TelegramService] Проверка сессии и подключение к Telegram...
+[2026-10-04 08:38:27.770] [INFO ] [TelegramService] [Streaming Config] Воркеры: 1 | Пейсинг: 20 мс | RAM Кэш: 128 МБ (TTL: 10 мин) | Буфер аудио: 2 МБ | Окно стриминга: 5 МБ | Дисковый кэш: ВЫКЛ (100% RAM)
+[2026-10-04 08:38:27.840] [INFO ] [WTelegram] Loaded previous session
+[2026-10-04 08:38:27.846] [DEBUG] [WTelegram] WTelegramClient 4.1.6+e5c6086e1199c947131c2ef44b526ef51501cd67 running under .NET 8.0.31
+[2026-10-04 08:38:27.872] [INFO ] [WTelegram] Connecting to 149.154.167.50:443...
+[2026-10-04 08:38:27.993] [DEBUG] [WTelegram] 2>Sending   InvokeWithLayer`1                        #F330
+[2026-10-04 08:38:28.065] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-04 05:38:28Z (svc)
+[2026-10-04 08:38:28.067] [DEBUG] [WTelegram]             → RpcResult                              2026-10-04 05:38:13Z
+[2026-10-04 08:38:28.147] [DEBUG] [WTelegram]              → RpcError                              for past msgId #3A91
+[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
+[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
+[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
+[2026-10-04 08:38:28.148] [DEBUG] [WTelegram]             → MsgDetailedInfo                        2026-10-04 05:38:28Z (svc) 
+[2026-10-04 08:38:28.150] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-04 05:38:28Z (svc) 
+[2026-10-04 08:38:28.156] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:28Z
+[2026-10-04 08:38:28.161] [DEBUG] [WTelegram]              → Config                                #F330
+[2026-10-04 08:38:28.168] [INFO ] [WTelegram] Connected to DC 2... default_p2p_contacts, revoke_pm_inbox
+[2026-10-04 08:38:28.171] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:28Z (svc)
+[2026-10-04 08:38:28.172] [DEBUG] [WTelegram]             → Users_GetUsers                         #F33C
+[2026-10-04 08:38:28.174] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:28.230] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:28Z
+[2026-10-04 08:38:28.232] [DEBUG] [WTelegram]              → UserBase[]                            #F33C
+[2026-10-04 08:38:28.239] [INFO ] [MtprotoWorkerPool] Пул постоянных воркеров запущен: 1 воркеров MTProto готовы к обработке очереди.
+[2026-10-04 08:38:28.240] [INFO ] [TelegramService] Успешная авторизация пользователя: Vitaly (ID: 317057068)
+[2026-10-04 08:38:28.247] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:28Z (svc)
+[2026-10-04 08:38:28.247] [DEBUG] [WTelegram]             → Help_GetConfig                         #F320
+[2026-10-04 08:38:28.247] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:28.269] [INFO ] [WebDAV] WebDAV Сервер запущен на http://localhost:37000/
+[2026-10-04 08:38:28.269] [INFO ] [Program] Встроенный WebDAV сервер запущен: http://localhost:37000/
+[2026-10-04 08:38:28.277] [INFO ] [WinFsp] Нативная библиотека winfsp-x64.dll успешно предзагружена в память процесса из C:\Program Files (x86)\WinFsp\bin\winfsp-x64.dll
+[2026-10-04 08:38:28.277] [INFO ] [WinFsp] Зарегистрирован путь к нативным DLL WinFsp: C:\Program Files (x86)\WinFsp\bin
+[2026-10-04 08:38:28.296] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:28Z
+[2026-10-04 08:38:28.297] [DEBUG] [WTelegram]              → Config                                #F320
+[2026-10-04 08:38:28.301] [INFO ] [TelegramService] Подключен канал-хранилище из настроек: 'Telegram WebDAV Drive' (ID: 4323453199).
+[2026-10-04 08:38:28.440] [INFO ] [VirtualDriveManager] Выбран режим диска WinFsp. Подключение Y:...
+[2026-10-04 08:38:28.451] [INFO ] [WinFsp] Попытка монтирования виртуального диска Y: через WinFsp...
+[2026-10-04 08:38:28.475] [INFO ] [WinFsp] Виртуальный диск Y: успешно смонтирован через WinFsp (прямой стриминг в ОЗУ).
+[2026-10-04 08:38:28.478] [INFO ] [Shell] Контекстное меню корзины WebDAV успешно зарегистрировано в реестре для Y:\
+[2026-10-04 08:38:42.171] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
+[2026-10-04 08:38:42.171] [DEBUG] [WTelegram]             → Channels_GetMessages                   #6F7E
+[2026-10-04 08:38:42.172] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:42.248] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
+[2026-10-04 08:38:42.254] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #6F7E
+[2026-10-04 08:38:42.282] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/18 (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:42.283] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
+[2026-10-04 08:38:42.283] [DEBUG] [WTelegram]             → Upload_GetFile                         #F16A
+[2026-10-04 08:38:42.284] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:42.658] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
+[2026-10-04 08:38:42.658] [DEBUG] [WTelegram]              → Upload_File                           #F16A
+[2026-10-04 08:38:42.659] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/18 (262 144 б за 377 мс) [Полный].
+[2026-10-04 08:38:42.674] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'KOMODO- All 4 U (Official video).mp4'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 08:38:42.687] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #16/18 (смещение 17 563 648 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:42.689] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
+[2026-10-04 08:38:42.689] [DEBUG] [WTelegram]             → Upload_GetFile                         #762A
+[2026-10-04 08:38:42.689] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:42.816] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:43Z
+[2026-10-04 08:38:42.816] [DEBUG] [WTelegram]              → Upload_File                           #762A
+[2026-10-04 08:38:42.816] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #16/18 (262 144 б за 129 мс) [Полный].
+[2026-10-04 08:38:42.822] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1468): Глобальный Чанк #16 (смещение 17 752 064, 32 768 байт). Скачано всего: 0 из 18 чанков (0%).
+[2026-10-04 08:38:42.823] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'KOMODO- All 4 U (Official video).mp4' (ID 1468): смещение 17 784 832, отдано 40 960 байт (17 825 792 / 17 915 288 байт, 99,5%). Скачано всего: 0 из 18 чанков (0%).
+[2026-10-04 08:38:42.843] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:42.844] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
+[2026-10-04 08:38:42.844] [DEBUG] [WTelegram]             → Upload_GetFile                         #7233
+[2026-10-04 08:38:42.844] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:42.985] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
+[2026-10-04 08:38:42.986] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #7233
+[2026-10-04 08:38:42.987] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #17/18 (смещение 17 825 792 б): LIMIT_INVALID
+[2026-10-04 08:38:43.298] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:43.300] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
+[2026-10-04 08:38:43.300] [DEBUG] [WTelegram]             → Upload_GetFile                         #9BD3
+[2026-10-04 08:38:43.300] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:43.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:42Z
+[2026-10-04 08:38:43.400] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #9BD3
+[2026-10-04 08:38:43.400] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #17/18 (смещение 17 825 792 б): LIMIT_INVALID
+[2026-10-04 08:38:43.710] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:43.711] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:42Z (svc)
+[2026-10-04 08:38:43.711] [DEBUG] [WTelegram]             → Upload_GetFile                         #2F9B
+[2026-10-04 08:38:43.711] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:43.763] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:38:43Z
+[2026-10-04 08:38:43.763] [ERROR] [WTelegram]              → RpcError 400 LIMIT_INVALID            #2F9B
+[2026-10-04 08:38:43.764] [WARN ] [MtprotoWorkerPool] [Воркер #1] Ошибка чанка #17/18 (смещение 17 825 792 б): LIMIT_INVALID
+[2026-10-04 08:38:44.073] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #17/18 (смещение 17 825 792 б, размер 89 496 б) [Докачка остатка/Зонд]...
+[2026-10-04 08:38:44.073] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:38:43Z (svc)
+[2026-10-04 08:38:44.074] [DEBUG] [WTelegram]             → Upload_GetFile                         #587C
+[2026-10-04 08:38:44.074] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 08:38:44.106] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-04 08:38:44.110] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
