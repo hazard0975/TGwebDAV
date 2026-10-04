@@ -1,293 +1,124 @@
-
-[2026-10-04 08:49:54.840] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 887 296, 4 017 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.545] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.546] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.547] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.548] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 5, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.549] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 6, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.549] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 7, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.779] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.779] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.780] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.781] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.781] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 5, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.781] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 6, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.782] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 7, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.782] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.783] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.783] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.784] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.785] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.785] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.786] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.786] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.787] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.787] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.788] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.788] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.789] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.789] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.790] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.790] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.791] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.791] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.792] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.793] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.793] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.794] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.794] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.795] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.795] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.796] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.796] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.797] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.797] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.797] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.798] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.798] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.798] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.799] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.799] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 3, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.799] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.800] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.800] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.802] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.802] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 5, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.802] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 6, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.803] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 7, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.804] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.805] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.805] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.806] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.806] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.807] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.808] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.808] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.809] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.810] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.810] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.811] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.811] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.812] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.813] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.813] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.814] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.814] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.815] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.815] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.816] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.817] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.817] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 1, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.817] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 2, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.818] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.819] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.820] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.820] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 4, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.821] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.821] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.822] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.823] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.823] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 1 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.826] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.827] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 735 007, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.828] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 800 543, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.829] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #23 (смещение 24 866 079, 25 234 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:56.868] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 0, 4 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:57.358] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 48, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:57.359] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 65 584, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:57.404] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 131 120, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:57.996] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 196 656, отдано 65 488 байт (262 144 / 24 891 313 байт, 1,1%). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:57.996] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/24 (смещение 262 144 б, размер 262 144 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:49:57.997] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:49:57Z (svc)
-[2026-10-04 08:49:57.997] [DEBUG] [WTelegram]             → Upload_GetFile                         #616A
-[2026-10-04 08:49:57.997] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:49:58.085] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:49:57Z
-[2026-10-04 08:49:58.085] [DEBUG] [WTelegram]              → Upload_File                           #616A
-[2026-10-04 08:49:58.085] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/24 (262 144 б за 89 мс) [Полный].
-[2026-10-04 08:49:58.206] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 262 192, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:58.448] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 327 728, 65 536 байт). Скачано всего: 0 из 24 чанков (0%).
-[2026-10-04 08:49:58.773] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 393 264, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-04 08:49:59.234] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 458 800, отдано 65 488 байт (524 288 / 24 891 313 байт, 2,1%). Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-04 08:49:59.234] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/24 (смещение 524 288 б, размер 262 144 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:49:59.235] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:49:58Z (svc)
-[2026-10-04 08:49:59.235] [DEBUG] [WTelegram]             → Upload_GetFile                         #2093
-[2026-10-04 08:49:59.235] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:49:59.311] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:49:58Z
-[2026-10-04 08:49:59.311] [DEBUG] [WTelegram]              → Upload_File                           #2093
-[2026-10-04 08:49:59.311] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/24 (262 144 б за 77 мс) [Полный].
-[2026-10-04 08:49:59.570] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 524 336, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-04 08:50:00.108] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 589 872, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-04 08:50:00.489] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 655 408, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-04 08:50:01.150] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 720 944, отдано 65 488 байт (786 432 / 24 891 313 байт, 3,2%). Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-04 08:50:01.151] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/24 (смещение 786 432 б, размер 262 144 б) [Докачка остатка/Зонд]...
-[2026-10-04 08:50:01.152] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:00Z (svc)
-[2026-10-04 08:50:01.152] [DEBUG] [WTelegram]             → Upload_GetFile                         #BF45
-[2026-10-04 08:50:01.152] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:01.260] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:00Z
-[2026-10-04 08:50:01.260] [DEBUG] [WTelegram]              → Upload_File                           #BF45
-[2026-10-04 08:50:01.260] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/24 (262 144 б за 109 мс) [Полный].
-[2026-10-04 08:50:01.863] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 786 480, 65 536 байт). Скачано всего: 1 из 24 чанков (4,2%).
-[2026-10-04 08:50:01.865] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/24 (смещение 1 048 576 б, размер 1 048 576 б)...
-[2026-10-04 08:50:01.866] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:01Z (svc)
-[2026-10-04 08:50:01.866] [DEBUG] [WTelegram]             → Upload_GetFile                         #FA3E
-[2026-10-04 08:50:01.866] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:02.115] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:01Z
-[2026-10-04 08:50:02.116] [DEBUG] [WTelegram]              → Upload_File                           #FA3E
-[2026-10-04 08:50:02.116] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/24 (1 048 576 б за 250 мс) [Полный].
-[2026-10-04 08:50:02.121] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (2097152/24891313)
-[2026-10-04 08:50:02.140] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #2/24 (смещение 2 097 152 б, размер 1 048 576 б)...
-[2026-10-04 08:50:02.140] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:01Z (svc)
-[2026-10-04 08:50:02.140] [DEBUG] [WTelegram]             → Upload_GetFile                         #0F7E
-[2026-10-04 08:50:02.140] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:02.312] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:01Z
-[2026-10-04 08:50:02.313] [DEBUG] [WTelegram]              → Upload_File                           #0F7E
-[2026-10-04 08:50:02.313] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #2/24 (1 048 576 б за 173 мс) [Полный].
-[2026-10-04 08:50:02.345] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #3/24 (смещение 3 145 728 б, размер 1 048 576 б)...
-[2026-10-04 08:50:02.346] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:01Z (svc)
-[2026-10-04 08:50:02.346] [DEBUG] [WTelegram]             → Upload_GetFile                         #5A4A
-[2026-10-04 08:50:02.346] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:02.493] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:01Z
-[2026-10-04 08:50:02.495] [DEBUG] [WTelegram]              → Upload_File                           #5A4A
-[2026-10-04 08:50:02.495] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #3/24 (1 048 576 б за 149 мс) [Полный].
-[2026-10-04 08:50:02.516] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/24 (смещение 4 194 304 б, размер 1 048 576 б)...
-[2026-10-04 08:50:02.516] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:02Z (svc)
-[2026-10-04 08:50:02.516] [DEBUG] [WTelegram]             → Upload_GetFile                         #4723
-[2026-10-04 08:50:02.516] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:02.630] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:02Z
-[2026-10-04 08:50:02.631] [DEBUG] [WTelegram]              → Upload_File                           #4723
-[2026-10-04 08:50:02.631] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/24 (1 048 576 б за 115 мс) [Полный].
-[2026-10-04 08:50:02.658] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #5/24 (смещение 5 242 880 б, размер 1 048 576 б)...
-[2026-10-04 08:50:02.659] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:02Z (svc)
-[2026-10-04 08:50:02.659] [DEBUG] [WTelegram]             → Upload_GetFile                         #0A17
-[2026-10-04 08:50:02.659] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:02.733] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 852 016, 65 536 байт). Скачано всего: 5 из 24 чанков (20,8%).
-[2026-10-04 08:50:02.768] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:02Z
-[2026-10-04 08:50:02.769] [DEBUG] [WTelegram]              → Upload_File                           #0A17
-[2026-10-04 08:50:02.769] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #5/24 (1 048 576 б за 110 мс) [Полный].
-[2026-10-04 08:50:03.068] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #0 (смещение 917 552, 65 536 байт). Скачано всего: 6 из 24 чанков (25%).
-[2026-10-04 08:50:03.651] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 983 088, отдано 65 488 байт (1 048 576 / 24 891 313 байт, 4,2%). Скачано всего: 6 из 24 чанков (25%).
-[2026-10-04 08:50:03.651] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 1 048 576, отдано 48 байт (1 048 624 / 24 891 313 байт, 4,2%). Скачано всего: 6 из 24 чанков (25%).
-[2026-10-04 08:50:03.652] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #6/24 (смещение 6 291 456 б, размер 1 048 576 б)...
-[2026-10-04 08:50:03.652] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:03Z (svc)
-[2026-10-04 08:50:03.652] [DEBUG] [WTelegram]             → Upload_GetFile                         #7408
-[2026-10-04 08:50:03.652] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:03.763] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:03Z
-[2026-10-04 08:50:03.764] [DEBUG] [WTelegram]              → Upload_File                           #7408
-[2026-10-04 08:50:03.764] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #6/24 (1 048 576 б за 111 мс) [Полный].
-[2026-10-04 08:50:03.988] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 048 624, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:04.617] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 114 160, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:04.995] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 179 696, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:05.384] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
-[2026-10-04 08:50:06.030] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 245 232, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:06.739] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 310 768, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:07.494] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 376 304, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:07.783] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 441 840, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:08.030] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 507 376, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:08.411] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 572 912, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:08.667] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 638 448, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:09.410] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 703 984, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:10.366] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 769 520, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:10.871] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 835 056, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:11.456] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 900 592, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:11.659] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #1 (смещение 1 966 128, 65 536 байт). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:11.995] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 2 031 664, отдано 65 488 байт (2 097 152 / 24 891 313 байт, 8,4%). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:11.995] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 2 097 152, отдано 48 байт (2 097 200 / 24 891 313 байт, 8,4%). Скачано всего: 7 из 24 чанков (29,2%).
-[2026-10-04 08:50:11.995] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/24 (смещение 7 340 032 б, размер 1 048 576 б)...
-[2026-10-04 08:50:11.995] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:11Z (svc)
-[2026-10-04 08:50:11.995] [DEBUG] [WTelegram]             → Upload_GetFile                         #4274
-[2026-10-04 08:50:11.995] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:12.187] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:11Z
-[2026-10-04 08:50:12.187] [DEBUG] [WTelegram]              → Upload_File                           #4274
-[2026-10-04 08:50:12.187] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/24 (1 048 576 б за 192 мс) [Полный].
-[2026-10-04 08:50:12.188] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (8388608/24891313)
-[2026-10-04 08:50:12.620] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 097 200, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:12.996] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 162 736, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:13.751] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 228 272, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:13.818] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
-[2026-10-04 08:50:14.127] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 293 808, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:14.662] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 359 344, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:15.040] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 424 880, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:15.505] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 490 416, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:15.965] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 555 952, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:16.461] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 621 488, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:17.087] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 687 024, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:17.421] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 752 560, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:17.724] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:17Z (svc)
-[2026-10-04 08:50:17.724] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #24BA
-[2026-10-04 08:50:17.724] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:17.765] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 05:50:17Z (svc) 
-[2026-10-04 08:50:18.253] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 818 096, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:18.920] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 883 632, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:20.090] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 2 949 168, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:20.584] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #2 (смещение 3 014 704, 65 536 байт). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:20.927] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 3 080 240, отдано 65 488 байт (3 145 728 / 24 891 313 байт, 12,6%). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:20.927] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 3 145 728, отдано 48 байт (3 145 776 / 24 891 313 байт, 12,6%). Скачано всего: 8 из 24 чанков (33,3%).
-[2026-10-04 08:50:20.927] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #8/24 (смещение 8 388 608 б, размер 1 048 576 б)...
-[2026-10-04 08:50:20.927] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #7279
-[2026-10-04 08:50:21.036] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:20Z
-[2026-10-04 08:50:21.037] [DEBUG] [WTelegram]              → Upload_File                           #7279
-[2026-10-04 08:50:21.037] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #8/24 (1 048 576 б за 109 мс) [Полный].
-[2026-10-04 08:50:21.038] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (9437184/24891313)
-[2026-10-04 08:50:21.173] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 145 776, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:21.549] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 211 312, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:21.839] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 276 848, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:22.218] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 342 384, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:22.682] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
-[2026-10-04 08:50:22.840] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 407 920, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:23.633] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 473 456, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:24.633] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 538 992, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:25.008] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 604 528, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:25.515] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 670 064, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:25.925] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 735 600, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:26.426] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 801 136, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:27.263] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 866 672, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:27.810] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 932 208, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:28.178] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 3 997 744, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:28.558] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #3 (смещение 4 063 280, 65 536 байт). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:29.139] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 4 128 816, отдано 65 488 байт (4 194 304 / 24 891 313 байт, 16,9%). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:29.139] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 4 194 304, отдано 48 байт (4 194 352 / 24 891 313 байт, 16,9%). Скачано всего: 9 из 24 чанков (37,5%).
-[2026-10-04 08:50:29.140] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #9/24 (смещение 9 437 184 б, размер 1 048 576 б)...
-[2026-10-04 08:50:29.140] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:28Z (svc)
-[2026-10-04 08:50:29.140] [DEBUG] [WTelegram]             → Upload_GetFile                         #5165
-[2026-10-04 08:50:29.140] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:29.253] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:28Z
-[2026-10-04 08:50:29.254] [DEBUG] [WTelegram]              → Upload_File                           #5165
-[2026-10-04 08:50:29.254] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #9/24 (1 048 576 б за 114 мс) [Полный].
-[2026-10-04 08:50:29.255] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (10485760/24891313)
-[2026-10-04 08:50:29.521] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 194 352, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:30.012] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 259 888, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:30.516] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 325 424, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:30.897] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
-[2026-10-04 08:50:31.097] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 390 960, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:31.644] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 456 496, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:32.391] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 522 032, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:32.896] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 587 568, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:33.270] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 653 104, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:33.731] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 718 640, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:34.311] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 784 176, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:34.891] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 849 712, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:35.390] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 915 248, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:35.852] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 4 980 784, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:36.519] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 5 046 320, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:36.893] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #4 (смещение 5 111 856, 65 536 байт). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:37.525] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 5 177 392, отдано 65 488 байт (5 242 880 / 24 891 313 байт, 21,1%). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:37.525] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): смещение 5 242 880, отдано 48 байт (5 242 928 / 24 891 313 байт, 21,1%). Скачано всего: 10 из 24 чанков (41,7%).
-[2026-10-04 08:50:37.525] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/24 (смещение 10 485 760 б, размер 1 048 576 б)...
-[2026-10-04 08:50:37.526] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 05:50:37Z (svc)
-[2026-10-04 08:50:37.526] [DEBUG] [WTelegram]             → Upload_GetFile                         #AB92
-[2026-10-04 08:50:37.526] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-04 08:50:37.619] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 05:50:37Z
-[2026-10-04 08:50:37.619] [DEBUG] [WTelegram]              → Upload_File                           #AB92
-[2026-10-04 08:50:37.619] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/24 (1 048 576 б за 93 мс) [Полный].
-[2026-10-04 08:50:37.619] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Download] для Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4 (11534336/24891313)
-[2026-10-04 08:50:37.942] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 242 928, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:38.479] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 308 464, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:39.028] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 374 000, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:39.248] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
-[2026-10-04 08:50:39.314] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 439 536, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:39.688] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 505 072, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:40.531] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 570 608, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:41.234] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 636 144, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:41.857] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 701 680, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:42.693] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 767 216, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
-[2026-10-04 08:50:42.945] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 1470): Глобальный Чанк #5 (смещение 5 832 752, 65 536 байт). Скачано всего: 11 из 24 чанков (45,8%).
+[2026-10-04 17:18:13.140] [INFO ] [WinFsp] Виртуальный диск Y: успешно смонтирован через WinFsp (прямой стриминг в ОЗУ).
+[2026-10-04 17:18:13.141] [INFO ] [Shell] Контекстное меню корзины WebDAV успешно зарегистрировано в реестре для Y:\
+[2026-10-04 17:19:12.644] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:19:12Z (svc)
+[2026-10-04 17:19:12.644] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #0648
+[2026-10-04 17:19:12.644] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:19:12.686] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 14:19:12Z (svc) 
+[2026-10-04 17:19:24.521] [DEBUG] [WTelegram] 2>Receiving Updates                                  2026-10-04 14:19:24Z  
+[2026-10-04 17:20:12.700] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:12Z (svc)
+[2026-10-04 17:20:12.701] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #5B40
+[2026-10-04 17:20:12.701] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:12.742] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-04 14:20:12Z (svc) 
+[2026-10-04 17:20:23.993] [DEBUG] [WTelegram] 2>Sending   Channels_GetMessages                     #5990
+[2026-10-04 17:20:24.196] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:24Z
+[2026-10-04 17:20:24.197] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #5990
+[2026-10-04 17:20:24.208] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/11 для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:24.209] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:24Z (svc)
+[2026-10-04 17:20:24.209] [DEBUG] [WTelegram]             → Upload_GetFile                         #D12C
+[2026-10-04 17:20:24.209] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:24.500] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:24Z
+[2026-10-04 17:20:24.501] [DEBUG] [WTelegram]              → Upload_File                           #D12C
+[2026-10-04 17:20:24.501] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/11 для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (262 144 б за 292 мс) [Полный].
+[2026-10-04 17:20:24.507] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 17:20:24.531] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/11 для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (смещение 10 747 904 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:24.531] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:24Z (svc)
+[2026-10-04 17:20:24.531] [DEBUG] [WTelegram]             → Upload_GetFile                         #B6F4
+[2026-10-04 17:20:24.531] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:24.611] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:24Z
+[2026-10-04 17:20:24.611] [DEBUG] [WTelegram]              → Upload_File                           #B6F4
+[2026-10-04 17:20:24.611] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/11 для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (61 192 б за 80 мс) [Полный].
+[2026-10-04 17:20:24.615] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:24Z (svc)
+[2026-10-04 17:20:24.615] [DEBUG] [WTelegram]             → Channels_GetMessages                   #1698
+[2026-10-04 17:20:24.615] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:24.670] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:24Z
+[2026-10-04 17:20:24.671] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #1698
+[2026-10-04 17:20:24.671] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/11 для 'Nina - Counting Stars.mp3' (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:24.671] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:24Z (svc)
+[2026-10-04 17:20:24.671] [DEBUG] [WTelegram]             → Upload_GetFile                         #B374
+[2026-10-04 17:20:24.671] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:24.874] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:24Z
+[2026-10-04 17:20:24.874] [DEBUG] [WTelegram]              → Upload_File                           #B374
+[2026-10-04 17:20:24.874] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/11 для 'Nina - Counting Stars.mp3' (262 144 б за 203 мс) [Полный].
+[2026-10-04 17:20:24.876] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'Nina - Counting Stars.mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 17:20:24.898] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/11 для 'Nina - Counting Stars.mp3' (смещение 11 010 048 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:24.898] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:24Z (svc)
+[2026-10-04 17:20:24.898] [DEBUG] [WTelegram]             → Upload_GetFile                         #6E54
+[2026-10-04 17:20:24.898] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:25.306] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:24Z
+[2026-10-04 17:20:25.306] [DEBUG] [WTelegram]              → Upload_File                           #6E54
+[2026-10-04 17:20:25.306] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/11 для 'Nina - Counting Stars.mp3' (110 858 б за 408 мс) [Полный].
+[2026-10-04 17:20:25.311] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:25Z (svc)
+[2026-10-04 17:20:25.311] [DEBUG] [WTelegram]             → Channels_GetMessages                   #4475
+[2026-10-04 17:20:25.311] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:25.366] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:25Z
+[2026-10-04 17:20:25.366] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #4475
+[2026-10-04 17:20:25.366] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/13 для 'Headhunters - Dayz Like That (3base club mix).mp3' (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:25.366] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:25Z (svc)
+[2026-10-04 17:20:25.367] [DEBUG] [WTelegram]             → Upload_GetFile                         #3205
+[2026-10-04 17:20:25.367] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:25.544] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:25Z
+[2026-10-04 17:20:25.546] [DEBUG] [WTelegram]              → Upload_File                           #3205
+[2026-10-04 17:20:25.546] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/13 для 'Headhunters - Dayz Like That (3base club mix).mp3' (262 144 б за 179 мс) [Полный].
+[2026-10-04 17:20:25.547] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'Headhunters - Dayz Like That (3base club mix).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 17:20:25.578] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #12/13 для 'Headhunters - Dayz Like That (3base club mix).mp3' (смещение 12 582 912 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:25.579] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:25Z (svc)
+[2026-10-04 17:20:25.579] [DEBUG] [WTelegram]             → Upload_GetFile                         #85AD
+[2026-10-04 17:20:25.579] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:25.636] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:25Z
+[2026-10-04 17:20:25.636] [DEBUG] [WTelegram]              → Upload_File                           #85AD
+[2026-10-04 17:20:25.636] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #12/13 для 'Headhunters - Dayz Like That (3base club mix).mp3' (92 119 б за 57 мс) [Полный].
+[2026-10-04 17:20:25.642] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:25Z (svc)
+[2026-10-04 17:20:25.642] [DEBUG] [WTelegram]             → Channels_GetMessages                   #3CD5
+[2026-10-04 17:20:25.642] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:25.699] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:25Z
+[2026-10-04 17:20:25.699] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #3CD5
+[2026-10-04 17:20:25.700] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:25.700] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:25Z (svc)
+[2026-10-04 17:20:25.700] [DEBUG] [WTelegram]             → Upload_GetFile                         #A04D
+[2026-10-04 17:20:25.700] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:25.899] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:25Z
+[2026-10-04 17:20:25.899] [DEBUG] [WTelegram]              → Upload_File                           #A04D
+[2026-10-04 17:20:25.899] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (262 144 б за 199 мс) [Полный].
+[2026-10-04 17:20:25.900] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 17:20:25.924] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #12/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (смещение 13 107 200 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:25.924] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:25Z (svc)
+[2026-10-04 17:20:25.925] [DEBUG] [WTelegram]             → Upload_GetFile                         #EA89
+[2026-10-04 17:20:25.925] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:25.993] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:25Z
+[2026-10-04 17:20:25.993] [DEBUG] [WTelegram]              → Upload_File                           #EA89
+[2026-10-04 17:20:25.993] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #12/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (83 816 б за 69 мс) [Полный].
+[2026-10-04 17:20:25.995] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 764): Глобальный Чанк #0 (смещение 32 768, 32 768 байт). Скачано всего: 0 из 13 чанков (0%).
+[2026-10-04 17:20:25.995] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 764): Глобальный Чанк #0 (смещение 65 536, 32 768 байт). Скачано всего: 0 из 13 чанков (0%).
+[2026-10-04 17:20:25.996] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 764): Глобальный Чанк #0 (смещение 98 304, 65 536 байт). Скачано всего: 0 из 13 чанков (0%).
+[2026-10-04 17:20:25.996] [INFO ] [TelegramService] [Cache RAM] Потоковое чтение из ОЗУ для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 764): смещение 163 840, отдано 98 304 байт (262 144 / 13 191 016 байт, 2,0%). Скачано всего: 0 из 13 чанков (0%).
+[2026-10-04 17:20:26.018] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (смещение 262 144 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:26.019] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:26Z (svc)
+[2026-10-04 17:20:26.019] [DEBUG] [WTelegram]             → Upload_GetFile                         #DF6A
+[2026-10-04 17:20:26.019] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:26.167] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:26Z
+[2026-10-04 17:20:26.167] [DEBUG] [WTelegram]              → Upload_File                           #DF6A
+[2026-10-04 17:20:26.167] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/13 для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (262 144 б за 148 мс) [Полный].
+[2026-10-04 17:20:26.173] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:26Z (svc)
+[2026-10-04 17:20:26.173] [DEBUG] [WTelegram]             → Channels_GetMessages                   #8AE6
+[2026-10-04 17:20:26.173] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:26.228] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:26Z
+[2026-10-04 17:20:26.228] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #8AE6
+[2026-10-04 17:20:26.228] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (смещение 0 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:26.228] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:26Z (svc)
+[2026-10-04 17:20:26.228] [DEBUG] [WTelegram]             → Upload_GetFile                         #BCD2
+[2026-10-04 17:20:26.228] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:26.370] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:26Z
+[2026-10-04 17:20:26.371] [DEBUG] [WTelegram]              → Upload_File                           #BCD2
+[2026-10-04 17:20:26.371] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #0/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (262 144 б за 142 мс) [Полный].
+[2026-10-04 17:20:26.385] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-04 17:20:26.397] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #13/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (смещение 13 631 488 б, размер 262 144 б) [Докачка остатка/Зонд]...
+[2026-10-04 17:20:26.397] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-04 14:20:26Z (svc)
+[2026-10-04 17:20:26.397] [DEBUG] [WTelegram]             → Upload_GetFile                         #12E2
+[2026-10-04 17:20:26.397] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-04 17:20:26.536] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-04 14:20:26Z
+[2026-10-04 17:20:26.536] [DEBUG] [WTelegram]              → Upload_File                           #12E2
+[2026-10-04 17:20:26.536] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #13/14 для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (233 981 б за 139 мс) [Полный].
+[2026-10-04 17:20:26.537] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 32 768, 32 768 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 17:20:26.538] [INFO ] [TelegramService] [Cache RAM] Точечное чтение из ОЗУ для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 765): Глобальный Чанк #0 (смещение 65 536, 32 768 байт). Скачано всего: 1 из 14 чанков (7,1%).
+[2026-10-04 17:20:27.786] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-04 17:20:27.788] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.

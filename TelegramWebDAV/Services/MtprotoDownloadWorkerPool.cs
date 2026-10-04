@@ -310,8 +310,10 @@ namespace TelegramWebDAV.Services
                     if (alignedLimit > 1048576) alignedLimit = 1048576;
 
                     string fileTag = !string.IsNullOrEmpty(request.FileName) ? $" для '{request.FileName}'" : "";
-                    string probeTag = reqLimit < 1048576 ? " [Докачка остатка/Зонд]" : "";
-                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{request.ChunkIndex}/{totalFileChunks}{fileTag} (смещение {reqOffset:N0} б, размер {alignedLimit:N0} б){probeTag}...");
+                    string requestTag = alignedLimit >= 1048576
+                        ? " [Полный чанк]"
+                        : (alignedLimit == 262144 ? " [Зонд 256 КБ]" : $" [Зонд {(double)alignedLimit / 1024.0:0.00} КБ]");
+                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{request.ChunkIndex}/{totalFileChunks}{fileTag} (смещение {reqOffset:N0} б, размер {alignedLimit:N0} б){requestTag}...");
                     var sw = Stopwatch.StartNew();
 
                     var fileBase = await activeClient.Upload_GetFile(location, reqOffset, alignedLimit, precise: true);
@@ -333,9 +335,23 @@ namespace TelegramWebDAV.Services
                         }
 
                         int receivedLen = finalChunkBytes.Length;
-                        string chunkTag = receivedLen < expectedChunkSize
-                            ? $" [{receivedLen:N0} б из {expectedChunkSize:N0} б, Хвост EOF]"
-                            : " [Полный]";
+                        string chunkTag;
+                        if (receivedLen >= 1048576)
+                        {
+                            chunkTag = " [Полный чанк]";
+                        }
+                        else if (request.ChunkOffset + receivedLen >= request.FileTotalSize)
+                        {
+                            chunkTag = $" [Остаток {(double)receivedLen / 1024.0:0.00} КБ]";
+                        }
+                        else if (receivedLen == 262144)
+                        {
+                            chunkTag = " [Зонд 256 КБ]";
+                        }
+                        else
+                        {
+                            chunkTag = $" [Зонд {(double)receivedLen / 1024.0:0.00} КБ]";
+                        }
 
                         AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{request.ChunkIndex}/{totalFileChunks}{fileTag} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
 
