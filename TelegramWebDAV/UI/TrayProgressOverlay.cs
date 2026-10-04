@@ -59,7 +59,7 @@ namespace TelegramWebDAV.UI
 
             FormBorderStyle = FormBorderStyle.None;
             ShowInTaskbar = false;
-            TopMost = true;
+            TopMost = false;
             StartPosition = FormStartPosition.Manual;
             Size = new Size(325, 96);
             BackColor = Color.FromArgb(30, 41, 59); // Slate 800
@@ -102,7 +102,7 @@ namespace TelegramWebDAV.UI
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle |= WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST;
+                cp.ExStyle |= WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW;
                 return cp;
             }
         }
