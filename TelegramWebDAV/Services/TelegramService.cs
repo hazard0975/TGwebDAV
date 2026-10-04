@@ -1892,7 +1892,7 @@ namespace TelegramWebDAV.Services
                         await destination.FlushAsync();
                         audit.AddRamBytes(bytesToSend);
                         bool allReceived = audit.MarkRangeReceived(offset, bytesToSend);
-                        AppLogger.Info("TelegramService", $"[Cache RAM] Точечное чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{offset / 1048576} (смещение {offset:N0}, {bytesToSend:N0} байт). {audit.ProgressSummary}.");
+                        AppLogger.Info("TelegramService", $"[Cache RAM] Точечное чтение из ОЗУ для '{fileName}' (ID {messageId}): Глобальный Чанк #{(offset / 1048576) + 1} (смещение {offset:N0}, {bytesToSend:N0} байт). {audit.ProgressSummary}.");
 
                         if (!isMetadataProbe && allReceived && audit.LogCompletionOnce())
                         {
@@ -2143,8 +2143,8 @@ namespace TelegramWebDAV.Services
             if (newChunksToQueue.Count > 0)
             {
                 int totalChunks = (int)Math.Ceiling((double)actualTotalSize / 1048576.0);
-                int firstChunk = (int)(newChunksToQueue[0] / 1048576);
-                int lastChunk = (int)(newChunksToQueue[^1] / 1048576);
+                int firstChunk = (int)(newChunksToQueue[0] / 1048576) + 1;
+                int lastChunk = (int)(newChunksToQueue[^1] / 1048576) + 1;
                 double mb = (double)totalBytesToQueue / (1024.0 * 1024.0);
                 int activeWorkers = _workerPool.ActiveWorkerCount;
 

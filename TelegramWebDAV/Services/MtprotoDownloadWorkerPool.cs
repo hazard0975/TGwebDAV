@@ -291,6 +291,8 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
+                int displayChunkIdx = request.ChunkIndex + 1;
+
                 try
                 {
                     await PaceRequestAsync(workerId, token);
@@ -313,7 +315,7 @@ namespace TelegramWebDAV.Services
                     string requestTag = alignedLimit >= 1048576
                         ? " [Полный чанк]"
                         : (alignedLimit == 262144 ? " [Зонд 256 КБ]" : $" [Зонд {(double)alignedLimit / 1024.0:0.00} КБ]");
-                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{request.ChunkIndex}/{totalFileChunks}{fileTag} (смещение {reqOffset:N0} б, размер {alignedLimit:N0} б){requestTag}...");
+                    AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{displayChunkIdx}/{totalFileChunks}{fileTag} (смещение {reqOffset:N0} б, размер {alignedLimit:N0} б){requestTag}...");
                     var sw = Stopwatch.StartNew();
 
                     var fileBase = await activeClient.Upload_GetFile(location, reqOffset, alignedLimit, precise: true);
@@ -353,7 +355,7 @@ namespace TelegramWebDAV.Services
                             chunkTag = $" [Зонд {(double)receivedLen / 1024.0:0.00} КБ]";
                         }
 
-                        AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{request.ChunkIndex}/{totalFileChunks}{fileTag} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
+                        AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{displayChunkIdx}/{totalFileChunks}{fileTag} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
 
                         _inFlightChunks.TryRemove(key, out _);
                         _activeRequests.TryRemove(key, out _);
@@ -365,12 +367,12 @@ namespace TelegramWebDAV.Services
                     else if (request.RetryCount < 3)
                     {
                         request.RetryCount++;
-                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Пустой ответ для чанка #{request.ChunkIndex}{fileTag}. Повтор {request.RetryCount}/3...");
+                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Пустой ответ для чанка #{displayChunkIdx}{fileTag}. Повтор {request.RetryCount}/3...");
                         await Task.Delay(200, token);
                     }
                     else
                     {
-                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Исчерпаны попытки для Чанка #{request.ChunkIndex}/{totalFileChunks}{fileTag}.");
+                        AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Исчерпаны попытки для Чанка #{displayChunkIdx}/{totalFileChunks}{fileTag}.");
                         break;
                     }
                 }
@@ -415,7 +417,7 @@ namespace TelegramWebDAV.Services
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{request.ChunkIndex}/{totalFileChunks} (смещение {request.ChunkOffset:N0} б): {ex.Message}");
+                    AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Ошибка чанка #{displayChunkIdx}/{totalFileChunks} (смещение {request.ChunkOffset:N0} б): {ex.Message}");
                     if (request.RetryCount < 3)
                     {
                         request.RetryCount++;
