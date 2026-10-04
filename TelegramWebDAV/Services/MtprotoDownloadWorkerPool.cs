@@ -287,6 +287,24 @@ namespace TelegramWebDAV.Services
             }
         }
 
+        private static string FormatChunkTag(long chunkOffset, int length, long totalFileSize)
+        {
+            if (length >= 1048576)
+                return " [Полный чанк]";
+            if (totalFileSize > 0 && chunkOffset + length >= totalFileSize)
+                return $" [Остаток {(double)length / 1024.0:0.00} КБ]";
+
+            int quarter = (int)((chunkOffset % 1048576) / 262144) + 1;
+            if (length == 262144)
+                return $" [Зонд 256 КБ - {quarter}/4]";
+            if (length == 524288)
+                return $" [Зонд 512 КБ - {quarter}..{quarter + 1}/4]";
+            if (length == 786432)
+                return $" [Зонд 768 КБ - {quarter}..{quarter + 2}/4]";
+
+            return $" [Зонд {(double)length / 1024.0:0.00} КБ]";
+        }
+
         private async Task ProcessChunkRequestAsync(int workerId, ChunkDownloadRequest request, string key, CancellationToken token)
         {
             int totalFileChunks = request.FileTotalSize > 0 ? (int)Math.Ceiling((double)request.FileTotalSize / 1048576.0) : 1;
@@ -355,9 +373,7 @@ namespace TelegramWebDAV.Services
                     if (alignedLimit > 1048576) alignedLimit = 1048576;
 
                     string fileTag = !string.IsNullOrEmpty(request.FileName) ? $" для '{request.FileName}'" : "";
-                    string requestTag = alignedLimit >= 1048576
-                        ? " [Полный чанк]"
-                        : (alignedLimit == 262144 ? " [Зонд 256 КБ]" : $" [Зонд {(double)alignedLimit / 1024.0:0.00} КБ]");
+                    string requestTag = FormatChunkTag(reqOffset, alignedLimit, request.FileTotalSize);
                     AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Запрос чанка #{displayChunkIdx}/{totalFileChunks}{fileTag} (смещение {reqOffset:N0} б, размер {alignedLimit:N0} б){requestTag}...");
                     var sw = Stopwatch.StartNew();
 
@@ -380,23 +396,7 @@ namespace TelegramWebDAV.Services
                         }
 
                         int receivedLen = finalChunkBytes.Length;
-                        string chunkTag;
-                        if (receivedLen >= 1048576)
-                        {
-                            chunkTag = " [Полный чанк]";
-                        }
-                        else if (request.ChunkOffset + receivedLen >= request.FileTotalSize)
-                        {
-                            chunkTag = $" [Остаток {(double)receivedLen / 1024.0:0.00} КБ]";
-                        }
-                        else if (receivedLen == 262144)
-                        {
-                            chunkTag = " [Зонд 256 КБ]";
-                        }
-                        else
-                        {
-                            chunkTag = $" [Зонд {(double)receivedLen / 1024.0:0.00} КБ]";
-                        }
+                        string chunkTag = FormatChunkTag(request.ChunkOffset, receivedLen, request.FileTotalSize);
 
                         AppLogger.Info("MtprotoWorkerPool", $"[Воркер #{workerId}] Получен чанк #{displayChunkIdx}/{totalFileChunks}{fileTag} ({receivedLen:N0} б за {sw.ElapsedMilliseconds} мс){chunkTag}.");
 

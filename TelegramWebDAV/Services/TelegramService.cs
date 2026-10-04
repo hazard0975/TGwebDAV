@@ -248,27 +248,68 @@ namespace TelegramWebDAV.Services
         {
             EnsureChunkCacheCapacity();
             long megaStart = (chunkOffset / 1048576) * 1048576;
+            long incomingStart = chunkOffset;
 
-            // Если пришел хвост к существующему зонду головы того же 1 МБ блока:
-            if (chunkOffset > megaStart)
+            // Собираем все фрагменты этого же 1 МБ блока в ОЗУ для интервального слияния
+            var fragmentsToMerge = new System.Collections.Generic.List<(string key, long start, byte[] data)>
             {
-                // Ищем существующий зонд головы в ОЗУ
-                string headProbeKey = $"{messageId}:{megaStart}:{(int)(chunkOffset - megaStart)}";
-                if (_chunkMemoryCache.TryRemove(headProbeKey, out var headProbeItem) && headProbeItem.data != null)
-                {
-                    byte[] probeData = headProbeItem.data;
-                    int fullSize = probeData.Length + raw.Length;
-                    byte[] stitched = new byte[fullSize];
-                    Buffer.BlockCopy(probeData, 0, stitched, 0, probeData.Length);
-                    Buffer.BlockCopy(raw, 0, stitched, probeData.Length, raw.Length);
+                (string.Empty, incomingStart, raw)
+            };
 
-                    string fullChunkKey = $"{messageId}:{megaStart}:{fullSize}";
-                    _chunkMemoryCache[fullChunkKey] = (stitched, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
-                    return;
+            foreach (var kvp in _chunkMemoryCache)
+            {
+                var parts = kvp.Key.Split(':');
+                if (parts.Length == 3 && int.TryParse(parts[0], out var mId) && mId == messageId && long.TryParse(parts[1], out var start))
+                {
+                    if (start >= megaStart && start < megaStart + 1048576 && kvp.Value.data != null)
+                    {
+                        fragmentsToMerge.Add((kvp.Key, start, kvp.Value.data));
+                    }
                 }
             }
 
-            // Очищаем частичные фрагменты только при получении полного 1 МБ блока
+            // Сортируем фрагменты по возрастанию начального смещения
+            fragmentsToMerge.Sort((a, b) => a.start.CompareTo(b.start));
+
+            // Проверяем непрерывность цепочки фрагментов
+            long mergedStart = fragmentsToMerge[0].start;
+            long mergedEnd = fragmentsToMerge[0].start + fragmentsToMerge[0].data.Length;
+            bool canMergeAll = true;
+
+            for (int i = 1; i < fragmentsToMerge.Count; i++)
+            {
+                if (fragmentsToMerge[i].start <= mergedEnd)
+                {
+                    mergedEnd = Math.Max(mergedEnd, fragmentsToMerge[i].start + fragmentsToMerge[i].data.Length);
+                }
+                else
+                {
+                    canMergeAll = false;
+                    break;
+                }
+            }
+
+            if (canMergeAll && fragmentsToMerge.Count > 1)
+            {
+                int mergedLength = (int)(mergedEnd - mergedStart);
+                byte[] mergedBuffer = new byte[mergedLength];
+
+                foreach (var frag in fragmentsToMerge)
+                {
+                    int destOffset = (int)(frag.start - mergedStart);
+                    Buffer.BlockCopy(frag.data, 0, mergedBuffer, destOffset, frag.data.Length);
+                    if (!string.IsNullOrEmpty(frag.key))
+                    {
+                        _chunkMemoryCache.TryRemove(frag.key, out _);
+                    }
+                }
+
+                string mergedKey = $"{messageId}:{mergedStart}:{mergedLength}";
+                _chunkMemoryCache[mergedKey] = (mergedBuffer, DateTime.UtcNow.AddMinutes(cacheTtlMinutes));
+                return;
+            }
+
+            // Если пришел полный 1 МБ блок (>= 1048576 байт), вычищаем любые старые частичные фрагменты этого же блока
             if (raw.Length >= 1048576)
             {
                 foreach (var key in _chunkMemoryCache.Keys)
@@ -1809,8 +1850,13 @@ namespace TelegramWebDAV.Services
             // 1) Запрос в хвост файла (последние 512 КБ для ID3v1/тетрисов метаданных)
             bool isTailProbe = actualTotalSize > 1048576 && offset >= Math.Max(0, actualTotalSize - 524288);
 
-            // 2) Зонд метаданных: хвостовой запрос или короткий запрос (<= 256 КБ), пока не достигнут порог активации стриминга
-            bool isMetadataProbe = isTailProbe || (length <= 262144 && readSeq.AccumulatedSequentialBytes < activationThresholdBytes);
+            // 2) Зонд метаданных / эскиза обложки:
+            // - Хвостовой запрос (ID3v1)
+            // - Либо одиночный точечный запрос малого размера (length <= 262144) при единичном последовательном счетчике (SequentialCount <= 1)
+            // - Либо чтение самого первого 1 МБ файла (offset < 1048576) до того, как суммарно вычитан первый мегабайт (AccumulatedSequentialBytes < 1048576)
+            bool isFirstMb = offset < 1048576 && readSeq.AccumulatedSequentialBytes < 1048576;
+            bool isSinglePointProbe = length <= 262144 && readSeq.SequentialCount <= 1;
+            bool isMetadataProbe = isTailProbe || isFirstMb || isSinglePointProbe;
 
             // Если дисковый кэш включен в настройках: скачиваем файл в дисковый кэш %TEMP%
             if (enableDiskCache && offset == 0 && !isMetadataProbe && actualTotalSize > 262144)
@@ -2121,11 +2167,24 @@ namespace TelegramWebDAV.Services
 
             long windowBytes = (long)windowMb * 1024 * 1024;
             long startChunkOffset = (currentReadOffset / 1048576) * 1048576;
-            long scanOffset = startChunkOffset + 1048576; // Сканирование строго со следующего чанка!
-            long maxPrefetchLimit = Math.Min(actualTotalSize, scanOffset + windowBytes);
 
             var newChunksToQueue = new List<long>();
             long totalBytesToQueue = 0;
+
+            // 1. Проверяем текущий чанк: если он скачан лишь частично (например, 256 КБ зонд), сначала докачиваем его!
+            int startExpectedSize = (int)Math.Min(1048576L, actualTotalSize - startChunkOffset);
+            bool currentInRam = TryGetFromMemoryCache(messageId, startChunkOffset, out var currData, out _) && (currData != null && currData.Length >= startExpectedSize);
+            bool currentInFlight = _workerPool.IsChunkInFlight(messageId, startChunkOffset);
+
+            if (!currentInRam && !currentInFlight)
+            {
+                newChunksToQueue.Add(startChunkOffset);
+                totalBytesToQueue += startExpectedSize;
+            }
+
+            // 2. Сканируем строго следующие чанки в пределах окна упреждения
+            long scanOffset = startChunkOffset + 1048576;
+            long maxPrefetchLimit = Math.Min(actualTotalSize, scanOffset + windowBytes);
 
             while (scanOffset < maxPrefetchLimit)
             {
