@@ -41,6 +41,8 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkAutoShowPopup = null!;
         private CheckBox _chkGalleryPreview = null!;
         private CheckBox _chkEnableDiskCache = null!;
+        private NumericUpDown _numDownloadWorkers = null!;
+        private NumericUpDown _numPacingDelayMs = null!;
         private NumericUpDown _numMemoryCacheMb = null!;
         private NumericUpDown _numChunkTtlMinutes = null!;
         private NumericUpDown _numStreamingActivationMb = null!;
@@ -169,10 +171,16 @@ namespace TelegramWebDAV.UI
             grpIntegration.Controls.Add(pnlIntegrationInner);
 
             // 3. Рамка: Кэширование и стриминг
-            var grpCache = UIFactory.CreateGroupBox("Кэширование и стриминг");
+            var grpCache = UIFactory.CreateGroupBox("Кэширование, стриминг и скорость MTProto");
             var pnlCacheInner = UIFactory.CreateVerticalContainer();
 
             _chkEnableDiskCache = UIFactory.CreateCheckBox("Сохранять прочитанные файлы в дисковый кэш (%TEMP%)", _settings.Server.EnableDiskReadCache);
+
+            _numDownloadWorkers = UIFactory.CreateNumericInput(1, 3, Math.Clamp(_settings.Server.DownloadWorkerCount > 0 ? _settings.Server.DownloadWorkerCount : 1, 1, 3), 80);
+            var rowDownloadWorkers = UIFactory.CreateSettingRow("Параллельных воркеров MTProto (1-3):", _numDownloadWorkers, 270);
+
+            _numPacingDelayMs = UIFactory.CreateNumericInput(20, 500, Math.Clamp(_settings.Server.PacingDelayMs > 0 ? _settings.Server.PacingDelayMs : 70, 20, 500), 80);
+            var rowPacingDelay = UIFactory.CreateSettingRow("Задержка между запросами (мс):", _numPacingDelayMs, 270);
 
             _numMemoryCacheMb = UIFactory.CreateNumericInput(32, 4096, _settings.Server.MemoryCacheSizeMb > 0 ? _settings.Server.MemoryCacheSizeMb : 128, 80);
             var rowMemCache = UIFactory.CreateSettingRow("Буфер кэша в ОЗУ (МБ):", _numMemoryCacheMb, 270);
@@ -190,7 +198,7 @@ namespace TelegramWebDAV.UI
             var rowStreamingWindow = UIFactory.CreateSettingRow("Буфер упреждения для видео/файлов (МБ):", _numStreamingWindowMb, 270);
 
             pnlCacheInner.Controls.AddRange(new Control[] {
-                _chkEnableDiskCache, rowMemCache, rowChunkTtl, rowStreamingActivation, rowAudioWindow, rowStreamingWindow
+                _chkEnableDiskCache, rowDownloadWorkers, rowPacingDelay, rowMemCache, rowChunkTtl, rowStreamingActivation, rowAudioWindow, rowStreamingWindow
             });
             grpCache.Controls.Add(pnlCacheInner);
 
@@ -822,6 +830,9 @@ namespace TelegramWebDAV.UI
             _settings.Server.AutoShowUploadPopup = _chkAutoShowPopup.Checked;
             _settings.Server.CreatePhotoGalleryPreview = _chkGalleryPreview.Checked;
             _settings.Server.EnableDiskReadCache = _chkEnableDiskCache.Checked;
+            _settings.Server.DownloadWorkerCount = (int)_numDownloadWorkers.Value;
+            _settings.Server.PacingDelayMs = (int)_numPacingDelayMs.Value;
+            TelegramService.SetPacingDelay(_settings.Server.PacingDelayMs);
             _settings.Server.MemoryCacheSizeMb = (int)_numMemoryCacheMb.Value;
             _settings.Server.ChunkMemoryCacheTtlMinutes = (int)_numChunkTtlMinutes.Value;
             _settings.Server.StreamingActivationThresholdMb = (int)_numStreamingActivationMb.Value;

@@ -99,7 +99,7 @@ namespace TelegramWebDAV.Services
         private NodeRepository? _repository;
         private AppSettings _currentSettings;
         private readonly SemaphoreSlim _floodLock = new SemaphoreSlim(1, 1);
-        private DateTime _floodWaitUntil = DateTime.MinValue;
+        private static DateTime _globalFloodWaitUntil = DateTime.MinValue;
         private WTelegram.Client? _client;
         private System.Threading.CancellationTokenSource? _queueCts;
 
@@ -695,7 +695,8 @@ namespace TelegramWebDAV.Services
         {
             AppLogger.Info("TelegramService", "Проверка сессии и подключение к Telegram...");
             _currentSettings = _configManager.Load();
-            AppLogger.Info("TelegramService", $"[Streaming Config] RAM Кэш: {_currentSettings.Server.MemoryCacheSizeMb} МБ (TTL: {_currentSettings.Server.ChunkMemoryCacheTtlMinutes} мин) | Буфер аудио: {_currentSettings.Server.AudioPrefetchWindowMb} МБ | Окно стриминга: {_currentSettings.Server.StreamingPrefetchWindowMb} МБ | Дисковый кэш: {(_currentSettings.Server.EnableDiskReadCache ? "ВКЛ" : "ВЫКЛ (100% RAM)")}");
+            SetPacingDelay(_currentSettings.Server.PacingDelayMs > 0 ? _currentSettings.Server.PacingDelayMs : 70);
+            AppLogger.Info("TelegramService", $"[Streaming Config] Воркеры: {_currentSettings.Server.DownloadWorkerCount} | Пейсинг: {_globalPacingDelayMs} мс | RAM Кэш: {_currentSettings.Server.MemoryCacheSizeMb} МБ (TTL: {_currentSettings.Server.ChunkMemoryCacheTtlMinutes} мин) | Буфер аудио: {_currentSettings.Server.AudioPrefetchWindowMb} МБ | Окно стриминга: {_currentSettings.Server.StreamingPrefetchWindowMb} МБ | Дисковый кэш: {(_currentSettings.Server.EnableDiskReadCache ? "ВКЛ" : "ВЫКЛ (100% RAM)")}");
             
             if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
             {
@@ -952,24 +953,28 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Механизм перехвата FLOOD_WAIT и плавного ожидания без разрыва соединения с Проводником Windows.
+        /// Сквозной для всех воркеров, файлов и пулов приложения.
         /// </summary>
-        private async Task EnsureFloodWaitDelayAsync()
+        public static async Task EnsureFloodWaitDelayAsync(CancellationToken cancellationToken = default)
         {
-            if (_floodWaitUntil > DateTime.UtcNow)
+            if (_globalFloodWaitUntil > DateTime.UtcNow)
             {
-                var delay = _floodWaitUntil - DateTime.UtcNow;
-                AppLogger.Warn("TelegramService", $"FLOOD_WAIT активен: задержка потока на {delay.TotalSeconds:F1} сек...");
-                await Task.Delay(delay);
+                var delay = _globalFloodWaitUntil - DateTime.UtcNow;
+                if (delay.TotalMilliseconds > 0)
+                {
+                    AppLogger.Warn("TelegramService", $"FLOOD_WAIT активен: задержка потока на {delay.TotalSeconds:F1} сек...");
+                    await Task.Delay(delay, cancellationToken);
+                }
             }
         }
 
-        // Глобальный сквозной семафор и таймер пейсинга (70 мс) для всех исходящих запросов Upload_GetFile в приложении
+        // Глобальный сквозной семафор и таймер пейсинга для всех исходящих запросов Upload_GetFile в приложении
         private static readonly SemaphoreSlim _globalPacingLock = new SemaphoreSlim(1, 1);
         private static DateTime _globalLastRequestUtc = DateTime.MinValue;
-        private static int _globalPacingDelayMs = 70; // 70 мс (~14 запросов/сек) — оптимальный темп Telegram MTProto
+        private static int _globalPacingDelayMs = 70; // Настраивается в UI/конфиге (по умолчанию 70 мс)
 
         /// <summary>
-        /// Гарантирует минимальный интервал запуска (70 мс) между любыми исходящими запросами Upload_GetFile в Telegram MTProto.
+        /// Гарантирует минимальный интервал запуска между любыми исходящими запросами Upload_GetFile в Telegram MTProto.
         /// Предотвращает возникновение пиковых наложений (0-5 мс) между разными файлами и воркерами.
         /// </summary>
         public static async Task EnsurePacingDelayAsync(CancellationToken cancellationToken = default)
@@ -990,16 +995,30 @@ namespace TelegramWebDAV.Services
             }
         }
 
+        public static void SetPacingDelay(int delayMs)
+        {
+            Interlocked.Exchange(ref _globalPacingDelayMs, Math.Clamp(delayMs, 20, 500));
+        }
+
         public static void AdaptPacingDelay(int deltaMs)
         {
-            Interlocked.Exchange(ref _globalPacingDelayMs, Math.Clamp(_globalPacingDelayMs + deltaMs, 50, 300));
+            Interlocked.Exchange(ref _globalPacingDelayMs, Math.Clamp(_globalPacingDelayMs + deltaMs, 20, 500));
         }
 
         public void TriggerFloodWait(int seconds)
         {
-            _floodWaitUntil = DateTime.UtcNow.AddSeconds(seconds);
+            TriggerGlobalFloodWait(seconds);
+        }
+
+        public static void TriggerGlobalFloodWait(int seconds)
+        {
+            var targetTime = DateTime.UtcNow.AddSeconds(seconds);
+            if (targetTime > _globalFloodWaitUntil)
+            {
+                _globalFloodWaitUntil = targetTime;
+            }
             AdaptPacingDelay(20);
-            AppLogger.Warn("TelegramService", $"Получен FLOOD_WAIT на {seconds} сек от серверов Telegram. Пейсинг адаптирован до {_globalPacingDelayMs} мс.");
+            AppLogger.Warn("TelegramService", $"Получен FLOOD_WAIT на {seconds} сек от серверов Telegram. Сквозная пауза до {_globalFloodWaitUntil:HH:mm:ss}. Пейсинг адаптирован до {_globalPacingDelayMs} мс.");
         }
 
         /// <summary>
@@ -1769,8 +1788,9 @@ namespace TelegramWebDAV.Services
                 {
                     if (!File.Exists(cacheFilePath))
                     {
-                        AppLogger.Info("TelegramService", $"[Disk Cache Mode] Скачивание файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт) воркерами в дисковый кэш...");
-                        var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: 3, clientProvider: GetWorkerClientAsync);
+                        int diskWorkers = Math.Clamp(_currentSettings.Server.DownloadWorkerCount > 0 ? _currentSettings.Server.DownloadWorkerCount : 1, 1, 3);
+                        AppLogger.Info("TelegramService", $"[Disk Cache Mode] Скачивание файла '{fileName}' (ID {messageId}, {actualTotalSize:N0} байт) через {diskWorkers} воркеров в дисковый кэш...");
+                        var workerPool = new MtprotoDownloadWorkerPool(_client, workerCount: diskWorkers, clientProvider: GetWorkerClientAsync);
                         bool success = await workerPool.DownloadFileAsync(
                             document,
                             cacheFilePath,
@@ -2055,9 +2075,7 @@ namespace TelegramWebDAV.Services
                     catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
                     {
                         int waitSec = rpcEx.X > 0 ? rpcEx.X : 5;
-                        AppLogger.Warn("TelegramService", $"[FLOOD_WAIT] Telegram запросил паузу {waitSec} сек.");
-                        _floodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
-                        AdaptPacingDelay(20);
+                        TriggerGlobalFloodWait(waitSec);
                         await Task.Delay(waitSec * 1000);
                         await EnsurePacingDelayAsync();
                         fileBase = await activeClient.Upload_GetFile(location, chunkOffset, requestLimit, precise: true);
@@ -2232,9 +2250,10 @@ namespace TelegramWebDAV.Services
                     long prefetchEnd = missingChunks[missingChunks.Count - 1] + 1048576;
                     long prefetchLength = Math.Min(prefetchEnd - prefetchStart, actualTotalSize - prefetchStart);
 
+                    int configuredWorkers = Math.Clamp(_currentSettings.Server.DownloadWorkerCount > 0 ? _currentSettings.Server.DownloadWorkerCount : 1, 1, 3);
                     var prefetchPool = new MtprotoDownloadWorkerPool(
                         _client,
-                        workerCount: Math.Min(3, missingChunks.Count),
+                        workerCount: Math.Min(configuredWorkers, missingChunks.Count),
                         clientProvider: GetWorkerClientAsync);
 
                     await prefetchPool.DownloadToStreamAsync(

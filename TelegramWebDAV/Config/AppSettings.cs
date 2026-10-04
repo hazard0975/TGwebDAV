@@ -60,13 +60,15 @@ namespace TelegramWebDAV.Config
         // Публикация изображений
         public bool CreatePhotoGalleryPreview { get; set; } = true; // Создавать фото-превью для нативной галереи Telegram
 
-        // Настройки кэширования
+        // Настройки кэширования и производительности скачивания
         public bool EnableDiskReadCache { get; set; } = false; // По умолчанию 100% через ОЗУ
         public int MemoryCacheSizeMb { get; set; } = 128; // Динамический RAM-буфер 128 МБ
         public int ChunkMemoryCacheTtlMinutes { get; set; } = 10; // Время жизни чанков в ОЗУ (минут)
         public int AudioPrefetchWindowMb { get; set; } = 2; // Буфер претча для аудиофайлов (.mp3, .flac, .ogg и т.д.) - по умолчанию 2 МБ
         public int StreamingActivationThresholdMb { get; set; } = 1; // Объем вычитанных данных (МБ) для старта упреждения/префетча
         public int StreamingPrefetchWindowMb { get; set; } = 20; // Окно упреждения для видео и крупных файлов
+        public int DownloadWorkerCount { get; set; } = 1; // Количество параллельных воркеров MTProto (1-3, по умолчанию 1)
+        public int PacingDelayMs { get; set; } = 70; // Задержка между запросами MTProto (мс, по умолчанию 70)
     }
 
     public class DatabaseSettings

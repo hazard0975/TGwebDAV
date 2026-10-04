@@ -21,7 +21,6 @@ namespace TelegramWebDAV.Services
         private readonly Client _mainClient;
         private readonly Func<int, int, Task<Client>>? _clientProvider;
         private readonly int _workerCount;
-        private DateTime _poolFloodWaitUntil = DateTime.MinValue;
 
         public MtprotoDownloadWorkerPool(Client mainClient, int workerCount = 3, Func<int, int, Task<Client>>? clientProvider = null)
         {
@@ -39,23 +38,15 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Гарантирует микро-интервал между запросами Upload_GetFile (сквозной пейсинг 70 мс)
+        /// Гарантирует микро-интервал между запросами Upload_GetFile (сквозной пейсинг)
         /// и соблюдает единую паузу пула при возникновении FLOOD_WAIT.
         /// </summary>
         private async Task PaceRequestAsync(int workerId, CancellationToken cancellationToken)
         {
             // 1. Если активна общесистемная пауза FLOOD_WAIT — выжидаем её
-            if (_poolFloodWaitUntil > DateTime.UtcNow)
-            {
-                var waitTime = _poolFloodWaitUntil - DateTime.UtcNow;
-                if (waitTime.TotalMilliseconds > 0)
-                {
-                    AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] Пауза из-за активного FLOOD_WAIT ({waitTime.TotalSeconds:F1} сек)...");
-                    await Task.Delay(waitTime, cancellationToken);
-                }
-            }
+            await TelegramService.EnsureFloodWaitDelayAsync(cancellationToken);
 
-            // 2. Сквозной пейсинг 70 мс для всех запросов приложения
+            // 2. Сквозной пейсинг для всех запросов приложения
             await TelegramService.EnsurePacingDelayAsync(cancellationToken);
         }
 
@@ -250,9 +241,8 @@ namespace TelegramWebDAV.Services
                         catch (RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
                         {
                             int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
-                            _poolFloodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
-                            TelegramService.AdaptPacingDelay(20);
-                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Авто-адаптация сквозного пейсинга (+20 мс). Все воркеры приостановлены.");
+                            TelegramService.TriggerGlobalFloodWait(waitSec);
+                            AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Сквозная пауза. Все воркеры приостановлены.");
                             await Task.Delay(waitSec * 1000, cancellationToken);
                             chunkQueue.Enqueue(chunk);
                         }
@@ -428,9 +418,8 @@ namespace TelegramWebDAV.Services
                             catch (RpcException rpcEx) when (rpcEx.Code == 420)
                             {
                                 int waitSec = rpcEx.X > 0 ? rpcEx.X : 3;
-                                _poolFloodWaitUntil = DateTime.UtcNow.AddSeconds(waitSec);
-                                TelegramService.AdaptPacingDelay(20);
-                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Авто-адаптация сквозного пейсинга (+20 мс). Все воркеры приостановлены.");
+                                TelegramService.TriggerGlobalFloodWait(waitSec);
+                                AppLogger.Warn("MtprotoWorkerPool", $"[Воркер #{workerId}] FLOOD_WAIT {waitSec} сек! Сквозная пауза. Все воркеры приостановлены.");
                                 await Task.Delay(waitSec * 1000, cancellationToken);
                                 chunkQueue.Enqueue(chunk);
                             }
