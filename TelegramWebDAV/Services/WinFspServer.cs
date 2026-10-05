@@ -621,38 +621,49 @@ namespace TelegramWebDAV.Services
 
                         if (string.IsNullOrEmpty(ctx.OriginalSourcePath))
                         {
+                            AppLogger.Info("WinFsp", $"[Write] Пробуем определить источник из буфера обмена для '{nodeName}'...");
                             ctx.OriginalSourcePath = TryFindSourceFileFromClipboard(nodeName);
                         }
 
                         AudioMetadataResult? audioMeta = null;
                         VideoMetadataResult? videoMeta = null;
 
-                        if (!string.IsNullOrEmpty(ctx.OriginalSourcePath) && File.Exists(ctx.OriginalSourcePath))
+                        if (!string.IsNullOrEmpty(ctx.OriginalSourcePath))
                         {
+                            AppLogger.Info("WinFsp", $"[Write] Начинаем извлечение метаданных из оригинального файла: '{ctx.OriginalSourcePath}'");
+
                             if (VideoMetadataExtractor.IsPotentialVideo(nodeName))
                             {
                                 try
                                 {
-                                    AppLogger.Info("WinFsp", $"Извлечение метаданных и превью видео напрямую из оригинального файла: '{ctx.OriginalSourcePath}'...");
                                     videoMeta = VideoMetadataExtractor.ExtractFromFile(ctx.OriginalSourcePath, nodeName);
+                                    AppLogger.Info("WinFsp", $"[Write] Результат VideoMetadataExtractor для '{nodeName}': " +
+                                        $"длительность = {videoMeta.DurationSeconds} сек, разрешение = {videoMeta.Width}x{videoMeta.Height}, " +
+                                        $"обложка = {(videoMeta.Thumbnail != null ? $"{videoMeta.Thumbnail.Length} байт" : "НЕТ")}");
                                 }
                                 catch (Exception ex)
                                 {
-                                    AppLogger.Warn("WinFsp", $"Ошибка извлечения видео-метаданных из оригинала '{ctx.OriginalSourcePath}': {ex.Message}");
+                                    AppLogger.Error("WinFsp", $"[Write] Ошибка VideoMetadataExtractor для '{ctx.OriginalSourcePath}': {ex.Message}", ex);
                                 }
                             }
                             else if (AudioMetadataExtractor.IsPotentialAudio(nodeName))
                             {
                                 try
                                 {
-                                    AppLogger.Info("WinFsp", $"Извлечение аудио-тегов и обложки напрямую из оригинального файла: '{ctx.OriginalSourcePath}'...");
                                     audioMeta = AudioMetadataExtractor.ExtractFromFile(ctx.OriginalSourcePath, nodeName);
+                                    AppLogger.Info("WinFsp", $"[Write] Результат AudioMetadataExtractor для '{nodeName}': " +
+                                        $"трек = '{audioMeta.Artist} - {audioMeta.Title}', длительность = {audioMeta.DurationSeconds} сек, " +
+                                        $"обложка = {(audioMeta.AlbumCover != null ? $"{audioMeta.AlbumCover.Length} байт" : "НЕТ")}");
                                 }
                                 catch (Exception ex)
                                 {
-                                    AppLogger.Warn("WinFsp", $"Ошибка извлечения аудио-тегов из оригинала '{ctx.OriginalSourcePath}': {ex.Message}");
+                                    AppLogger.Error("WinFsp", $"[Write] Ошибка AudioMetadataExtractor для '{ctx.OriginalSourcePath}': {ex.Message}", ex);
                                 }
                             }
+                        }
+                        else
+                        {
+                            AppLogger.Warn("WinFsp", $"[Write] Исходный путь для '{nodeName}' НЕ найден в буфере обмена Windows.");
                         }
 
                         // Если оригинал не найден в буфере обмена (например, перетаскивание), для аудио извлекаем из первых 256 КБ
@@ -662,11 +673,18 @@ namespace TelegramWebDAV.Services
                             {
                                 using var headerMs = new MemoryStream(poolBuffer, 0, (int)Math.Min((long)length, AudioMetadataExtractor.HeaderCacheSize));
                                 audioMeta = AudioMetadataExtractor.ExtractFromStream(headerMs, nodeName);
+                                AppLogger.Info("WinFsp", $"[Write] Резервный парсинг тегов аудио из первых 256 КБ потока для '{nodeName}': " +
+                                    $"'{audioMeta.Artist} - {audioMeta.Title}', обложка: {(audioMeta.AlbumCover != null ? $"{audioMeta.AlbumCover.Length} байт" : "НЕТ")}");
                             }
-                            catch { }
+                            catch (Exception ex)
+                            {
+                                AppLogger.Warn("WinFsp", $"[Write] Ошибка резервного парсинга тегов из потока для '{nodeName}': {ex.Message}");
+                            }
                         }
 
-                        AppLogger.Info("WinFsp", $"Запуск прямой потоковой передачи '{nodeName}' ({targetTotalSize} байт) в Telegram на лету (Zero-Temp)" + (videoMeta != null ? $", видео: {videoMeta.Width}x{videoMeta.Height}, {videoMeta.DurationSeconds} сек" : "") + "...");
+                        AppLogger.Info("WinFsp", $"Запуск прямой потоковой передачи '{nodeName}' ({targetTotalSize} байт) в Telegram на лету (Zero-Temp)" + 
+                            (videoMeta != null ? $", видео: {videoMeta.Width}x{videoMeta.Height}, {videoMeta.DurationSeconds} сек, обложка: {(videoMeta.Thumbnail != null ? "ДА" : "НЕТ")}" : "") +
+                            (audioMeta != null ? $", аудио: {audioMeta.DurationSeconds} сек, обложка: {(audioMeta.AlbumCover != null ? "ДА" : "НЕТ")}" : "") + "...");
                         ctx.UploadTask = _telegramService.UploadFileAsync(
                             ctx.PipeStream,
                             nodeName,
@@ -1256,8 +1274,11 @@ namespace TelegramWebDAV.Services
         [DllImport("user32.dll", SetLastError = true)]
         private static extern IntPtr GetClipboardData(uint uFormat);
 
-        [DllImport("shell32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-        private static extern uint DragQueryFile(IntPtr hDrop, uint iFile, [Out] StringBuilder? lpszFile, uint cch);
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, EntryPoint = "DragQueryFileW", SetLastError = true)]
+        private static extern uint DragQueryFileCount(IntPtr hDrop, uint iFile, IntPtr lpszFile, uint cch);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode, EntryPoint = "DragQueryFileW", SetLastError = true)]
+        private static extern uint DragQueryFile(IntPtr hDrop, uint iFile, [Out] StringBuilder lpszFile, uint cch);
 
         private const uint CF_HDROP = 15;
 
@@ -1271,54 +1292,85 @@ namespace TelegramWebDAV.Services
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return null;
 
-            for (int attempt = 0; attempt < 3; attempt++)
+            AppLogger.Info("WinFsp", $"[Буфер обмена] Старт поиска оригинального файла для '{targetFileName}'...");
+
+            for (int attempt = 1; attempt <= 10; attempt++)
             {
                 if (OpenClipboard(IntPtr.Zero))
                 {
                     try
                     {
                         IntPtr hDrop = GetClipboardData(CF_HDROP);
-                        if (hDrop != IntPtr.Zero)
+                        if (hDrop == IntPtr.Zero)
                         {
-                            uint fileCount = DragQueryFile(hDrop, 0xFFFFFFFFU, null, 0);
-                            var sb = new StringBuilder(1024);
+                            int lastErr = Marshal.GetLastWin32Error();
+                            AppLogger.Warn("WinFsp", $"[Буфер обмена] OpenClipboard успешен, но формат CF_HDROP (файлы) отсутствует в буфере обмена (код Win32: {lastErr}).");
+                            return null;
+                        }
 
-                            for (uint i = 0; i < fileCount; i++)
+                        uint fileCount = DragQueryFileCount(hDrop, 0xFFFFFFFFU, IntPtr.Zero, 0);
+                        AppLogger.Info("WinFsp", $"[Буфер обмена] Успешно получен CF_HDROP, файлов в буфере: {fileCount}");
+
+                        var sb = new StringBuilder(1024);
+
+                        for (uint i = 0; i < fileCount; i++)
+                        {
+                            sb.Clear();
+                            uint len = DragQueryFile(hDrop, i, sb, (uint)sb.Capacity);
+                            if (len > 0)
                             {
-                                sb.Clear();
-                                uint len = DragQueryFile(hDrop, i, sb, (uint)sb.Capacity);
-                                if (len > 0)
-                                {
-                                    string candidatePath = sb.ToString();
-                                    string candidateName = Path.GetFileName(candidatePath);
+                                string candidatePath = sb.ToString();
+                                string candidateName = Path.GetFileName(candidatePath);
 
-                                    if (string.Equals(candidateName, targetFileName, StringComparison.OrdinalIgnoreCase))
+                                AppLogger.Info("WinFsp", $"[Буфер обмена] Элемент #{i + 1}/{fileCount}: '{candidatePath}' (имя: '{candidateName}')");
+
+                                if (string.Equals(candidateName, targetFileName, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    if (File.Exists(candidatePath))
                                     {
-                                        if (File.Exists(candidatePath))
+                                        try
                                         {
-                                            AppLogger.Info("WinFsp", $"Найден оригинальный файл-источник в буфере обмена Windows: '{candidatePath}'");
-                                            return candidatePath;
+                                            using var fs = new FileStream(candidatePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                                            AppLogger.Info("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл '{candidatePath}' существует и доступен для чтения (размер: {fs.Length} байт).");
                                         }
+                                        catch (Exception fsEx)
+                                        {
+                                            AppLogger.Warn("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ, но файл '{candidatePath}' заблокирован другим процессом: {fsEx.Message}");
+                                        }
+
+                                        return candidatePath;
+                                    }
+                                    else
+                                    {
+                                        AppLogger.Warn("WinFsp", $"[Буфер обмена] Имя совпало ('{candidateName}'), но File.Exists вернул false для '{candidatePath}'.");
                                     }
                                 }
                             }
                         }
+
+                        AppLogger.Warn("WinFsp", $"[Буфер обмена] Проверено {fileCount} записей, но ни одна не совпала с целевым именем '{targetFileName}'.");
+                        return null;
                     }
                     catch (Exception ex)
                     {
-                        AppLogger.Debug("WinFsp", $"Ошибка чтения буфера обмена: {ex.Message}");
+                        AppLogger.Error("WinFsp", $"[Буфер обмена] Ошибка чтения содержимого буфера обмена: {ex.Message}", ex);
+                        return null;
                     }
                     finally
                     {
                         CloseClipboard();
                     }
-
-                    break;
+                }
+                else
+                {
+                    int lastErr = Marshal.GetLastWin32Error();
+                    AppLogger.Debug("WinFsp", $"[Буфер обмена] Попытка {attempt}/10: OpenClipboard вернул false (код ошибки Win32: {lastErr})");
                 }
 
-                Thread.Sleep(10);
+                Thread.Sleep(25);
             }
 
+            AppLogger.Warn("WinFsp", $"[Буфер обмена] Не удалось захватить буфер обмена за 10 попыток (буфер удерживается Проводником или другим процессом).");
             return null;
         }
 

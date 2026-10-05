@@ -66,10 +66,14 @@ namespace TelegramWebDAV.Services
             try
             {
                 ParseMp4Full(filePath, result);
+                if (result.DurationSeconds > 0)
+                {
+                    AppLogger.Info("VideoMetadataExtractor", $"MP4 parser успешно прочитал '{Path.GetFileName(filePath)}': {result.Width}x{result.Height}, {result.DurationSeconds} сек");
+                }
             }
             catch (Exception ex)
             {
-                AppLogger.Debug("VideoMetadataExtractor", $"MP4 parser ошибка '{filePath}': {ex.Message}");
+                AppLogger.Warn("VideoMetadataExtractor", $"MP4 parser ошибка '{filePath}': {ex.Message}");
             }
 
             // Шаг 2: Чтение тегов и вшитых обложек/постеров через ATL.NET
@@ -79,6 +83,7 @@ namespace TelegramWebDAV.Services
                 if (result.DurationSeconds <= 0 && track.Duration > 0)
                 {
                     result.DurationSeconds = track.Duration;
+                    AppLogger.Info("VideoMetadataExtractor", $"ATL прочитал длительность '{Path.GetFileName(filePath)}': {track.Duration} сек");
                 }
 
                 if (track.EmbeddedPictures != null && track.EmbeddedPictures.Count > 0)
@@ -96,7 +101,7 @@ namespace TelegramWebDAV.Services
             }
             catch (Exception ex)
             {
-                AppLogger.Debug("VideoMetadataExtractor", $"ATL чтение '{filePath}': {ex.Message}");
+                AppLogger.Warn("VideoMetadataExtractor", $"ATL чтение '{filePath}': {ex.Message}");
             }
 
             // Шаг 3: Извлечение стоп-кадра через Shell Thumbnail Provider (K-Lite Codec Pack / Icaros / Windows Shell) - всеяден, поддерживает AV1, HEVC, H.264, VP9, MKV и др.
@@ -105,10 +110,14 @@ namespace TelegramWebDAV.Services
                 try
                 {
                     ExtractThumbnailViaShellItem(filePath, result);
+                    if (result.Thumbnail != null)
+                    {
+                        AppLogger.Info("VideoMetadataExtractor", $"Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз '{Path.GetFileName(filePath)}' ({result.Thumbnail.Length} байт)");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Debug("VideoMetadataExtractor", $"Shell Thumbnail (K-Lite/Icaros) ошибка '{filePath}': {ex.Message}");
+                    AppLogger.Warn("VideoMetadataExtractor", $"Shell Thumbnail (K-Lite/Icaros) ошибка '{filePath}': {ex.Message}");
                 }
             }
 
@@ -118,10 +127,14 @@ namespace TelegramWebDAV.Services
                 try
                 {
                     ExtractThumbnailViaMediaFoundation(filePath, result);
+                    if (result.Thumbnail != null)
+                    {
+                        AppLogger.Info("VideoMetadataExtractor", $"Media Foundation успешно создал эскиз '{Path.GetFileName(filePath)}' ({result.Thumbnail.Length} байт)");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Debug("VideoMetadataExtractor", $"Media Foundation превью ошибка '{filePath}': {ex.Message}");
+                    AppLogger.Warn("VideoMetadataExtractor", $"Media Foundation превью ошибка '{filePath}': {ex.Message}");
                 }
             }
 
