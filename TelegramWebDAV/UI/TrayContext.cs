@@ -60,7 +60,8 @@ namespace TelegramWebDAV.UI
 
             if (_settings.Server.AddTrashToContextMenu)
             {
-                ShellContextMenuHelper.RegisterTrashContextMenu(_settings.Server.DriveLetter);
+                string letter = _virtualDriveManager.MountedLetter ?? _settings.Server.DriveLetter ?? "Z:";
+                ShellContextMenuHelper.RegisterTrashContextMenu(letter);
             }
 
             _telegramService.OnUploadProgress += (fileName, current, total) =>

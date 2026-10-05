@@ -53,7 +53,7 @@ namespace TelegramWebDAV.Utils
                 string menuText = "Открыть корзину WebDAV";
                 string explorerCommand = $"explorer.exe \"{trashLocalPath}\"";
                 string exePath = Environment.ProcessPath ?? Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TelegramWebDAV.exe");
-                string appliesToCondition = $"System.ItemPathDisplay:~< \"{driveWithoutSlash}\" OR System.ItemFolderPathDisplay:~< \"{driveWithoutSlash}\"";
+                string appliesToCondition = $"System.ItemPathDisplay:~<\"{driveWithoutSlash}\" OR System.ParsingPath:~<\"{driveWithoutSlash}\" OR System.ItemFolderPathDisplay:~<\"{driveWithoutSlash}\" OR System.ItemPathDisplay:=\"{cleanDrive}\" OR System.ParsingPath:=\"{cleanDrive}\"";
 
                 // 1. Контекстное меню для диска (ПКМ по диску в "Этот компьютер")
                 using (var driveKey = Registry.CurrentUser.CreateSubKey(DriveKeyPath))
