@@ -1,13 +1,24 @@
-[2026-10-06 02:03:20.058] [INFO ] [WinFsp] [Буфер обмена] Старт поиска оригинального файла для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'...
-[2026-10-06 02:03:20.058] [INFO ] [WinFsp] [Буфер обмена] Успешно получен CF_HDROP, файлов в буфере: 1
-[2026-10-06 02:03:20.059] [INFO ] [WinFsp] [Буфер обмена] Элемент #1/1: 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (имя: '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3')
-[2026-10-06 02:03:20.059] [INFO ] [WinFsp] [Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' существует и доступен для чтения (размер: 13865469 байт).
-[2026-10-06 02:03:20.060] [INFO ] [WinFsp] Создан файл для записи: '/[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1894, alloc: 13869056), источник: 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
-[2026-10-06 02:03:20.064] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
-[2026-10-06 02:03:20.117] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': трек = 'Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix)', длительность = 345 сек, обложка = 47622 байт
-[2026-10-06 02:03:20.117] [INFO ] [WinFsp] Запуск прямой потоковой передачи '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (13865469 байт) в Telegram на лету (Zero-Temp), аудио: 345 сек, обложка: ДА...
-[2026-10-06 02:03:20.122] [INFO ] [TelegramService] Прямая потоковая передача файла '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (13865469 байт) в Telegram...
-[2026-10-06 02:03:20.130] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 23:03:19Z (svc)
-[2026-10-06 02:03:20.130] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #923C
-[2026-10-06 02:03:20.131] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 02:03:20.139] [INFO ] [WinFsp] Обновлены системные даты для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 1894): Изменен: 2016-08-11 20:30:36, Создан: 2026-10-05 23:03:20
+копирую файл
+[2026-10-06 02:21:53.518] [INFO ] [WinFsp] [Буфер обмена] Старт поиска оригинального файла для 'DSC_0270 __ (6 mb) __.JPG' (виртуальный путь: '/DSC_0270 __ (6 mb) __.JPG')...
+[2026-10-06 02:21:53.518] [INFO ] [WinFsp] [Буфер обмена] Успешно получен CF_HDROP, файлов в буфере: 1
+[2026-10-06 02:21:53.518] [INFO ] [WinFsp] [Буфер обмена] Элемент #1/1: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG' (имя: 'DSC_0270 __ (6 mb) __.JPG')
+[2026-10-06 02:21:53.518] [INFO ] [WinFsp] [Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG' существует и доступен для чтения (размер: 6195435 байт).
+[2026-10-06 02:21:53.518] [INFO ] [WinFsp] Создан файл для записи: '/DSC_0270 __ (6 mb) __.JPG' (ID 1910, alloc: 6197248), источник: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
+[2026-10-06 02:21:53.519] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
+[2026-10-06 02:21:53.519] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'DSC_0270 __ (6 mb) __.JPG' (6195435 байт) в Telegram на лету (Zero-Temp)...
+[2026-10-06 02:21:53.524] [INFO ] [WinFsp] Обновлены системные даты для 'DSC_0270 __ (6 mb) __.JPG' (ID 1910): Изменен: 2023-07-26 12:27:41, Создан: 2026-10-05 23:21:53
+[2026-10-06 02:22:12.799] [DEBUG] [WTelegram] 2>Sending   PingDelayDisconnect                      #7B49
+
+копирую папку
+
+[2026-10-06 02:26:00.258] [INFO ] [WinFsp] Создан новый каталог: '/image' (ID 1911)
+[2026-10-06 02:26:00.259] [INFO ] [WinFsp] Обновлены системные даты для 'image' (ID 1911): Изменен: 2026-09-29 17:20:39, Создан: 2026-10-05 23:26:00
+[2026-10-06 02:26:00.262] [INFO ] [WinFsp] [Буфер обмена] Старт поиска оригинального файла для 'DSC_0270 __ (6 mb) __.JPG' (виртуальный путь: '/image/DSC_0270 __ (6 mb) __.JPG')...
+[2026-10-06 02:26:00.262] [INFO ] [WinFsp] [Буфер обмена] Успешно получен CF_HDROP, файлов в буфере: 1
+[2026-10-06 02:26:00.262] [INFO ] [WinFsp] [Буфер обмена] Элемент #1/1: 'D:\TGtest\For test tg downloads\image' (имя: 'image')
+[2026-10-06 02:26:00.262] [INFO ] [WinFsp] [Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG' существует и доступен для чтения (размер: 6195435 байт).
+[2026-10-06 02:26:00.262] [INFO ] [WinFsp] Создан файл для записи: '/image/DSC_0270 __ (6 mb) __.JPG' (ID 1912, alloc: 6197248), источник: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
+[2026-10-06 02:26:13.025] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 23:26:12Z (svc)
+[2026-10-06 02:26:13.025] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #3ABD
+[2026-10-06 02:26:13.025] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-06 02:26:13.070] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-05 23:26:12Z (svc) 

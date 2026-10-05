@@ -685,14 +685,15 @@ namespace TelegramWebDAV.Services
                         AppLogger.Info("WinFsp", $"Запуск прямой потоковой передачи '{nodeName}' ({targetTotalSize} байт) в Telegram на лету (Zero-Temp)" + 
                             (videoMeta != null ? $", видео: {videoMeta.Width}x{videoMeta.Height}, {videoMeta.DurationSeconds} сек, обложка: {(videoMeta.Thumbnail != null ? "ДА" : "НЕТ")}" : "") +
                             (audioMeta != null ? $", аудио: {audioMeta.DurationSeconds} сек, обложка: {(audioMeta.AlbumCover != null ? "ДА" : "НЕТ")}" : "") + "...");
-                        ctx.UploadTask = _telegramService.UploadFileAsync(
+                        ctx.UploadTask = Task.Run(() => _telegramService.UploadFileAsync(
                             ctx.PipeStream,
                             nodeName,
                             targetTotalSize,
                             caption: fullPathWithVersion,
                             audioMeta: audioMeta,
-                            videoMeta: videoMeta
-                        );
+                            videoMeta: videoMeta,
+                            originalFilePath: ctx.OriginalSourcePath
+                        ));
                     }
 
                     if (ctx.PipeStream != null)
@@ -1046,7 +1047,8 @@ namespace TelegramWebDAV.Services
                                 finalLength,
                                 caption: fullPathWithVersion,
                                 audioMeta: fspAudioMeta,
-                                videoMeta: fspVideoMeta
+                                videoMeta: fspVideoMeta,
+                                originalFilePath: ctx.OriginalSourcePath
                             );
 
                             if (uploadResult?.MessageId != null)

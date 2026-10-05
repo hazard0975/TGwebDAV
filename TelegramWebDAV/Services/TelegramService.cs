@@ -1214,7 +1214,8 @@ namespace TelegramWebDAV.Services
             string? displayFileName = null, 
             string? caption = null,
             AudioMetadataResult? audioMeta = null,
-            VideoMetadataResult? videoMeta = null)
+            VideoMetadataResult? videoMeta = null,
+            string? originalFilePath = null)
         {
             Interlocked.Increment(ref _pendingUploadsCount);
             await _uploadSemaphore.WaitAsync();
@@ -1289,10 +1290,17 @@ namespace TelegramWebDAV.Services
 
                 long fileLength = uploadStream.Length;
                 byte[]? galleryPhotoBytes = null;
-                if (isGallery && uploadStream.CanSeek && fileLength > 1)
+                if (isGallery && fileLength > 1)
                 {
-                    galleryPhotoBytes = CreateOptimizedGalleryThumbnail(uploadStream);
-                    uploadStream.Seek(0, SeekOrigin.Begin);
+                    if (!string.IsNullOrEmpty(originalFilePath) && File.Exists(originalFilePath))
+                    {
+                        galleryPhotoBytes = CreateOptimizedGalleryThumbnailFromFile(originalFilePath);
+                    }
+                    else if (uploadStream is not StreamingPipeStream && uploadStream is not StreamingUploadStream && uploadStream.CanSeek)
+                    {
+                        galleryPhotoBytes = CreateOptimizedGalleryThumbnail(uploadStream);
+                        uploadStream.Seek(0, SeekOrigin.Begin);
+                    }
                 }
 
                 AppLogger.Info("TelegramService", $"Прямая потоковая передача файла '{effectiveFileName}' ({fileLength} байт) в Telegram...");
@@ -1674,6 +1682,21 @@ namespace TelegramWebDAV.Services
             if (string.IsNullOrEmpty(fileName)) return false;
             string ext = Path.GetExtension(fileName).ToLowerInvariant();
             return ext is ".jpg" or ".jpeg" or ".png" or ".webp" or ".bmp";
+        }
+
+        public static byte[]? CreateOptimizedGalleryThumbnailFromFile(string filePath, int maxW = 1920, int maxH = 1920)
+        {
+            try
+            {
+                if (!File.Exists(filePath)) return null;
+                using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                return CreateOptimizedGalleryThumbnail(fs, maxW, maxH);
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("TelegramService", $"Не удалось сформировать превью галереи из '{filePath}': {ex.Message}");
+                return null;
+            }
         }
 
         public static byte[]? CreateOptimizedGalleryThumbnail(Stream stream, int maxW = 1920, int maxH = 1920)
