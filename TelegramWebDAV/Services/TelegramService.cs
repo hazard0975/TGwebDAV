@@ -1047,41 +1047,47 @@ namespace TelegramWebDAV.Services
             }
         }
 
-        // Глобальный сквозной семафор и таймер пейсинга для всех исходящих запросов Upload_GetFile в приложении
+        // Глобальный сквозной семафор и планировщик слотов времени отправки (Token-Bucket Pacing)
+        // Гарантирует строгое квантование интервалов запуска исходящих MTProto-пакетов Upload_GetFile
         private static readonly SemaphoreSlim _globalPacingLock = new SemaphoreSlim(1, 1);
-        private static DateTime _globalLastResponseUtc = DateTime.MinValue;
+        private static DateTime _nextAllowedSendUtc = DateTime.MinValue;
         private static int _globalPacingDelayMs = ServerSettings.DefaultPacingDelayMs;
 
         /// <summary>
-        /// Гарантирует минимальный интервал запуска между любыми исходящими запросами Upload_GetFile в Telegram MTProto.
-        /// Предотвращает возникновение пиковых наложений (0-5 мс) между разными файлами и воркерами.
+        /// Резервирует уникальный временной слот для отправки исходящего пакета Upload_GetFile.
+        /// Исключает одновременную отправку пакетов разными воркерами в одну миллисекунду.
         /// </summary>
         public static async Task EnsurePacingDelayAsync(CancellationToken cancellationToken = default)
         {
+            DateTime scheduledTime;
             await _globalPacingLock.WaitAsync(cancellationToken);
             try
             {
-                if (_globalLastResponseUtc != DateTime.MinValue && _globalPacingDelayMs > 0)
+                var now = DateTime.UtcNow;
+                if (_nextAllowedSendUtc < now)
                 {
-                    var elapsed = (DateTime.UtcNow - _globalLastResponseUtc).TotalMilliseconds;
-                    if (elapsed < _globalPacingDelayMs)
-                    {
-                        await Task.Delay((int)(_globalPacingDelayMs - elapsed), cancellationToken);
-                    }
+                    _nextAllowedSendUtc = now;
                 }
+                scheduledTime = _nextAllowedSendUtc;
+                _nextAllowedSendUtc = _nextAllowedSendUtc.AddMilliseconds(_globalPacingDelayMs);
             }
             finally
             {
                 _globalPacingLock.Release();
             }
+
+            var waitMs = (scheduledTime - DateTime.UtcNow).TotalMilliseconds;
+            if (waitMs > 0)
+            {
+                await Task.Delay((int)waitMs, cancellationToken);
+            }
         }
 
         /// <summary>
-        /// Фиксирует завершение сетевого вызова к серверам Telegram для корректного отсчёта паузы между запросами.
+        /// Фиксирует завершение сетевого вызова к серверам Telegram.
         /// </summary>
         public static void NotifyRequestCompleted()
         {
-            _globalLastResponseUtc = DateTime.UtcNow;
         }
 
         public static void SetPacingDelay(int delayMs)
@@ -1108,6 +1114,18 @@ namespace TelegramWebDAV.Services
             if (targetTime > _globalFloodWaitUntil)
             {
                 _globalFloodWaitUntil = targetTime;
+            }
+            _globalPacingLock.Wait();
+            try
+            {
+                if (targetTime > _nextAllowedSendUtc)
+                {
+                    _nextAllowedSendUtc = targetTime;
+                }
+            }
+            finally
+            {
+                _globalPacingLock.Release();
             }
             AdaptPacingDelay(20);
             AppLogger.Warn("TelegramService", $"Получен FLOOD_WAIT на {seconds} сек от серверов Telegram. Сквозная пауза до {_globalFloodWaitUntil:HH:mm:ss}. Пейсинг адаптирован до {_globalPacingDelayMs} мс.");
