@@ -529,7 +529,7 @@ namespace TelegramWebDAV.Services
                 {
                     IsModified = true,
                     KnownTargetSize = allocationSize > 0 ? (long)allocationSize : -1,
-                    OriginalSourcePath = TryFindSourceFileFromClipboard(itemName)
+                    OriginalSourcePath = TryFindSourceFileFromClipboard(itemName, cleanPath)
                 };
 
                 fileNode = node;
@@ -561,7 +561,7 @@ namespace TelegramWebDAV.Services
             ctx.PipeStream = null;
             ctx.UploadTask = null;
             ctx.UploadCts = null;
-            ctx.OriginalSourcePath = TryFindSourceFileFromClipboard(node.Name);
+            ctx.OriginalSourcePath = TryFindSourceFileFromClipboard(node.Name, _repository.GetNodeFullPath(node.Id));
             FillFileInfo(node, out fileInfo);
             return STATUS_SUCCESS;
         }
@@ -622,7 +622,7 @@ namespace TelegramWebDAV.Services
                         if (string.IsNullOrEmpty(ctx.OriginalSourcePath))
                         {
                             AppLogger.Info("WinFsp", $"[Write] Пробуем определить источник из буфера обмена для '{nodeName}'...");
-                            ctx.OriginalSourcePath = TryFindSourceFileFromClipboard(nodeName);
+                            ctx.OriginalSourcePath = TryFindSourceFileFromClipboard(nodeName, $"{parentPath}/{nodeName}");
                         }
 
                         AudioMetadataResult? audioMeta = null;
@@ -1284,15 +1284,16 @@ namespace TelegramWebDAV.Services
 
         /// <summary>
         /// Извлекает путь к оригинальному файлу-источнику из буфера обмена Windows (Ctrl+C / Ctrl+V).
+        /// Поддерживает как одиночные файлы, так и папки со вложенными файлами.
         /// Позволяет генерировать превью и считывать метаданные напрямую из оригинала,
         /// полностью исключая промежуточную буферизацию гигабайтных файлов на системный диск C:.
         /// </summary>
-        private static string? TryFindSourceFileFromClipboard(string targetFileName)
+        private static string? TryFindSourceFileFromClipboard(string targetFileName, string? relativeVirtualPath = null)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return null;
 
-            AppLogger.Info("WinFsp", $"[Буфер обмена] Старт поиска оригинального файла для '{targetFileName}'...");
+            AppLogger.Info("WinFsp", $"[Буфер обмена] Старт поиска оригинального файла для '{targetFileName}' (виртуальный путь: '{relativeVirtualPath}')...");
 
             for (int attempt = 1; attempt <= 10; attempt++)
             {
@@ -1304,8 +1305,11 @@ namespace TelegramWebDAV.Services
                         if (hDrop == IntPtr.Zero)
                         {
                             int lastErr = Marshal.GetLastWin32Error();
-                            AppLogger.Warn("WinFsp", $"[Буфер обмена] OpenClipboard успешен, но формат CF_HDROP (файлы) отсутствует в буфере обмена (код Win32: {lastErr}).");
-                            return null;
+                            if (attempt == 10)
+                            {
+                                AppLogger.Warn("WinFsp", $"[Буфер обмена] OpenClipboard успешен, но формат CF_HDROP (файлы) отсутствует в буфере обмена (код Win32: {lastErr}).");
+                            }
+                            continue;
                         }
 
                         uint fileCount = DragQueryFileCount(hDrop, 0xFFFFFFFFU, IntPtr.Zero, 0);
@@ -1324,26 +1328,10 @@ namespace TelegramWebDAV.Services
 
                                 AppLogger.Info("WinFsp", $"[Буфер обмена] Элемент #{i + 1}/{fileCount}: '{candidatePath}' (имя: '{candidateName}')");
 
-                                if (string.Equals(candidateName, targetFileName, StringComparison.OrdinalIgnoreCase))
+                                string? matchedPath = CheckCandidate(candidatePath, targetFileName, relativeVirtualPath);
+                                if (matchedPath != null)
                                 {
-                                    if (File.Exists(candidatePath))
-                                    {
-                                        try
-                                        {
-                                            using var fs = new FileStream(candidatePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                                            AppLogger.Info("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл '{candidatePath}' существует и доступен для чтения (размер: {fs.Length} байт).");
-                                        }
-                                        catch (Exception fsEx)
-                                        {
-                                            AppLogger.Warn("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ, но файл '{candidatePath}' заблокирован другим процессом: {fsEx.Message}");
-                                        }
-
-                                        return candidatePath;
-                                    }
-                                    else
-                                    {
-                                        AppLogger.Warn("WinFsp", $"[Буфер обмена] Имя совпало ('{candidateName}'), но File.Exists вернул false для '{candidatePath}'.");
-                                    }
+                                    return matchedPath;
                                 }
                             }
                         }
@@ -1372,6 +1360,77 @@ namespace TelegramWebDAV.Services
 
             AppLogger.Warn("WinFsp", $"[Буфер обмена] Не удалось захватить буфер обмена за 10 попыток (буфер удерживается Проводником или другим процессом).");
             return null;
+        }
+
+        private static string? CheckCandidate(string candidatePath, string targetFileName, string? relativeVirtualPath)
+        {
+            if (File.Exists(candidatePath))
+            {
+                string candidateName = Path.GetFileName(candidatePath);
+                if (string.Equals(candidateName, targetFileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return VerifyReadable(candidatePath);
+                }
+                return null;
+            }
+
+            if (Directory.Exists(candidatePath))
+            {
+                // Сценарий 1: Прямой дочерний файл в скопированной папке
+                string directChild = Path.Combine(candidatePath, targetFileName);
+                if (File.Exists(directChild))
+                {
+                    return VerifyReadable(directChild);
+                }
+
+                // Сценарий 2: По относительному пути, если копировалось дерево папок
+                if (!string.IsNullOrEmpty(relativeVirtualPath))
+                {
+                    string cleanVirtual = relativeVirtualPath.Trim('/', '\\').Replace('/', Path.DirectorySeparatorChar);
+                    string candidateDirName = Path.GetFileName(candidatePath);
+                    int idx = cleanVirtual.IndexOf(candidateDirName, StringComparison.OrdinalIgnoreCase);
+                    if (idx >= 0)
+                    {
+                        string sub = cleanVirtual.Substring(idx + candidateDirName.Length).TrimStart(Path.DirectorySeparatorChar);
+                        string candidateWithSub = Path.Combine(candidatePath, sub);
+                        if (File.Exists(candidateWithSub))
+                        {
+                            return VerifyReadable(candidateWithSub);
+                        }
+                    }
+                }
+
+                // Сценарий 3: Поиск в поддиректориях папки
+                try
+                {
+                    foreach (var file in Directory.EnumerateFiles(candidatePath, targetFileName, SearchOption.AllDirectories))
+                    {
+                        var match = VerifyReadable(file);
+                        if (match != null) return match;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("WinFsp", $"[Буфер обмена] Ошибка перечисления файлов в папке '{candidatePath}': {ex.Message}");
+                }
+            }
+
+            return null;
+        }
+
+        private static string? VerifyReadable(string filePath)
+        {
+            try
+            {
+                using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                AppLogger.Info("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл '{filePath}' существует и доступен для чтения (размер: {fs.Length} байт).");
+                return filePath;
+            }
+            catch (Exception fsEx)
+            {
+                AppLogger.Warn("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ, но файл '{filePath}' заблокирован другим процессом: {fsEx.Message}");
+                return filePath;
+            }
         }
 
         #endregion
