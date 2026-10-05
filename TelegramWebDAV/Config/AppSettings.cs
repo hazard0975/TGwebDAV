@@ -61,10 +61,10 @@ namespace TelegramWebDAV.Config
         public bool CreatePhotoGalleryPreview { get; set; } = true; // Создавать фото-превью для нативной галереи Telegram
 
         // Константы по умолчанию и диапазоны для MTProto скачивания
-        public const int DefaultDownloadWorkerCount = 1;
+        public const int DefaultDownloadWorkerCount = 3;
         public const int MinDownloadWorkerCount = 1;
         public const int MaxDownloadWorkerCount = 3;
-        public const int DefaultPacingDelayMs = 70;
+        public const int DefaultPacingDelayMs = 180;
         public const int MinPacingDelayMs = 0;
         public const int MaxPacingDelayMs = 500;
 

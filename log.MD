@@ -1,84 +1,103 @@
-[2026-10-05 03:48:39.466] [DEBUG] [WTelegram]              → Upload_File                           #2397
-[2026-10-05 03:48:39.466] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #60/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 88 мс) [Полный чанк].
-[2026-10-05 03:48:39.467] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #66 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:39.564] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #61/92 для 'Kosheen   Harder They Fall.mp4' (смещение 62 914 560 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:39.564] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:38Z (svc)
-[2026-10-05 03:48:39.564] [DEBUG] [WTelegram]             → Upload_GetFile                         #C8B3
-[2026-10-05 03:48:39.564] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:39.654] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:38Z
-[2026-10-05 03:48:39.654] [DEBUG] [WTelegram]              → Upload_File                           #C8B3
-[2026-10-05 03:48:39.654] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #61/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 90 мс) [Полный чанк].
-[2026-10-05 03:48:39.654] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #67 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:39.672] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #62/92 для 'Kosheen   Harder They Fall.mp4' (смещение 63 963 136 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:39.672] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:38Z (svc)
-[2026-10-05 03:48:39.672] [DEBUG] [WTelegram]             → Upload_GetFile                         #6C57
-[2026-10-05 03:48:39.672] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:39.762] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:38Z
-[2026-10-05 03:48:39.763] [DEBUG] [WTelegram]              → Upload_File                           #6C57
-[2026-10-05 03:48:39.763] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #62/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 90 мс) [Полный чанк].
-[2026-10-05 03:48:39.763] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #68 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:39.858] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #63/92 для 'Kosheen   Harder They Fall.mp4' (смещение 65 011 712 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:39.859] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:39Z (svc)
-[2026-10-05 03:48:39.859] [DEBUG] [WTelegram]             → Upload_GetFile                         #87FC
-[2026-10-05 03:48:39.859] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:39.945] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:39Z
-[2026-10-05 03:48:39.945] [DEBUG] [WTelegram]              → Upload_File                           #87FC
-[2026-10-05 03:48:39.945] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #63/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 86 мс) [Полный чанк].
-[2026-10-05 03:48:39.945] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #69 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:39.965] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #64/92 для 'Kosheen   Harder They Fall.mp4' (смещение 66 060 288 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:39.966] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:39Z (svc)
-[2026-10-05 03:48:39.966] [DEBUG] [WTelegram]             → Upload_GetFile                         #299C
-[2026-10-05 03:48:39.966] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:40.052] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:39Z
-[2026-10-05 03:48:40.052] [DEBUG] [WTelegram]              → Upload_File                           #299C
-[2026-10-05 03:48:40.052] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #64/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 86 мс) [Полный чанк].
-[2026-10-05 03:48:40.053] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #70 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:40.154] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #65/92 для 'Kosheen   Harder They Fall.mp4' (смещение 67 108 864 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:40.155] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:39Z (svc)
-[2026-10-05 03:48:40.155] [DEBUG] [WTelegram]             → Upload_GetFile                         #C01C
-[2026-10-05 03:48:40.155] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:40.253] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:39Z
-[2026-10-05 03:48:40.253] [DEBUG] [WTelegram]              → Upload_File                           #C01C
-[2026-10-05 03:48:40.253] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #65/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 98 мс) [Полный чанк].
-[2026-10-05 03:48:40.254] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #71 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:40.263] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #66/92 для 'Kosheen   Harder They Fall.mp4' (смещение 68 157 440 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:40.263] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:39Z (svc)
-[2026-10-05 03:48:40.263] [DEBUG] [WTelegram]             → Upload_GetFile                         #4CF8
-[2026-10-05 03:48:40.263] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:40.357] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:39Z
-[2026-10-05 03:48:40.357] [DEBUG] [WTelegram]              → Upload_File                           #4CF8
-[2026-10-05 03:48:40.357] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #66/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 94 мс) [Полный чанк].
-[2026-10-05 03:48:40.358] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #72 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:40.466] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #67/92 для 'Kosheen   Harder They Fall.mp4' (смещение 69 206 016 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:40.466] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:39Z (svc)
-[2026-10-05 03:48:40.466] [DEBUG] [WTelegram]             → Upload_GetFile                         #9978
-[2026-10-05 03:48:40.466] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:40.558] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:39Z
-[2026-10-05 03:48:40.558] [DEBUG] [WTelegram]              → Upload_File                           #9978
-[2026-10-05 03:48:40.558] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #67/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 92 мс) [Полный чанк].
-[2026-10-05 03:48:40.559] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #73 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:40.559] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #68/92 для 'Kosheen   Harder They Fall.mp4' (смещение 70 254 592 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:40.559] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:39Z (svc)
-[2026-10-05 03:48:40.559] [DEBUG] [WTelegram]             → Upload_GetFile                         #27A4
-[2026-10-05 03:48:40.559] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:40.606] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:39Z
-[2026-10-05 03:48:40.606] [ERROR] [WTelegram]              → RpcError 420 FLOOD_WAIT_2             #27A4
-[2026-10-05 03:48:40.764] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #69/92 для 'Kosheen   Harder They Fall.mp4' (смещение 71 303 168 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:40.764] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #70/92 для 'Kosheen   Harder They Fall.mp4' (смещение 72 351 744 б, размер 1 048 576 б) [Полный чанк]...
-[2026-10-05 03:48:40.764] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:40Z (svc)
-[2026-10-05 03:48:40.764] [DEBUG] [WTelegram]             → Upload_GetFile                         #ED21
-[2026-10-05 03:48:40.764] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:40.764] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #087D
-[2026-10-05 03:48:40.809] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:40Z
-[2026-10-05 03:48:40.809] [ERROR] [WTelegram]              → RpcError 420 FLOOD_WAIT_1             #ED21
-[2026-10-05 03:48:40.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:40Z
-[2026-10-05 03:48:40.855] [ERROR] [WTelegram]              → RpcError 420 FLOOD_WAIT_1             #087D
-[2026-10-05 03:48:41.823] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 00:48:41Z (svc)
-[2026-10-05 03:48:41.823] [DEBUG] [WTelegram]             → Upload_GetFile                         #DEEE
-[2026-10-05 03:48:41.823] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-05 03:48:41.855] [DEBUG] [WTelegram] 2>Sending   Upload_GetFile                           #829E
-[2026-10-05 03:48:41.915] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 00:48:41Z
-[2026-10-05 03:48:41.915] [DEBUG] [WTelegram]              → Upload_File                           #DEEE
-[2026-10-05 03:48:41.915] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #69/92 для 'Kosheen   Harder They Fall.mp4' (1 048 576 б за 1151 мс) [Полный чанк].
-[2026-10-05 03:48:41.915] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 2,00 МБ (чанки #74..#75 из 92) для 'Kosheen   Harder They Fall.mp4' через 3 воркера MTProto...
-[2026-10-05 03:48:41.969] [DEBUG] [WTelegram] 2>Receiving RpcResult      
+[2026-10-05 04:59:36.198] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 0 б, размер 262 144 б) [Зонд 256 КБ - 1/4]...
+[2026-10-05 04:59:36.198] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:35Z (svc)
+[2026-10-05 04:59:36.198] [DEBUG] [WTelegram]             → Upload_GetFile                         #8238
+[2026-10-05 04:59:36.198] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:36.208] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-05 01:59:35Z (svc)
+[2026-10-05 04:59:36.208] [DEBUG] [WTelegram]             → RpcResult                              2026-10-05 01:59:35Z
+[2026-10-05 04:59:36.208] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #1C50
+[2026-10-05 04:59:36.208] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-05 01:59:35Z (svc) 
+[2026-10-05 04:59:36.208] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:35Z
+[2026-10-05 04:59:36.209] [DEBUG] [WTelegram]              → Messages_ChannelMessages              #1C54
+[2026-10-05 04:59:36.267] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:35Z
+[2026-10-05 04:59:36.268] [DEBUG] [WTelegram]              → Upload_File                           #8238
+[2026-10-05 04:59:36.268] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (262 144 б за 69 мс) [Зонд 256 КБ - 1/4].
+[2026-10-05 04:59:36.370] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #3/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 2 097 152 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:36.371] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:35Z (svc)
+[2026-10-05 04:59:36.371] [DEBUG] [WTelegram]             → Upload_GetFile                         #FA6C
+[2026-10-05 04:59:36.371] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:36.464] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:35Z
+[2026-10-05 04:59:36.464] [DEBUG] [WTelegram]              → Upload_File                           #FA6C
+[2026-10-05 04:59:36.464] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #3/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 93 мс) [Полный чанк].
+[2026-10-05 04:59:36.558] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #2/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 1 048 576 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:36.558] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:35Z (svc)
+[2026-10-05 04:59:36.558] [DEBUG] [WTelegram]             → Upload_GetFile                         #E4F0
+[2026-10-05 04:59:36.558] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:36.652] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:35Z
+[2026-10-05 04:59:36.652] [DEBUG] [WTelegram]              → Upload_File                           #E4F0
+[2026-10-05 04:59:36.652] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #2/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 93 мс) [Полный чанк].
+[2026-10-05 04:59:36.731] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 262 144 б, размер 262 144 б) [Зонд 256 КБ - 2/4]...
+[2026-10-05 04:59:36.732] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:36Z (svc)
+[2026-10-05 04:59:36.732] [DEBUG] [WTelegram]             → Upload_GetFile                         #2175
+[2026-10-05 04:59:36.732] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:36.790] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:36Z
+[2026-10-05 04:59:36.790] [DEBUG] [WTelegram]              → Upload_File                           #2175
+[2026-10-05 04:59:36.790] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (262 144 б за 58 мс) [Зонд 256 КБ - 2/4].
+[2026-10-05 04:59:36.917] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 524 288 б, размер 262 144 б) [Зонд 256 КБ - 3/4]...
+[2026-10-05 04:59:36.917] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:36Z (svc)
+[2026-10-05 04:59:36.917] [DEBUG] [WTelegram]             → Upload_GetFile                         #2E35
+[2026-10-05 04:59:36.917] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:36.990] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:36Z
+[2026-10-05 04:59:36.990] [DEBUG] [WTelegram]              → Upload_File                           #2E35
+[2026-10-05 04:59:36.990] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (262 144 б за 72 мс) [Зонд 256 КБ - 3/4].
+[2026-10-05 04:59:37.090] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 786 432 б, размер 262 144 б) [Зонд 256 КБ - 4/4]...
+[2026-10-05 04:59:37.090] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:36Z (svc)
+[2026-10-05 04:59:37.090] [DEBUG] [WTelegram]             → Upload_GetFile                         #5279
+[2026-10-05 04:59:37.090] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:37.149] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:36Z
+[2026-10-05 04:59:37.149] [DEBUG] [WTelegram]              → Upload_File                           #5279
+[2026-10-05 04:59:37.149] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #1/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (262 144 б за 58 мс) [Зонд 256 КБ - 4/4].
+[2026-10-05 04:59:37.150] [INFO ] [TrayProgressOverlay] CompleteMetadata вызван для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4'. Показ оверлея 'МЕТАДАННЫЕ ПОЛУЧЕНЫ'...
+[2026-10-05 04:59:37.277] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #4/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 3 145 728 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:37.277] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:36Z (svc)
+[2026-10-05 04:59:37.277] [DEBUG] [WTelegram]             → Upload_GetFile                         #66A5
+[2026-10-05 04:59:37.277] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:37.412] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:36Z
+[2026-10-05 04:59:37.412] [DEBUG] [WTelegram]              → Upload_File                           #66A5
+[2026-10-05 04:59:37.412] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #4/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 135 мс) [Полный чанк].
+[2026-10-05 04:59:37.450] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #5/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 4 194 304 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:37.451] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:36Z (svc)
+[2026-10-05 04:59:37.451] [DEBUG] [WTelegram]             → Upload_GetFile                         #C065
+[2026-10-05 04:59:37.451] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:37.546] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:36Z
+[2026-10-05 04:59:37.546] [DEBUG] [WTelegram]              → Upload_File                           #C065
+[2026-10-05 04:59:37.546] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #5/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 95 мс) [Полный чанк].
+[2026-10-05 04:59:37.638] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #6/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 5 242 880 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:37.638] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:36Z (svc)
+[2026-10-05 04:59:37.638] [DEBUG] [WTelegram]             → Upload_GetFile                         #8DC9
+[2026-10-05 04:59:37.638] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:37.729] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:36Z
+[2026-10-05 04:59:37.729] [DEBUG] [WTelegram]              → Upload_File                           #8DC9
+[2026-10-05 04:59:37.729] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #6/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 91 мс) [Полный чанк].
+[2026-10-05 04:59:37.730] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 4,00 МБ (чанки #9..#12 из 53) для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' через 3 воркера MTProto...
+[2026-10-05 04:59:37.809] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #7/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 6 291 456 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:37.809] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:37Z (svc)
+[2026-10-05 04:59:37.809] [DEBUG] [WTelegram]             → Upload_GetFile                         #D99E
+[2026-10-05 04:59:37.809] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:37.914] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:37Z
+[2026-10-05 04:59:37.915] [DEBUG] [WTelegram]              → Upload_File                           #D99E
+[2026-10-05 04:59:37.915] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #7/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 105 мс) [Полный чанк].
+[2026-10-05 04:59:37.915] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #13 из 53) для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' через 3 воркера MTProto...
+[2026-10-05 04:59:37.995] [INFO ] [MtprotoWorkerPool] [Воркер #3] Запрос чанка #8/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 7 340 032 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:37.996] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:37Z (svc)
+[2026-10-05 04:59:37.996] [DEBUG] [WTelegram]             → Upload_GetFile                         #08E2
+[2026-10-05 04:59:37.996] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:38.090] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:37Z
+[2026-10-05 04:59:38.091] [DEBUG] [WTelegram]              → Upload_File                           #08E2
+[2026-10-05 04:59:38.091] [INFO ] [MtprotoWorkerPool] [Воркер #3] Получен чанк #8/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 95 мс) [Полный чанк].
+[2026-10-05 04:59:38.092] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #14 из 53) для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' через 3 воркера MTProto...
+[2026-10-05 04:59:38.167] [INFO ] [MtprotoWorkerPool] [Воркер #2] Запрос чанка #9/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 8 388 608 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:38.167] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:37Z (svc)
+[2026-10-05 04:59:38.167] [DEBUG] [WTelegram]             → Upload_GetFile                         #E68E
+[2026-10-05 04:59:38.167] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:38.261] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:37Z
+[2026-10-05 04:59:38.261] [DEBUG] [WTelegram]              → Upload_File                           #E68E
+[2026-10-05 04:59:38.261] [INFO ] [MtprotoWorkerPool] [Воркер #2] Получен чанк #9/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 94 мс) [Полный чанк].
+[2026-10-05 04:59:38.262] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #15 из 53) для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' через 3 воркера MTProto...
+[2026-10-05 04:59:38.355] [INFO ] [MtprotoWorkerPool] [Воркер #1] Запрос чанка #10/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (смещение 9 437 184 б, размер 1 048 576 б) [Полный чанк]...
+[2026-10-05 04:59:38.356] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-05 01:59:37Z (svc)
+[2026-10-05 04:59:38.356] [DEBUG] [WTelegram]             → Upload_GetFile                         #2482
+[2026-10-05 04:59:38.356] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-05 04:59:38.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-05 01:59:37Z
+[2026-10-05 04:59:38.447] [DEBUG] [WTelegram]              → Upload_File                           #2482
+[2026-10-05 04:59:38.447] [INFO ] [MtprotoWorkerPool] [Воркер #1] Получен чанк #10/53 для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' (1 048 576 б за 91 мс) [Полный чанк].
+[2026-10-05 04:59:38.448] [INFO ] [MtprotoWorkerPool] [RAM Streaming] Скачивание 1,00 МБ (чанк #16 из 53) для 'DJ Paul Elstak - Rainbow In The Sky 1995.mp4' через 3 воркера MTProto...
