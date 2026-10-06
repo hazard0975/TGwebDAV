@@ -456,6 +456,7 @@ namespace TelegramWebDAV.Database
             int originalParentId = node.ParentId ?? root?.Id ?? 1;
 
             int targetTrashParentId = EnsureTrashHierarchyForParent(originalParentId);
+            int targetCaptionNodeId = nodeId;
 
             using (var connection = _dbManager.GetConnection())
             using (var transaction = connection.BeginTransaction())
@@ -481,6 +482,8 @@ namespace TelegramWebDAV.Database
 
                         if (existingTrashFolderId.HasValue)
                         {
+                            targetCaptionNodeId = existingTrashFolderId.Value;
+
                             // Если папка уже создана в корзине, переносим дочерние узлы в неё
                             using (var moveChildrenCmd = connection.CreateCommand())
                             {
@@ -562,11 +565,11 @@ namespace TelegramWebDAV.Database
             // Ставим в очередь обновление подписей на #trash для всех перемещенных в корзину файлов
             try
             {
-                EnqueueCaptionUpdatesForSubtree(nodeId);
+                EnqueueCaptionUpdatesForSubtree(targetCaptionNodeId);
             }
             catch (Exception ex)
             {
-                AppLogger.Warn("Database", $"Не удалось поставить в очередь обновление подписей корзины для #{nodeId}: {ex.Message}");
+                AppLogger.Warn("Database", $"Не удалось поставить в очередь обновление подписей корзины для #{targetCaptionNodeId}: {ex.Message}");
             }
         }
 
