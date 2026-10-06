@@ -1521,7 +1521,11 @@ namespace TelegramWebDAV.Services
             try
             {
                 var explorerProcesses = Process.GetProcessesByName("explorer");
-                if (explorerProcesses.Length == 0) return results;
+                if (explorerProcesses.Length == 0)
+                {
+                    AppLogger.Debug("WinFsp", "[Handles DragDrop] Процессы explorer.exe не найдены.");
+                    return results;
+                }
 
                 var explorerPids = new HashSet<int>();
                 foreach (var p in explorerProcesses)
@@ -1529,30 +1533,45 @@ namespace TelegramWebDAV.Services
                     explorerPids.Add(p.Id);
                 }
 
-                int bufferSize = 2 * 1024 * 1024; // 2 MB
+                AppLogger.Info("WinFsp", $"[Handles DragDrop] Сканирование хэндлов для {explorerPids.Count} процессов explorer (PID: {string.Join(", ", explorerPids)})...");
+
+                // STATUS_INFO_LENGTH_MISMATCH = 0xC0000004
+                const uint STATUS_INFO_LENGTH_MISMATCH = 0xC0000004;
+                int bufferSize = 4 * 1024 * 1024; // 4 MB
                 IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
 
                 try
                 {
                     int status = NtQuerySystemInformation(SystemExtendedHandleInformation, buffer, bufferSize, out int returnLength);
-                    if (status != 0 && returnLength > bufferSize)
+                    while ((uint)status == STATUS_INFO_LENGTH_MISMATCH || status != 0)
                     {
                         Marshal.FreeHGlobal(buffer);
-                        bufferSize = returnLength + 64 * 1024;
+                        bufferSize = Math.Max(bufferSize * 2, returnLength + 256 * 1024);
+                        if (bufferSize > 64 * 1024 * 1024) // Ограничитель 64 МБ
+                        {
+                            AppLogger.Warn("WinFsp", $"[Handles DragDrop] Размер буфера превысил лимит ({bufferSize} байт).");
+                            return results;
+                        }
                         buffer = Marshal.AllocHGlobal(bufferSize);
                         status = NtQuerySystemInformation(SystemExtendedHandleInformation, buffer, bufferSize, out returnLength);
+                        if (status == 0) break;
+                        if ((uint)status != STATUS_INFO_LENGTH_MISMATCH)
+                        {
+                            AppLogger.Warn("WinFsp", $"[Handles DragDrop] NtQuerySystemInformation вернул ошибку NTSTATUS: 0x{status:X8}");
+                            return results;
+                        }
                     }
 
-                    if (status != 0) return results;
-
                     long handleCount = Marshal.ReadInt64(buffer);
-                    IntPtr currentPtr = IntPtr.Add(buffer, 16); // Пропуск NumberOfHandles и Reserved
+                    AppLogger.Info("WinFsp", $"[Handles DragDrop] В системе обнаружено {handleCount} дескрипторов ядра.");
 
-                    int entrySize = 32; // SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX (32 байта на x64)
+                    IntPtr currentPtr = IntPtr.Add(buffer, 16); // Пропуск NumberOfHandles и Reserved (16 байт)
+                    int entrySize = 32; // SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX (32 байта на 64-битной Windows)
                     var processHandles = new Dictionary<int, IntPtr>();
                     var pathSb = new StringBuilder(1024);
                     IntPtr currentProcess = Process.GetCurrentProcess().Handle;
 
+                    int matchedHandles = 0;
                     try
                     {
                         for (long i = 0; i < handleCount; i++)
@@ -1562,11 +1581,17 @@ namespace TelegramWebDAV.Services
 
                             if (explorerPids.Contains(processId))
                             {
+                                matchedHandles++;
                                 IntPtr handleValue = (IntPtr)Marshal.ReadInt64(IntPtr.Add(entryPtr, 16)); // HandleValue
 
                                 if (!processHandles.TryGetValue(processId, out IntPtr hProcess))
                                 {
                                     hProcess = OpenProcess(PROCESS_DUP_HANDLE, false, processId);
+                                    if (hProcess == IntPtr.Zero)
+                                    {
+                                        int err = Marshal.GetLastWin32Error();
+                                        AppLogger.Debug("WinFsp", $"[Handles DragDrop] Не удалось открыть процесс explorer PID {processId}: Win32 Error {err}");
+                                    }
                                     processHandles[processId] = hProcess;
                                 }
 
@@ -1583,7 +1608,6 @@ namespace TelegramWebDAV.Services
                                                 if (len > 0)
                                                 {
                                                     string path = pathSb.ToString();
-                                                    // Убираем префикс \\?\ если есть
                                                     if (path.StartsWith(@"\\?\"))
                                                     {
                                                         path = path.Substring(4);
@@ -1597,6 +1621,7 @@ namespace TelegramWebDAV.Services
                                                         {
                                                             if (!results.Exists(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase)))
                                                             {
+                                                                AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен открытый файл в explorer (PID {processId}): '{path}'");
                                                                 results.Add(path);
                                                             }
                                                         }
@@ -1624,6 +1649,8 @@ namespace TelegramWebDAV.Services
                             }
                         }
                     }
+
+                    AppLogger.Info("WinFsp", $"[Handles DragDrop] Проверено дескрипторов Explorer: {matchedHandles}, найдено совпадений файлов: {results.Count}");
                 }
                 finally
                 {
@@ -1632,7 +1659,7 @@ namespace TelegramWebDAV.Services
             }
             catch (Exception ex)
             {
-                AppLogger.Debug("WinFsp", $"[Handles DragDrop] Ошибка сканирования хэндлов: {ex.Message}");
+                AppLogger.Warn("WinFsp", $"[Handles DragDrop] Исключение при сканировании хэндлов: {ex.Message}");
             }
 
             return results;
