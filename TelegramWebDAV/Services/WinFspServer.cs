@@ -638,9 +638,7 @@ namespace TelegramWebDAV.Services
                                 try
                                 {
                                     videoMeta = VideoMetadataExtractor.ExtractFromFile(ctx.OriginalSourcePath, nodeName);
-                                    AppLogger.Info("WinFsp", $"[Write] Результат VideoMetadataExtractor для '{nodeName}': " +
-                                        $"длительность = {videoMeta.DurationSeconds} сек, разрешение = {videoMeta.Width}x{videoMeta.Height}, " +
-                                        $"обложка = {(videoMeta.Thumbnail != null ? $"{videoMeta.Thumbnail.Length} байт" : "НЕТ")}");
+                                    // AppLogger.Debug("WinFsp", $"[Write] Результат VideoMetadataExtractor для '{nodeName}': длительность = {videoMeta.DurationSeconds} сек, разрешение = {videoMeta.Width}x{videoMeta.Height}, обложка = {(videoMeta.Thumbnail != null ? $"{videoMeta.Thumbnail.Length} байт" : "НЕТ")}");
                                 }
                                 catch (Exception ex)
                                 {
@@ -652,9 +650,7 @@ namespace TelegramWebDAV.Services
                                 try
                                 {
                                     audioMeta = AudioMetadataExtractor.ExtractFromFile(ctx.OriginalSourcePath, nodeName);
-                                    AppLogger.Info("WinFsp", $"[Write] Результат AudioMetadataExtractor для '{nodeName}': " +
-                                        $"трек = '{audioMeta.Artist} - {audioMeta.Title}', длительность = {audioMeta.DurationSeconds} сек, " +
-                                        $"обложка = {(audioMeta.AlbumCover != null ? $"{audioMeta.AlbumCover.Length} байт" : "НЕТ")}");
+                                    // AppLogger.Debug("WinFsp", $"[Write] Результат AudioMetadataExtractor для '{nodeName}': трек = '{audioMeta.Artist} - {audioMeta.Title}', длительность = {audioMeta.DurationSeconds} сек, обложка = {(audioMeta.AlbumCover != null ? $"{audioMeta.AlbumCover.Length} байт" : "НЕТ")}");
                                 }
                                 catch (Exception ex)
                                 {
@@ -1423,7 +1419,7 @@ namespace TelegramWebDAV.Services
                 }
 
                 // Шаг 2: Файл не входит в активную сессию -> значит началось НОВОЕ копирование!
-                AppLogger.Info("WinFsp", $"[Источник] Запрос нового дерева копирования для нового источника...");
+                // AppLogger.Debug("WinFsp", $"[Источник] Запрос нового дерева копирования для нового источника...");
                 var freshRawCandidates = CollectAllCandidates(targetFileName);
                 if (freshRawCandidates.Count > 0)
                 {
@@ -1433,7 +1429,7 @@ namespace TelegramWebDAV.Services
                     string? match = newSession.FindAndConsume(targetFileName, relativeVirtualPath);
                     if (match != null)
                     {
-                        AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение в новой сессии: '{match}'");
+                        // AppLogger.Debug("WinFsp", $"[Источник] Найдено совпадение в новой сессии: '{match}'");
                         // Сохраняем сессию и запоминаем найденный корень источника (Multi-Folder Support!)
                         // Это позволяет следующим файлам из этой же папки мгновенно находиться за 0 мс без опроса дескрипторов!
                         if (_activeSession == null)
@@ -1454,7 +1450,7 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                AppLogger.Warn("WinFsp", $"[Источник] Файл '{targetFileName}' не найден среди доступных источников.");
+                // AppLogger.Debug("WinFsp", $"[Источник] Файл '{targetFileName}' не найден среди доступных источников.");
                 return null;
             }
         }
@@ -1570,7 +1566,7 @@ namespace TelegramWebDAV.Services
                                         {
                                             ushort typeIndex = (ushort)Marshal.ReadInt16(IntPtr.Add(entryPtr, 30));
                                             _cachedFileObjectTypeIndex = typeIndex;
-                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Системный индекс типа 'File' ядра Windows: {typeIndex}");
+                                            // AppLogger.Debug("WinFsp", $"[Handles DragDrop] Системный индекс типа 'File' ядра Windows: {typeIndex}");
                                             return typeIndex;
                                         }
                                     }
@@ -1786,7 +1782,7 @@ namespace TelegramWebDAV.Services
                         }
                     }
 
-                    AppLogger.Info("WinFsp", $"[Handles DragDrop] Проверено дескрипторов Explorer: {matchedHandles}, найдено совпадений файлов: {results.Count}");
+                    // AppLogger.Debug("WinFsp", $"[Handles DragDrop] Проверено дескрипторов Explorer: {matchedHandles}, найдено совпадений файлов: {results.Count}");
                 }
                 finally
                 {

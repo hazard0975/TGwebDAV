@@ -68,7 +68,7 @@ namespace TelegramWebDAV.Services
                 ParseMp4Full(filePath, result);
                 if (result.DurationSeconds > 0)
                 {
-                    AppLogger.Info("VideoMetadataExtractor", $"MP4 parser успешно прочитал '{Path.GetFileName(filePath)}': {result.Width}x{result.Height}, {result.DurationSeconds} сек");
+                    // AppLogger.Debug("VideoMetadataExtractor", $"MP4 parser успешно прочитал '{Path.GetFileName(filePath)}': {result.Width}x{result.Height}, {result.DurationSeconds} сек");
                 }
             }
             catch (Exception ex)
@@ -112,7 +112,7 @@ namespace TelegramWebDAV.Services
                     ExtractThumbnailViaShellItem(filePath, result);
                     if (result.Thumbnail != null)
                     {
-                        AppLogger.Info("VideoMetadataExtractor", $"Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз '{Path.GetFileName(filePath)}' ({result.Thumbnail.Length} байт)");
+                        // AppLogger.Debug("VideoMetadataExtractor", $"Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз '{Path.GetFileName(filePath)}' ({result.Thumbnail.Length} байт)");
                     }
                 }
                 catch (Exception ex)
@@ -1465,7 +1465,7 @@ namespace TelegramWebDAV.Services
                         {
                             result.Width = width;
                             result.Height = height;
-                            AppLogger.Info("VideoMetadataExtractor", $"MP4 Box parser определил габариты: {width}x{height}");
+                            // AppLogger.Debug("VideoMetadataExtractor", $"MP4 Box parser определил габариты: {width}x{height}");
                         }
                     }
                 }
