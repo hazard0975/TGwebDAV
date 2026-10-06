@@ -1,2639 +1,2634 @@
-[2026-10-06 23:50:26.687] [INFO ] [WinFsp] Создан новый каталог: '/new big video' (ID 105)
-[2026-10-06 23:50:26.688] [INFO ] [WinFsp] Обновлены системные даты для 'new big video' (ID 105): Изменен: 2026-09-28 16:38:29, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:26.691] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'KOMODO- All 4 U (Official video).mp4' (виртуальный путь: '/new big video/KOMODO- All 4 U (Official video).mp4')...
-[2026-10-06 23:50:26.691] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:26.693] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:26.699] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74141 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:26.724] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
-[2026-10-06 23:50:26.724] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:26.724] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4' существует и доступен для чтения (размер: 17915288 байт).
-[2026-10-06 23:50:26.724] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
-[2026-10-06 23:50:26.724] [INFO ] [WinFsp] Создан файл для записи: '/new big video/KOMODO- All 4 U (Official video).mp4' (ID 106, alloc: 17915904), источник: 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
-[2026-10-06 23:50:26.726] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
-[2026-10-06 23:50:26.727] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 854x480
-[2026-10-06 23:50:26.727] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'KOMODO- All 4 U (Official video).mp4': 854x480, 238 сек
-[2026-10-06 23:50:26.768] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'KOMODO- All 4 U (Official video).mp4'
-[2026-10-06 23:50:26.772] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'KOMODO- All 4 U (Official video).mp4' (9605 байт, 320x180)
-[2026-10-06 23:50:26.773] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'KOMODO- All 4 U (Official video).mp4' (9605 байт)
-[2026-10-06 23:50:26.773] [INFO ] [VideoMetadataExtractor] Метаданные видео 'KOMODO- All 4 U (Official video).mp4': 854x480, 238 сек, превью: 9605 байт
-[2026-10-06 23:50:26.773] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'KOMODO- All 4 U (Official video).mp4': длительность = 238 сек, разрешение = 854x480, обложка = 9605 байт
-[2026-10-06 23:50:26.773] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'KOMODO- All 4 U (Official video).mp4' (17915288 байт) в Telegram на лету (Zero-Temp), видео: 854x480, 238 сек, обложка: ДА...
-[2026-10-06 23:50:26.773] [INFO ] [TelegramService] Прямая потоковая передача файла 'KOMODO- All 4 U (Official video).mp4' (17915288 байт) в Telegram...
-[2026-10-06 23:50:26.773] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #7692
-[2026-10-06 23:50:26.782] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1F06
-[2026-10-06 23:50:26.783] [INFO ] [WinFsp] Обновлены системные даты для 'KOMODO- All 4 U (Official video).mp4' (ID 106): Изменен: 2024-08-29 00:13:26, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:26.786] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (виртуальный путь: '/new big video/LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4')...
-[2026-10-06 23:50:26.786] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' существует и доступен для чтения (размер: 10283683 байт).
-[2026-10-06 23:50:26.786] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
-[2026-10-06 23:50:26.786] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:26.786] [INFO ] [WinFsp] Создан файл для записи: '/new big video/LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 107, alloc: 10285056), источник: 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
-[2026-10-06 23:50:26.787] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
-[2026-10-06 23:50:26.787] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #F1BA
-[2026-10-06 23:50:26.788] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
-[2026-10-06 23:50:26.788] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': 640x480, 238 сек
-[2026-10-06 23:50:26.793] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #273E
-[2026-10-06 23:50:26.798] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
-[2026-10-06 23:50:26.798] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #08EE
-[2026-10-06 23:50:26.804] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (9260 байт, 320x240)
-[2026-10-06 23:50:26.805] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (9260 байт)
-[2026-10-06 23:50:26.805] [INFO ] [VideoMetadataExtractor] Метаданные видео 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': 640x480, 238 сек, превью: 9260 байт
-[2026-10-06 23:50:26.805] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': длительность = 238 сек, разрешение = 640x480, обложка = 9260 байт
-[2026-10-06 23:50:26.805] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (10283683 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 238 сек, обложка: ДА...
-[2026-10-06 23:50:26.811] [INFO ] [WinFsp] Обновлены системные даты для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 107): Изменен: 2022-08-04 15:29:21, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:26.813] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (виртуальный путь: '/new big video/Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4')...
-[2026-10-06 23:50:26.813] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:26.815] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:26.820] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74151 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:26.846] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
-[2026-10-06 23:50:26.846] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:26.846] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' существует и доступен для чтения (размер: 24891313 байт).
-[2026-10-06 23:50:26.846] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
-[2026-10-06 23:50:26.846] [INFO ] [WinFsp] Создан файл для записи: '/new big video/Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 108, alloc: 24891392), источник: 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
-[2026-10-06 23:50:26.848] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
-[2026-10-06 23:50:26.849] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
-[2026-10-06 23:50:26.849] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': 640x480, 214 сек
-[2026-10-06 23:50:26.880] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
-[2026-10-06 23:50:26.880] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D172
-[2026-10-06 23:50:26.885] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (11848 байт, 320x240)
-[2026-10-06 23:50:26.886] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (11848 байт)
-[2026-10-06 23:50:26.886] [INFO ] [VideoMetadataExtractor] Метаданные видео 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': 640x480, 214 сек, превью: 11848 байт
-[2026-10-06 23:50:26.886] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': длительность = 214 сек, разрешение = 640x480, обложка = 11848 байт
-[2026-10-06 23:50:26.886] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (24891313 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 214 сек, обложка: ДА...
-[2026-10-06 23:50:26.899] [INFO ] [WinFsp] Обновлены системные даты для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 108): Изменен: 2021-10-24 18:43:52, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:26.902] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (виртуальный путь: '/new big video/Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4')...
-[2026-10-06 23:50:26.902] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' существует и доступен для чтения (размер: 19456938 байт).
-[2026-10-06 23:50:26.902] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
-[2026-10-06 23:50:26.902] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:26.902] [INFO ] [WinFsp] Создан файл для записи: '/new big video/Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 109, alloc: 19460096), источник: 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
-[2026-10-06 23:50:26.903] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
-[2026-10-06 23:50:26.904] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
-[2026-10-06 23:50:26.904] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': 640x480, 222 сек
-[2026-10-06 23:50:26.916] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
-[2026-10-06 23:50:26.920] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (13190 байт, 320x240)
-[2026-10-06 23:50:26.921] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (13190 байт)
-[2026-10-06 23:50:26.921] [INFO ] [VideoMetadataExtractor] Метаданные видео 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': 640x480, 222 сек, превью: 13190 байт
-[2026-10-06 23:50:26.921] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': длительность = 222 сек, разрешение = 640x480, обложка = 13190 байт
-[2026-10-06 23:50:26.921] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (19456938 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 222 сек, обложка: ДА...
-[2026-10-06 23:50:26.930] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:26Z
-[2026-10-06 23:50:26.930] [DEBUG] [WTelegram]              → Boolean                               #7692
-[2026-10-06 23:50:26.931] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Upload] для KOMODO- All 4 U (Official video).mp4 (524288/17915288)
-[2026-10-06 23:50:26.933] [INFO ] [WinFsp] Обновлены системные даты для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 109): Изменен: 2021-08-10 20:53:55, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:26.936] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (виртуальный путь: '/new big video/The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4')...
-[2026-10-06 23:50:26.936] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:26.938] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:26.939] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2BE2
-[2026-10-06 23:50:26.943] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74602 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:26.950] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
-[2026-10-06 23:50:26.950] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:26.950] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' существует и доступен для чтения (размер: 16411173 байт).
-[2026-10-06 23:50:26.950] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
-[2026-10-06 23:50:26.950] [INFO ] [WinFsp] Создан файл для записи: '/new big video/The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 110, alloc: 16412672), источник: 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
-[2026-10-06 23:50:26.952] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
-[2026-10-06 23:50:26.952] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
-[2026-10-06 23:50:26.953] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': 640x480, 262 сек
-[2026-10-06 23:50:26.964] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
-[2026-10-06 23:50:26.964] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:26Z
-[2026-10-06 23:50:26.964] [DEBUG] [WTelegram]              → Boolean                               #1F06
-[2026-10-06 23:50:26.969] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (9756 байт, 320x240)
-[2026-10-06 23:50:26.970] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (9756 байт)
-[2026-10-06 23:50:26.970] [INFO ] [VideoMetadataExtractor] Метаданные видео 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': 640x480, 262 сек, превью: 9756 байт
-[2026-10-06 23:50:26.970] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': длительность = 262 сек, разрешение = 640x480, обложка = 9756 байт
-[2026-10-06 23:50:26.970] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (16411173 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 262 сек, обложка: ДА...
-[2026-10-06 23:50:26.980] [INFO ] [WinFsp] Обновлены системные даты для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 110): Изменен: 2021-08-09 23:21:53, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:26.982] [INFO ] [WinFsp] Создан новый каталог: '/audio' (ID 111)
-[2026-10-06 23:50:26.983] [INFO ] [WinFsp] Обновлены системные даты для 'audio' (ID 111): Изменен: 2026-10-03 19:54:21, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:26.985] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Addison Rae - Obsessed.m4a' (виртуальный путь: '/audio/Addison Rae - Obsessed.m4a')...
-[2026-10-06 23:50:26.985] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:26.987] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:26.992] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74731 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:26.997] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #A2F2
-[2026-10-06 23:50:27.012] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:26Z
-[2026-10-06 23:50:27.012] [DEBUG] [WTelegram]              → Boolean                               #F1BA
-[2026-10-06 23:50:27.015] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a'
-[2026-10-06 23:50:27.015] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.015] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a' существует и доступен для чтения (размер: 5496932 байт).
-[2026-10-06 23:50:27.015] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a'
-[2026-10-06 23:50:27.015] [INFO ] [WinFsp] Создан файл для записи: '/audio/Addison Rae - Obsessed.m4a' (ID 112, alloc: 5500928), источник: 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a'
-[2026-10-06 23:50:27.016] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a'
-[2026-10-06 23:50:27.017] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Addison Rae - Obsessed.m4a': трек = 'Addison Rae - Obsessed', длительность = 134 сек, обложка = 101658 байт
-[2026-10-06 23:50:27.017] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Addison Rae - Obsessed.m4a' (5496932 байт) в Telegram на лету (Zero-Temp), аудио: 134 сек, обложка: ДА...
-[2026-10-06 23:50:27.020] [INFO ] [WinFsp] Обновлены системные даты для 'Addison Rae - Obsessed.m4a' (ID 112): Изменен: 2023-12-10 23:09:15, Создан: 2026-10-06 20:50:26
-[2026-10-06 23:50:27.023] [INFO ] [WinFsp] Создан новый каталог: '/audio/big' (ID 113)
-[2026-10-06 23:50:27.024] [INFO ] [WinFsp] Обновлены системные даты для 'big' (ID 113): Изменен: 2026-09-25 00:20:22, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.026] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (виртуальный путь: '/audio/big/09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3')...
-[2026-10-06 23:50:27.026] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' существует и доступен для чтения (размер: 13191016 байт).
-[2026-10-06 23:50:27.026] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'
-[2026-10-06 23:50:27.026] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:27.026] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 114, alloc: 13193216), источник: 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'
-[2026-10-06 23:50:27.027] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'
-[2026-10-06 23:50:27.028] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3': трек = 'DJ Шевцов - Запись 9', длительность = 325 сек, обложка = 191979 байт
-[2026-10-06 23:50:27.028] [INFO ] [WinFsp] Запуск прямой потоковой передачи '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (13191016 байт) в Telegram на лету (Zero-Temp), аудио: 325 сек, обложка: ДА...
-[2026-10-06 23:50:27.036] [INFO ] [WinFsp] Обновлены системные даты для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 114): Изменен: 2008-02-21 12:54:41, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.039] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Headhunters - Dayz Like That (3base club mix).mp3' (виртуальный путь: '/audio/big/Headhunters - Dayz Like That (3base club mix).mp3')...
-[2026-10-06 23:50:27.039] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:27.041] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:27.046] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74159 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:27.054] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #AD16
-[2026-10-06 23:50:27.058] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
-[2026-10-06 23:50:27.058] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.058] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3' существует и доступен для чтения (размер: 12675031 байт).
-[2026-10-06 23:50:27.058] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
-[2026-10-06 23:50:27.058] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/Headhunters - Dayz Like That (3base club mix).mp3' (ID 115, alloc: 12677120), источник: 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
-[2026-10-06 23:50:27.059] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
-[2026-10-06 23:50:27.059] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Headhunters - Dayz Like That (3base club mix).mp3': трек = 'Headhunters - Dayz Like That (3base club mix)', длительность = 472 сек, обложка = НЕТ
-[2026-10-06 23:50:27.059] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Headhunters - Dayz Like That (3base club mix).mp3' (12675031 байт) в Telegram на лету (Zero-Temp), аудио: 472 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.068] [INFO ] [WinFsp] Обновлены системные даты для 'Headhunters - Dayz Like That (3base club mix).mp3' (ID 115): Изменен: 2023-09-29 19:25:39, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.070] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Nina - Counting Stars.mp3' (виртуальный путь: '/audio/big/Nina - Counting Stars.mp3')...
-[2026-10-06 23:50:27.070] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3' существует и доступен для чтения (размер: 11120906 байт).
-[2026-10-06 23:50:27.071] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3'
-[2026-10-06 23:50:27.071] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:27.071] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/Nina - Counting Stars.mp3' (ID 116, alloc: 11124736), источник: 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3'
-[2026-10-06 23:50:27.071] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3'
-[2026-10-06 23:50:27.072] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Nina - Counting Stars.mp3': трек = 'NINA - Counting Stars', длительность = 278 сек, обложка = НЕТ
-[2026-10-06 23:50:27.072] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Nina - Counting Stars.mp3' (11120906 байт) в Telegram на лету (Zero-Temp), аудио: 278 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.078] [INFO ] [WinFsp] Обновлены системные даты для 'Nina - Counting Stars.mp3' (ID 116): Изменен: 2023-04-24 20:38:06, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.079] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:26Z
-[2026-10-06 23:50:27.080] [DEBUG] [WTelegram]              → Boolean                               #273E
-[2026-10-06 23:50:27.080] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (виртуальный путь: '/audio/big/Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3')...
-[2026-10-06 23:50:27.080] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:27.083] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:27.088] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74342 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:27.095] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'
-[2026-10-06 23:50:27.095] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.095] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' существует и доступен для чтения (размер: 10809096 байт).
-[2026-10-06 23:50:27.095] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'
-[2026-10-06 23:50:27.095] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (ID 117, alloc: 10809344), источник: 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'
-[2026-10-06 23:50:27.096] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'
-[2026-10-06 23:50:27.096] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3': трек = ' - Tina Cousins - Wonderful Life (Kenny Hayes Suu', длительность = 386 сек, обложка = НЕТ
-[2026-10-06 23:50:27.096] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (10809096 байт) в Telegram на лету (Zero-Temp), аудио: 386 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.101] [INFO ] [WinFsp] Обновлены системные даты для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (ID 117): Изменен: 2023-03-30 01:22:51, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.104] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (виртуальный путь: '/audio/big/[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3')...
-[2026-10-06 23:50:27.104] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' существует и доступен для чтения (размер: 13865469 байт).
-[2026-10-06 23:50:27.104] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
-[2026-10-06 23:50:27.104] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:27.104] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 118, alloc: 13869056), источник: 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
-[2026-10-06 23:50:27.104] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
-[2026-10-06 23:50:27.105] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': трек = 'Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix)', длительность = 345 сек, обложка = 47622 байт
-[2026-10-06 23:50:27.105] [INFO ] [WinFsp] Запуск прямой потоковой передачи '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (13865469 байт) в Telegram на лету (Zero-Temp), аудио: 345 сек, обложка: ДА...
-[2026-10-06 23:50:27.112] [INFO ] [WinFsp] Обновлены системные даты для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 118): Изменен: 2016-08-11 20:30:36, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.114] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1832
-[2026-10-06 23:50:27.115] [INFO ] [WinFsp] Создан новый каталог: '/audio/small' (ID 119)
-[2026-10-06 23:50:27.116] [INFO ] [WinFsp] Обновлены системные даты для 'small' (ID 119): Изменен: 2026-10-05 22:53:55, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.118] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (виртуальный путь: '/audio/small/06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3')...
-[2026-10-06 23:50:27.118] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:27.121] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:27.126] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74460 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:27.133] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:26Z
-[2026-10-06 23:50:27.133] [DEBUG] [WTelegram]              → Boolean                               #08EE
-[2026-10-06 23:50:27.154] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
-[2026-10-06 23:50:27.154] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.154] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' существует и доступен для чтения (размер: 8082073 байт).
-[2026-10-06 23:50:27.154] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
-[2026-10-06 23:50:27.154] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (ID 120, alloc: 8085504), источник: 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
-[2026-10-06 23:50:27.155] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
-[2026-10-06 23:50:27.155] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3': трек = 'David Guetta - Play Hard', длительность = 201 сек, обложка = 40041 байт
-[2026-10-06 23:50:27.155] [INFO ] [WinFsp] Запуск прямой потоковой передачи '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (8082073 байт) в Telegram на лету (Zero-Temp), аудио: 201 сек, обложка: ДА...
-[2026-10-06 23:50:27.160] [INFO ] [WinFsp] Обновлены системные даты для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (ID 120): Изменен: 2016-08-13 20:33:01, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.163] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '12 Ultra Nate - Free (Acapella).mp3' (виртуальный путь: '/audio/small/12 Ultra Nate - Free (Acapella).mp3')...
-[2026-10-06 23:50:27.163] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3' существует и доступен для чтения (размер: 9031336 байт).
-[2026-10-06 23:50:27.163] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3'
-[2026-10-06 23:50:27.163] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:27.163] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/12 Ultra Nate - Free (Acapella).mp3' (ID 121, alloc: 9031680), источник: 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3'
-[2026-10-06 23:50:27.164] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3'
-[2026-10-06 23:50:27.164] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '12 Ultra Nate - Free (Acapella).mp3': трек = 'Ultra Nate - Free (Acapella)', длительность = 226 сек, обложка = НЕТ
-[2026-10-06 23:50:27.164] [INFO ] [WinFsp] Запуск прямой потоковой передачи '12 Ultra Nate - Free (Acapella).mp3' (9031336 байт) в Telegram на лету (Zero-Temp), аудио: 226 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.171] [INFO ] [WinFsp] Обновлены системные даты для '12 Ultra Nate - Free (Acapella).mp3' (ID 121): Изменен: 2010-02-11 11:01:18, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.173] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'david kane_-_club_sound.mp3' (виртуальный путь: '/audio/small/david kane_-_club_sound.mp3')...
-[2026-10-06 23:50:27.173] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:27.175] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:26Z (svc)
-[2026-10-06 23:50:27.175] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7C3A
-[2026-10-06 23:50:27.175] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:27.176] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.180] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 74979 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:27.190] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
-[2026-10-06 23:50:27.190] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.190] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3' существует и доступен для чтения (размер: 1499264 байт).
-[2026-10-06 23:50:27.190] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
-[2026-10-06 23:50:27.190] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/david kane_-_club_sound.mp3' (ID 122, alloc: 1503232), источник: 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
-[2026-10-06 23:50:27.191] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
-[2026-10-06 23:50:27.192] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'david kane_-_club_sound.mp3': трек = 'David kane - Clud Sound', длительность = 93 сек, обложка = НЕТ
-[2026-10-06 23:50:27.192] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'david kane_-_club_sound.mp3' (1499264 байт) в Telegram на лету (Zero-Temp), аудио: 93 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.193] [INFO ] [WinFsp] Обновлены системные даты для 'david kane_-_club_sound.mp3' (ID 122): Изменен: 2007-09-26 23:30:26, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.194] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:26Z
-[2026-10-06 23:50:27.194] [DEBUG] [WTelegram]              → Boolean                               #D172
-[2026-10-06 23:50:27.196] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'LAYAH-Flashback.mp3' (виртуальный путь: '/audio/small/LAYAH-Flashback.mp3')...
-[2026-10-06 23:50:27.196] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3' существует и доступен для чтения (размер: 9830444 байт).
-[2026-10-06 23:50:27.196] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3'
-[2026-10-06 23:50:27.196] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:27.196] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/LAYAH-Flashback.mp3' (ID 123, alloc: 9834496), источник: 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3'
-[2026-10-06 23:50:27.197] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3'
-[2026-10-06 23:50:27.197] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'LAYAH-Flashback.mp3': трек = ' - LAYAH-Flashback', длительность = 246 сек, обложка = НЕТ
-[2026-10-06 23:50:27.197] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'LAYAH-Flashback.mp3' (9830444 байт) в Telegram на лету (Zero-Temp), аудио: 246 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.203] [INFO ] [WinFsp] Обновлены системные даты для 'LAYAH-Flashback.mp3' (ID 123): Изменен: 2023-05-21 19:47:28, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.206] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Miley_Cyrus_-_Midnight_Sky.mp3' (виртуальный путь: '/audio/small/Miley_Cyrus_-_Midnight_Sky.mp3')...
-[2026-10-06 23:50:27.206] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:27.208] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:27.213] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 75157 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:27.218] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
-[2026-10-06 23:50:27.218] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.218] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3' существует и доступен для чтения (размер: 8950388 байт).
-[2026-10-06 23:50:27.218] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
-[2026-10-06 23:50:27.218] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/Miley_Cyrus_-_Midnight_Sky.mp3' (ID 124, alloc: 8953856), источник: 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
-[2026-10-06 23:50:27.218] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
-[2026-10-06 23:50:27.219] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Miley_Cyrus_-_Midnight_Sky.mp3': трек = 'Miley Cyrus - Midnight Sky [AJOYIB.net]', длительность = 223 сек, обложка = 15822 байт
-[2026-10-06 23:50:27.219] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Miley_Cyrus_-_Midnight_Sky.mp3' (8950388 байт) в Telegram на лету (Zero-Temp), аудио: 223 сек, обложка: ДА...
-[2026-10-06 23:50:27.226] [INFO ] [WinFsp] Обновлены системные даты для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 124): Изменен: 2023-05-15 21:28:52, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.228] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (виртуальный путь: '/audio/small/Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3')...
-[2026-10-06 23:50:27.228] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' существует и доступен для чтения (размер: 10204517 байт).
-[2026-10-06 23:50:27.228] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'
-[2026-10-06 23:50:27.228] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:27.228] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (ID 125, alloc: 10207232), источник: 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'
-[2026-10-06 23:50:27.229] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'
-[2026-10-06 23:50:27.229] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3': трек = ' - Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix)', длительность = 255 сек, обложка = НЕТ
-[2026-10-06 23:50:27.229] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (10204517 байт) в Telegram на лету (Zero-Temp), аудио: 255 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.236] [INFO ] [WinFsp] Обновлены системные даты для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (ID 125): Изменен: 2023-05-29 22:36:34, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.237] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:26Z (svc)
-[2026-10-06 23:50:27.237] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #AF96
-[2026-10-06 23:50:27.237] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.239] [INFO ] [WinFsp] Создан новый каталог: '/audio/small/test' (ID 126)
-[2026-10-06 23:50:27.240] [INFO ] [WinFsp] Обновлены системные даты для 'test' (ID 126): Изменен: 2026-10-06 20:43:38, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.242] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'dj day - demo mix.mp3' (виртуальный путь: '/audio/small/test/dj day - demo mix.mp3')...
-[2026-10-06 23:50:27.242] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:27.245] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:27.250] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 75240 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:27.250] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:26Z
-[2026-10-06 23:50:27.250] [DEBUG] [WTelegram]              → Boolean                               #2BE2
-[2026-10-06 23:50:27.272] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
-[2026-10-06 23:50:27.272] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.272] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3' существует и доступен для чтения (размер: 1337804 байт).
-[2026-10-06 23:50:27.273] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
-[2026-10-06 23:50:27.273] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/test/dj day - demo mix.mp3' (ID 127, alloc: 1339392), источник: 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
-[2026-10-06 23:50:27.273] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
-[2026-10-06 23:50:27.273] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'dj day - demo mix.mp3': трек = ' - dj day - demo mix', длительность = 83 сек, обложка = НЕТ
-[2026-10-06 23:50:27.273] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'dj day - demo mix.mp3' (1337804 байт) в Telegram на лету (Zero-Temp), аудио: 83 сек, обложка: НЕТ...
-[2026-10-06 23:50:27.275] [INFO ] [WinFsp] Обновлены системные даты для 'dj day - demo mix.mp3' (ID 127): Изменен: 2007-12-27 13:57:28, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.278] [INFO ] [WinFsp] Создан новый каталог: '/image' (ID 128)
-[2026-10-06 23:50:27.279] [INFO ] [WinFsp] Обновлены системные даты для 'image' (ID 128): Изменен: 2026-09-29 17:20:39, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.281] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'DSC_0270 __ (6 mb) __.JPG' (виртуальный путь: '/image/DSC_0270 __ (6 mb) __.JPG')...
-[2026-10-06 23:50:27.281] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
-[2026-10-06 23:50:27.284] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 1 процессов explorer (PID: 7416)...
-[2026-10-06 23:50:27.289] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 75673 дескрипторов ядра (File Type Index: 37).
-[2026-10-06 23:50:27.292] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:26Z (svc)
-[2026-10-06 23:50:27.292] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #53EE
-[2026-10-06 23:50:27.292] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.313] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.313] [DEBUG] [WTelegram]              → Boolean                               #A2F2
-[2026-10-06 23:50:27.320] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 7416): 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
-[2026-10-06 23:50:27.320] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
-[2026-10-06 23:50:27.320] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG' существует и доступен для чтения (размер: 6195435 байт).
-[2026-10-06 23:50:27.320] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
-[2026-10-06 23:50:27.320] [INFO ] [WinFsp] Создан файл для записи: '/image/DSC_0270 __ (6 mb) __.JPG' (ID 129, alloc: 6197248), источник: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
-[2026-10-06 23:50:27.321] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
-[2026-10-06 23:50:27.321] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'DSC_0270 __ (6 mb) __.JPG' (6195435 байт) в Telegram на лету (Zero-Temp)...
-[2026-10-06 23:50:27.325] [INFO ] [WinFsp] Обновлены системные даты для 'DSC_0270 __ (6 mb) __.JPG' (ID 129): Изменен: 2023-07-26 12:27:41, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.328] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'IMG_20201018_131419 (12 mb).jpg' (виртуальный путь: '/image/IMG_20201018_131419 (12 mb).jpg')...
-[2026-10-06 23:50:27.328] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg' существует и доступен для чтения (размер: 12414274 байт).
-[2026-10-06 23:50:27.328] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg'
-[2026-10-06 23:50:27.328] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
-[2026-10-06 23:50:27.328] [INFO ] [WinFsp] Создан файл для записи: '/image/IMG_20201018_131419 (12 mb).jpg' (ID 130, alloc: 12414976), источник: 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg'
-[2026-10-06 23:50:27.329] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg'
-[2026-10-06 23:50:27.329] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'IMG_20201018_131419 (12 mb).jpg' (12414274 байт) в Telegram на лету (Zero-Temp)...
-[2026-10-06 23:50:27.336] [INFO ] [WinFsp] Обновлены системные даты для 'IMG_20201018_131419 (12 mb).jpg' (ID 130): Изменен: 2020-12-25 21:19:06, Создан: 2026-10-06 20:50:27
-[2026-10-06 23:50:27.348] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:26Z (svc)
-[2026-10-06 23:50:27.348] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #69FE
-[2026-10-06 23:50:27.349] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.369] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.369] [DEBUG] [WTelegram]              → Boolean                               #AD16
-[2026-10-06 23:50:27.413] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:26Z (svc)
-[2026-10-06 23:50:27.413] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D5E2
-[2026-10-06 23:50:27.414] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.438] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.438] [DEBUG] [WTelegram]              → Boolean                               #1832
-[2026-10-06 23:50:27.494] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:26Z (svc)
-[2026-10-06 23:50:27.494] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4DCA
-[2026-10-06 23:50:27.494] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.525] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.526] [DEBUG] [WTelegram]              → Boolean                               #7C3A
-[2026-10-06 23:50:27.551] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:27.551] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F4E7
-[2026-10-06 23:50:27.551] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.585] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.585] [DEBUG] [WTelegram]              → Boolean                               #AF96
-[2026-10-06 23:50:27.612] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:27.612] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2533
-[2026-10-06 23:50:27.612] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.630] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.630] [DEBUG] [WTelegram]              → Boolean                               #53EE
-[2026-10-06 23:50:27.727] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:27.727] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.727] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #FE57
-[2026-10-06 23:50:27.727] [DEBUG] [WTelegram]              → Boolean                               #69FE
-[2026-10-06 23:50:27.728] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.837] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:27.837] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9E9F
-[2026-10-06 23:50:27.837] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.838] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.838] [DEBUG] [WTelegram]              → Boolean                               #D5E2
-[2026-10-06 23:50:27.943] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:27.943] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #31A3
-[2026-10-06 23:50:27.943] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:27.996] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:27.996] [DEBUG] [WTelegram]              → Boolean                               #4DCA
-[2026-10-06 23:50:28.044] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:28.044] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A86B
-[2026-10-06 23:50:28.044] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.093] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:28.093] [DEBUG] [WTelegram]              → Boolean                               #F4E7
-[2026-10-06 23:50:28.145] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:28.145] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7D1F
-[2026-10-06 23:50:28.145] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.198] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:28.198] [DEBUG] [WTelegram]              → Boolean                               #2533
-[2026-10-06 23:50:28.245] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:28.245] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #ADC3
-[2026-10-06 23:50:28.246] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.329] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:27Z
-[2026-10-06 23:50:28.329] [DEBUG] [WTelegram]              → Boolean                               #FE57
-[2026-10-06 23:50:28.384] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:28.384] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9F83
-[2026-10-06 23:50:28.385] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.432] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:28.432] [DEBUG] [WTelegram]              → Boolean                               #9E9F
-[2026-10-06 23:50:28.490] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:28.490] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #41BB
-[2026-10-06 23:50:28.490] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.491] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:28.491] [DEBUG] [WTelegram]              → Boolean                               #31A3
-[2026-10-06 23:50:28.554] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:28.554] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7717
-[2026-10-06 23:50:28.554] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.635] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:28.635] [DEBUG] [WTelegram]              → Boolean                               #A86B
-[2026-10-06 23:50:28.691] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:27Z (svc)
-[2026-10-06 23:50:28.691] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7577
-[2026-10-06 23:50:28.692] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.757] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:28.757] [DEBUG] [WTelegram]              → Boolean                               #7D1F
-[2026-10-06 23:50:28.819] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:28Z (svc)
-[2026-10-06 23:50:28.819] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6654
-[2026-10-06 23:50:28.820] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.889] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:28.889] [DEBUG] [WTelegram]              → Boolean                               #ADC3
-[2026-10-06 23:50:28.952] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:28Z (svc)
-[2026-10-06 23:50:28.952] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #21C4
-[2026-10-06 23:50:28.953] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:28.953] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:28.953] [DEBUG] [WTelegram]              → Boolean                               #9F83
-[2026-10-06 23:50:29.029] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:28Z (svc)
-[2026-10-06 23:50:29.029] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #21C4
-[2026-10-06 23:50:29.030] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:29.096] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:29.096] [DEBUG] [WTelegram]              → Boolean                               #41BB
-[2026-10-06 23:50:29.163] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:28Z (svc)
-[2026-10-06 23:50:29.163] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A344
-[2026-10-06 23:50:29.163] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:29.170] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:28Z
-[2026-10-06 23:50:29.170] [DEBUG] [WTelegram]              → Boolean                               #7717
-[2026-10-06 23:50:29.295] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:28Z (svc)
-[2026-10-06 23:50:29.295] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6FB4
-[2026-10-06 23:50:29.296] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:29.363] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:29Z
-[2026-10-06 23:50:29.363] [DEBUG] [WTelegram]              → Boolean                               #7577
-[2026-10-06 23:50:29.436] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:28Z (svc)
-[2026-10-06 23:50:29.436] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #ED98
-[2026-10-06 23:50:29.436] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:29.437] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:29Z
-[2026-10-06 23:50:29.437] [DEBUG] [WTelegram]              → Boolean                               #6654
-[2026-10-06 23:50:29.572] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:28Z (svc)
-[2026-10-06 23:50:29.572] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5940
-[2026-10-06 23:50:29.572] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:29.643] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:29Z
-[2026-10-06 23:50:29.643] [DEBUG] [WTelegram]              → Boolean                               #21C4
-[2026-10-06 23:50:29.711] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:29Z
-[2026-10-06 23:50:29.711] [DEBUG] [WTelegram]              → Boolean                               #21C4
-[2026-10-06 23:50:29.898] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:29Z
-[2026-10-06 23:50:29.898] [DEBUG] [WTelegram]              → Boolean                               #A344
-[2026-10-06 23:50:30.042] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:29Z
-[2026-10-06 23:50:30.042] [DEBUG] [WTelegram]              → Boolean                               #6FB4
-[2026-10-06 23:50:30.214] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:29Z (svc)
-[2026-10-06 23:50:30.214] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:29Z
-[2026-10-06 23:50:30.214] [DEBUG] [WTelegram]              → Boolean                               #5940
-[2026-10-06 23:50:30.214] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:29Z (svc) 
-[2026-10-06 23:50:30.236] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:29Z
-[2026-10-06 23:50:30.236] [DEBUG] [WTelegram]              → Boolean                               #ED98
-[2026-10-06 23:50:30.236] [INFO ] [TelegramService] Файл 'KOMODO- All 4 U (Official video).mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/KOMODO- All 4 U (Official video)_v1.mp4
+[2026-10-07 00:20:12.647] [INFO ] [WinFsp] Создан новый каталог: '/audio' (ID 134)
+[2026-10-07 00:20:12.649] [INFO ] [WinFsp] Обновлены системные даты для 'audio' (ID 134): Изменен: 2026-10-03 19:54:21, Создан: 2026-10-06 21:20:12
+[2026-10-07 00:20:12.654] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Addison Rae - Obsessed.m4a' (виртуальный путь: '/audio/Addison Rae - Obsessed.m4a')...
+[2026-10-07 00:20:12.654] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:12.657] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:12.662] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78640 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:12.679] [INFO ] [WinFsp] [Handles DragDrop] Проверено дескрипторов Explorer: 235, найдено совпадений файлов: 0
+[2026-10-07 00:20:12.679] [WARN ] [WinFsp] [Источник] Файл 'Addison Rae - Obsessed.m4a' не найден среди доступных источников.
+[2026-10-07 00:20:12.679] [INFO ] [WinFsp] Создан файл для записи: '/audio/Addison Rae - Obsessed.m4a' (ID 135, alloc: 5500928)
+[2026-10-07 00:20:12.680] [INFO ] [WinFsp] [Write] Пробуем определить источник (Drag-and-Drop / Буфер обмена) для 'Addison Rae - Obsessed.m4a'...
+[2026-10-07 00:20:12.680] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Addison Rae - Obsessed.m4a' (виртуальный путь: '/audio/Addison Rae - Obsessed.m4a')...
+[2026-10-07 00:20:12.680] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:12.683] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:12.689] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 77928 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:12.783] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a'
+[2026-10-07 00:20:12.785] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:12.785] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a' существует и доступен для чтения (размер: 5496932 байт).
+[2026-10-07 00:20:12.785] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a'
+[2026-10-07 00:20:12.785] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\Addison Rae - Obsessed.m4a'
+[2026-10-07 00:20:12.837] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Addison Rae - Obsessed.m4a': трек = 'Addison Rae - Obsessed', длительность = 134 сек, обложка = 101658 байт
+[2026-10-07 00:20:12.837] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Addison Rae - Obsessed.m4a' (5496932 байт) в Telegram на лету (Zero-Temp), аудио: 134 сек, обложка: ДА...
+[2026-10-07 00:20:12.838] [INFO ] [TelegramService] Прямая потоковая передача файла 'Addison Rae - Obsessed.m4a' (5496932 байт) в Telegram...
+[2026-10-07 00:20:12.839] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #D444
+[2026-10-07 00:20:12.844] [INFO ] [WinFsp] Обновлены системные даты для 'Addison Rae - Obsessed.m4a' (ID 135): Изменен: 2023-12-10 23:09:15, Создан: 2026-10-06 21:20:12
+[2026-10-07 00:20:12.847] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E4B4
+[2026-10-07 00:20:13.082] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #F640
+[2026-10-07 00:20:13.087] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6900
+[2026-10-07 00:20:13.205] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #B590
+[2026-10-07 00:20:13.238] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:12Z (svc)
+[2026-10-07 00:20:13.238] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:12Z
+[2026-10-07 00:20:13.238] [DEBUG] [WTelegram]              → Boolean                               #D444
+[2026-10-07 00:20:13.238] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:12Z (svc) 
+[2026-10-07 00:20:13.239] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Upload] для Addison Rae - Obsessed.m4a (524288/5496932)
+[2026-10-07 00:20:13.281] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:12Z
+[2026-10-07 00:20:13.281] [DEBUG] [WTelegram]              → Boolean                               #E4B4
+[2026-10-07 00:20:13.307] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #9A1C
+[2026-10-07 00:20:13.353] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #095C
+[2026-10-07 00:20:13.428] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #59E0
+[2026-10-07 00:20:13.445] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:13Z (svc)
+[2026-10-07 00:20:13.445] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.445] [DEBUG] [WTelegram]              → Boolean                               #F640
+[2026-10-07 00:20:13.445] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:13Z (svc) 
+[2026-10-07 00:20:13.462] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.462] [DEBUG] [WTelegram]              → Boolean                               #6900
+[2026-10-07 00:20:13.479] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.479] [DEBUG] [WTelegram]              → Boolean                               #B590
+[2026-10-07 00:20:13.480] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #F08C
+[2026-10-07 00:20:13.513] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.513] [DEBUG] [WTelegram]              → Boolean                               #9A1C
+[2026-10-07 00:20:13.539] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A968
+[2026-10-07 00:20:13.574] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.574] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:12Z (svc)
+[2026-10-07 00:20:13.574] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #9370
+[2026-10-07 00:20:13.574] [DEBUG] [WTelegram]              → Boolean                               #095C
+[2026-10-07 00:20:13.574] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:13.607] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.607] [DEBUG] [WTelegram]              → Boolean                               #59E0
+[2026-10-07 00:20:13.631] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.631] [DEBUG] [WTelegram]              → Boolean                               #F08C
+[2026-10-07 00:20:13.665] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.665] [DEBUG] [WTelegram]              → Boolean                               #A968
+[2026-10-07 00:20:13.682] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.682] [DEBUG] [WTelegram]              → Boolean                               #9370
+[2026-10-07 00:20:13.683] [INFO ] [TelegramService] Файл 'Addison Rae - Obsessed.m4a' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/Addison Rae - Obsessed_v1.m4a
 #latest')...
-[2026-10-06 23:50:30.236] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:30.236] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #9612
-[2026-10-06 23:50:30.236] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:30.301] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.301] [DEBUG] [WTelegram]              → Boolean                               #9612
-[2026-10-06 23:50:30.301] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:30.301] [DEBUG] [WTelegram]             → Messages_SendMedia                     #C1BA
-[2026-10-06 23:50:30.301] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:30.434] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.434] [DEBUG] [WTelegram]              → Updates                               #C1BA
-[2026-10-06 23:50:30.434] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:30.434] [DEBUG] [WTelegram]             → Messages_EditMessage                   #506A
-[2026-10-06 23:50:30.434] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:30.499] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.499] [DEBUG] [WTelegram]              → Updates                               #506A
-[2026-10-06 23:50:30.499] [INFO ] [TelegramService] Файл 'KOMODO- All 4 U (Official video).mp4' успешно сохранен в Telegram. Message ID: 1698
-[2026-10-06 23:50:30.499] [INFO ] [TrayContext] Событие OnUploadCompleted для 'KOMODO- All 4 U (Official video).mp4' получено из TelegramService.
-[2026-10-06 23:50:30.499] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'KOMODO- All 4 U (Official video).mp4'. Запуск _completionTimer...
-[2026-10-06 23:50:30.500] [INFO ] [TelegramService] Прямая потоковая передача файла 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (10283683 байт) в Telegram...
-[2026-10-06 23:50:30.500] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:30.500] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B5DA
-[2026-10-06 23:50:30.501] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:30.508] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #8E06
-[2026-10-06 23:50:30.512] [INFO ] [WinFsp] Файл 'KOMODO- All 4 U (Official video).mp4' успешно сохранен в Telegram (Msg ID: 1698, дата изменения: 2024-08-29 00:13:26). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:30.514] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4942
-[2026-10-06 23:50:30.520] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #CA36
-[2026-10-06 23:50:30.525] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A016
-[2026-10-06 23:50:30.609] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2CD2
-[2026-10-06 23:50:30.626] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.626] [DEBUG] [WTelegram]              → Boolean                               #B5DA
-[2026-10-06 23:50:30.626] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4
-[2026-10-06 23:50:30.663] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #93F6
-[2026-10-06 23:50:30.678] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.678] [DEBUG] [WTelegram]              → Boolean                               #8E06
-[2026-10-06 23:50:30.720] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #9C32
-[2026-10-06 23:50:30.733] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.733] [DEBUG] [WTelegram]              → Boolean                               #4942
-[2026-10-06 23:50:30.774] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1D96
-[2026-10-06 23:50:30.793] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.793] [DEBUG] [WTelegram]              → Boolean                               #CA36
-[2026-10-06 23:50:30.828] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C14E
-[2026-10-06 23:50:30.844] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.844] [DEBUG] [WTelegram]              → Boolean                               #A016
-[2026-10-06 23:50:30.886] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:30.886] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #7E4A
-[2026-10-06 23:50:30.887] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:30.897] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.897] [DEBUG] [WTelegram]              → Boolean                               #2CD2
-[2026-10-06 23:50:30.940] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:30.940] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #3772
-[2026-10-06 23:50:30.940] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:30.953] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:30.953] [DEBUG] [WTelegram]              → Boolean                               #93F6
-[2026-10-06 23:50:30.998] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:30.998] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #140E
-[2026-10-06 23:50:30.999] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.014] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:31.014] [DEBUG] [WTelegram]              → Boolean                               #9C32
-[2026-10-06 23:50:31.051] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:31.051] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5472
-[2026-10-06 23:50:31.052] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.069] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:31.070] [DEBUG] [WTelegram]              → Boolean                               #1D96
-[2026-10-06 23:50:31.109] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:31.109] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #BEB6
-[2026-10-06 23:50:31.110] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.135] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:31.135] [DEBUG] [WTelegram]              → Boolean                               #C14E
-[2026-10-06 23:50:31.164] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:31.164] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #555A
-[2026-10-06 23:50:31.165] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.177] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:31.177] [DEBUG] [WTelegram]              → Boolean                               #7E4A
-[2026-10-06 23:50:31.219] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:31.219] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #9386
-[2026-10-06 23:50:31.220] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.233] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:30Z
-[2026-10-06 23:50:31.233] [DEBUG] [WTelegram]              → Boolean                               #3772
-[2026-10-06 23:50:31.276] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:31.276] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5FF2
-[2026-10-06 23:50:31.277] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.292] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.292] [DEBUG] [WTelegram]              → Boolean                               #140E
-[2026-10-06 23:50:31.332] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:31.332] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #C0DE
-[2026-10-06 23:50:31.332] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.349] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.349] [DEBUG] [WTelegram]              → Boolean                               #5472
-[2026-10-06 23:50:31.387] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:30Z (svc)
-[2026-10-06 23:50:31.387] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D86E
-[2026-10-06 23:50:31.388] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.405] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.405] [DEBUG] [WTelegram]              → Boolean                               #BEB6
-[2026-10-06 23:50:31.456] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.456] [DEBUG] [WTelegram]              → Boolean                               #555A
-[2026-10-06 23:50:31.508] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.508] [DEBUG] [WTelegram]              → Boolean                               #9386
-[2026-10-06 23:50:31.565] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.565] [DEBUG] [WTelegram]              → Boolean                               #5FF2
-[2026-10-06 23:50:31.616] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.616] [DEBUG] [WTelegram]              → Boolean                               #C0DE
-[2026-10-06 23:50:31.676] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.676] [DEBUG] [WTelegram]              → Boolean                               #D86E
-[2026-10-06 23:50:31.676] [INFO ] [TelegramService] Файл 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0]_v1.mp4
+[2026-10-07 00:20:13.683] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:13Z (svc)
+[2026-10-07 00:20:13.683] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F385
+[2026-10-07 00:20:13.683] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:13.737] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:13Z
+[2026-10-07 00:20:13.737] [DEBUG] [WTelegram]              → Boolean                               #F385
+[2026-10-07 00:20:13.737] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:13Z (svc)
+[2026-10-07 00:20:13.737] [DEBUG] [WTelegram]             → Messages_SendMedia                     #5CC5
+[2026-10-07 00:20:13.738] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:15.409] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.409] [DEBUG] [WTelegram]              → Updates                               #5CC5
+[2026-10-07 00:20:15.409] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:15.409] [DEBUG] [WTelegram]             → Messages_EditMessage                   #7563
+[2026-10-07 00:20:15.409] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:15.476] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.476] [DEBUG] [WTelegram]              → Updates                               #7563
+[2026-10-07 00:20:15.476] [INFO ] [TelegramService] Файл 'Addison Rae - Obsessed.m4a' успешно сохранен в Telegram. Message ID: 1723
+[2026-10-07 00:20:15.476] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Addison Rae - Obsessed.m4a' получено из TelegramService.
+[2026-10-07 00:20:15.476] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Addison Rae - Obsessed.m4a'. Запуск _completionTimer...
+[2026-10-07 00:20:15.477] [INFO ] [WinFsp] Файл 'Addison Rae - Obsessed.m4a' успешно сохранен в Telegram (Msg ID: 1723, дата изменения: 2023-12-10 23:09:15). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:15.480] [INFO ] [WinFsp] Создан новый каталог: '/audio/big' (ID 136)
+[2026-10-07 00:20:15.481] [INFO ] [WinFsp] Обновлены системные даты для 'big' (ID 136): Изменен: 2026-09-25 00:20:22, Создан: 2026-10-06 21:20:15
+[2026-10-07 00:20:15.488] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (виртуальный путь: '/audio/big/09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3')...
+[2026-10-07 00:20:15.488] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' существует и доступен для чтения (размер: 13191016 байт).
+[2026-10-07 00:20:15.488] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'
+[2026-10-07 00:20:15.488] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:15.488] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 137, alloc: 13193216), источник: 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'
+[2026-10-07 00:20:15.489] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'
+[2026-10-07 00:20:15.510] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3': трек = 'DJ Шевцов - Запись 9', длительность = 325 сек, обложка = 191979 байт
+[2026-10-07 00:20:15.510] [INFO ] [WinFsp] Запуск прямой потоковой передачи '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (13191016 байт) в Telegram на лету (Zero-Temp), аудио: 325 сек, обложка: ДА...
+[2026-10-07 00:20:15.510] [INFO ] [TelegramService] Прямая потоковая передача файла '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (13191016 байт) в Telegram...
+[2026-10-07 00:20:15.511] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:15.511] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6503
+[2026-10-07 00:20:15.512] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:15.519] [INFO ] [WinFsp] Обновлены системные даты для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (ID 137): Изменен: 2008-02-21 12:54:41, Создан: 2026-10-06 21:20:15
+[2026-10-07 00:20:15.520] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #F4C3
+[2026-10-07 00:20:15.528] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #8287
+[2026-10-07 00:20:15.605] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #39C7
+[2026-10-07 00:20:15.621] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.621] [DEBUG] [WTelegram]              → Boolean                               #6503
+[2026-10-07 00:20:15.621] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла 09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3
+[2026-10-07 00:20:15.638] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #EE0F
+[2026-10-07 00:20:15.663] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.663] [DEBUG] [WTelegram]              → Boolean                               #F4C3
+[2026-10-07 00:20:15.680] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #687B
+[2026-10-07 00:20:15.698] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.698] [DEBUG] [WTelegram]              → Boolean                               #8287
+[2026-10-07 00:20:15.715] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #57D3
+[2026-10-07 00:20:15.758] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.758] [DEBUG] [WTelegram]              → Boolean                               #39C7
+[2026-10-07 00:20:15.758] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #AEDB
+[2026-10-07 00:20:15.785] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.785] [DEBUG] [WTelegram]              → Boolean                               #EE0F
+[2026-10-07 00:20:15.791] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #7F6F
+[2026-10-07 00:20:15.812] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.813] [DEBUG] [WTelegram]              → Boolean                               #687B
+[2026-10-07 00:20:15.834] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #572F
+[2026-10-07 00:20:15.842] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.842] [DEBUG] [WTelegram]              → Boolean                               #57D3
+[2026-10-07 00:20:15.888] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:15.888] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F853
+[2026-10-07 00:20:15.888] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:15.905] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.905] [DEBUG] [WTelegram]              → Boolean                               #AEDB
+[2026-10-07 00:20:15.938] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:15.938] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E91B
+[2026-10-07 00:20:15.938] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:15.952] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.952] [DEBUG] [WTelegram]              → Boolean                               #7F6F
+[2026-10-07 00:20:15.969] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:15.969] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #41F7
+[2026-10-07 00:20:15.970] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:15.994] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:15.994] [DEBUG] [WTelegram]              → Boolean                               #572F
+[2026-10-07 00:20:16.003] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.003] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3153
+[2026-10-07 00:20:16.003] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.019] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.019] [DEBUG] [WTelegram]              → Boolean                               #F853
+[2026-10-07 00:20:16.042] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.043] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9173
+[2026-10-07 00:20:16.043] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.069] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.069] [DEBUG] [WTelegram]              → Boolean                               #E91B
+[2026-10-07 00:20:16.100] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.100] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #909B
+[2026-10-07 00:20:16.101] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.101] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.101] [DEBUG] [WTelegram]              → Boolean                               #41F7
+[2026-10-07 00:20:16.142] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.142] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E3C3
+[2026-10-07 00:20:16.142] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.159] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.159] [DEBUG] [WTelegram]              → Boolean                               #3153
+[2026-10-07 00:20:16.191] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.192] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #76E7
+[2026-10-07 00:20:16.192] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.201] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.201] [DEBUG] [WTelegram]              → Boolean                               #9173
+[2026-10-07 00:20:16.217] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.217] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9367
+[2026-10-07 00:20:16.217] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.244] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.244] [DEBUG] [WTelegram]              → Boolean                               #909B
+[2026-10-07 00:20:16.261] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.261] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8713
+[2026-10-07 00:20:16.261] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.278] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.278] [DEBUG] [WTelegram]              → Boolean                               #E3C3
+[2026-10-07 00:20:16.303] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.303] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DE8F
+[2026-10-07 00:20:16.303] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.321] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:15Z
+[2026-10-07 00:20:16.321] [DEBUG] [WTelegram]              → Boolean                               #76E7
+[2026-10-07 00:20:16.337] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.337] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #76D7
+[2026-10-07 00:20:16.337] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.364] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.364] [DEBUG] [WTelegram]              → Boolean                               #9367
+[2026-10-07 00:20:16.372] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.372] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F5C7
+[2026-10-07 00:20:16.372] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.406] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.407] [DEBUG] [WTelegram]              → Boolean                               #8713
+[2026-10-07 00:20:16.423] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.423] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6D73
+[2026-10-07 00:20:16.424] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.431] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.431] [DEBUG] [WTelegram]              → Boolean                               #DE8F
+[2026-10-07 00:20:16.449] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.449] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #973B
+[2026-10-07 00:20:16.451] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.476] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.476] [DEBUG] [WTelegram]              → Boolean                               #76D7
+[2026-10-07 00:20:16.495] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:15Z (svc)
+[2026-10-07 00:20:16.495] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3E33
+[2026-10-07 00:20:16.495] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.513] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.513] [DEBUG] [WTelegram]              → Boolean                               #F5C7
+[2026-10-07 00:20:16.548] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.548] [DEBUG] [WTelegram]              → Boolean                               #6D73
+[2026-10-07 00:20:16.575] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:16.575] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.575] [DEBUG] [WTelegram]              → Boolean                               #3E33
+[2026-10-07 00:20:16.575] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:16Z (svc) 
+[2026-10-07 00:20:16.578] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.578] [DEBUG] [WTelegram]              → Boolean                               #973B
+[2026-10-07 00:20:16.579] [INFO ] [TelegramService] Файл '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/09. Исполнитель записи - Запись 9 (есть обложка, кракозябры)_v1.mp3
 #latest')...
-[2026-10-06 23:50:31.676] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:31Z (svc)
-[2026-10-06 23:50:31.677] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #4FBB
-[2026-10-06 23:50:31.677] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:31.737] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:31.737] [DEBUG] [WTelegram]              → Boolean                               #4FBB
-[2026-10-06 23:50:31.737] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:31Z (svc)
-[2026-10-06 23:50:31.737] [DEBUG] [WTelegram]             → Messages_SendMedia                     #DF7B
-[2026-10-06 23:50:31.737] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.028] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:32.028] [DEBUG] [WTelegram]              → Updates                               #DF7B
-[2026-10-06 23:50:32.028] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:31Z (svc)
-[2026-10-06 23:50:32.028] [DEBUG] [WTelegram]             → Messages_EditMessage                   #1567
-[2026-10-06 23:50:32.028] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.092] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:32.092] [DEBUG] [WTelegram]              → Updates                               #1567
-[2026-10-06 23:50:32.092] [INFO ] [TelegramService] Файл 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' успешно сохранен в Telegram. Message ID: 1699
-[2026-10-06 23:50:32.092] [INFO ] [TrayContext] Событие OnUploadCompleted для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' получено из TelegramService.
-[2026-10-06 23:50:32.092] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'. Запуск _completionTimer...
-[2026-10-06 23:50:32.092] [INFO ] [TelegramService] Прямая потоковая передача файла 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (24891313 байт) в Telegram...
-[2026-10-06 23:50:32.093] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:31Z (svc)
-[2026-10-06 23:50:32.093] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #097B
-[2026-10-06 23:50:32.093] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.101] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #C75B
-[2026-10-06 23:50:32.105] [INFO ] [WinFsp] Файл 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' успешно сохранен в Telegram (Msg ID: 1699, дата изменения: 2022-08-04 15:29:21). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:32.107] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #79FB
-[2026-10-06 23:50:32.112] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2DDB
-[2026-10-06 23:50:32.118] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #BFB7
-[2026-10-06 23:50:32.207] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #3D3F
-[2026-10-06 23:50:32.220] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:31Z
-[2026-10-06 23:50:32.220] [DEBUG] [WTelegram]              → Boolean                               #097B
-[2026-10-06 23:50:32.220] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4
-[2026-10-06 23:50:32.294] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #DCF3
-[2026-10-06 23:50:32.314] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.314] [DEBUG] [WTelegram]              → Boolean                               #C75B
-[2026-10-06 23:50:32.374] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #CB97
-[2026-10-06 23:50:32.389] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.389] [DEBUG] [WTelegram]              → Boolean                               #79FB
-[2026-10-06 23:50:32.448] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #562F
-[2026-10-06 23:50:32.471] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.471] [DEBUG] [WTelegram]              → Boolean                               #2DDB
-[2026-10-06 23:50:32.534] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #4EBB
-[2026-10-06 23:50:32.550] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.550] [DEBUG] [WTelegram]              → Boolean                               #BFB7
-[2026-10-06 23:50:32.604] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:32.604] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B090
-[2026-10-06 23:50:32.605] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.625] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.625] [DEBUG] [WTelegram]              → Boolean                               #3D3F
-[2026-10-06 23:50:32.688] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:32.688] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D78C
-[2026-10-06 23:50:32.688] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.705] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.705] [DEBUG] [WTelegram]              → Boolean                               #DCF3
-[2026-10-06 23:50:32.768] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:32.768] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3084
-[2026-10-06 23:50:32.769] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.793] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.793] [DEBUG] [WTelegram]              → Boolean                               #CB97
-[2026-10-06 23:50:32.846] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:32.846] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #68A8
-[2026-10-06 23:50:32.847] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.863] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.863] [DEBUG] [WTelegram]              → Boolean                               #562F
-[2026-10-06 23:50:32.917] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:32.917] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9D38
-[2026-10-06 23:50:32.918] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:32.949] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:32.949] [DEBUG] [WTelegram]              → Boolean                               #4EBB
-[2026-10-06 23:50:32.993] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:32.993] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7970
-[2026-10-06 23:50:32.994] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.016] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:33.016] [DEBUG] [WTelegram]              → Boolean                               #B090
-[2026-10-06 23:50:33.069] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:33.069] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D2C8
-[2026-10-06 23:50:33.070] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.098] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:33.098] [DEBUG] [WTelegram]              → Boolean                               #D78C
-[2026-10-06 23:50:33.147] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:33.147] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8BF0
-[2026-10-06 23:50:33.148] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.164] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:33.164] [DEBUG] [WTelegram]              → Boolean                               #3084
-[2026-10-06 23:50:33.225] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:33.225] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3B1C
-[2026-10-06 23:50:33.226] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.251] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:32Z
-[2026-10-06 23:50:33.251] [DEBUG] [WTelegram]              → Boolean                               #68A8
-[2026-10-06 23:50:33.297] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:33.297] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C38C
-[2026-10-06 23:50:33.298] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.325] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.325] [DEBUG] [WTelegram]              → Boolean                               #9D38
-[2026-10-06 23:50:33.376] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:33.376] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1FB8
-[2026-10-06 23:50:33.377] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.409] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.409] [DEBUG] [WTelegram]              → Boolean                               #7970
-[2026-10-06 23:50:33.492] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:33.492] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A740
-[2026-10-06 23:50:33.493] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.509] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.509] [DEBUG] [WTelegram]              → Boolean                               #D2C8
-[2026-10-06 23:50:33.555] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:32Z (svc)
-[2026-10-06 23:50:33.555] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #10C8
-[2026-10-06 23:50:33.556] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.574] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.574] [DEBUG] [WTelegram]              → Boolean                               #8BF0
-[2026-10-06 23:50:33.643] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:33.643] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5361
-[2026-10-06 23:50:33.643] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.660] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.660] [DEBUG] [WTelegram]              → Boolean                               #3B1C
-[2026-10-06 23:50:33.710] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:33.710] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1AB9
-[2026-10-06 23:50:33.710] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.734] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.734] [DEBUG] [WTelegram]              → Boolean                               #C38C
-[2026-10-06 23:50:33.794] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:33.794] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #62F1
-[2026-10-06 23:50:33.794] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.811] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.811] [DEBUG] [WTelegram]              → Boolean                               #1FB8
-[2026-10-06 23:50:33.866] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:33.866] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E965
-[2026-10-06 23:50:33.866] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.892] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.892] [DEBUG] [WTelegram]              → Boolean                               #A740
-[2026-10-06 23:50:33.938] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:33.938] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BFA1
-[2026-10-06 23:50:33.938] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:33.957] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:33.957] [DEBUG] [WTelegram]              → Boolean                               #10C8
-[2026-10-06 23:50:34.009] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.009] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F829
-[2026-10-06 23:50:34.009] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.042] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:34.042] [DEBUG] [WTelegram]              → Boolean                               #5361
-[2026-10-06 23:50:34.080] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.080] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3325
-[2026-10-06 23:50:34.080] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.097] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:34.097] [DEBUG] [WTelegram]              → Boolean                               #1AB9
-[2026-10-06 23:50:34.153] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.153] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #254D
-[2026-10-06 23:50:34.153] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.175] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:34.175] [DEBUG] [WTelegram]              → Boolean                               #62F1
-[2026-10-06 23:50:34.218] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.218] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9445
-[2026-10-06 23:50:34.218] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.234] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:33Z
-[2026-10-06 23:50:34.234] [DEBUG] [WTelegram]              → Boolean                               #E965
-[2026-10-06 23:50:34.295] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.295] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #83D9
-[2026-10-06 23:50:34.295] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.326] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.326] [DEBUG] [WTelegram]              → Boolean                               #BFA1
-[2026-10-06 23:50:34.364] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.364] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0201
-[2026-10-06 23:50:34.364] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.380] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.380] [DEBUG] [WTelegram]              → Boolean                               #F829
-[2026-10-06 23:50:34.422] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.422] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9F19
-[2026-10-06 23:50:34.423] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.447] [DEBUG] [WTelegram]              → Boolean                               #3325
-[2026-10-06 23:50:34.511] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:33Z (svc)
-[2026-10-06 23:50:34.511] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F859
-[2026-10-06 23:50:34.512] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.527] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.527] [DEBUG] [WTelegram]              → Boolean                               #254D
-[2026-10-06 23:50:34.568] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:34.568] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D5DA
-[2026-10-06 23:50:34.568] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.598] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.598] [DEBUG] [WTelegram]              → Boolean                               #9445
-[2026-10-06 23:50:34.644] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:34.644] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7552
-[2026-10-06 23:50:34.645] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.668] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.668] [DEBUG] [WTelegram]              → Boolean                               #83D9
-[2026-10-06 23:50:34.707] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:34.707] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F5C2
-[2026-10-06 23:50:34.708] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.735] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.735] [DEBUG] [WTelegram]              → Boolean                               #0201
-[2026-10-06 23:50:34.776] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:34.776] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #FCDA
-[2026-10-06 23:50:34.777] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.796] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.796] [DEBUG] [WTelegram]              → Boolean                               #9F19
-[2026-10-06 23:50:34.844] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:34.844] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #47FA
-[2026-10-06 23:50:34.844] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.872] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.872] [DEBUG] [WTelegram]              → Boolean                               #F859
-[2026-10-06 23:50:34.908] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:34.908] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7EE6
-[2026-10-06 23:50:34.908] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:34.920] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:34.921] [DEBUG] [WTelegram]              → Boolean                               #D5DA
-[2026-10-06 23:50:34.982] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:34.982] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C07A
-[2026-10-06 23:50:34.982] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.001] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:35.001] [DEBUG] [WTelegram]              → Boolean                               #7552
-[2026-10-06 23:50:35.041] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:35.041] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EDC2
-[2026-10-06 23:50:35.041] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.056] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:35.056] [DEBUG] [WTelegram]              → Boolean                               #F5C2
-[2026-10-06 23:50:35.113] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:35.113] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DB9E
-[2026-10-06 23:50:35.114] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.142] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:35.142] [DEBUG] [WTelegram]              → Boolean                               #FCDA
-[2026-10-06 23:50:35.184] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:35.184] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3B82
-[2026-10-06 23:50:35.185] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.200] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:35.200] [DEBUG] [WTelegram]              → Boolean                               #47FA
-[2026-10-06 23:50:35.248] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:35.248] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B0EA
-[2026-10-06 23:50:35.248] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.268] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:34Z
-[2026-10-06 23:50:35.268] [DEBUG] [WTelegram]              → Boolean                               #7EE6
-[2026-10-06 23:50:35.313] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:34Z (svc)
-[2026-10-06 23:50:35.313] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7856
-[2026-10-06 23:50:35.313] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.336] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.336] [DEBUG] [WTelegram]              → Boolean                               #C07A
-[2026-10-06 23:50:35.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.400] [DEBUG] [WTelegram]              → Boolean                               #EDC2
-[2026-10-06 23:50:35.458] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.458] [DEBUG] [WTelegram]              → Boolean                               #DB9E
-[2026-10-06 23:50:35.535] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.535] [DEBUG] [WTelegram]              → Boolean                               #3B82
-[2026-10-06 23:50:35.615] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.615] [DEBUG] [WTelegram]              → Boolean                               #B0EA
-[2026-10-06 23:50:35.638] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.638] [DEBUG] [WTelegram]              → Boolean                               #7856
-[2026-10-06 23:50:35.638] [INFO ] [TelegramService] Файл 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg]_v1.mp4
+[2026-10-07 00:20:16.579] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:16.579] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F9A0
+[2026-10-07 00:20:16.579] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.649] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.649] [DEBUG] [WTelegram]              → Boolean                               #F9A0
+[2026-10-07 00:20:16.650] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:16.650] [DEBUG] [WTelegram]             → Messages_SendMedia                     #C620
+[2026-10-07 00:20:16.650] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.811] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.812] [DEBUG] [WTelegram]              → Updates                               #C620
+[2026-10-07 00:20:16.812] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:16.812] [DEBUG] [WTelegram]             → Messages_EditMessage                   #E05C
+[2026-10-07 00:20:16.812] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.877] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:16.877] [DEBUG] [WTelegram]              → Updates                               #E05C
+[2026-10-07 00:20:16.877] [INFO ] [TelegramService] Файл '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' успешно сохранен в Telegram. Message ID: 1724
+[2026-10-07 00:20:16.877] [INFO ] [TrayContext] Событие OnUploadCompleted для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' получено из TelegramService.
+[2026-10-07 00:20:16.878] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:16.879] [INFO ] [WinFsp] Файл '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' успешно сохранен в Telegram (Msg ID: 1724, дата изменения: 2008-02-21 12:54:41). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:16.881] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Headhunters - Dayz Like That (3base club mix).mp3' (виртуальный путь: '/audio/big/Headhunters - Dayz Like That (3base club mix).mp3')...
+[2026-10-07 00:20:16.881] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:16.884] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:16.889] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 77934 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:16.927] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
+[2026-10-07 00:20:16.927] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:16.927] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3' существует и доступен для чтения (размер: 12675031 байт).
+[2026-10-07 00:20:16.927] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
+[2026-10-07 00:20:16.927] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/Headhunters - Dayz Like That (3base club mix).mp3' (ID 138, alloc: 12677120), источник: 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
+[2026-10-07 00:20:16.928] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\Headhunters - Dayz Like That (3base club mix).mp3'
+[2026-10-07 00:20:16.930] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Headhunters - Dayz Like That (3base club mix).mp3': трек = 'Headhunters - Dayz Like That (3base club mix)', длительность = 472 сек, обложка = НЕТ
+[2026-10-07 00:20:16.930] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Headhunters - Dayz Like That (3base club mix).mp3' (12675031 байт) в Telegram на лету (Zero-Temp), аудио: 472 сек, обложка: НЕТ...
+[2026-10-07 00:20:16.930] [INFO ] [TelegramService] Прямая потоковая передача файла 'Headhunters - Dayz Like That (3base club mix).mp3' (12675031 байт) в Telegram...
+[2026-10-07 00:20:16.930] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:16.930] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EDE4
+[2026-10-07 00:20:16.931] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:16.940] [INFO ] [WinFsp] Обновлены системные даты для 'Headhunters - Dayz Like That (3base club mix).mp3' (ID 138): Изменен: 2023-09-29 19:25:39, Создан: 2026-10-06 21:20:16
+[2026-10-07 00:20:16.941] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #C470
+[2026-10-07 00:20:16.948] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #FAB4
+[2026-10-07 00:20:17.029] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #48AC
+[2026-10-07 00:20:17.054] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:17.054] [DEBUG] [WTelegram]              → Boolean                               #EDE4
+[2026-10-07 00:20:17.055] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Headhunters - Dayz Like That (3base club mix).mp3
+[2026-10-07 00:20:17.063] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #610C
+[2026-10-07 00:20:17.088] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:17.088] [DEBUG] [WTelegram]              → Boolean                               #C470
+[2026-10-07 00:20:17.098] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0994
+[2026-10-07 00:20:17.114] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:17.114] [DEBUG] [WTelegram]              → Boolean                               #FAB4
+[2026-10-07 00:20:17.157] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #3C04
+[2026-10-07 00:20:17.173] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:17.173] [DEBUG] [WTelegram]              → Boolean                               #48AC
+[2026-10-07 00:20:17.187] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0430
+[2026-10-07 00:20:17.220] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:17.220] [DEBUG] [WTelegram]              → Boolean                               #610C
+[2026-10-07 00:20:17.247] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #C4C0
+[2026-10-07 00:20:17.277] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:17.277] [DEBUG] [WTelegram]              → Boolean                               #0994
+[2026-10-07 00:20:17.277] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0958
+[2026-10-07 00:20:17.301] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:16Z
+[2026-10-07 00:20:17.301] [DEBUG] [WTelegram]              → Boolean                               #3C04
+[2026-10-07 00:20:17.318] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:17.318] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7724
+[2026-10-07 00:20:17.318] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.344] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.344] [DEBUG] [WTelegram]              → Boolean                               #0430
+[2026-10-07 00:20:17.362] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:17.362] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #356C
+[2026-10-07 00:20:17.362] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.379] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.379] [DEBUG] [WTelegram]              → Boolean                               #C4C0
+[2026-10-07 00:20:17.399] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:17.399] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #39D0
+[2026-10-07 00:20:17.400] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.430] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.430] [DEBUG] [WTelegram]              → Boolean                               #0958
+[2026-10-07 00:20:17.439] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:17.439] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A6DC
+[2026-10-07 00:20:17.439] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.455] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.455] [DEBUG] [WTelegram]              → Boolean                               #7724
+[2026-10-07 00:20:17.473] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:17.473] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #AC4C
+[2026-10-07 00:20:17.473] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.498] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.498] [DEBUG] [WTelegram]              → Boolean                               #356C
+[2026-10-07 00:20:17.507] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:16Z (svc)
+[2026-10-07 00:20:17.507] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D7C0
+[2026-10-07 00:20:17.507] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.533] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.533] [DEBUG] [WTelegram]              → Boolean                               #39D0
+[2026-10-07 00:20:17.575] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.575] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2975
+[2026-10-07 00:20:17.576] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.595] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.595] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C1DD
+[2026-10-07 00:20:17.596] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.619] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.619] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.619] [DEBUG] [WTelegram]              → Boolean                               #A6DC
+[2026-10-07 00:20:17.619] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:17Z (svc) 
+[2026-10-07 00:20:17.620] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.620] [DEBUG] [WTelegram]              → Boolean                               #AC4C
+[2026-10-07 00:20:17.649] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.649] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0DDD
+[2026-10-07 00:20:17.649] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.672] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.672] [DEBUG] [WTelegram]              → Boolean                               #D7C0
+[2026-10-07 00:20:17.688] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.688] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E701
+[2026-10-07 00:20:17.689] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.710] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.710] [DEBUG] [WTelegram]              → Boolean                               #2975
+[2026-10-07 00:20:17.732] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.732] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C9C9
+[2026-10-07 00:20:17.732] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.754] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.754] [DEBUG] [WTelegram]              → Boolean                               #C1DD
+[2026-10-07 00:20:17.771] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.772] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DE1D
+[2026-10-07 00:20:17.772] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.784] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.784] [DEBUG] [WTelegram]              → Boolean                               #0DDD
+[2026-10-07 00:20:17.814] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.814] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D145
+[2026-10-07 00:20:17.814] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.842] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.842] [DEBUG] [WTelegram]              → Boolean                               #E701
+[2026-10-07 00:20:17.860] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.860] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1809
+[2026-10-07 00:20:17.861] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.871] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.871] [DEBUG] [WTelegram]              → Boolean                               #C9C9
+[2026-10-07 00:20:17.903] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.903] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #23C9
+[2026-10-07 00:20:17.903] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:17.923] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.923] [DEBUG] [WTelegram]              → Boolean                               #DE1D
+[2026-10-07 00:20:17.951] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.951] [DEBUG] [WTelegram]              → Boolean                               #D145
+[2026-10-07 00:20:17.997] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:17.997] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:17Z
+[2026-10-07 00:20:17.997] [DEBUG] [WTelegram]              → Boolean                               #23C9
+[2026-10-07 00:20:17.997] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:17Z (svc) 
+[2026-10-07 00:20:18.005] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:18.005] [DEBUG] [WTelegram]              → Boolean                               #1809
+[2026-10-07 00:20:18.005] [INFO ] [TelegramService] Файл 'Headhunters - Dayz Like That (3base club mix).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/Headhunters - Dayz Like That (3base club mix)_v1.mp3
 #latest')...
-[2026-10-06 23:50:35.638] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:35Z (svc)
-[2026-10-06 23:50:35.638] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #38DF
-[2026-10-06 23:50:35.638] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.693] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.693] [DEBUG] [WTelegram]              → Boolean                               #38DF
-[2026-10-06 23:50:35.693] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:35Z (svc)
-[2026-10-06 23:50:35.693] [DEBUG] [WTelegram]             → Messages_SendMedia                     #3BDB
-[2026-10-06 23:50:35.693] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.833] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.833] [DEBUG] [WTelegram]              → Updates                               #3BDB
-[2026-10-06 23:50:35.833] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:35Z (svc)
-[2026-10-06 23:50:35.833] [DEBUG] [WTelegram]             → Messages_EditMessage                   #9A93
-[2026-10-06 23:50:35.833] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.914] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:35.914] [DEBUG] [WTelegram]              → Updates                               #9A93
-[2026-10-06 23:50:35.914] [INFO ] [TelegramService] Файл 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' успешно сохранен в Telegram. Message ID: 1700
-[2026-10-06 23:50:35.914] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' получено из TelegramService.
-[2026-10-06 23:50:35.914] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'. Запуск _completionTimer...
-[2026-10-06 23:50:35.914] [INFO ] [TelegramService] Прямая потоковая передача файла 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (19456938 байт) в Telegram...
-[2026-10-06 23:50:35.915] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:35Z (svc)
-[2026-10-06 23:50:35.915] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B7F3
-[2026-10-06 23:50:35.915] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:35.922] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #5ADB
-[2026-10-06 23:50:35.927] [INFO ] [WinFsp] Файл 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' успешно сохранен в Telegram (Msg ID: 1700, дата изменения: 2021-10-24 18:43:52). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:35.929] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #C22B
-[2026-10-06 23:50:35.934] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #704F
-[2026-10-06 23:50:35.940] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #9AE7
-[2026-10-06 23:50:36.024] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #9DB7
-[2026-10-06 23:50:36.040] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:36.040] [DEBUG] [WTelegram]              → Boolean                               #B7F3
-[2026-10-06 23:50:36.041] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4
-[2026-10-06 23:50:36.080] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #3D73
-[2026-10-06 23:50:36.105] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:36.105] [DEBUG] [WTelegram]              → Boolean                               #5ADB
-[2026-10-06 23:50:36.161] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #FC9B
-[2026-10-06 23:50:36.186] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:35Z
-[2026-10-06 23:50:36.186] [DEBUG] [WTelegram]              → Boolean                               #C22B
-[2026-10-06 23:50:36.244] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #24FB
-[2026-10-06 23:50:36.283] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.283] [DEBUG] [WTelegram]              → Boolean                               #704F
-[2026-10-06 23:50:36.301] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #EF87
-[2026-10-06 23:50:36.315] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.315] [DEBUG] [WTelegram]              → Boolean                               #9AE7
-[2026-10-06 23:50:36.374] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:35Z (svc)
-[2026-10-06 23:50:36.374] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6C3F
-[2026-10-06 23:50:36.375] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.400] [DEBUG] [WTelegram]              → Boolean                               #9DB7
-[2026-10-06 23:50:36.433] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:35Z (svc)
-[2026-10-06 23:50:36.433] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #050F
-[2026-10-06 23:50:36.433] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.447] [DEBUG] [WTelegram]              → Boolean                               #3D73
-[2026-10-06 23:50:36.494] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:35Z (svc)
-[2026-10-06 23:50:36.494] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #888F
-[2026-10-06 23:50:36.495] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.520] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.520] [DEBUG] [WTelegram]              → Boolean                               #FC9B
-[2026-10-06 23:50:36.561] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:36.561] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B564
-[2026-10-06 23:50:36.561] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.580] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.580] [DEBUG] [WTelegram]              → Boolean                               #24FB
-[2026-10-06 23:50:36.628] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:36.628] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #05AC
-[2026-10-06 23:50:36.629] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.660] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.660] [DEBUG] [WTelegram]              → Boolean                               #EF87
-[2026-10-06 23:50:36.687] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:36.687] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9070
-[2026-10-06 23:50:36.687] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.706] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.706] [DEBUG] [WTelegram]              → Boolean                               #6C3F
-[2026-10-06 23:50:36.758] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:36.758] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8718
-[2026-10-06 23:50:36.758] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.789] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.789] [DEBUG] [WTelegram]              → Boolean                               #050F
-[2026-10-06 23:50:36.819] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:36.819] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8DCC
-[2026-10-06 23:50:36.820] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.836] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.836] [DEBUG] [WTelegram]              → Boolean                               #888F
-[2026-10-06 23:50:36.886] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:36.886] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #22E4
-[2026-10-06 23:50:36.887] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.908] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.908] [DEBUG] [WTelegram]              → Boolean                               #B564
-[2026-10-06 23:50:36.947] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:36.947] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #43F4
-[2026-10-06 23:50:36.948] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:36.966] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:36.966] [DEBUG] [WTelegram]              → Boolean                               #05AC
-[2026-10-06 23:50:37.008] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.008] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A4E4
-[2026-10-06 23:50:37.009] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.035] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:37.035] [DEBUG] [WTelegram]              → Boolean                               #9070
-[2026-10-06 23:50:37.076] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.076] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #810C
-[2026-10-06 23:50:37.076] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.089] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:37.089] [DEBUG] [WTelegram]              → Boolean                               #8718
-[2026-10-06 23:50:37.136] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.136] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2C30
-[2026-10-06 23:50:37.137] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.154] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:37.154] [DEBUG] [WTelegram]              → Boolean                               #8DCC
-[2026-10-06 23:50:37.228] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.228] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:36Z
-[2026-10-06 23:50:37.228] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E3AC
-[2026-10-06 23:50:37.228] [DEBUG] [WTelegram]              → Boolean                               #22E4
-[2026-10-06 23:50:37.229] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.305] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.305] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0A3C
-[2026-10-06 23:50:37.306] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.338] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.338] [DEBUG] [WTelegram]              → Boolean                               #43F4
-[2026-10-06 23:50:37.370] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.370] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C200
-[2026-10-06 23:50:37.370] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.383] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.383] [DEBUG] [WTelegram]              → Boolean                               #A4E4
-[2026-10-06 23:50:37.429] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.429] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C194
-[2026-10-06 23:50:37.429] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.455] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.455] [DEBUG] [WTelegram]              → Boolean                               #810C
-[2026-10-06 23:50:37.501] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:36Z (svc)
-[2026-10-06 23:50:37.501] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #102C
-[2026-10-06 23:50:37.502] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.524] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.524] [DEBUG] [WTelegram]              → Boolean                               #2C30
-[2026-10-06 23:50:37.562] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:37.562] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0821
-[2026-10-06 23:50:37.563] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.585] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.585] [DEBUG] [WTelegram]              → Boolean                               #E3AC
-[2026-10-06 23:50:37.625] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:37.625] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CB95
-[2026-10-06 23:50:37.626] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.641] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.641] [DEBUG] [WTelegram]              → Boolean                               #0A3C
-[2026-10-06 23:50:37.697] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:37.697] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #FF49
-[2026-10-06 23:50:37.698] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.719] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.719] [DEBUG] [WTelegram]              → Boolean                               #C200
-[2026-10-06 23:50:37.761] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:37.761] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D64D
-[2026-10-06 23:50:37.762] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.778] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.778] [DEBUG] [WTelegram]              → Boolean                               #C194
-[2026-10-06 23:50:37.822] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:37.822] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2EF1
-[2026-10-06 23:50:37.822] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.853] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.853] [DEBUG] [WTelegram]              → Boolean                               #102C
-[2026-10-06 23:50:37.886] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:37.886] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9B25
-[2026-10-06 23:50:37.887] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.914] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.914] [DEBUG] [WTelegram]              → Boolean                               #0821
-[2026-10-06 23:50:37.951] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:37.951] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3679
-[2026-10-06 23:50:37.951] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:37.979] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:37.979] [DEBUG] [WTelegram]              → Boolean                               #CB95
-[2026-10-06 23:50:38.018] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:38.018] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B9C9
-[2026-10-06 23:50:38.019] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:38.034] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:38.034] [DEBUG] [WTelegram]              → Boolean                               #FF49
-[2026-10-06 23:50:38.078] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:38.078] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2CB1
-[2026-10-06 23:50:38.079] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:38.100] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:38.100] [DEBUG] [WTelegram]              → Boolean                               #D64D
-[2026-10-06 23:50:38.144] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:37Z (svc)
-[2026-10-06 23:50:38.144] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #14C9
-[2026-10-06 23:50:38.145] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:38.163] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:38.163] [DEBUG] [WTelegram]              → Boolean                               #2EF1
-[2026-10-06 23:50:38.237] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:37Z
-[2026-10-06 23:50:38.237] [DEBUG] [WTelegram]              → Boolean                               #9B25
-[2026-10-06 23:50:38.290] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.290] [DEBUG] [WTelegram]              → Boolean                               #3679
-[2026-10-06 23:50:38.362] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.362] [DEBUG] [WTelegram]              → Boolean                               #B9C9
-[2026-10-06 23:50:38.418] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:38.418] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.418] [DEBUG] [WTelegram]              → Boolean                               #14C9
-[2026-10-06 23:50:38.418] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:38Z (svc) 
-[2026-10-06 23:50:38.422] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.422] [DEBUG] [WTelegram]              → Boolean                               #2CB1
-[2026-10-06 23:50:38.422] [INFO ] [TelegramService] Файл 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/Rachel McFarlane - Lover (jQ6HqFa0jmI)_v1.mp4
+[2026-10-07 00:20:18.006] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:18.006] [DEBUG] [WTelegram]             → Messages_SendMedia                     #8DC9
+[2026-10-07 00:20:18.006] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.113] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:18.113] [DEBUG] [WTelegram]              → Updates                               #8DC9
+[2026-10-07 00:20:18.113] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:18.113] [DEBUG] [WTelegram]             → Messages_EditMessage                   #A60D
+[2026-10-07 00:20:18.113] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.180] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:18.180] [DEBUG] [WTelegram]              → Updates                               #A60D
+[2026-10-07 00:20:18.180] [INFO ] [TelegramService] Файл 'Headhunters - Dayz Like That (3base club mix).mp3' успешно сохранен в Telegram. Message ID: 1725
+[2026-10-07 00:20:18.180] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Headhunters - Dayz Like That (3base club mix).mp3' получено из TelegramService.
+[2026-10-07 00:20:18.180] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Headhunters - Dayz Like That (3base club mix).mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:18.181] [INFO ] [WinFsp] Файл 'Headhunters - Dayz Like That (3base club mix).mp3' успешно сохранен в Telegram (Msg ID: 1725, дата изменения: 2023-09-29 19:25:39). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:18.184] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Nina - Counting Stars.mp3' (виртуальный путь: '/audio/big/Nina - Counting Stars.mp3')...
+[2026-10-07 00:20:18.184] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3' существует и доступен для чтения (размер: 11120906 байт).
+[2026-10-07 00:20:18.184] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3'
+[2026-10-07 00:20:18.184] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:18.184] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/Nina - Counting Stars.mp3' (ID 139, alloc: 11124736), источник: 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3'
+[2026-10-07 00:20:18.185] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\Nina - Counting Stars.mp3'
+[2026-10-07 00:20:18.185] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Nina - Counting Stars.mp3': трек = 'NINA - Counting Stars', длительность = 278 сек, обложка = НЕТ
+[2026-10-07 00:20:18.185] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Nina - Counting Stars.mp3' (11120906 байт) в Telegram на лету (Zero-Temp), аудио: 278 сек, обложка: НЕТ...
+[2026-10-07 00:20:18.186] [INFO ] [TelegramService] Прямая потоковая передача файла 'Nina - Counting Stars.mp3' (11120906 байт) в Telegram...
+[2026-10-07 00:20:18.186] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:17Z (svc)
+[2026-10-07 00:20:18.186] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2CCD
+[2026-10-07 00:20:18.187] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.192] [INFO ] [WinFsp] Обновлены системные даты для 'Nina - Counting Stars.mp3' (ID 139): Изменен: 2023-04-24 20:38:06, Создан: 2026-10-06 21:20:18
+[2026-10-07 00:20:18.195] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #71E9
+[2026-10-07 00:20:18.201] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6391
+[2026-10-07 00:20:18.279] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #9929
+[2026-10-07 00:20:18.289] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:17Z
+[2026-10-07 00:20:18.289] [DEBUG] [WTelegram]              → Boolean                               #2CCD
+[2026-10-07 00:20:18.289] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Nina - Counting Stars.mp3
+[2026-10-07 00:20:18.318] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #38D5
+[2026-10-07 00:20:18.344] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.344] [DEBUG] [WTelegram]              → Boolean                               #71E9
+[2026-10-07 00:20:18.357] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #218D
+[2026-10-07 00:20:18.390] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.390] [DEBUG] [WTelegram]              → Boolean                               #6391
+[2026-10-07 00:20:18.400] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6B35
+[2026-10-07 00:20:18.429] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.429] [DEBUG] [WTelegram]              → Boolean                               #9929
+[2026-10-07 00:20:18.439] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #48C5
+[2026-10-07 00:20:18.457] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.457] [DEBUG] [WTelegram]              → Boolean                               #38D5
+[2026-10-07 00:20:18.479] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #73DD
+[2026-10-07 00:20:18.508] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.508] [DEBUG] [WTelegram]              → Boolean                               #218D
+[2026-10-07 00:20:18.516] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #59C9
+[2026-10-07 00:20:18.534] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.534] [DEBUG] [WTelegram]              → Boolean                               #6B35
+[2026-10-07 00:20:18.557] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.557] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5902
+[2026-10-07 00:20:18.557] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.586] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.586] [DEBUG] [WTelegram]              → Boolean                               #48C5
+[2026-10-07 00:20:18.603] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.603] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B696
+[2026-10-07 00:20:18.603] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.620] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.620] [DEBUG] [WTelegram]              → Boolean                               #73DD
+[2026-10-07 00:20:18.646] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.646] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5C92
+[2026-10-07 00:20:18.646] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.665] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.665] [DEBUG] [WTelegram]              → Boolean                               #59C9
+[2026-10-07 00:20:18.685] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.685] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CAD6
+[2026-10-07 00:20:18.685] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.704] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.704] [DEBUG] [WTelegram]              → Boolean                               #5902
+[2026-10-07 00:20:18.727] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.727] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1EDA
+[2026-10-07 00:20:18.727] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.753] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.753] [DEBUG] [WTelegram]              → Boolean                               #B696
+[2026-10-07 00:20:18.764] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.764] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #FF3A
+[2026-10-07 00:20:18.765] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.784] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.784] [DEBUG] [WTelegram]              → Boolean                               #5C92
+[2026-10-07 00:20:18.806] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.806] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #AF76
+[2026-10-07 00:20:18.807] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.831] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.831] [DEBUG] [WTelegram]              → Boolean                               #CAD6
+[2026-10-07 00:20:18.843] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.843] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #502A
+[2026-10-07 00:20:18.843] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.879] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.879] [DEBUG] [WTelegram]              → Boolean                               #1EDA
+[2026-10-07 00:20:18.900] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.900] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D12E
+[2026-10-07 00:20:18.900] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.930] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.930] [DEBUG] [WTelegram]              → Boolean                               #FF3A
+[2026-10-07 00:20:18.956] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:18.956] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A1B2
+[2026-10-07 00:20:18.956] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:18.978] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:18.978] [DEBUG] [WTelegram]              → Boolean                               #AF76
+[2026-10-07 00:20:19.007] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:19.007] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #AF62
+[2026-10-07 00:20:19.007] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:19.033] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:19.033] [DEBUG] [WTelegram]              → Boolean                               #502A
+[2026-10-07 00:20:19.059] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:19.059] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F18E
+[2026-10-07 00:20:19.059] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:19.077] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:19.077] [DEBUG] [WTelegram]              → Boolean                               #D12E
+[2026-10-07 00:20:19.129] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:19.129] [DEBUG] [WTelegram]              → Boolean                               #A1B2
+[2026-10-07 00:20:19.175] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:19.175] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:18Z
+[2026-10-07 00:20:19.175] [DEBUG] [WTelegram]              → Boolean                               #F18E
+[2026-10-07 00:20:19.175] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:18Z (svc) 
+[2026-10-07 00:20:19.177] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:19.177] [DEBUG] [WTelegram]              → Boolean                               #AF62
+[2026-10-07 00:20:19.177] [INFO ] [TelegramService] Файл 'Nina - Counting Stars.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/Nina - Counting Stars_v1.mp3
 #latest')...
-[2026-10-06 23:50:38.422] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:38.422] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #8F3E
-[2026-10-06 23:50:38.422] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:38.474] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.474] [DEBUG] [WTelegram]              → Boolean                               #8F3E
-[2026-10-06 23:50:38.475] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:38.475] [DEBUG] [WTelegram]             → Messages_SendMedia                     #D85A
-[2026-10-06 23:50:38.475] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:38.610] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.610] [DEBUG] [WTelegram]              → Updates                               #D85A
-[2026-10-06 23:50:38.610] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:38.610] [DEBUG] [WTelegram]             → Messages_EditMessage                   #BDCA
-[2026-10-06 23:50:38.610] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:38.677] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.677] [DEBUG] [WTelegram]              → Updates                               #BDCA
-[2026-10-06 23:50:38.677] [INFO ] [TelegramService] Файл 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' успешно сохранен в Telegram. Message ID: 1701
-[2026-10-06 23:50:38.677] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' получено из TelegramService.
-[2026-10-06 23:50:38.678] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'. Запуск _completionTimer...
-[2026-10-06 23:50:38.678] [INFO ] [TelegramService] Прямая потоковая передача файла 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (16411173 байт) в Telegram...
-[2026-10-06 23:50:38.679] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:38.679] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D892
-[2026-10-06 23:50:38.679] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:38.686] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D81E
-[2026-10-06 23:50:38.692] [INFO ] [WinFsp] Файл 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' успешно сохранен в Telegram (Msg ID: 1701, дата изменения: 2021-08-10 20:53:55). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:38.692] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1C32
-[2026-10-06 23:50:38.698] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #E1FE
-[2026-10-06 23:50:38.703] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1482
-[2026-10-06 23:50:38.789] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #A5C6
-[2026-10-06 23:50:38.807] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.807] [DEBUG] [WTelegram]              → Boolean                               #D892
-[2026-10-06 23:50:38.807] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4
-[2026-10-06 23:50:38.849] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #E7B2
-[2026-10-06 23:50:38.869] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.869] [DEBUG] [WTelegram]              → Boolean                               #D81E
-[2026-10-06 23:50:38.914] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #8DC2
-[2026-10-06 23:50:38.931] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:38.931] [DEBUG] [WTelegram]              → Boolean                               #1C32
-[2026-10-06 23:50:38.976] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1D4E
-[2026-10-06 23:50:39.027] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:39.027] [DEBUG] [WTelegram]              → Boolean                               #E1FE
-[2026-10-06 23:50:39.035] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #EEDA
-[2026-10-06 23:50:39.051] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:39.051] [DEBUG] [WTelegram]              → Boolean                               #1482
-[2026-10-06 23:50:39.096] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:39.096] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6896
-[2026-10-06 23:50:39.096] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.118] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:39.118] [DEBUG] [WTelegram]              → Boolean                               #A5C6
-[2026-10-06 23:50:39.158] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:39.158] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9E66
-[2026-10-06 23:50:39.158] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.174] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:39.174] [DEBUG] [WTelegram]              → Boolean                               #E7B2
-[2026-10-06 23:50:39.224] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:39.224] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #AF42
-[2026-10-06 23:50:39.224] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.245] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:38Z
-[2026-10-06 23:50:39.245] [DEBUG] [WTelegram]              → Boolean                               #8DC2
-[2026-10-06 23:50:39.282] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:39.282] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CDB6
-[2026-10-06 23:50:39.283] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.302] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.302] [DEBUG] [WTelegram]              → Boolean                               #1D4E
-[2026-10-06 23:50:39.344] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:39.344] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3156
-[2026-10-06 23:50:39.344] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.370] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.370] [DEBUG] [WTelegram]              → Boolean                               #EEDA
-[2026-10-06 23:50:39.403] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:39.403] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C886
-[2026-10-06 23:50:39.404] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.425] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.425] [DEBUG] [WTelegram]              → Boolean                               #6896
-[2026-10-06 23:50:39.464] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:38Z (svc)
-[2026-10-06 23:50:39.464] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D0E6
-[2026-10-06 23:50:39.464] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.491] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.491] [DEBUG] [WTelegram]              → Boolean                               #9E66
-[2026-10-06 23:50:39.530] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.530] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5CFF
-[2026-10-06 23:50:39.530] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.543] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.543] [DEBUG] [WTelegram]              → Boolean                               #AF42
-[2026-10-06 23:50:39.591] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.591] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #96A7
-[2026-10-06 23:50:39.591] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.613] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.613] [DEBUG] [WTelegram]              → Boolean                               #CDB6
-[2026-10-06 23:50:39.649] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.649] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CA5B
-[2026-10-06 23:50:39.649] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.685] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.685] [DEBUG] [WTelegram]              → Boolean                               #3156
-[2026-10-06 23:50:39.706] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.706] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3863
-[2026-10-06 23:50:39.707] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.767] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.767] [DEBUG] [WTelegram]              → Boolean                               #C886
-[2026-10-06 23:50:39.773] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.773] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F98F
-[2026-10-06 23:50:39.773] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.800] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.800] [DEBUG] [WTelegram]              → Boolean                               #D0E6
-[2026-10-06 23:50:39.833] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.833] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7DCF
-[2026-10-06 23:50:39.833] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.855] [DEBUG] [WTelegram]              → Boolean                               #5CFF
-[2026-10-06 23:50:39.889] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.889] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C7E7
-[2026-10-06 23:50:39.890] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.905] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.905] [DEBUG] [WTelegram]              → Boolean                               #96A7
-[2026-10-06 23:50:39.954] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:39.954] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #965F
-[2026-10-06 23:50:39.954] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:39.978] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:39.978] [DEBUG] [WTelegram]              → Boolean                               #CA5B
-[2026-10-06 23:50:40.011] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:40.011] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #FAC3
-[2026-10-06 23:50:40.011] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.022] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:40.022] [DEBUG] [WTelegram]              → Boolean                               #3863
-[2026-10-06 23:50:40.071] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:40.071] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4D0F
-[2026-10-06 23:50:40.071] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.093] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:40.093] [DEBUG] [WTelegram]              → Boolean                               #F98F
-[2026-10-06 23:50:40.129] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:40.129] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C4E7
-[2026-10-06 23:50:40.129] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.144] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:40.144] [DEBUG] [WTelegram]              → Boolean                               #7DCF
-[2026-10-06 23:50:40.185] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:40.185] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6997
-[2026-10-06 23:50:40.185] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.208] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:40.208] [DEBUG] [WTelegram]              → Boolean                               #C7E7
-[2026-10-06 23:50:40.244] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:40.244] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E40B
-[2026-10-06 23:50:40.245] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.264] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:39Z
-[2026-10-06 23:50:40.264] [DEBUG] [WTelegram]              → Boolean                               #965F
-[2026-10-06 23:50:40.306] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:40.306] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4257
-[2026-10-06 23:50:40.306] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.348] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.348] [DEBUG] [WTelegram]              → Boolean                               #FAC3
-[2026-10-06 23:50:40.362] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:39Z (svc)
-[2026-10-06 23:50:40.362] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BEEF
-[2026-10-06 23:50:40.362] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.377] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.377] [DEBUG] [WTelegram]              → Boolean                               #4D0F
-[2026-10-06 23:50:40.443] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.443] [DEBUG] [WTelegram]              → Boolean                               #C4E7
-[2026-10-06 23:50:40.495] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.495] [DEBUG] [WTelegram]              → Boolean                               #6997
-[2026-10-06 23:50:40.566] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.566] [DEBUG] [WTelegram]              → Boolean                               #E40B
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:40Z (svc)
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram]              → Boolean                               #4257
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:40Z (svc) 
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram]              → Boolean                               #BEEF
-[2026-10-06 23:50:40.627] [INFO ] [TelegramService] Файл 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs)_v1.mp4
+[2026-10-07 00:20:19.177] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:19.177] [DEBUG] [WTelegram]             → Messages_SendMedia                     #E80A
+[2026-10-07 00:20:19.177] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:19.273] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:19.273] [DEBUG] [WTelegram]              → Updates                               #E80A
+[2026-10-07 00:20:19.273] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:18Z (svc)
+[2026-10-07 00:20:19.273] [DEBUG] [WTelegram]             → Messages_EditMessage                   #A39E
+[2026-10-07 00:20:19.273] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:19.332] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:18Z
+[2026-10-07 00:20:19.332] [DEBUG] [WTelegram]              → Updates                               #A39E
+[2026-10-07 00:20:19.332] [INFO ] [TelegramService] Файл 'Nina - Counting Stars.mp3' успешно сохранен в Telegram. Message ID: 1726
+[2026-10-07 00:20:19.332] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Nina - Counting Stars.mp3' получено из TelegramService.
+[2026-10-07 00:20:19.333] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Nina - Counting Stars.mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:19.346] [INFO ] [WinFsp] Файл 'Nina - Counting Stars.mp3' успешно сохранен в Telegram (Msg ID: 1726, дата изменения: 2023-04-24 20:38:06). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:19.349] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (виртуальный путь: '/audio/big/Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3')...
+[2026-10-07 00:20:19.349] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:19.351] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:19.357] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 77908 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:19.379] [INFO ] [WinFsp] [Handles DragDrop] Проверено дескрипторов Explorer: 236, найдено совпадений файлов: 0
+[2026-10-07 00:20:19.379] [WARN ] [WinFsp] [Источник] Файл 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' не найден среди доступных источников.
+[2026-10-07 00:20:19.379] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (ID 140, alloc: 10809344)
+[2026-10-07 00:20:19.380] [INFO ] [WinFsp] [Write] Пробуем определить источник (Drag-and-Drop / Буфер обмена) для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'...
+[2026-10-07 00:20:19.380] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (виртуальный путь: '/audio/big/Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3')...
+[2026-10-07 00:20:19.380] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:19.382] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:19.387] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 77916 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:19.468] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'
+[2026-10-07 00:20:19.469] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:19.469] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' существует и доступен для чтения (размер: 10809096 байт).
+[2026-10-07 00:20:19.469] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'
+[2026-10-07 00:20:19.469] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'
+[2026-10-07 00:20:19.475] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3': трек = ' - Tina Cousins - Wonderful Life (Kenny Hayes Suu', длительность = 386 сек, обложка = НЕТ
+[2026-10-07 00:20:19.475] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (10809096 байт) в Telegram на лету (Zero-Temp), аудио: 386 сек, обложка: НЕТ...
+[2026-10-07 00:20:19.475] [INFO ] [TelegramService] Прямая потоковая передача файла 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (10809096 байт) в Telegram...
+[2026-10-07 00:20:19.475] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:19.475] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3497
+[2026-10-07 00:20:19.476] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:19.481] [INFO ] [WinFsp] Обновлены системные даты для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (ID 140): Изменен: 2023-03-30 01:22:51, Создан: 2026-10-06 21:20:19
+[2026-10-07 00:20:19.484] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #61AB
+[2026-10-07 00:20:19.489] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1B0B
+[2026-10-07 00:20:19.575] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #AA0F
+[2026-10-07 00:20:19.587] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.587] [DEBUG] [WTelegram]              → Boolean                               #3497
+[2026-10-07 00:20:19.588] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3
+[2026-10-07 00:20:19.624] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #8CCF
+[2026-10-07 00:20:19.649] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.649] [DEBUG] [WTelegram]              → Boolean                               #61AB
+[2026-10-07 00:20:19.679] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #857B
+[2026-10-07 00:20:19.697] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.697] [DEBUG] [WTelegram]              → Boolean                               #1B0B
+[2026-10-07 00:20:19.726] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #666F
+[2026-10-07 00:20:19.751] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.751] [DEBUG] [WTelegram]              → Boolean                               #AA0F
+[2026-10-07 00:20:19.779] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #962B
+[2026-10-07 00:20:19.795] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.795] [DEBUG] [WTelegram]              → Boolean                               #8CCF
+[2026-10-07 00:20:19.833] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #944B
+[2026-10-07 00:20:19.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.855] [DEBUG] [WTelegram]              → Boolean                               #857B
+[2026-10-07 00:20:19.879] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2593
+[2026-10-07 00:20:19.896] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.896] [DEBUG] [WTelegram]              → Boolean                               #666F
+[2026-10-07 00:20:19.930] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:19.930] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9B2B
+[2026-10-07 00:20:19.931] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:19.952] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:19.952] [DEBUG] [WTelegram]              → Boolean                               #962B
+[2026-10-07 00:20:19.983] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:19.983] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5DD3
+[2026-10-07 00:20:19.984] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.007] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:20.007] [DEBUG] [WTelegram]              → Boolean                               #944B
+[2026-10-07 00:20:20.037] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.037] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #300F
+[2026-10-07 00:20:20.038] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.067] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:20.067] [DEBUG] [WTelegram]              → Boolean                               #2593
+[2026-10-07 00:20:20.086] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.086] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D9E3
+[2026-10-07 00:20:20.086] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.104] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:20.104] [DEBUG] [WTelegram]              → Boolean                               #9B2B
+[2026-10-07 00:20:20.139] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.140] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9D4B
+[2026-10-07 00:20:20.140] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.160] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:20.160] [DEBUG] [WTelegram]              → Boolean                               #5DD3
+[2026-10-07 00:20:20.187] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.187] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9447
+[2026-10-07 00:20:20.187] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.207] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:20.207] [DEBUG] [WTelegram]              → Boolean                               #300F
+[2026-10-07 00:20:20.239] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.239] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EEF7
+[2026-10-07 00:20:20.240] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.262] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:19Z
+[2026-10-07 00:20:20.262] [DEBUG] [WTelegram]              → Boolean                               #D9E3
+[2026-10-07 00:20:20.290] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.290] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9D63
+[2026-10-07 00:20:20.290] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.336] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.336] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B9B7
+[2026-10-07 00:20:20.337] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.374] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:20.374] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.374] [DEBUG] [WTelegram]              → Boolean                               #9D4B
+[2026-10-07 00:20:20.374] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:20Z (svc) 
+[2026-10-07 00:20:20.389] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.389] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #AB7F
+[2026-10-07 00:20:20.389] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.393] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:20.393] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.393] [DEBUG] [WTelegram]              → Boolean                               #9447
+[2026-10-07 00:20:20.393] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:20Z (svc) 
+[2026-10-07 00:20:20.408] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.408] [DEBUG] [WTelegram]              → Boolean                               #EEF7
+[2026-10-07 00:20:20.435] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:19Z (svc)
+[2026-10-07 00:20:20.435] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #62AB
+[2026-10-07 00:20:20.436] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.459] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.459] [DEBUG] [WTelegram]              → Boolean                               #9D63
+[2026-10-07 00:20:20.525] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.525] [DEBUG] [WTelegram]              → Boolean                               #B9B7
+[2026-10-07 00:20:20.571] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:20.571] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.571] [DEBUG] [WTelegram]              → Boolean                               #62AB
+[2026-10-07 00:20:20.571] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:20Z (svc) 
+[2026-10-07 00:20:20.575] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.575] [DEBUG] [WTelegram]              → Boolean                               #AB7F
+[2026-10-07 00:20:20.575] [INFO ] [TelegramService] Файл 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/Tina Cousins - Wonderful Life (Kenny Hayes Suu_v1.mp3
 #latest')...
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:40Z (svc)
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #FD54
-[2026-10-06 23:50:40.627] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.678] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.678] [DEBUG] [WTelegram]              → Boolean                               #FD54
-[2026-10-06 23:50:40.679] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:40Z (svc)
-[2026-10-06 23:50:40.679] [DEBUG] [WTelegram]             → Messages_SendMedia                     #9418
-[2026-10-06 23:50:40.679] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.818] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.819] [DEBUG] [WTelegram]              → Updates                               #9418
-[2026-10-06 23:50:40.819] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:40Z (svc)
-[2026-10-06 23:50:40.819] [DEBUG] [WTelegram]             → Messages_EditMessage                   #ED64
-[2026-10-06 23:50:40.819] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.912] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:40.912] [DEBUG] [WTelegram]              → Updates                               #ED64
-[2026-10-06 23:50:40.912] [INFO ] [TelegramService] Файл 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' успешно сохранен в Telegram. Message ID: 1702
-[2026-10-06 23:50:40.912] [INFO ] [TrayContext] Событие OnUploadCompleted для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' получено из TelegramService.
-[2026-10-06 23:50:40.912] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'. Запуск _completionTimer...
-[2026-10-06 23:50:40.913] [INFO ] [TelegramService] Прямая потоковая передача файла 'Addison Rae - Obsessed.m4a' (5496932 байт) в Telegram...
-[2026-10-06 23:50:40.913] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:40Z (svc)
-[2026-10-06 23:50:40.913] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #9E10
-[2026-10-06 23:50:40.913] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:40.920] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #0648
-[2026-10-06 23:50:40.925] [INFO ] [WinFsp] Файл 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' успешно сохранен в Telegram (Msg ID: 1702, дата изменения: 2021-08-09 23:21:53). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:40.926] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2D48
-[2026-10-06 23:50:40.931] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6344
-[2026-10-06 23:50:40.936] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #658C
-[2026-10-06 23:50:41.015] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #ADA8
-[2026-10-06 23:50:41.029] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:41.029] [DEBUG] [WTelegram]              → Boolean                               #9E10
-[2026-10-06 23:50:41.029] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Addison Rae - Obsessed.m4a
-[2026-10-06 23:50:41.070] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #822C
-[2026-10-06 23:50:41.092] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:41.092] [DEBUG] [WTelegram]              → Boolean                               #0648
-[2026-10-06 23:50:41.125] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #8508
-[2026-10-06 23:50:41.145] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:41.145] [DEBUG] [WTelegram]              → Boolean                               #2D48
-[2026-10-06 23:50:41.190] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #58E0
-[2026-10-06 23:50:41.207] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:41.207] [DEBUG] [WTelegram]              → Boolean                               #6344
-[2026-10-06 23:50:41.246] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #73DC
-[2026-10-06 23:50:41.270] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:40Z
-[2026-10-06 23:50:41.270] [DEBUG] [WTelegram]              → Boolean                               #658C
-[2026-10-06 23:50:41.304] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:40Z (svc)
-[2026-10-06 23:50:41.304] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #71F0
-[2026-10-06 23:50:41.304] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:41.346] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:41Z
-[2026-10-06 23:50:41.346] [DEBUG] [WTelegram]              → Boolean                               #ADA8
-[2026-10-06 23:50:41.390] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:41Z
-[2026-10-06 23:50:41.390] [DEBUG] [WTelegram]              → Boolean                               #822C
-[2026-10-06 23:50:41.456] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:41Z
-[2026-10-06 23:50:41.456] [DEBUG] [WTelegram]              → Boolean                               #8508
-[2026-10-06 23:50:41.528] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:41Z
-[2026-10-06 23:50:41.528] [DEBUG] [WTelegram]              → Boolean                               #58E0
-[2026-10-06 23:50:41.605] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:41Z (svc)
-[2026-10-06 23:50:41.605] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:41Z
-[2026-10-06 23:50:41.605] [DEBUG] [WTelegram]              → Boolean                               #73DC
-[2026-10-06 23:50:41.605] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:41Z (svc) 
-[2026-10-06 23:50:41.617] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:41Z
-[2026-10-06 23:50:41.617] [DEBUG] [WTelegram]              → Boolean                               #71F0
-[2026-10-06 23:50:41.617] [INFO ] [TelegramService] Файл 'Addison Rae - Obsessed.m4a' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/Addison Rae - Obsessed_v1.m4a
+[2026-10-07 00:20:20.575] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:20.575] [DEBUG] [WTelegram]             → Messages_SendMedia                     #B234
+[2026-10-07 00:20:20.575] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.661] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.661] [DEBUG] [WTelegram]              → Updates                               #B234
+[2026-10-07 00:20:20.662] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:20.662] [DEBUG] [WTelegram]             → Messages_EditMessage                   #F7EC
+[2026-10-07 00:20:20.662] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.721] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.722] [DEBUG] [WTelegram]              → Updates                               #F7EC
+[2026-10-07 00:20:20.722] [INFO ] [TelegramService] Файл 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' успешно сохранен в Telegram. Message ID: 1727
+[2026-10-07 00:20:20.722] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' получено из TelegramService.
+[2026-10-07 00:20:20.722] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:20.735] [INFO ] [WinFsp] Файл 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' успешно сохранен в Telegram (Msg ID: 1727, дата изменения: 2023-03-30 01:22:51). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:20.737] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (виртуальный путь: '/audio/big/[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3')...
+[2026-10-07 00:20:20.737] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' существует и доступен для чтения (размер: 13865469 байт).
+[2026-10-07 00:20:20.738] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
+[2026-10-07 00:20:20.738] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:20.738] [INFO ] [WinFsp] Создан файл для записи: '/audio/big/[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 141, alloc: 13869056), источник: 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
+[2026-10-07 00:20:20.738] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\big\[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'
+[2026-10-07 00:20:20.741] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3': трек = 'Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix)', длительность = 345 сек, обложка = 47622 байт
+[2026-10-07 00:20:20.741] [INFO ] [WinFsp] Запуск прямой потоковой передачи '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (13865469 байт) в Telegram на лету (Zero-Temp), аудио: 345 сек, обложка: ДА...
+[2026-10-07 00:20:20.741] [INFO ] [TelegramService] Прямая потоковая передача файла '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (13865469 байт) в Telegram...
+[2026-10-07 00:20:20.742] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:20.742] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DDA0
+[2026-10-07 00:20:20.743] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:20.753] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #A6D4
+[2026-10-07 00:20:20.753] [INFO ] [WinFsp] Обновлены системные даты для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (ID 141): Изменен: 2016-08-11 20:30:36, Создан: 2026-10-06 21:20:20
+[2026-10-07 00:20:20.758] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2744
+[2026-10-07 00:20:20.845] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2BF4
+[2026-10-07 00:20:20.860] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.860] [DEBUG] [WTelegram]              → Boolean                               #DDA0
+[2026-10-07 00:20:20.860] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла [FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3
+[2026-10-07 00:20:20.895] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #632C
+[2026-10-07 00:20:20.916] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.916] [DEBUG] [WTelegram]              → Boolean                               #A6D4
+[2026-10-07 00:20:20.940] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #CFEC
+[2026-10-07 00:20:20.957] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:20.957] [DEBUG] [WTelegram]              → Boolean                               #2744
+[2026-10-07 00:20:20.991] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #59B8
+[2026-10-07 00:20:21.020] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:21.020] [DEBUG] [WTelegram]              → Boolean                               #2BF4
+[2026-10-07 00:20:21.038] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #90C4
+[2026-10-07 00:20:21.053] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:21.053] [DEBUG] [WTelegram]              → Boolean                               #632C
+[2026-10-07 00:20:21.102] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0D00
+[2026-10-07 00:20:21.123] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:21.123] [DEBUG] [WTelegram]              → Boolean                               #CFEC
+[2026-10-07 00:20:21.175] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #9E78
+[2026-10-07 00:20:21.188] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:21.188] [DEBUG] [WTelegram]              → Boolean                               #59B8
+[2026-10-07 00:20:21.237] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.237] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9B44
+[2026-10-07 00:20:21.238] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.267] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:21.267] [DEBUG] [WTelegram]              → Boolean                               #90C4
+[2026-10-07 00:20:21.300] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.300] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #70DC
+[2026-10-07 00:20:21.301] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.322] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:20Z
+[2026-10-07 00:20:21.322] [DEBUG] [WTelegram]              → Boolean                               #0D00
+[2026-10-07 00:20:21.398] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.398] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0D80
+[2026-10-07 00:20:21.399] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.421] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:21.421] [DEBUG] [WTelegram]              → Boolean                               #9E78
+[2026-10-07 00:20:21.486] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.486] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8920
+[2026-10-07 00:20:21.486] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.500] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:21.501] [DEBUG] [WTelegram]              → Boolean                               #9B44
+[2026-10-07 00:20:21.579] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.579] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2838
+[2026-10-07 00:20:21.579] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.606] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:21.606] [DEBUG] [WTelegram]              → Boolean                               #70DC
+[2026-10-07 00:20:21.668] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.669] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CC7C
+[2026-10-07 00:20:21.669] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.682] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:21.683] [DEBUG] [WTelegram]              → Boolean                               #0D80
+[2026-10-07 00:20:21.757] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.757] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #791C
+[2026-10-07 00:20:21.757] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.783] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:21.783] [DEBUG] [WTelegram]              → Boolean                               #8920
+[2026-10-07 00:20:21.846] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:20Z (svc)
+[2026-10-07 00:20:21.846] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B7C8
+[2026-10-07 00:20:21.846] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.867] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:21.867] [DEBUG] [WTelegram]              → Boolean                               #2838
+[2026-10-07 00:20:21.937] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:21.937] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6D19
+[2026-10-07 00:20:21.937] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:21.962] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:21.962] [DEBUG] [WTelegram]              → Boolean                               #CC7C
+[2026-10-07 00:20:22.023] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.023] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2D1D
+[2026-10-07 00:20:22.024] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.037] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:22.037] [DEBUG] [WTelegram]              → Boolean                               #791C
+[2026-10-07 00:20:22.115] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.115] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A4F5
+[2026-10-07 00:20:22.116] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.143] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:22.143] [DEBUG] [WTelegram]              → Boolean                               #B7C8
+[2026-10-07 00:20:22.204] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.204] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7C61
+[2026-10-07 00:20:22.205] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.219] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:22.219] [DEBUG] [WTelegram]              → Boolean                               #6D19
+[2026-10-07 00:20:22.292] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.292] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B0E9
+[2026-10-07 00:20:22.292] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.317] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:21Z
+[2026-10-07 00:20:22.317] [DEBUG] [WTelegram]              → Boolean                               #2D1D
+[2026-10-07 00:20:22.380] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.380] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5C61
+[2026-10-07 00:20:22.380] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.393] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.393] [DEBUG] [WTelegram]              → Boolean                               #A4F5
+[2026-10-07 00:20:22.465] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.465] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1599
+[2026-10-07 00:20:22.465] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.486] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.486] [DEBUG] [WTelegram]              → Boolean                               #7C61
+[2026-10-07 00:20:22.552] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.552] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1B29
+[2026-10-07 00:20:22.552] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.567] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.567] [DEBUG] [WTelegram]              → Boolean                               #B0E9
+[2026-10-07 00:20:22.635] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:21Z (svc)
+[2026-10-07 00:20:22.635] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #94C1
+[2026-10-07 00:20:22.635] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.656] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.656] [DEBUG] [WTelegram]              → Boolean                               #5C61
+[2026-10-07 00:20:22.732] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.732] [DEBUG] [WTelegram]              → Boolean                               #1599
+[2026-10-07 00:20:22.826] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.826] [DEBUG] [WTelegram]              → Boolean                               #1B29
+[2026-10-07 00:20:22.847] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.847] [DEBUG] [WTelegram]              → Boolean                               #94C1
+[2026-10-07 00:20:22.847] [INFO ] [TelegramService] Файл '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb)_v1.mp3
 #latest')...
-[2026-10-06 23:50:41.617] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:41Z (svc)
-[2026-10-06 23:50:41.617] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #4A59
-[2026-10-06 23:50:41.617] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:41.709] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:41Z
-[2026-10-06 23:50:41.709] [DEBUG] [WTelegram]              → Boolean                               #4A59
-[2026-10-06 23:50:41.709] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:41Z (svc)
-[2026-10-06 23:50:41.710] [DEBUG] [WTelegram]             → Messages_SendMedia                     #27F1
-[2026-10-06 23:50:41.710] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.092] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:42Z
-[2026-10-06 23:50:43.092] [DEBUG] [WTelegram]              → Updates                               #27F1
-[2026-10-06 23:50:43.092] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:42Z (svc)
-[2026-10-06 23:50:43.092] [DEBUG] [WTelegram]             → Messages_EditMessage                   #5B8E
-[2026-10-06 23:50:43.092] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.204] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:42Z
-[2026-10-06 23:50:43.204] [DEBUG] [WTelegram]              → Updates                               #5B8E
-[2026-10-06 23:50:43.204] [INFO ] [TelegramService] Файл 'Addison Rae - Obsessed.m4a' успешно сохранен в Telegram. Message ID: 1703
-[2026-10-06 23:50:43.204] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Addison Rae - Obsessed.m4a' получено из TelegramService.
-[2026-10-06 23:50:43.204] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Addison Rae - Obsessed.m4a'. Запуск _completionTimer...
-[2026-10-06 23:50:43.204] [INFO ] [TelegramService] Прямая потоковая передача файла '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' (13191016 байт) в Telegram...
-[2026-10-06 23:50:43.205] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.205] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D47B
-[2026-10-06 23:50:43.205] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.205] [INFO ] [WinFsp] Файл 'Addison Rae - Obsessed.m4a' успешно сохранен в Telegram (Msg ID: 1703, дата изменения: 2023-12-10 23:09:15). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:43.212] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #A047
-[2026-10-06 23:50:43.218] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #DF17
-[2026-10-06 23:50:43.223] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #9F5F
-[2026-10-06 23:50:43.228] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #782B
-[2026-10-06 23:50:43.307] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #7B2F
-[2026-10-06 23:50:43.353] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.353] [DEBUG] [WTelegram]              → Boolean                               #D47B
-[2026-10-06 23:50:43.353] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла 09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3
-[2026-10-06 23:50:43.362] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #B457
-[2026-10-06 23:50:43.422] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D34B
-[2026-10-06 23:50:43.434] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.434] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.434] [DEBUG] [WTelegram]              → Boolean                               #A047
-[2026-10-06 23:50:43.434] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:43Z (svc) 
-[2026-10-06 23:50:43.476] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #7C77
-[2026-10-06 23:50:43.489] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.489] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.489] [DEBUG] [WTelegram]              → Boolean                               #DF17
-[2026-10-06 23:50:43.489] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:43Z (svc) 
-[2026-10-06 23:50:43.533] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D6E7
-[2026-10-06 23:50:43.573] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.573] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.573] [DEBUG] [WTelegram]              → Boolean                               #9F5F
-[2026-10-06 23:50:43.573] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:43Z (svc) 
-[2026-10-06 23:50:43.590] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.590] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A2A7
-[2026-10-06 23:50:43.590] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.609] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.609] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.609] [DEBUG] [WTelegram]              → Boolean                               #782B
-[2026-10-06 23:50:43.609] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:43Z (svc) 
-[2026-10-06 23:50:43.648] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.648] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5CB7
-[2026-10-06 23:50:43.648] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.665] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.665] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.665] [DEBUG] [WTelegram]              → Boolean                               #7B2F
-[2026-10-06 23:50:43.665] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:43Z (svc) 
-[2026-10-06 23:50:43.699] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.699] [DEBUG] [WTelegram]              → Boolean                               #B457
-[2026-10-06 23:50:43.703] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.703] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BC73
-[2026-10-06 23:50:43.703] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.733] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.733] [DEBUG] [WTelegram]              → Boolean                               #D34B
-[2026-10-06 23:50:43.762] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.762] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0467
-[2026-10-06 23:50:43.762] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.780] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.780] [DEBUG] [WTelegram]              → Boolean                               #7C77
-[2026-10-06 23:50:43.816] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.816] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DEDB
-[2026-10-06 23:50:43.816] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.855] [DEBUG] [WTelegram]              → Boolean                               #D6E7
-[2026-10-06 23:50:43.872] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.872] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B7D7
-[2026-10-06 23:50:43.872] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.902] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.902] [DEBUG] [WTelegram]              → Boolean                               #A2A7
-[2026-10-06 23:50:43.930] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.930] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E85B
-[2026-10-06 23:50:43.931] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:43.948] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:43.948] [DEBUG] [WTelegram]              → Boolean                               #5CB7
-[2026-10-06 23:50:43.984] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:43.984] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #12CB
-[2026-10-06 23:50:43.985] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.004] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:44.004] [DEBUG] [WTelegram]              → Boolean                               #BC73
-[2026-10-06 23:50:44.041] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.041] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #61EB
-[2026-10-06 23:50:44.041] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.063] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:44.063] [DEBUG] [WTelegram]              → Boolean                               #0467
-[2026-10-06 23:50:44.098] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.098] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EFAB
-[2026-10-06 23:50:44.099] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.111] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:44.111] [DEBUG] [WTelegram]              → Boolean                               #DEDB
-[2026-10-06 23:50:44.154] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.154] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4187
-[2026-10-06 23:50:44.154] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.174] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:44.174] [DEBUG] [WTelegram]              → Boolean                               #B7D7
-[2026-10-06 23:50:44.210] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.210] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F78F
-[2026-10-06 23:50:44.211] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.229] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:43Z
-[2026-10-06 23:50:44.229] [DEBUG] [WTelegram]              → Boolean                               #E85B
-[2026-10-06 23:50:44.264] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.264] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3167
-[2026-10-06 23:50:44.265] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.291] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.291] [DEBUG] [WTelegram]              → Boolean                               #12CB
-[2026-10-06 23:50:44.323] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.323] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D2D3
-[2026-10-06 23:50:44.324] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.339] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.339] [DEBUG] [WTelegram]              → Boolean                               #61EB
-[2026-10-06 23:50:44.377] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.377] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #05D3
-[2026-10-06 23:50:44.378] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.403] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.403] [DEBUG] [WTelegram]              → Boolean                               #EFAB
-[2026-10-06 23:50:44.433] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:43Z (svc)
-[2026-10-06 23:50:44.433] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C96F
-[2026-10-06 23:50:44.433] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.447] [DEBUG] [WTelegram]              → Boolean                               #4187
-[2026-10-06 23:50:44.507] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.507] [DEBUG] [WTelegram]              → Boolean                               #F78F
-[2026-10-06 23:50:44.574] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.574] [DEBUG] [WTelegram]              → Boolean                               #3167
-[2026-10-06 23:50:44.651] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.651] [DEBUG] [WTelegram]              → Boolean                               #D2D3
-[2026-10-06 23:50:44.702] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:44Z (svc)
-[2026-10-06 23:50:44.702] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.702] [DEBUG] [WTelegram]              → Boolean                               #C96F
-[2026-10-06 23:50:44.702] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:44Z (svc) 
-[2026-10-06 23:50:44.710] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.710] [DEBUG] [WTelegram]              → Boolean                               #05D3
-[2026-10-06 23:50:44.710] [INFO ] [TelegramService] Файл '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/09. Исполнитель записи - Запись 9 (есть обложка, кракозябры)_v1.mp3
+[2026-10-07 00:20:22.847] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:22Z (svc)
+[2026-10-07 00:20:22.847] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #618E
+[2026-10-07 00:20:22.847] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:22.897] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:22.897] [DEBUG] [WTelegram]              → Boolean                               #618E
+[2026-10-07 00:20:22.898] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:22Z (svc)
+[2026-10-07 00:20:22.898] [DEBUG] [WTelegram]             → Messages_SendMedia                     #5E9E
+[2026-10-07 00:20:22.898] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:23.045] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:23.045] [DEBUG] [WTelegram]              → Updates                               #5E9E
+[2026-10-07 00:20:23.046] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:22Z (svc)
+[2026-10-07 00:20:23.046] [DEBUG] [WTelegram]             → Messages_EditMessage                   #299A
+[2026-10-07 00:20:23.046] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:23.110] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:23.110] [DEBUG] [WTelegram]              → Updates                               #299A
+[2026-10-07 00:20:23.110] [INFO ] [TelegramService] Файл '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' успешно сохранен в Telegram. Message ID: 1728
+[2026-10-07 00:20:23.111] [INFO ] [TrayContext] Событие OnUploadCompleted для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' получено из TelegramService.
+[2026-10-07 00:20:23.111] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:23.124] [INFO ] [WinFsp] Файл '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' успешно сохранен в Telegram (Msg ID: 1728, дата изменения: 2016-08-11 20:30:36). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:23.127] [INFO ] [WinFsp] Создан новый каталог: '/audio/small' (ID 142)
+[2026-10-07 00:20:23.128] [INFO ] [WinFsp] Обновлены системные даты для 'small' (ID 142): Изменен: 2026-10-05 22:53:55, Создан: 2026-10-06 21:20:23
+[2026-10-07 00:20:23.131] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (виртуальный путь: '/audio/small/06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3')...
+[2026-10-07 00:20:23.131] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:23.133] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:23.139] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 77929 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:23.174] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
+[2026-10-07 00:20:23.174] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:23.174] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' существует и доступен для чтения (размер: 8082073 байт).
+[2026-10-07 00:20:23.174] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
+[2026-10-07 00:20:23.174] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (ID 143, alloc: 8085504), источник: 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
+[2026-10-07 00:20:23.175] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'
+[2026-10-07 00:20:23.176] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3': трек = 'David Guetta - Play Hard', длительность = 201 сек, обложка = 40041 байт
+[2026-10-07 00:20:23.176] [INFO ] [WinFsp] Запуск прямой потоковой передачи '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (8082073 байт) в Telegram на лету (Zero-Temp), аудио: 201 сек, обложка: ДА...
+[2026-10-07 00:20:23.176] [INFO ] [TelegramService] Прямая потоковая передача файла '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (8082073 байт) в Telegram...
+[2026-10-07 00:20:23.176] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:22Z (svc)
+[2026-10-07 00:20:23.176] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #675E
+[2026-10-07 00:20:23.177] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:23.184] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #262E
+[2026-10-07 00:20:23.185] [INFO ] [WinFsp] Обновлены системные даты для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (ID 143): Изменен: 2016-08-13 20:33:01, Создан: 2026-10-06 21:20:23
+[2026-10-07 00:20:23.190] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EFBE
+[2026-10-07 00:20:23.308] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #99DA
+[2026-10-07 00:20:23.322] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:22Z
+[2026-10-07 00:20:23.322] [DEBUG] [WTelegram]              → Boolean                               #675E
+[2026-10-07 00:20:23.322] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла 06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3
+[2026-10-07 00:20:23.411] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #D61A
+[2026-10-07 00:20:23.427] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:23.427] [DEBUG] [WTelegram]              → Boolean                               #262E
+[2026-10-07 00:20:23.508] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #82DE
+[2026-10-07 00:20:23.528] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:23.528] [DEBUG] [WTelegram]              → Boolean                               #EFBE
+[2026-10-07 00:20:23.583] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #FB8E
+[2026-10-07 00:20:23.597] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:23.598] [DEBUG] [WTelegram]              → Boolean                               #99DA
+[2026-10-07 00:20:23.669] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #D3FE
+[2026-10-07 00:20:23.680] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:23.680] [DEBUG] [WTelegram]              → Boolean                               #D61A
+[2026-10-07 00:20:23.752] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #47C6
+[2026-10-07 00:20:23.765] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:23.765] [DEBUG] [WTelegram]              → Boolean                               #82DE
+[2026-10-07 00:20:23.835] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C93E
+[2026-10-07 00:20:23.851] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:23.851] [DEBUG] [WTelegram]              → Boolean                               #FB8E
+[2026-10-07 00:20:23.915] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:23Z (svc)
+[2026-10-07 00:20:23.915] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #4E17
+[2026-10-07 00:20:23.916] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:23.930] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:23.930] [DEBUG] [WTelegram]              → Boolean                               #D3FE
+[2026-10-07 00:20:23.995] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:23Z (svc)
+[2026-10-07 00:20:23.995] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #76C3
+[2026-10-07 00:20:23.995] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:24.008] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:24.008] [DEBUG] [WTelegram]              → Boolean                               #47C6
+[2026-10-07 00:20:24.083] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:23Z (svc)
+[2026-10-07 00:20:24.083] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #395F
+[2026-10-07 00:20:24.083] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:24.099] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:24.099] [DEBUG] [WTelegram]              → Boolean                               #C93E
+[2026-10-07 00:20:24.162] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:23Z (svc)
+[2026-10-07 00:20:24.162] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #80BB
+[2026-10-07 00:20:24.163] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:24.179] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:24.179] [DEBUG] [WTelegram]              → Boolean                               #4E17
+[2026-10-07 00:20:24.240] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:23Z (svc)
+[2026-10-07 00:20:24.240] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F2B7
+[2026-10-07 00:20:24.240] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:24.251] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:24.251] [DEBUG] [WTelegram]              → Boolean                               #76C3
+[2026-10-07 00:20:24.326] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:23Z (svc)
+[2026-10-07 00:20:24.326] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #BF67
+[2026-10-07 00:20:24.326] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:24.338] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:23Z
+[2026-10-07 00:20:24.338] [DEBUG] [WTelegram]              → Boolean                               #395F
+[2026-10-07 00:20:24.421] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:24Z
+[2026-10-07 00:20:24.421] [DEBUG] [WTelegram]              → Boolean                               #80BB
+[2026-10-07 00:20:24.492] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:24Z
+[2026-10-07 00:20:24.492] [DEBUG] [WTelegram]              → Boolean                               #F2B7
+[2026-10-07 00:20:24.519] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:24Z
+[2026-10-07 00:20:24.519] [DEBUG] [WTelegram]              → Boolean                               #BF67
+[2026-10-07 00:20:24.519] [INFO ] [TelegramService] Файл '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb)_v1.mp3
 #latest')...
-[2026-10-06 23:50:44.711] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:44Z (svc)
-[2026-10-06 23:50:44.711] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #1094
-[2026-10-06 23:50:44.711] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.776] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.776] [DEBUG] [WTelegram]              → Boolean                               #1094
-[2026-10-06 23:50:44.777] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:44Z (svc)
-[2026-10-06 23:50:44.777] [DEBUG] [WTelegram]             → Messages_SendMedia                     #8388
-[2026-10-06 23:50:44.777] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.921] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.921] [DEBUG] [WTelegram]              → Updates                               #8388
-[2026-10-06 23:50:44.921] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:44Z (svc)
-[2026-10-06 23:50:44.921] [DEBUG] [WTelegram]             → Messages_EditMessage                   #E884
-[2026-10-06 23:50:44.921] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.988] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:44.988] [DEBUG] [WTelegram]              → Updates                               #E884
-[2026-10-06 23:50:44.988] [INFO ] [TelegramService] Файл '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' успешно сохранен в Telegram. Message ID: 1704
-[2026-10-06 23:50:44.988] [INFO ] [TrayContext] Событие OnUploadCompleted для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' получено из TelegramService.
-[2026-10-06 23:50:44.989] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:44.989] [INFO ] [TelegramService] Прямая потоковая передача файла 'Headhunters - Dayz Like That (3base club mix).mp3' (12675031 байт) в Telegram...
-[2026-10-06 23:50:44.989] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:44Z (svc)
-[2026-10-06 23:50:44.989] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3FA4
-[2026-10-06 23:50:44.990] [INFO ] [WinFsp] Файл '09. Исполнитель записи - Запись 9 (есть обложка, кракозябры).mp3' успешно сохранен в Telegram (Msg ID: 1704, дата изменения: 2008-02-21 12:54:41). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:44.990] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:44.997] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #297C
-[2026-10-06 23:50:45.004] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #11C4
-[2026-10-06 23:50:45.009] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #ECC4
-[2026-10-06 23:50:45.015] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #F114
-[2026-10-06 23:50:45.100] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #125C
-[2026-10-06 23:50:45.118] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:45.118] [DEBUG] [WTelegram]              → Boolean                               #3FA4
-[2026-10-06 23:50:45.118] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Headhunters - Dayz Like That (3base club mix).mp3
-[2026-10-06 23:50:45.152] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #3320
-[2026-10-06 23:50:45.187] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:45.187] [DEBUG] [WTelegram]              → Boolean                               #297C
-[2026-10-06 23:50:45.204] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1D88
-[2026-10-06 23:50:45.219] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:44Z
-[2026-10-06 23:50:45.219] [DEBUG] [WTelegram]              → Boolean                               #11C4
-[2026-10-06 23:50:45.260] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #12B8
-[2026-10-06 23:50:45.284] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.284] [DEBUG] [WTelegram]              → Boolean                               #ECC4
-[2026-10-06 23:50:45.321] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #FBE8
-[2026-10-06 23:50:45.345] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.345] [DEBUG] [WTelegram]              → Boolean                               #F114
-[2026-10-06 23:50:45.377] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:44Z (svc)
-[2026-10-06 23:50:45.377] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EED8
-[2026-10-06 23:50:45.378] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.398] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.398] [DEBUG] [WTelegram]              → Boolean                               #125C
-[2026-10-06 23:50:45.430] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:44Z (svc)
-[2026-10-06 23:50:45.430] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BF84
-[2026-10-06 23:50:45.430] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.446] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.446] [DEBUG] [WTelegram]              → Boolean                               #3320
-[2026-10-06 23:50:45.485] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.485] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1641
-[2026-10-06 23:50:45.485] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.529] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.529] [DEBUG] [WTelegram]              → Boolean                               #1D88
-[2026-10-06 23:50:45.543] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.543] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5EC5
-[2026-10-06 23:50:45.544] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.578] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.578] [DEBUG] [WTelegram]              → Boolean                               #12B8
-[2026-10-06 23:50:45.601] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.601] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4EDD
-[2026-10-06 23:50:45.601] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.626] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.626] [DEBUG] [WTelegram]              → Boolean                               #FBE8
-[2026-10-06 23:50:45.656] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.656] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F69D
-[2026-10-06 23:50:45.656] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.672] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.672] [DEBUG] [WTelegram]              → Boolean                               #EED8
-[2026-10-06 23:50:45.714] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.714] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CE8D
-[2026-10-06 23:50:45.714] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.735] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.735] [DEBUG] [WTelegram]              → Boolean                               #BF84
-[2026-10-06 23:50:45.766] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.766] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2669
-[2026-10-06 23:50:45.766] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.780] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.780] [DEBUG] [WTelegram]              → Boolean                               #1641
-[2026-10-06 23:50:45.820] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.820] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #90ED
-[2026-10-06 23:50:45.820] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.849] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.849] [DEBUG] [WTelegram]              → Boolean                               #5EC5
-[2026-10-06 23:50:45.875] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.875] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6021
-[2026-10-06 23:50:45.876] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.890] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.890] [DEBUG] [WTelegram]              → Boolean                               #4EDD
-[2026-10-06 23:50:45.932] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.932] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #68E1
-[2026-10-06 23:50:45.933] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:45.956] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:45.956] [DEBUG] [WTelegram]              → Boolean                               #F69D
-[2026-10-06 23:50:45.986] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:45.986] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E8AD
-[2026-10-06 23:50:45.986] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.002] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:46.002] [DEBUG] [WTelegram]              → Boolean                               #CE8D
-[2026-10-06 23:50:46.039] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:46.039] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F65D
-[2026-10-06 23:50:46.039] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.060] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:46.060] [DEBUG] [WTelegram]              → Boolean                               #2669
-[2026-10-06 23:50:46.095] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:46.095] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5D61
-[2026-10-06 23:50:46.096] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.112] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:46.112] [DEBUG] [WTelegram]              → Boolean                               #90ED
-[2026-10-06 23:50:46.154] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:45Z (svc)
-[2026-10-06 23:50:46.154] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DBA1
-[2026-10-06 23:50:46.154] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.176] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:46.176] [DEBUG] [WTelegram]              → Boolean                               #6021
-[2026-10-06 23:50:46.224] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:45Z
-[2026-10-06 23:50:46.224] [DEBUG] [WTelegram]              → Boolean                               #68E1
-[2026-10-06 23:50:46.291] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.291] [DEBUG] [WTelegram]              → Boolean                               #E8AD
-[2026-10-06 23:50:46.338] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.338] [DEBUG] [WTelegram]              → Boolean                               #F65D
-[2026-10-06 23:50:46.392] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:46.392] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.392] [DEBUG] [WTelegram]              → Boolean                               #DBA1
-[2026-10-06 23:50:46.392] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:46Z (svc) 
-[2026-10-06 23:50:46.404] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.404] [DEBUG] [WTelegram]              → Boolean                               #5D61
-[2026-10-06 23:50:46.404] [INFO ] [TelegramService] Файл 'Headhunters - Dayz Like That (3base club mix).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/Headhunters - Dayz Like That (3base club mix)_v1.mp3
+[2026-10-07 00:20:24.519] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:24Z (svc)
+[2026-10-07 00:20:24.519] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5498
+[2026-10-07 00:20:24.519] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:24.571] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:24Z
+[2026-10-07 00:20:24.571] [DEBUG] [WTelegram]              → Boolean                               #5498
+[2026-10-07 00:20:24.572] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:24Z (svc)
+[2026-10-07 00:20:24.572] [DEBUG] [WTelegram]             → Messages_SendMedia                     #D994
+[2026-10-07 00:20:24.572] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:25.414] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:25.414] [DEBUG] [WTelegram]              → Updates                               #D994
+[2026-10-07 00:20:25.415] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:25.415] [DEBUG] [WTelegram]             → Messages_EditMessage                   #73F5
+[2026-10-07 00:20:25.415] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:25.483] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:25.483] [DEBUG] [WTelegram]              → Updates                               #73F5
+[2026-10-07 00:20:25.483] [INFO ] [TelegramService] Файл '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' успешно сохранен в Telegram. Message ID: 1729
+[2026-10-07 00:20:25.483] [INFO ] [TrayContext] Событие OnUploadCompleted для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' получено из TelegramService.
+[2026-10-07 00:20:25.483] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:25.497] [INFO ] [WinFsp] Файл '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' успешно сохранен в Telegram (Msg ID: 1729, дата изменения: 2016-08-13 20:33:01). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:25.499] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для '12 Ultra Nate - Free (Acapella).mp3' (виртуальный путь: '/audio/small/12 Ultra Nate - Free (Acapella).mp3')...
+[2026-10-07 00:20:25.499] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3' существует и доступен для чтения (размер: 9031336 байт).
+[2026-10-07 00:20:25.500] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3'
+[2026-10-07 00:20:25.500] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:25.500] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/12 Ultra Nate - Free (Acapella).mp3' (ID 144, alloc: 9031680), источник: 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3'
+[2026-10-07 00:20:25.500] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\12 Ultra Nate - Free (Acapella).mp3'
+[2026-10-07 00:20:25.501] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для '12 Ultra Nate - Free (Acapella).mp3': трек = 'Ultra Nate - Free (Acapella)', длительность = 226 сек, обложка = НЕТ
+[2026-10-07 00:20:25.501] [INFO ] [WinFsp] Запуск прямой потоковой передачи '12 Ultra Nate - Free (Acapella).mp3' (9031336 байт) в Telegram на лету (Zero-Temp), аудио: 226 сек, обложка: НЕТ...
+[2026-10-07 00:20:25.501] [INFO ] [TelegramService] Прямая потоковая передача файла '12 Ultra Nate - Free (Acapella).mp3' (9031336 байт) в Telegram...
+[2026-10-07 00:20:25.502] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:25.502] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #1241
+[2026-10-07 00:20:25.503] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:25.507] [INFO ] [WinFsp] Обновлены системные даты для '12 Ultra Nate - Free (Acapella).mp3' (ID 144): Изменен: 2010-02-11 11:01:18, Создан: 2026-10-06 21:20:25
+[2026-10-07 00:20:25.510] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C205
+[2026-10-07 00:20:25.516] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EE05
+[2026-10-07 00:20:25.620] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7809
+[2026-10-07 00:20:25.635] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:25.635] [DEBUG] [WTelegram]              → Boolean                               #1241
+[2026-10-07 00:20:25.635] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла 12 Ultra Nate - Free (Acapella).mp3
+[2026-10-07 00:20:25.709] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #476D
+[2026-10-07 00:20:25.723] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:25.723] [DEBUG] [WTelegram]              → Boolean                               #C205
+[2026-10-07 00:20:25.787] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #B2D5
+[2026-10-07 00:20:25.803] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:25.803] [DEBUG] [WTelegram]              → Boolean                               #EE05
+[2026-10-07 00:20:25.867] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A24D
+[2026-10-07 00:20:25.882] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:25.882] [DEBUG] [WTelegram]              → Boolean                               #7809
+[2026-10-07 00:20:25.935] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #43D9
+[2026-10-07 00:20:25.949] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:25.949] [DEBUG] [WTelegram]              → Boolean                               #476D
+[2026-10-07 00:20:26.020] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DF4D
+[2026-10-07 00:20:26.044] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:26.044] [DEBUG] [WTelegram]              → Boolean                               #B2D5
+[2026-10-07 00:20:26.146] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4E39
+[2026-10-07 00:20:26.161] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:26.161] [DEBUG] [WTelegram]              → Boolean                               #A24D
+[2026-10-07 00:20:26.230] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.230] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #A751
+[2026-10-07 00:20:26.230] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.243] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:26.243] [DEBUG] [WTelegram]              → Boolean                               #43D9
+[2026-10-07 00:20:26.303] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.303] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #2531
+[2026-10-07 00:20:26.303] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.320] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:25Z
+[2026-10-07 00:20:26.320] [DEBUG] [WTelegram]              → Boolean                               #DF4D
+[2026-10-07 00:20:26.388] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.388] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #9621
+[2026-10-07 00:20:26.389] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.406] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.406] [DEBUG] [WTelegram]              → Boolean                               #4E39
+[2026-10-07 00:20:26.469] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.469] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #AF55
+[2026-10-07 00:20:26.469] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.484] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.484] [DEBUG] [WTelegram]              → Boolean                               #A751
+[2026-10-07 00:20:26.554] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.554] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #2661
+[2026-10-07 00:20:26.556] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.568] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.568] [DEBUG] [WTelegram]              → Boolean                               #2531
+[2026-10-07 00:20:26.630] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.630] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #FE8D
+[2026-10-07 00:20:26.630] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.641] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.641] [DEBUG] [WTelegram]              → Boolean                               #9621
+[2026-10-07 00:20:26.710] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.710] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5921
+[2026-10-07 00:20:26.711] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.725] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.725] [DEBUG] [WTelegram]              → Boolean                               #AF55
+[2026-10-07 00:20:26.787] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:25Z (svc)
+[2026-10-07 00:20:26.787] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #3D99
+[2026-10-07 00:20:26.787] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:26.813] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.813] [DEBUG] [WTelegram]              → Boolean                               #2661
+[2026-10-07 00:20:26.888] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.888] [DEBUG] [WTelegram]              → Boolean                               #FE8D
+[2026-10-07 00:20:26.961] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.961] [DEBUG] [WTelegram]              → Boolean                               #5921
+[2026-10-07 00:20:26.968] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:26Z
+[2026-10-07 00:20:26.968] [DEBUG] [WTelegram]              → Boolean                               #3D99
+[2026-10-07 00:20:26.968] [INFO ] [TelegramService] Файл '12 Ultra Nate - Free (Acapella).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/12 Ultra Nate - Free (Acapella)_v1.mp3
 #latest')...
-[2026-10-06 23:50:46.404] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:46.404] [DEBUG] [WTelegram]             → Messages_SendMedia                     #0A0E
-[2026-10-06 23:50:46.404] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.496] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.496] [DEBUG] [WTelegram]              → Updates                               #0A0E
-[2026-10-06 23:50:46.496] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:46.496] [DEBUG] [WTelegram]             → Messages_EditMessage                   #5046
-[2026-10-06 23:50:46.496] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.566] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.566] [DEBUG] [WTelegram]              → Updates                               #5046
-[2026-10-06 23:50:46.566] [INFO ] [TelegramService] Файл 'Headhunters - Dayz Like That (3base club mix).mp3' успешно сохранен в Telegram. Message ID: 1705
-[2026-10-06 23:50:46.566] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Headhunters - Dayz Like That (3base club mix).mp3' получено из TelegramService.
-[2026-10-06 23:50:46.567] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Headhunters - Dayz Like That (3base club mix).mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:46.567] [INFO ] [TelegramService] Прямая потоковая передача файла 'Nina - Counting Stars.mp3' (11120906 байт) в Telegram...
-[2026-10-06 23:50:46.567] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:46.567] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D0FE
-[2026-10-06 23:50:46.568] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.575] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #4842
-[2026-10-06 23:50:46.580] [INFO ] [WinFsp] Файл 'Headhunters - Dayz Like That (3base club mix).mp3' успешно сохранен в Telegram (Msg ID: 1705, дата изменения: 2023-09-29 19:25:39). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:46.580] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #F3A2
-[2026-10-06 23:50:46.586] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #9D42
-[2026-10-06 23:50:46.590] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0712
-[2026-10-06 23:50:46.669] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #EE4A
-[2026-10-06 23:50:46.694] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.694] [DEBUG] [WTelegram]              → Boolean                               #D0FE
-[2026-10-06 23:50:46.694] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Nina - Counting Stars.mp3
-[2026-10-06 23:50:46.725] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #ABE6
-[2026-10-06 23:50:46.759] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.759] [DEBUG] [WTelegram]              → Boolean                               #4842
-[2026-10-06 23:50:46.781] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #66E6
-[2026-10-06 23:50:46.798] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.798] [DEBUG] [WTelegram]              → Boolean                               #F3A2
-[2026-10-06 23:50:46.833] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #C3FE
-[2026-10-06 23:50:46.858] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.858] [DEBUG] [WTelegram]              → Boolean                               #9D42
-[2026-10-06 23:50:46.896] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0A12
-[2026-10-06 23:50:46.924] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.924] [DEBUG] [WTelegram]              → Boolean                               #0712
-[2026-10-06 23:50:46.948] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:46.948] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #997E
-[2026-10-06 23:50:46.949] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:46.978] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:46.978] [DEBUG] [WTelegram]              → Boolean                               #EE4A
-[2026-10-06 23:50:47.002] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.002] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C74E
-[2026-10-06 23:50:47.002] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.019] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:47.019] [DEBUG] [WTelegram]              → Boolean                               #ABE6
-[2026-10-06 23:50:47.055] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.055] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0606
-[2026-10-06 23:50:47.055] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.080] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:47.080] [DEBUG] [WTelegram]              → Boolean                               #66E6
-[2026-10-06 23:50:47.112] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.112] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3C36
-[2026-10-06 23:50:47.113] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.131] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:47.131] [DEBUG] [WTelegram]              → Boolean                               #C3FE
-[2026-10-06 23:50:47.168] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.168] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #164A
-[2026-10-06 23:50:47.168] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.198] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:47.198] [DEBUG] [WTelegram]              → Boolean                               #0A12
-[2026-10-06 23:50:47.225] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.225] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #190A
-[2026-10-06 23:50:47.225] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.240] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:46Z
-[2026-10-06 23:50:47.240] [DEBUG] [WTelegram]              → Boolean                               #997E
-[2026-10-06 23:50:47.283] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.283] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #AC82
-[2026-10-06 23:50:47.283] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.305] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.305] [DEBUG] [WTelegram]              → Boolean                               #C74E
-[2026-10-06 23:50:47.336] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.336] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A636
-[2026-10-06 23:50:47.336] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.370] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.370] [DEBUG] [WTelegram]              → Boolean                               #0606
-[2026-10-06 23:50:47.393] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.393] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3EEE
-[2026-10-06 23:50:47.393] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.426] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.426] [DEBUG] [WTelegram]              → Boolean                               #3C36
-[2026-10-06 23:50:47.444] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:46Z (svc)
-[2026-10-06 23:50:47.444] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0B26
-[2026-10-06 23:50:47.444] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.460] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.460] [DEBUG] [WTelegram]              → Boolean                               #164A
-[2026-10-06 23:50:47.502] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:47.502] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #ADA7
-[2026-10-06 23:50:47.503] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.526] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.526] [DEBUG] [WTelegram]              → Boolean                               #190A
-[2026-10-06 23:50:47.557] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:47.557] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #59DF
-[2026-10-06 23:50:47.557] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.583] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.583] [DEBUG] [WTelegram]              → Boolean                               #AC82
-[2026-10-06 23:50:47.635] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.635] [DEBUG] [WTelegram]              → Boolean                               #A636
-[2026-10-06 23:50:47.718] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.718] [DEBUG] [WTelegram]              → Boolean                               #3EEE
-[2026-10-06 23:50:47.760] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.760] [DEBUG] [WTelegram]              → Boolean                               #0B26
-[2026-10-06 23:50:47.795] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:47.795] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.795] [DEBUG] [WTelegram]              → Boolean                               #59DF
-[2026-10-06 23:50:47.795] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:47Z (svc) 
-[2026-10-06 23:50:47.801] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.801] [DEBUG] [WTelegram]              → Boolean                               #ADA7
-[2026-10-06 23:50:47.801] [INFO ] [TelegramService] Файл 'Nina - Counting Stars.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/Nina - Counting Stars_v1.mp3
+[2026-10-07 00:20:26.968] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:26Z (svc)
+[2026-10-07 00:20:26.968] [DEBUG] [WTelegram]             → Messages_SendMedia                     #F6AA
+[2026-10-07 00:20:26.968] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:27.828] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:27Z
+[2026-10-07 00:20:27.828] [DEBUG] [WTelegram]              → Updates                               #F6AA
+[2026-10-07 00:20:27.828] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:27Z (svc)
+[2026-10-07 00:20:27.829] [DEBUG] [WTelegram]             → Messages_EditMessage                   #BAFF
+[2026-10-07 00:20:27.829] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:27.887] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:27Z
+[2026-10-07 00:20:27.888] [DEBUG] [WTelegram]              → Updates                               #BAFF
+[2026-10-07 00:20:27.888] [INFO ] [TelegramService] Файл '12 Ultra Nate - Free (Acapella).mp3' успешно сохранен в Telegram. Message ID: 1730
+[2026-10-07 00:20:27.888] [INFO ] [TrayContext] Событие OnUploadCompleted для '12 Ultra Nate - Free (Acapella).mp3' получено из TelegramService.
+[2026-10-07 00:20:27.888] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '12 Ultra Nate - Free (Acapella).mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:27.901] [INFO ] [WinFsp] Файл '12 Ultra Nate - Free (Acapella).mp3' успешно сохранен в Telegram (Msg ID: 1730, дата изменения: 2010-02-11 11:01:18). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:27.903] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'david kane_-_club_sound.mp3' (виртуальный путь: '/audio/small/david kane_-_club_sound.mp3')...
+[2026-10-07 00:20:27.903] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:27.906] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:27.911] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78971 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:27.947] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
+[2026-10-07 00:20:27.947] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:27.947] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3' существует и доступен для чтения (размер: 1499264 байт).
+[2026-10-07 00:20:27.947] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
+[2026-10-07 00:20:27.947] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/david kane_-_club_sound.mp3' (ID 145, alloc: 1503232), источник: 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
+[2026-10-07 00:20:27.948] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\david kane_-_club_sound.mp3'
+[2026-10-07 00:20:27.949] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'david kane_-_club_sound.mp3': трек = 'David kane - Clud Sound', длительность = 93 сек, обложка = НЕТ
+[2026-10-07 00:20:27.949] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'david kane_-_club_sound.mp3' (1499264 байт) в Telegram на лету (Zero-Temp), аудио: 93 сек, обложка: НЕТ...
+[2026-10-07 00:20:27.949] [INFO ] [TelegramService] Прямая потоковая передача файла 'david kane_-_club_sound.mp3' (1499264 байт) в Telegram...
+[2026-10-07 00:20:27.949] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:27Z (svc)
+[2026-10-07 00:20:27.949] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #364B
+[2026-10-07 00:20:27.949] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:27.950] [INFO ] [WinFsp] Обновлены системные даты для 'david kane_-_club_sound.mp3' (ID 145): Изменен: 2007-09-26 23:30:26, Создан: 2026-10-06 21:20:27
+[2026-10-07 00:20:27.956] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2703
+[2026-10-07 00:20:27.962] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E127
+[2026-10-07 00:20:28.081] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:27Z
+[2026-10-07 00:20:28.081] [DEBUG] [WTelegram]              → Boolean                               #364B
+[2026-10-07 00:20:28.081] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла david kane_-_club_sound.mp3
+[2026-10-07 00:20:28.172] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:27Z
+[2026-10-07 00:20:28.172] [DEBUG] [WTelegram]              → Boolean                               #2703
+[2026-10-07 00:20:28.234] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:27Z
+[2026-10-07 00:20:28.234] [DEBUG] [WTelegram]              → Boolean                               #E127
+[2026-10-07 00:20:28.234] [INFO ] [TelegramService] Файл 'david kane_-_club_sound.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/david kane_-_club_sound_v1.mp3
 #latest')...
-[2026-10-06 23:50:47.801] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:47.801] [DEBUG] [WTelegram]             → Messages_SendMedia                     #5ADB
-[2026-10-06 23:50:47.801] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.911] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.911] [DEBUG] [WTelegram]              → Updates                               #5ADB
-[2026-10-06 23:50:47.911] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:47.911] [DEBUG] [WTelegram]             → Messages_EditMessage                   #E2EF
-[2026-10-06 23:50:47.911] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:47.995] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:47.995] [DEBUG] [WTelegram]              → Updates                               #E2EF
-[2026-10-06 23:50:47.995] [INFO ] [TelegramService] Файл 'Nina - Counting Stars.mp3' успешно сохранен в Telegram. Message ID: 1706
-[2026-10-06 23:50:47.995] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Nina - Counting Stars.mp3' получено из TelegramService.
-[2026-10-06 23:50:47.995] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Nina - Counting Stars.mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:47.996] [INFO ] [TelegramService] Прямая потоковая передача файла 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' (10809096 байт) в Telegram...
-[2026-10-06 23:50:47.996] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:47.996] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DBDF
-[2026-10-06 23:50:47.997] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.004] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #FA9F
-[2026-10-06 23:50:48.009] [INFO ] [WinFsp] Файл 'Nina - Counting Stars.mp3' успешно сохранен в Telegram (Msg ID: 1706, дата изменения: 2023-04-24 20:38:06). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:48.009] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #5707
-[2026-10-06 23:50:48.015] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0CAB
-[2026-10-06 23:50:48.020] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2773
-[2026-10-06 23:50:48.100] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6CDB
-[2026-10-06 23:50:48.116] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:48.116] [DEBUG] [WTelegram]              → Boolean                               #DBDF
-[2026-10-06 23:50:48.116] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3
-[2026-10-06 23:50:48.152] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #EF0F
-[2026-10-06 23:50:48.172] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:48.172] [DEBUG] [WTelegram]              → Boolean                               #FA9F
-[2026-10-06 23:50:48.206] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #5907
-[2026-10-06 23:50:48.227] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:47Z
-[2026-10-06 23:50:48.227] [DEBUG] [WTelegram]              → Boolean                               #5707
-[2026-10-06 23:50:48.261] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #49EF
-[2026-10-06 23:50:48.291] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.291] [DEBUG] [WTelegram]              → Boolean                               #0CAB
-[2026-10-06 23:50:48.316] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #E0C3
-[2026-10-06 23:50:48.332] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.332] [DEBUG] [WTelegram]              → Boolean                               #2773
-[2026-10-06 23:50:48.370] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:48.370] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #20B3
-[2026-10-06 23:50:48.370] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.418] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.418] [DEBUG] [WTelegram]              → Boolean                               #6CDB
-[2026-10-06 23:50:48.426] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:47Z (svc)
-[2026-10-06 23:50:48.426] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B133
-[2026-10-06 23:50:48.426] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.444] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.444] [DEBUG] [WTelegram]              → Boolean                               #EF0F
-[2026-10-06 23:50:48.482] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.482] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1424
-[2026-10-06 23:50:48.482] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.505] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.505] [DEBUG] [WTelegram]              → Boolean                               #5907
-[2026-10-06 23:50:48.538] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.538] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #30DC
-[2026-10-06 23:50:48.538] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.553] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.553] [DEBUG] [WTelegram]              → Boolean                               #49EF
-[2026-10-06 23:50:48.590] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.590] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C9A4
-[2026-10-06 23:50:48.590] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.613] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.613] [DEBUG] [WTelegram]              → Boolean                               #E0C3
-[2026-10-06 23:50:48.645] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.645] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #324C
-[2026-10-06 23:50:48.646] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.659] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.659] [DEBUG] [WTelegram]              → Boolean                               #20B3
-[2026-10-06 23:50:48.701] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.701] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #82B0
-[2026-10-06 23:50:48.701] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.727] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.727] [DEBUG] [WTelegram]              → Boolean                               #B133
-[2026-10-06 23:50:48.760] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.760] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0C9C
-[2026-10-06 23:50:48.760] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.777] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.777] [DEBUG] [WTelegram]              → Boolean                               #1424
-[2026-10-06 23:50:48.816] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.816] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F5B8
-[2026-10-06 23:50:48.816] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.859] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.859] [DEBUG] [WTelegram]              → Boolean                               #30DC
-[2026-10-06 23:50:48.892] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.892] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2F74
-[2026-10-06 23:50:48.893] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.930] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.930] [DEBUG] [WTelegram]              → Boolean                               #C9A4
-[2026-10-06 23:50:48.941] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:48Z (svc)
-[2026-10-06 23:50:48.941] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CB04
-[2026-10-06 23:50:48.941] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:48.987] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:48.987] [DEBUG] [WTelegram]              → Boolean                               #324C
-[2026-10-06 23:50:49.035] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:49.035] [DEBUG] [WTelegram]              → Boolean                               #82B0
-[2026-10-06 23:50:49.092] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:49.092] [DEBUG] [WTelegram]              → Boolean                               #0C9C
-[2026-10-06 23:50:49.118] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:49.118] [DEBUG] [WTelegram]              → Boolean                               #F5B8
-[2026-10-06 23:50:49.191] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:49.191] [DEBUG] [WTelegram]              → Boolean                               #2F74
-[2026-10-06 23:50:49.208] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:48Z
-[2026-10-06 23:50:49.208] [DEBUG] [WTelegram]              → Boolean                               #CB04
-[2026-10-06 23:50:49.208] [INFO ] [TelegramService] Файл 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/Tina Cousins - Wonderful Life (Kenny Hayes Suu_v1.mp3
+[2026-10-07 00:20:28.234] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:27Z (svc)
+[2026-10-07 00:20:28.234] [DEBUG] [WTelegram]             → Messages_SendMedia                     #B7BF
+[2026-10-07 00:20:28.234] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:28.793] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:28Z
+[2026-10-07 00:20:28.793] [DEBUG] [WTelegram]              → Updates                               #B7BF
+[2026-10-07 00:20:28.793] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:28Z (svc)
+[2026-10-07 00:20:28.793] [DEBUG] [WTelegram]             → Messages_EditMessage                   #C310
+[2026-10-07 00:20:28.793] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:28.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:28Z
+[2026-10-07 00:20:28.855] [DEBUG] [WTelegram]              → Updates                               #C310
+[2026-10-07 00:20:28.855] [INFO ] [TelegramService] Файл 'david kane_-_club_sound.mp3' успешно сохранен в Telegram. Message ID: 1731
+[2026-10-07 00:20:28.855] [INFO ] [TrayContext] Событие OnUploadCompleted для 'david kane_-_club_sound.mp3' получено из TelegramService.
+[2026-10-07 00:20:28.855] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'david kane_-_club_sound.mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:28.869] [INFO ] [WinFsp] Файл 'david kane_-_club_sound.mp3' успешно сохранен в Telegram (Msg ID: 1731, дата изменения: 2007-09-26 23:30:26). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:28.872] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'LAYAH-Flashback.mp3' (виртуальный путь: '/audio/small/LAYAH-Flashback.mp3')...
+[2026-10-07 00:20:28.872] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3' существует и доступен для чтения (размер: 9830444 байт).
+[2026-10-07 00:20:28.872] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3'
+[2026-10-07 00:20:28.872] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:28.872] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/LAYAH-Flashback.mp3' (ID 146, alloc: 9834496), источник: 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3'
+[2026-10-07 00:20:28.872] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\LAYAH-Flashback.mp3'
+[2026-10-07 00:20:28.873] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'LAYAH-Flashback.mp3': трек = ' - LAYAH-Flashback', длительность = 246 сек, обложка = НЕТ
+[2026-10-07 00:20:28.873] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'LAYAH-Flashback.mp3' (9830444 байт) в Telegram на лету (Zero-Temp), аудио: 246 сек, обложка: НЕТ...
+[2026-10-07 00:20:28.873] [INFO ] [TelegramService] Прямая потоковая передача файла 'LAYAH-Flashback.mp3' (9830444 байт) в Telegram...
+[2026-10-07 00:20:28.874] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:28Z (svc)
+[2026-10-07 00:20:28.874] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #87E0
+[2026-10-07 00:20:28.874] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:28.882] [INFO ] [WinFsp] Обновлены системные даты для 'LAYAH-Flashback.mp3' (ID 146): Изменен: 2023-05-21 19:47:28, Создан: 2026-10-06 21:20:28
+[2026-10-07 00:20:28.884] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #343C
+[2026-10-07 00:20:28.890] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #ACE0
+[2026-10-07 00:20:28.990] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1F98
+[2026-10-07 00:20:29.003] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:28Z
+[2026-10-07 00:20:29.003] [DEBUG] [WTelegram]              → Boolean                               #87E0
+[2026-10-07 00:20:29.003] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла LAYAH-Flashback.mp3
+[2026-10-07 00:20:29.076] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7ED0
+[2026-10-07 00:20:29.130] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:28Z
+[2026-10-07 00:20:29.130] [DEBUG] [WTelegram]              → Boolean                               #343C
+[2026-10-07 00:20:29.163] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #F550
+[2026-10-07 00:20:29.233] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:28Z
+[2026-10-07 00:20:29.233] [DEBUG] [WTelegram]              → Boolean                               #ACE0
+[2026-10-07 00:20:29.285] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4594
+[2026-10-07 00:20:29.301] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:28Z
+[2026-10-07 00:20:29.301] [DEBUG] [WTelegram]              → Boolean                               #1F98
+[2026-10-07 00:20:29.398] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #07C4
+[2026-10-07 00:20:29.411] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:29.411] [DEBUG] [WTelegram]              → Boolean                               #7ED0
+[2026-10-07 00:20:29.512] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7630
+[2026-10-07 00:20:29.526] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:29.526] [DEBUG] [WTelegram]              → Boolean                               #F550
+[2026-10-07 00:20:29.625] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EA44
+[2026-10-07 00:20:29.641] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:29.641] [DEBUG] [WTelegram]              → Boolean                               #4594
+[2026-10-07 00:20:29.730] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:28Z (svc)
+[2026-10-07 00:20:29.730] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #DFF4
+[2026-10-07 00:20:29.731] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:29.742] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:29.742] [DEBUG] [WTelegram]              → Boolean                               #07C4
+[2026-10-07 00:20:29.841] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:28Z (svc)
+[2026-10-07 00:20:29.841] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5888
+[2026-10-07 00:20:29.841] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:29.854] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:29.854] [DEBUG] [WTelegram]              → Boolean                               #7630
+[2026-10-07 00:20:29.951] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:28Z (svc)
+[2026-10-07 00:20:29.951] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #48D8
+[2026-10-07 00:20:29.951] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:29.964] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:29.964] [DEBUG] [WTelegram]              → Boolean                               #EA44
+[2026-10-07 00:20:30.055] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:29Z (svc)
+[2026-10-07 00:20:30.055] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #6AB9
+[2026-10-07 00:20:30.055] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:30.072] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:30.072] [DEBUG] [WTelegram]              → Boolean                               #DFF4
+[2026-10-07 00:20:30.162] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:29Z (svc)
+[2026-10-07 00:20:30.162] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #3D49
+[2026-10-07 00:20:30.163] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:30.173] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:30.173] [DEBUG] [WTelegram]              → Boolean                               #5888
+[2026-10-07 00:20:30.263] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:29Z (svc)
+[2026-10-07 00:20:30.264] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #8111
+[2026-10-07 00:20:30.264] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:30.276] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:29Z
+[2026-10-07 00:20:30.276] [DEBUG] [WTelegram]              → Boolean                               #48D8
+[2026-10-07 00:20:30.370] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:29Z (svc)
+[2026-10-07 00:20:30.370] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #0E99
+[2026-10-07 00:20:30.371] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:30.384] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:30Z
+[2026-10-07 00:20:30.384] [DEBUG] [WTelegram]              → Boolean                               #6AB9
+[2026-10-07 00:20:30.471] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:29Z (svc)
+[2026-10-07 00:20:30.471] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D051
+[2026-10-07 00:20:30.471] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:30.484] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:30Z
+[2026-10-07 00:20:30.484] [DEBUG] [WTelegram]              → Boolean                               #3D49
+[2026-10-07 00:20:30.568] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:29Z (svc)
+[2026-10-07 00:20:30.568] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #93B5
+[2026-10-07 00:20:30.569] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:30.585] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:30Z
+[2026-10-07 00:20:30.585] [DEBUG] [WTelegram]              → Boolean                               #8111
+[2026-10-07 00:20:30.684] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:30Z
+[2026-10-07 00:20:30.684] [DEBUG] [WTelegram]              → Boolean                               #0E99
+[2026-10-07 00:20:30.799] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:30Z
+[2026-10-07 00:20:30.799] [DEBUG] [WTelegram]              → Boolean                               #D051
+[2026-10-07 00:20:30.851] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:30Z
+[2026-10-07 00:20:30.851] [DEBUG] [WTelegram]              → Boolean                               #93B5
+[2026-10-07 00:20:30.851] [INFO ] [TelegramService] Файл 'LAYAH-Flashback.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/LAYAH-Flashback_v1.mp3
 #latest')...
-[2026-10-06 23:50:49.209] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.209] [DEBUG] [WTelegram]             → Messages_SendMedia                     #8469
-[2026-10-06 23:50:49.209] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:49.311] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.311] [DEBUG] [WTelegram]              → Updates                               #8469
-[2026-10-06 23:50:49.311] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.311] [DEBUG] [WTelegram]             → Messages_EditMessage                   #91B5
-[2026-10-06 23:50:49.311] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:49.380] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.381] [DEBUG] [WTelegram]              → Updates                               #91B5
-[2026-10-06 23:50:49.381] [INFO ] [TelegramService] Файл 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' успешно сохранен в Telegram. Message ID: 1707
-[2026-10-06 23:50:49.381] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' получено из TelegramService.
-[2026-10-06 23:50:49.381] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:49.382] [INFO ] [TelegramService] Прямая потоковая передача файла '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' (13865469 байт) в Telegram...
-[2026-10-06 23:50:49.382] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.382] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7239
-[2026-10-06 23:50:49.383] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:49.390] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D881
-[2026-10-06 23:50:49.395] [INFO ] [WinFsp] Файл 'Tina Cousins - Wonderful Life (Kenny Hayes Suu.mp3' успешно сохранен в Telegram (Msg ID: 1707, дата изменения: 2023-03-30 01:22:51). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:49.396] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #A031
-[2026-10-06 23:50:49.401] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #CE81
-[2026-10-06 23:50:49.406] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #AEC5
-[2026-10-06 23:50:49.487] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #7A31
-[2026-10-06 23:50:49.499] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.499] [DEBUG] [WTelegram]              → Boolean                               #7239
-[2026-10-06 23:50:49.499] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла [FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3
-[2026-10-06 23:50:49.539] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #E829
-[2026-10-06 23:50:49.561] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.561] [DEBUG] [WTelegram]              → Boolean                               #D881
-[2026-10-06 23:50:49.593] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #8FA1
-[2026-10-06 23:50:49.617] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.617] [DEBUG] [WTelegram]              → Boolean                               #A031
-[2026-10-06 23:50:49.644] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0245
-[2026-10-06 23:50:49.668] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.668] [DEBUG] [WTelegram]              → Boolean                               #CE81
-[2026-10-06 23:50:49.709] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #B07D
-[2026-10-06 23:50:49.730] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.730] [DEBUG] [WTelegram]              → Boolean                               #AEC5
-[2026-10-06 23:50:49.766] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.766] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9621
-[2026-10-06 23:50:49.766] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:49.793] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.793] [DEBUG] [WTelegram]              → Boolean                               #7A31
-[2026-10-06 23:50:49.819] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.819] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6911
-[2026-10-06 23:50:49.819] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:49.839] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.839] [DEBUG] [WTelegram]              → Boolean                               #E829
-[2026-10-06 23:50:49.874] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.874] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DC85
-[2026-10-06 23:50:49.874] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:49.903] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.903] [DEBUG] [WTelegram]              → Boolean                               #8FA1
-[2026-10-06 23:50:49.925] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.925] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8611
-[2026-10-06 23:50:49.925] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:49.943] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:49.943] [DEBUG] [WTelegram]              → Boolean                               #0245
-[2026-10-06 23:50:49.983] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:49.983] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A6F5
-[2026-10-06 23:50:49.983] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.009] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:50.009] [DEBUG] [WTelegram]              → Boolean                               #B07D
-[2026-10-06 23:50:50.040] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.040] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #361D
-[2026-10-06 23:50:50.040] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.054] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:50.054] [DEBUG] [WTelegram]              → Boolean                               #9621
-[2026-10-06 23:50:50.093] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.093] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #35DD
-[2026-10-06 23:50:50.094] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.113] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:50.113] [DEBUG] [WTelegram]              → Boolean                               #6911
-[2026-10-06 23:50:50.149] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.149] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2309
-[2026-10-06 23:50:50.149] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.163] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:50.163] [DEBUG] [WTelegram]              → Boolean                               #DC85
-[2026-10-06 23:50:50.202] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.202] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A7B1
-[2026-10-06 23:50:50.202] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.224] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:49Z
-[2026-10-06 23:50:50.224] [DEBUG] [WTelegram]              → Boolean                               #8611
-[2026-10-06 23:50:50.262] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.262] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3A8D
-[2026-10-06 23:50:50.262] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.279] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.279] [DEBUG] [WTelegram]              → Boolean                               #A6F5
-[2026-10-06 23:50:50.319] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.319] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D079
-[2026-10-06 23:50:50.319] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.341] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.341] [DEBUG] [WTelegram]              → Boolean                               #361D
-[2026-10-06 23:50:50.373] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.373] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D495
-[2026-10-06 23:50:50.373] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.410] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.410] [DEBUG] [WTelegram]              → Boolean                               #35DD
-[2026-10-06 23:50:50.428] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:49Z (svc)
-[2026-10-06 23:50:50.429] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A655
-[2026-10-06 23:50:50.429] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.480] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:50.480] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DAF6
-[2026-10-06 23:50:50.480] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.493] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:50.493] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.493] [DEBUG] [WTelegram]              → Boolean                               #2309
-[2026-10-06 23:50:50.493] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:50Z (svc) 
-[2026-10-06 23:50:50.515] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.515] [DEBUG] [WTelegram]              → Boolean                               #A7B1
-[2026-10-06 23:50:50.537] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:50.537] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E07E
-[2026-10-06 23:50:50.537] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.560] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.560] [DEBUG] [WTelegram]              → Boolean                               #3A8D
-[2026-10-06 23:50:50.589] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:50.589] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #52C6
-[2026-10-06 23:50:50.589] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.605] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.605] [DEBUG] [WTelegram]              → Boolean                               #D079
-[2026-10-06 23:50:50.646] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:50.646] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4392
-[2026-10-06 23:50:50.646] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.680] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.680] [DEBUG] [WTelegram]              → Boolean                               #D495
-[2026-10-06 23:50:50.717] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.717] [DEBUG] [WTelegram]              → Boolean                               #A655
-[2026-10-06 23:50:50.773] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.773] [DEBUG] [WTelegram]              → Boolean                               #DAF6
-[2026-10-06 23:50:50.821] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.821] [DEBUG] [WTelegram]              → Boolean                               #E07E
-[2026-10-06 23:50:50.885] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.885] [DEBUG] [WTelegram]              → Boolean                               #52C6
-[2026-10-06 23:50:50.892] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.892] [DEBUG] [WTelegram]              → Boolean                               #4392
-[2026-10-06 23:50:50.892] [INFO ] [TelegramService] Файл '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/big/[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb)_v1.mp3
+[2026-10-07 00:20:30.851] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:30Z (svc)
+[2026-10-07 00:20:30.851] [DEBUG] [WTelegram]             → Messages_SendMedia                     #B0B6
+[2026-10-07 00:20:30.851] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:31.450] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:31.450] [DEBUG] [WTelegram]              → Updates                               #B0B6
+[2026-10-07 00:20:31.451] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:31.451] [DEBUG] [WTelegram]             → Messages_EditMessage                   #A44B
+[2026-10-07 00:20:31.451] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:31.511] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:31.511] [DEBUG] [WTelegram]              → Updates                               #A44B
+[2026-10-07 00:20:31.511] [INFO ] [TelegramService] Файл 'LAYAH-Flashback.mp3' успешно сохранен в Telegram. Message ID: 1732
+[2026-10-07 00:20:31.511] [INFO ] [TrayContext] Событие OnUploadCompleted для 'LAYAH-Flashback.mp3' получено из TelegramService.
+[2026-10-07 00:20:31.511] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'LAYAH-Flashback.mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:31.525] [INFO ] [WinFsp] Файл 'LAYAH-Flashback.mp3' успешно сохранен в Telegram (Msg ID: 1732, дата изменения: 2023-05-21 19:47:28). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:31.528] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Miley_Cyrus_-_Midnight_Sky.mp3' (виртуальный путь: '/audio/small/Miley_Cyrus_-_Midnight_Sky.mp3')...
+[2026-10-07 00:20:31.528] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:31.530] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:31.536] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78952 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:31.572] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
+[2026-10-07 00:20:31.572] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:31.572] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3' существует и доступен для чтения (размер: 8950388 байт).
+[2026-10-07 00:20:31.572] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
+[2026-10-07 00:20:31.572] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/Miley_Cyrus_-_Midnight_Sky.mp3' (ID 147, alloc: 8953856), источник: 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
+[2026-10-07 00:20:31.573] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\Miley_Cyrus_-_Midnight_Sky.mp3'
+[2026-10-07 00:20:31.574] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Miley_Cyrus_-_Midnight_Sky.mp3': трек = 'Miley Cyrus - Midnight Sky [AJOYIB.net]', длительность = 223 сек, обложка = 15822 байт
+[2026-10-07 00:20:31.574] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Miley_Cyrus_-_Midnight_Sky.mp3' (8950388 байт) в Telegram на лету (Zero-Temp), аудио: 223 сек, обложка: ДА...
+[2026-10-07 00:20:31.574] [INFO ] [TelegramService] Прямая потоковая передача файла 'Miley_Cyrus_-_Midnight_Sky.mp3' (8950388 байт) в Telegram...
+[2026-10-07 00:20:31.574] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:31.574] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #0B07
+[2026-10-07 00:20:31.575] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:31.581] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #568B
+[2026-10-07 00:20:31.582] [INFO ] [WinFsp] Обновлены системные даты для 'Miley_Cyrus_-_Midnight_Sky.mp3' (ID 147): Изменен: 2023-05-15 21:28:52, Создан: 2026-10-06 21:20:31
+[2026-10-07 00:20:31.587] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EB63
+[2026-10-07 00:20:31.719] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #9DBF
+[2026-10-07 00:20:31.732] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:31.732] [DEBUG] [WTelegram]              → Boolean                               #0B07
+[2026-10-07 00:20:31.732] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Miley_Cyrus_-_Midnight_Sky.mp3
+[2026-10-07 00:20:31.823] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1D3B
+[2026-10-07 00:20:31.839] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:31.839] [DEBUG] [WTelegram]              → Boolean                               #568B
+[2026-10-07 00:20:31.917] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DAD3
+[2026-10-07 00:20:31.932] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:31.932] [DEBUG] [WTelegram]              → Boolean                               #EB63
+[2026-10-07 00:20:32.013] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A383
+[2026-10-07 00:20:32.027] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:32.027] [DEBUG] [WTelegram]              → Boolean                               #9DBF
+[2026-10-07 00:20:32.116] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #8A9B
+[2026-10-07 00:20:32.133] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:32.133] [DEBUG] [WTelegram]              → Boolean                               #1D3B
+[2026-10-07 00:20:32.215] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #70DB
+[2026-10-07 00:20:32.233] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:32.233] [DEBUG] [WTelegram]              → Boolean                               #DAD3
+[2026-10-07 00:20:32.306] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4AEB
+[2026-10-07 00:20:32.324] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:31Z
+[2026-10-07 00:20:32.324] [DEBUG] [WTelegram]              → Boolean                               #A383
+[2026-10-07 00:20:32.407] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:32.407] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #973B
+[2026-10-07 00:20:32.408] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:32.423] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:32.423] [DEBUG] [WTelegram]              → Boolean                               #8A9B
+[2026-10-07 00:20:32.503] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:32.503] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #277F
+[2026-10-07 00:20:32.504] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:32.523] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:32.523] [DEBUG] [WTelegram]              → Boolean                               #70DB
+[2026-10-07 00:20:32.600] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:32.600] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #BF7B
+[2026-10-07 00:20:32.600] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:32.618] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:32.618] [DEBUG] [WTelegram]              → Boolean                               #4AEB
+[2026-10-07 00:20:32.698] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:32.698] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #A0C7
+[2026-10-07 00:20:32.698] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:32.727] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:32.727] [DEBUG] [WTelegram]              → Boolean                               #973B
+[2026-10-07 00:20:32.797] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:32.797] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #1FF7
+[2026-10-07 00:20:32.798] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:32.812] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:32.812] [DEBUG] [WTelegram]              → Boolean                               #277F
+[2026-10-07 00:20:32.894] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:31Z (svc)
+[2026-10-07 00:20:32.894] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5FB7
+[2026-10-07 00:20:32.894] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:32.905] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:32.905] [DEBUG] [WTelegram]              → Boolean                               #BF7B
+[2026-10-07 00:20:33.001] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:32Z (svc)
+[2026-10-07 00:20:33.001] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #62C4
+[2026-10-07 00:20:33.001] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:33.018] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:33.018] [DEBUG] [WTelegram]              → Boolean                               #A0C7
+[2026-10-07 00:20:33.097] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:32Z (svc)
+[2026-10-07 00:20:33.097] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F184
+[2026-10-07 00:20:33.097] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:33.109] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:33.109] [DEBUG] [WTelegram]              → Boolean                               #1FF7
+[2026-10-07 00:20:33.205] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:33.205] [DEBUG] [WTelegram]              → Boolean                               #5FB7
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:32Z (svc)
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:32Z
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram]              → Boolean                               #F184
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:32Z (svc) 
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:32Z
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram]              → Boolean                               #62C4
+[2026-10-07 00:20:33.306] [INFO ] [TelegramService] Файл 'Miley_Cyrus_-_Midnight_Sky.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/Miley_Cyrus_-_Midnight_Sky_v1.mp3
 #latest')...
-[2026-10-06 23:50:50.893] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:50.893] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #11B2
-[2026-10-06 23:50:50.893] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:50.946] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:50.946] [DEBUG] [WTelegram]              → Boolean                               #11B2
-[2026-10-06 23:50:50.947] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:50.947] [DEBUG] [WTelegram]             → Messages_SendMedia                     #284A
-[2026-10-06 23:50:50.947] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.078] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:51.078] [DEBUG] [WTelegram]              → Updates                               #284A
-[2026-10-06 23:50:51.078] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:51.078] [DEBUG] [WTelegram]             → Messages_EditMessage                   #919E
-[2026-10-06 23:50:51.078] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.144] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:50Z
-[2026-10-06 23:50:51.144] [DEBUG] [WTelegram]              → Updates                               #919E
-[2026-10-06 23:50:51.144] [INFO ] [TelegramService] Файл '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' успешно сохранен в Telegram. Message ID: 1708
-[2026-10-06 23:50:51.144] [INFO ] [TrayContext] Событие OnUploadCompleted для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' получено из TelegramService.
-[2026-10-06 23:50:51.144] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:51.145] [INFO ] [TelegramService] Прямая потоковая передача файла '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' (8082073 байт) в Telegram...
-[2026-10-06 23:50:51.145] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:50Z (svc)
-[2026-10-06 23:50:51.145] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #0442
-[2026-10-06 23:50:51.145] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.152] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1EEA
-[2026-10-06 23:50:51.158] [INFO ] [WinFsp] Файл '[FDM] Ben Delay feat. Alexandra Prince - The Boy Is Mine (Original Extended Remix) [320 kbps] [13 mb).mp3' успешно сохранен в Telegram (Msg ID: 1708, дата изменения: 2016-08-11 20:30:36). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:51.158] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DFA6
-[2026-10-06 23:50:51.163] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C27A
-[2026-10-06 23:50:51.168] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5842
-[2026-10-06 23:50:51.247] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7F62
-[2026-10-06 23:50:51.302] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #75EE
-[2026-10-06 23:50:51.318] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.318] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.318] [DEBUG] [WTelegram]              → Boolean                               #0442
-[2026-10-06 23:50:51.318] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:51Z (svc) 
-[2026-10-06 23:50:51.318] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла 06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3
-[2026-10-06 23:50:51.339] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.339] [DEBUG] [WTelegram]              → Boolean                               #1EEA
-[2026-10-06 23:50:51.354] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #62B6
-[2026-10-06 23:50:51.368] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.368] [DEBUG] [WTelegram]              → Boolean                               #DFA6
-[2026-10-06 23:50:51.407] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #33CA
-[2026-10-06 23:50:51.431] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.431] [DEBUG] [WTelegram]              → Boolean                               #C27A
-[2026-10-06 23:50:51.490] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #FDFE
-[2026-10-06 23:50:51.503] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.503] [DEBUG] [WTelegram]              → Boolean                               #5842
-[2026-10-06 23:50:51.546] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.546] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #0573
-[2026-10-06 23:50:51.546] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.575] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.575] [DEBUG] [WTelegram]              → Boolean                               #7F62
-[2026-10-06 23:50:51.593] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.593] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #1197
-[2026-10-06 23:50:51.594] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.611] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.611] [DEBUG] [WTelegram]              → Boolean                               #75EE
-[2026-10-06 23:50:51.659] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.659] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #33DF
-[2026-10-06 23:50:51.659] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.705] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.705] [DEBUG] [WTelegram]              → Boolean                               #62B6
-[2026-10-06 23:50:51.718] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.718] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #29E7
-[2026-10-06 23:50:51.718] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.744] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.744] [DEBUG] [WTelegram]              → Boolean                               #33CA
-[2026-10-06 23:50:51.772] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.772] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #FD3B
-[2026-10-06 23:50:51.772] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.789] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.789] [DEBUG] [WTelegram]              → Boolean                               #FDFE
-[2026-10-06 23:50:51.828] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.828] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #AFEB
-[2026-10-06 23:50:51.828] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:51.842] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.842] [DEBUG] [WTelegram]              → Boolean                               #0573
-[2026-10-06 23:50:51.911] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.911] [DEBUG] [WTelegram]              → Boolean                               #1197
-[2026-10-06 23:50:51.998] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:51.998] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:51Z
-[2026-10-06 23:50:51.998] [DEBUG] [WTelegram]              → Boolean                               #33DF
-[2026-10-06 23:50:51.998] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:51Z (svc) 
-[2026-10-06 23:50:52.022] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:52.022] [DEBUG] [WTelegram]              → Boolean                               #29E7
-[2026-10-06 23:50:52.064] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:52.064] [DEBUG] [WTelegram]              → Boolean                               #FD3B
-[2026-10-06 23:50:52.072] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:52.072] [DEBUG] [WTelegram]              → Boolean                               #AFEB
-[2026-10-06 23:50:52.072] [INFO ] [TelegramService] Файл '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb)_v1.mp3
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:33Z (svc)
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F0C9
+[2026-10-07 00:20:33.306] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:33.354] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:33Z
+[2026-10-07 00:20:33.354] [DEBUG] [WTelegram]              → Boolean                               #F0C9
+[2026-10-07 00:20:33.355] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:33Z (svc)
+[2026-10-07 00:20:33.355] [DEBUG] [WTelegram]             → Messages_SendMedia                     #F66D
+[2026-10-07 00:20:33.355] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:34.136] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:33Z
+[2026-10-07 00:20:34.136] [DEBUG] [WTelegram]              → Updates                               #F66D
+[2026-10-07 00:20:34.137] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:33Z (svc)
+[2026-10-07 00:20:34.137] [DEBUG] [WTelegram]             → Messages_EditMessage                   #C5A9
+[2026-10-07 00:20:34.137] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:34.198] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:33Z
+[2026-10-07 00:20:34.198] [DEBUG] [WTelegram]              → Updates                               #C5A9
+[2026-10-07 00:20:34.198] [INFO ] [TelegramService] Файл 'Miley_Cyrus_-_Midnight_Sky.mp3' успешно сохранен в Telegram. Message ID: 1733
+[2026-10-07 00:20:34.198] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Miley_Cyrus_-_Midnight_Sky.mp3' получено из TelegramService.
+[2026-10-07 00:20:34.198] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Miley_Cyrus_-_Midnight_Sky.mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:34.213] [INFO ] [WinFsp] Файл 'Miley_Cyrus_-_Midnight_Sky.mp3' успешно сохранен в Telegram (Msg ID: 1733, дата изменения: 2023-05-15 21:28:52). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:34.215] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (виртуальный путь: '/audio/small/Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3')...
+[2026-10-07 00:20:34.216] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' существует и доступен для чтения (размер: 10204517 байт).
+[2026-10-07 00:20:34.216] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'
+[2026-10-07 00:20:34.216] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:34.216] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (ID 148, alloc: 10207232), источник: 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'
+[2026-10-07 00:20:34.216] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'
+[2026-10-07 00:20:34.217] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3': трек = ' - Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix)', длительность = 255 сек, обложка = НЕТ
+[2026-10-07 00:20:34.217] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (10204517 байт) в Telegram на лету (Zero-Temp), аудио: 255 сек, обложка: НЕТ...
+[2026-10-07 00:20:34.217] [INFO ] [TelegramService] Прямая потоковая передача файла 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (10204517 байт) в Telegram...
+[2026-10-07 00:20:34.218] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:33Z (svc)
+[2026-10-07 00:20:34.218] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B1D5
+[2026-10-07 00:20:34.218] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:34.226] [INFO ] [WinFsp] Обновлены системные даты для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (ID 148): Изменен: 2023-05-29 22:36:34, Создан: 2026-10-06 21:20:34
+[2026-10-07 00:20:34.229] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6CF5
+[2026-10-07 00:20:34.235] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C3A5
+[2026-10-07 00:20:34.368] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #12B5
+[2026-10-07 00:20:34.403] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:34.403] [DEBUG] [WTelegram]              → Boolean                               #B1D5
+[2026-10-07 00:20:34.403] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3
+[2026-10-07 00:20:34.459] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DACD
+[2026-10-07 00:20:34.472] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:34.472] [DEBUG] [WTelegram]              → Boolean                               #6CF5
+[2026-10-07 00:20:34.553] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #D579
+[2026-10-07 00:20:34.592] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:34.592] [DEBUG] [WTelegram]              → Boolean                               #C3A5
+[2026-10-07 00:20:34.654] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #16CD
+[2026-10-07 00:20:34.669] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:34.669] [DEBUG] [WTelegram]              → Boolean                               #12B5
+[2026-10-07 00:20:34.751] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E64D
+[2026-10-07 00:20:34.769] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:34.769] [DEBUG] [WTelegram]              → Boolean                               #DACD
+[2026-10-07 00:20:34.846] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #0255
+[2026-10-07 00:20:34.872] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:34.872] [DEBUG] [WTelegram]              → Boolean                               #D579
+[2026-10-07 00:20:34.941] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #0DB9
+[2026-10-07 00:20:34.957] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:34.957] [DEBUG] [WTelegram]              → Boolean                               #16CD
+[2026-10-07 00:20:35.040] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.040] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #07F6
+[2026-10-07 00:20:35.041] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.056] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:35.056] [DEBUG] [WTelegram]              → Boolean                               #E64D
+[2026-10-07 00:20:35.133] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.133] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #85D2
+[2026-10-07 00:20:35.133] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.148] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:35.148] [DEBUG] [WTelegram]              → Boolean                               #0255
+[2026-10-07 00:20:35.228] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.228] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D16E
+[2026-10-07 00:20:35.228] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.250] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:35.250] [DEBUG] [WTelegram]              → Boolean                               #0DB9
+[2026-10-07 00:20:35.325] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.325] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #904E
+[2026-10-07 00:20:35.325] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.339] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:34Z
+[2026-10-07 00:20:35.339] [DEBUG] [WTelegram]              → Boolean                               #07F6
+[2026-10-07 00:20:35.424] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.424] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D076
+[2026-10-07 00:20:35.424] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.476] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:35.476] [DEBUG] [WTelegram]              → Boolean                               #85D2
+[2026-10-07 00:20:35.515] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.515] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #E272
+[2026-10-07 00:20:35.515] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.542] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:35.542] [DEBUG] [WTelegram]              → Boolean                               #D16E
+[2026-10-07 00:20:35.609] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.609] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #C3FA
+[2026-10-07 00:20:35.610] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.647] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:35.647] [DEBUG] [WTelegram]              → Boolean                               #904E
+[2026-10-07 00:20:35.708] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.708] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #7E92
+[2026-10-07 00:20:35.708] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.724] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:35.724] [DEBUG] [WTelegram]              → Boolean                               #D076
+[2026-10-07 00:20:35.829] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.829] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D6D6
+[2026-10-07 00:20:35.830] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.846] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:35.846] [DEBUG] [WTelegram]              → Boolean                               #E272
+[2026-10-07 00:20:35.924] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:34Z (svc)
+[2026-10-07 00:20:35.924] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #938A
+[2026-10-07 00:20:35.924] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:35.937] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:35.937] [DEBUG] [WTelegram]              → Boolean                               #C3FA
+[2026-10-07 00:20:36.044] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:36.044] [DEBUG] [WTelegram]              → Boolean                               #7E92
+[2026-10-07 00:20:36.127] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:36.127] [DEBUG] [WTelegram]              → Boolean                               #D6D6
+[2026-10-07 00:20:36.168] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:35Z
+[2026-10-07 00:20:36.168] [DEBUG] [WTelegram]              → Boolean                               #938A
+[2026-10-07 00:20:36.168] [INFO ] [TelegramService] Файл 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix)_v1.mp3
 #latest')...
-[2026-10-06 23:50:52.072] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:52.072] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #986B
-[2026-10-06 23:50:52.072] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:52.130] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:51Z
-[2026-10-06 23:50:52.130] [DEBUG] [WTelegram]              → Boolean                               #986B
-[2026-10-06 23:50:52.130] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:51Z (svc)
-[2026-10-06 23:50:52.130] [DEBUG] [WTelegram]             → Messages_SendMedia                     #B4FB
-[2026-10-06 23:50:52.130] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:52.878] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:52Z
-[2026-10-06 23:50:52.878] [DEBUG] [WTelegram]              → Updates                               #B4FB
-[2026-10-06 23:50:52.878] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:52Z (svc)
-[2026-10-06 23:50:52.878] [DEBUG] [WTelegram]             → Messages_EditMessage                   #D660
-[2026-10-06 23:50:52.878] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:52.942] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:52Z
-[2026-10-06 23:50:52.942] [DEBUG] [WTelegram]              → Updates                               #D660
-[2026-10-06 23:50:52.942] [INFO ] [TelegramService] Файл '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' успешно сохранен в Telegram. Message ID: 1709
-[2026-10-06 23:50:52.942] [INFO ] [TrayContext] Событие OnUploadCompleted для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' получено из TelegramService.
-[2026-10-06 23:50:52.942] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:52.942] [INFO ] [TelegramService] Прямая потоковая передача файла '12 Ultra Nate - Free (Acapella).mp3' (9031336 байт) в Telegram...
-[2026-10-06 23:50:52.943] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:52Z (svc)
-[2026-10-06 23:50:52.943] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B444
-[2026-10-06 23:50:52.943] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:52.950] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #FA80
-[2026-10-06 23:50:52.955] [INFO ] [WinFsp] Файл '06_david_guetta_play_hard_feat_ne_yo_and_akon_ (7mb).mp3' успешно сохранен в Telegram (Msg ID: 1709, дата изменения: 2016-08-13 20:33:01). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:52.956] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A9F0
-[2026-10-06 23:50:52.961] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C428
-[2026-10-06 23:50:52.966] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6C84
-[2026-10-06 23:50:53.049] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E0B8
-[2026-10-06 23:50:53.064] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:52Z
-[2026-10-06 23:50:53.064] [DEBUG] [WTelegram]              → Boolean                               #B444
-[2026-10-06 23:50:53.064] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла 12 Ultra Nate - Free (Acapella).mp3
-[2026-10-06 23:50:53.100] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A678
-[2026-10-06 23:50:53.124] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:52Z
-[2026-10-06 23:50:53.124] [DEBUG] [WTelegram]              → Boolean                               #FA80
-[2026-10-06 23:50:53.152] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5B68
-[2026-10-06 23:50:53.166] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:52Z
-[2026-10-06 23:50:53.166] [DEBUG] [WTelegram]              → Boolean                               #A9F0
-[2026-10-06 23:50:53.204] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E4B0
-[2026-10-06 23:50:53.218] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:52Z
-[2026-10-06 23:50:53.218] [DEBUG] [WTelegram]              → Boolean                               #C428
-[2026-10-06 23:50:53.261] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4EE4
-[2026-10-06 23:50:53.284] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.284] [DEBUG] [WTelegram]              → Boolean                               #6C84
-[2026-10-06 23:50:53.318] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:52Z (svc)
-[2026-10-06 23:50:53.318] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #34E8
-[2026-10-06 23:50:53.319] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.337] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.337] [DEBUG] [WTelegram]              → Boolean                               #E0B8
-[2026-10-06 23:50:53.371] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:52Z (svc)
-[2026-10-06 23:50:53.371] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B76C
-[2026-10-06 23:50:53.372] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.385] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.385] [DEBUG] [WTelegram]              → Boolean                               #A678
-[2026-10-06 23:50:53.428] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:52Z (svc)
-[2026-10-06 23:50:53.428] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5A6C
-[2026-10-06 23:50:53.428] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.447] [DEBUG] [WTelegram]              → Boolean                               #5B68
-[2026-10-06 23:50:53.479] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:53Z (svc)
-[2026-10-06 23:50:53.479] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #61AD
-[2026-10-06 23:50:53.480] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.495] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.495] [DEBUG] [WTelegram]              → Boolean                               #E4B0
-[2026-10-06 23:50:53.533] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:53Z (svc)
-[2026-10-06 23:50:53.534] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F181
-[2026-10-06 23:50:53.534] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.579] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.579] [DEBUG] [WTelegram]              → Boolean                               #4EE4
-[2026-10-06 23:50:53.586] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:53Z (svc)
-[2026-10-06 23:50:53.587] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #7055
-[2026-10-06 23:50:53.587] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.633] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.633] [DEBUG] [WTelegram]              → Boolean                               #34E8
-[2026-10-06 23:50:53.644] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:53Z (svc)
-[2026-10-06 23:50:53.644] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #52E9
-[2026-10-06 23:50:53.644] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.668] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.668] [DEBUG] [WTelegram]              → Boolean                               #B76C
-[2026-10-06 23:50:53.695] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:53Z (svc)
-[2026-10-06 23:50:53.695] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #C5F5
-[2026-10-06 23:50:53.695] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:53.725] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.725] [DEBUG] [WTelegram]              → Boolean                               #5A6C
-[2026-10-06 23:50:53.788] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.788] [DEBUG] [WTelegram]              → Boolean                               #61AD
-[2026-10-06 23:50:53.853] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.853] [DEBUG] [WTelegram]              → Boolean                               #F181
-[2026-10-06 23:50:53.932] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:53Z (svc)
-[2026-10-06 23:50:53.932] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.932] [DEBUG] [WTelegram]              → Boolean                               #7055
-[2026-10-06 23:50:53.932] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:53Z (svc) 
-[2026-10-06 23:50:53.992] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:53.992] [DEBUG] [WTelegram]              → Boolean                               #52E9
-[2026-10-06 23:50:54.004] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:53Z
-[2026-10-06 23:50:54.005] [DEBUG] [WTelegram]              → Boolean                               #C5F5
-[2026-10-06 23:50:54.005] [INFO ] [TelegramService] Файл '12 Ultra Nate - Free (Acapella).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/12 Ultra Nate - Free (Acapella)_v1.mp3
+[2026-10-07 00:20:36.168] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:35Z (svc)
+[2026-10-07 00:20:36.168] [DEBUG] [WTelegram]             → Messages_SendMedia                     #6DEB
+[2026-10-07 00:20:36.168] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:36.995] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:36Z
+[2026-10-07 00:20:36.995] [DEBUG] [WTelegram]              → Updates                               #6DEB
+[2026-10-07 00:20:36.996] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:36Z (svc)
+[2026-10-07 00:20:36.996] [DEBUG] [WTelegram]             → Messages_EditMessage                   #2808
+[2026-10-07 00:20:36.996] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:37.055] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:36Z
+[2026-10-07 00:20:37.055] [DEBUG] [WTelegram]              → Updates                               #2808
+[2026-10-07 00:20:37.055] [INFO ] [TelegramService] Файл 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' успешно сохранен в Telegram. Message ID: 1734
+[2026-10-07 00:20:37.055] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' получено из TelegramService.
+[2026-10-07 00:20:37.056] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:37.069] [INFO ] [WinFsp] Файл 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' успешно сохранен в Telegram (Msg ID: 1734, дата изменения: 2023-05-29 22:36:34). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:37.072] [INFO ] [WinFsp] Создан новый каталог: '/audio/small/test' (ID 149)
+[2026-10-07 00:20:37.073] [INFO ] [WinFsp] Обновлены системные даты для 'test' (ID 149): Изменен: 2026-10-06 20:43:38, Создан: 2026-10-06 21:20:37
+[2026-10-07 00:20:37.076] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'dj day - demo mix.mp3' (виртуальный путь: '/audio/small/test/dj day - demo mix.mp3')...
+[2026-10-07 00:20:37.076] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:37.078] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:37.084] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78923 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:37.119] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
+[2026-10-07 00:20:37.119] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:37.119] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3' существует и доступен для чтения (размер: 1337804 байт).
+[2026-10-07 00:20:37.119] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
+[2026-10-07 00:20:37.119] [INFO ] [WinFsp] Создан файл для записи: '/audio/small/test/dj day - demo mix.mp3' (ID 150, alloc: 1339392), источник: 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
+[2026-10-07 00:20:37.120] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\audio\small\test\dj day - demo mix.mp3'
+[2026-10-07 00:20:37.120] [INFO ] [WinFsp] [Write] Результат AudioMetadataExtractor для 'dj day - demo mix.mp3': трек = ' - dj day - demo mix', длительность = 83 сек, обложка = НЕТ
+[2026-10-07 00:20:37.120] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'dj day - demo mix.mp3' (1337804 байт) в Telegram на лету (Zero-Temp), аудио: 83 сек, обложка: НЕТ...
+[2026-10-07 00:20:37.121] [INFO ] [TelegramService] Прямая потоковая передача файла 'dj day - demo mix.mp3' (1337804 байт) в Telegram...
+[2026-10-07 00:20:37.121] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:36Z (svc)
+[2026-10-07 00:20:37.121] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #332C
+[2026-10-07 00:20:37.122] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:37.123] [INFO ] [WinFsp] Обновлены системные даты для 'dj day - demo mix.mp3' (ID 150): Изменен: 2007-12-27 13:57:28, Создан: 2026-10-06 21:20:37
+[2026-10-07 00:20:37.129] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #3104
+[2026-10-07 00:20:37.135] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EDD8
+[2026-10-07 00:20:37.282] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:36Z
+[2026-10-07 00:20:37.282] [DEBUG] [WTelegram]              → Boolean                               #332C
+[2026-10-07 00:20:37.282] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла dj day - demo mix.mp3
+[2026-10-07 00:20:37.425] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:37Z
+[2026-10-07 00:20:37.425] [DEBUG] [WTelegram]              → Boolean                               #3104
+[2026-10-07 00:20:37.492] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:37Z
+[2026-10-07 00:20:37.492] [DEBUG] [WTelegram]              → Boolean                               #EDD8
+[2026-10-07 00:20:37.492] [INFO ] [TelegramService] Файл 'dj day - demo mix.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/test/dj day - demo mix_v1.mp3
 #latest')...
-[2026-10-06 23:50:54.005] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:53Z (svc)
-[2026-10-06 23:50:54.005] [DEBUG] [WTelegram]             → Messages_SendMedia                     #FC4D
-[2026-10-06 23:50:54.005] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:55.598] [INFO ] [TrayProgressOverlay] Таймаут неактивности передачи (1,6 сек). Скрытие оверлея.
-[2026-10-06 23:50:56.198] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:55Z
-[2026-10-06 23:50:56.199] [DEBUG] [WTelegram]              → Updates                               #FC4D
-[2026-10-06 23:50:56.199] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:55Z (svc)
-[2026-10-06 23:50:56.199] [DEBUG] [WTelegram]             → Messages_EditMessage                   #0163
-[2026-10-06 23:50:56.199] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:56.266] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:55Z
-[2026-10-06 23:50:56.266] [DEBUG] [WTelegram]              → Updates                               #0163
-[2026-10-06 23:50:56.266] [INFO ] [TelegramService] Файл '12 Ultra Nate - Free (Acapella).mp3' успешно сохранен в Telegram. Message ID: 1710
-[2026-10-06 23:50:56.266] [INFO ] [TrayContext] Событие OnUploadCompleted для '12 Ultra Nate - Free (Acapella).mp3' получено из TelegramService.
-[2026-10-06 23:50:56.266] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для '12 Ultra Nate - Free (Acapella).mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:56.267] [INFO ] [TelegramService] Прямая потоковая передача файла 'david kane_-_club_sound.mp3' (1499264 байт) в Telegram...
-[2026-10-06 23:50:56.267] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:56Z (svc)
-[2026-10-06 23:50:56.267] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5204
-[2026-10-06 23:50:56.267] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:56.267] [INFO ] [WinFsp] Файл '12 Ultra Nate - Free (Acapella).mp3' успешно сохранен в Telegram (Msg ID: 1710, дата изменения: 2010-02-11 11:01:18). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:56.275] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A150
-[2026-10-06 23:50:56.280] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1FDC
-[2026-10-06 23:50:56.413] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:56Z
-[2026-10-06 23:50:56.413] [DEBUG] [WTelegram]              → Boolean                               #5204
-[2026-10-06 23:50:56.413] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла david kane_-_club_sound.mp3
-[2026-10-06 23:50:56.414] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Upload] для david kane_-_club_sound.mp3 (524288/1499264)
-[2026-10-06 23:50:56.450] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:56Z
-[2026-10-06 23:50:56.450] [DEBUG] [WTelegram]              → Boolean                               #A150
-[2026-10-06 23:50:56.497] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:56Z
-[2026-10-06 23:50:56.497] [DEBUG] [WTelegram]              → Boolean                               #1FDC
-[2026-10-06 23:50:56.497] [INFO ] [TelegramService] Файл 'david kane_-_club_sound.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/david kane_-_club_sound_v1.mp3
+[2026-10-07 00:20:37.493] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:37Z (svc)
+[2026-10-07 00:20:37.493] [DEBUG] [WTelegram]             → Messages_SendMedia                     #2811
+[2026-10-07 00:20:37.493] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:38.093] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:37Z
+[2026-10-07 00:20:38.093] [DEBUG] [WTelegram]              → Updates                               #2811
+[2026-10-07 00:20:38.093] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:37Z (svc)
+[2026-10-07 00:20:38.093] [DEBUG] [WTelegram]             → Messages_EditMessage                   #053D
+[2026-10-07 00:20:38.093] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:38.156] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:37Z
+[2026-10-07 00:20:38.156] [DEBUG] [WTelegram]              → Updates                               #053D
+[2026-10-07 00:20:38.156] [INFO ] [TelegramService] Файл 'dj day - demo mix.mp3' успешно сохранен в Telegram. Message ID: 1735
+[2026-10-07 00:20:38.156] [INFO ] [TrayContext] Событие OnUploadCompleted для 'dj day - demo mix.mp3' получено из TelegramService.
+[2026-10-07 00:20:38.156] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'dj day - demo mix.mp3'. Запуск _completionTimer...
+[2026-10-07 00:20:38.169] [INFO ] [WinFsp] Файл 'dj day - demo mix.mp3' успешно сохранен в Telegram (Msg ID: 1735, дата изменения: 2007-12-27 13:57:28). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:38.174] [INFO ] [WinFsp] Создан новый каталог: '/image' (ID 151)
+[2026-10-07 00:20:38.175] [INFO ] [WinFsp] Обновлены системные даты для 'image' (ID 151): Изменен: 2026-09-29 17:20:39, Создан: 2026-10-06 21:20:38
+[2026-10-07 00:20:38.179] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'DSC_0270 __ (6 mb) __.JPG' (виртуальный путь: '/image/DSC_0270 __ (6 mb) __.JPG')...
+[2026-10-07 00:20:38.180] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:38.182] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:38.188] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 79568 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:38.222] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
+[2026-10-07 00:20:38.223] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:38.223] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG' существует и доступен для чтения (размер: 6195435 байт).
+[2026-10-07 00:20:38.223] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
+[2026-10-07 00:20:38.223] [INFO ] [WinFsp] Создан файл для записи: '/image/DSC_0270 __ (6 mb) __.JPG' (ID 152, alloc: 6197248), источник: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
+[2026-10-07 00:20:38.224] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\image\DSC_0270 __ (6 mb) __.JPG'
+[2026-10-07 00:20:38.224] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'DSC_0270 __ (6 mb) __.JPG' (6195435 байт) в Telegram на лету (Zero-Temp)...
+[2026-10-07 00:20:38.233] [INFO ] [WinFsp] Обновлены системные даты для 'DSC_0270 __ (6 mb) __.JPG' (ID 152): Изменен: 2023-07-26 12:27:41, Создан: 2026-10-06 21:20:38
+[2026-10-07 00:20:38.542] [INFO ] [TelegramService] Прямая потоковая передача файла 'DSC_0270 __ (6 mb) __.JPG' (6195435 байт) в Telegram...
+[2026-10-07 00:20:38.542] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:38Z (svc)
+[2026-10-07 00:20:38.542] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #4B9A
+[2026-10-07 00:20:38.542] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:38.547] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #3756
+[2026-10-07 00:20:38.552] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7256
+[2026-10-07 00:20:38.723] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1972
+[2026-10-07 00:20:38.742] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:38Z
+[2026-10-07 00:20:38.742] [DEBUG] [WTelegram]              → Boolean                               #4B9A
+[2026-10-07 00:20:38.742] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла DSC_0270 __ (6 mb) __.JPG
+[2026-10-07 00:20:38.861] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5B0E
+[2026-10-07 00:20:38.879] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:38Z
+[2026-10-07 00:20:38.879] [DEBUG] [WTelegram]              → Boolean                               #3756
+[2026-10-07 00:20:38.992] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #88C6
+[2026-10-07 00:20:39.005] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:38Z
+[2026-10-07 00:20:39.005] [DEBUG] [WTelegram]              → Boolean                               #7256
+[2026-10-07 00:20:39.132] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5246
+[2026-10-07 00:20:39.204] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:38Z
+[2026-10-07 00:20:39.204] [DEBUG] [WTelegram]              → Boolean                               #1972
+[2026-10-07 00:20:39.265] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7D16
+[2026-10-07 00:20:39.305] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:38Z
+[2026-10-07 00:20:39.305] [DEBUG] [WTelegram]              → Boolean                               #5B0E
+[2026-10-07 00:20:39.394] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #931A
+[2026-10-07 00:20:39.454] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:39.454] [DEBUG] [WTelegram]              → Boolean                               #88C6
+[2026-10-07 00:20:39.522] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #8612
+[2026-10-07 00:20:39.629] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:39.629] [DEBUG] [WTelegram]              → Boolean                               #5246
+[2026-10-07 00:20:39.647] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:38Z (svc)
+[2026-10-07 00:20:39.647] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #448A
+[2026-10-07 00:20:39.648] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:39.715] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:39.715] [DEBUG] [WTelegram]              → Boolean                               #7D16
+[2026-10-07 00:20:39.776] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:38Z (svc)
+[2026-10-07 00:20:39.776] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #C9CE
+[2026-10-07 00:20:39.776] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:39.798] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:39.798] [DEBUG] [WTelegram]              → Boolean                               #931A
+[2026-10-07 00:20:39.903] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:38Z (svc)
+[2026-10-07 00:20:39.904] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #987A
+[2026-10-07 00:20:39.904] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:39.924] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:39.924] [DEBUG] [WTelegram]              → Boolean                               #8612
+[2026-10-07 00:20:40.037] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:40.037] [DEBUG] [WTelegram]              → Boolean                               #448A
+[2026-10-07 00:20:40.130] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:39Z (svc)
+[2026-10-07 00:20:40.130] [DEBUG] [WTelegram]             → Pong                                   2026-10-06 21:20:39Z (svc) 
+[2026-10-07 00:20:40.130] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:39Z (svc) 
+[2026-10-07 00:20:40.137] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:40.137] [DEBUG] [WTelegram]              → Boolean                               #C9CE
+[2026-10-07 00:20:40.137] [INFO ] [TelegramService] Файл 'DSC_0270 __ (6 mb) __.JPG' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /image/DSC_0270 __ (6 mb) ___v1.JPG
 #latest')...
-[2026-10-06 23:50:56.497] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:56Z (svc)
-[2026-10-06 23:50:56.497] [DEBUG] [WTelegram]             → Messages_SendMedia                     #519C
-[2026-10-06 23:50:56.497] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.040] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:56Z
-[2026-10-06 23:50:57.040] [DEBUG] [WTelegram]              → Updates                               #519C
-[2026-10-06 23:50:57.041] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:56Z (svc)
-[2026-10-06 23:50:57.041] [DEBUG] [WTelegram]             → Messages_EditMessage                   #0140
-[2026-10-06 23:50:57.041] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.119] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:56Z
-[2026-10-06 23:50:57.119] [DEBUG] [WTelegram]              → Updates                               #0140
-[2026-10-06 23:50:57.119] [INFO ] [TelegramService] Файл 'david kane_-_club_sound.mp3' успешно сохранен в Telegram. Message ID: 1711
-[2026-10-06 23:50:57.119] [INFO ] [TrayContext] Событие OnUploadCompleted для 'david kane_-_club_sound.mp3' получено из TelegramService.
-[2026-10-06 23:50:57.120] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'david kane_-_club_sound.mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:57.120] [INFO ] [TelegramService] Прямая потоковая передача файла 'LAYAH-Flashback.mp3' (9830444 байт) в Telegram...
-[2026-10-06 23:50:57.120] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:56Z (svc)
-[2026-10-06 23:50:57.120] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #1D24
-[2026-10-06 23:50:57.121] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.128] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1448
-[2026-10-06 23:50:57.134] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #9928
-[2026-10-06 23:50:57.134] [INFO ] [WinFsp] Файл 'david kane_-_club_sound.mp3' успешно сохранен в Telegram (Msg ID: 1711, дата изменения: 2007-09-26 23:30:26). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:57.139] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #439C
-[2026-10-06 23:50:57.144] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2BB4
-[2026-10-06 23:50:57.225] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #9A1C
-[2026-10-06 23:50:57.237] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:56Z
-[2026-10-06 23:50:57.237] [DEBUG] [WTelegram]              → Boolean                               #1D24
-[2026-10-06 23:50:57.237] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла LAYAH-Flashback.mp3
-[2026-10-06 23:50:57.284] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #BA00
-[2026-10-06 23:50:57.302] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.302] [DEBUG] [WTelegram]              → Boolean                               #1448
-[2026-10-06 23:50:57.333] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #72B8
-[2026-10-06 23:50:57.357] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.357] [DEBUG] [WTelegram]              → Boolean                               #9928
-[2026-10-06 23:50:57.390] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #D4AC
-[2026-10-06 23:50:57.402] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.402] [DEBUG] [WTelegram]              → Boolean                               #439C
-[2026-10-06 23:50:57.444] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #BE64
-[2026-10-06 23:50:57.458] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.458] [DEBUG] [WTelegram]              → Boolean                               #2BB4
-[2026-10-06 23:50:57.501] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.501] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #BF79
-[2026-10-06 23:50:57.502] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.519] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.519] [DEBUG] [WTelegram]              → Boolean                               #9A1C
-[2026-10-06 23:50:57.560] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.560] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #A639
-[2026-10-06 23:50:57.561] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.576] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.576] [DEBUG] [WTelegram]              → Boolean                               #BA00
-[2026-10-06 23:50:57.613] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.613] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #9BF1
-[2026-10-06 23:50:57.614] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.630] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.630] [DEBUG] [WTelegram]              → Boolean                               #72B8
-[2026-10-06 23:50:57.672] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.672] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #4255
-[2026-10-06 23:50:57.672] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.688] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.688] [DEBUG] [WTelegram]              → Boolean                               #D4AC
-[2026-10-06 23:50:57.729] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.729] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #88B5
-[2026-10-06 23:50:57.729] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.742] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.742] [DEBUG] [WTelegram]              → Boolean                               #BE64
-[2026-10-06 23:50:57.783] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.783] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #0441
-[2026-10-06 23:50:57.784] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.796] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.796] [DEBUG] [WTelegram]              → Boolean                               #BF79
-[2026-10-06 23:50:57.837] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.837] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D4E5
-[2026-10-06 23:50:57.837] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.850] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.850] [DEBUG] [WTelegram]              → Boolean                               #A639
-[2026-10-06 23:50:57.892] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.892] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #C6A5
-[2026-10-06 23:50:57.892] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.912] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.912] [DEBUG] [WTelegram]              → Boolean                               #9BF1
-[2026-10-06 23:50:57.944] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:57Z (svc)
-[2026-10-06 23:50:57.944] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #FF41
-[2026-10-06 23:50:57.945] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:57.963] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:57.963] [DEBUG] [WTelegram]              → Boolean                               #4255
-[2026-10-06 23:50:58.046] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:58.046] [DEBUG] [WTelegram]              → Boolean                               #88B5
-[2026-10-06 23:50:58.099] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:58.099] [DEBUG] [WTelegram]              → Boolean                               #0441
-[2026-10-06 23:50:58.156] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:58.156] [DEBUG] [WTelegram]              → Boolean                               #D4E5
-[2026-10-06 23:50:58.194] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:58.194] [DEBUG] [WTelegram]              → Boolean                               #C6A5
-[2026-10-06 23:50:58.267] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:57Z
-[2026-10-06 23:50:58.267] [DEBUG] [WTelegram]              → Boolean                               #FF41
-[2026-10-06 23:50:58.267] [INFO ] [TelegramService] Файл 'LAYAH-Flashback.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/LAYAH-Flashback_v1.mp3
+[2026-10-07 00:20:40.138] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:39Z (svc)
+[2026-10-07 00:20:40.138] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #CCEB
+[2026-10-07 00:20:40.138] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:40.144] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4CBB
+[2026-10-07 00:20:40.301] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:39Z
+[2026-10-07 00:20:40.301] [DEBUG] [WTelegram]              → Boolean                               #CCEB
+[2026-10-07 00:20:40.341] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:40Z
+[2026-10-07 00:20:40.341] [DEBUG] [WTelegram]              → Boolean                               #4CBB
+[2026-10-07 00:20:40.342] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:40Z (svc)
+[2026-10-07 00:20:40.342] [DEBUG] [WTelegram]             → Messages_SendMedia                     #4CE4
+[2026-10-07 00:20:40.342] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:40.430] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:40Z
+[2026-10-07 00:20:40.430] [DEBUG] [WTelegram]              → Updates                               #4CE4
+[2026-10-07 00:20:40.430] [INFO ] [TelegramService] Фото-превью для галереи успешно опубликовано в Telegram (Message ID: 1736, имя: 'DSC_0270 __ (6 mb) ___preview.jpg').
+[2026-10-07 00:20:40.430] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:40Z (svc)
+[2026-10-07 00:20:40.430] [DEBUG] [WTelegram]             → Messages_SendMedia                     #B3FC
+[2026-10-07 00:20:40.431] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:40.723] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:40Z
+[2026-10-07 00:20:40.723] [DEBUG] [WTelegram]              → Updates                               #B3FC
+[2026-10-07 00:20:40.723] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:40Z (svc)
+[2026-10-07 00:20:40.723] [DEBUG] [WTelegram]             → Messages_EditMessage                   #8F68
+[2026-10-07 00:20:40.723] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:40.782] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:40Z
+[2026-10-07 00:20:40.782] [DEBUG] [WTelegram]              → Updates                               #8F68
+[2026-10-07 00:20:40.782] [INFO ] [TelegramService] Файл 'DSC_0270 __ (6 mb) __.JPG' успешно сохранен в Telegram. Message ID: 1737, Preview ID: 1736
+[2026-10-07 00:20:40.782] [INFO ] [TrayContext] Событие OnUploadCompleted для 'DSC_0270 __ (6 mb) __.JPG' получено из TelegramService.
+[2026-10-07 00:20:40.782] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'DSC_0270 __ (6 mb) __.JPG'. Запуск _completionTimer...
+[2026-10-07 00:20:40.796] [INFO ] [WinFsp] Файл 'DSC_0270 __ (6 mb) __.JPG' успешно сохранен в Telegram (Msg ID: 1737, Preview ID: 1736, дата изменения: 2023-07-26 12:27:41). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:40.800] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'IMG_20201018_131419 (12 mb).jpg' (виртуальный путь: '/image/IMG_20201018_131419 (12 mb).jpg')...
+[2026-10-07 00:20:40.800] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg' существует и доступен для чтения (размер: 12414274 байт).
+[2026-10-07 00:20:40.800] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg'
+[2026-10-07 00:20:40.800] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:40.800] [INFO ] [WinFsp] Создан файл для записи: '/image/IMG_20201018_131419 (12 mb).jpg' (ID 153, alloc: 12414976), источник: 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg'
+[2026-10-07 00:20:40.801] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\image\IMG_20201018_131419 (12 mb).jpg'
+[2026-10-07 00:20:40.801] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'IMG_20201018_131419 (12 mb).jpg' (12414274 байт) в Telegram на лету (Zero-Temp)...
+[2026-10-07 00:20:40.812] [INFO ] [WinFsp] Обновлены системные даты для 'IMG_20201018_131419 (12 mb).jpg' (ID 153): Изменен: 2020-12-25 21:19:06, Создан: 2026-10-06 21:20:40
+[2026-10-07 00:20:41.204] [INFO ] [TelegramService] Прямая потоковая передача файла 'IMG_20201018_131419 (12 mb).jpg' (12414274 байт) в Telegram...
+[2026-10-07 00:20:41.204] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:40Z (svc)
+[2026-10-07 00:20:41.204] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C638
+[2026-10-07 00:20:41.204] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:41.210] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D6B4
+[2026-10-07 00:20:41.214] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #E028
+[2026-10-07 00:20:41.385] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #56D4
+[2026-10-07 00:20:41.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:41Z
+[2026-10-07 00:20:41.400] [DEBUG] [WTelegram]              → Boolean                               #C638
+[2026-10-07 00:20:41.400] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла IMG_20201018_131419 (12 mb).jpg
+[2026-10-07 00:20:41.553] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1458
+[2026-10-07 00:20:41.595] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:41Z
+[2026-10-07 00:20:41.595] [DEBUG] [WTelegram]              → Boolean                               #D6B4
+[2026-10-07 00:20:41.721] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2BC0
+[2026-10-07 00:20:41.751] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:41Z
+[2026-10-07 00:20:41.751] [DEBUG] [WTelegram]              → Boolean                               #E028
+[2026-10-07 00:20:41.890] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #37A8
+[2026-10-07 00:20:41.919] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:41Z
+[2026-10-07 00:20:41.919] [DEBUG] [WTelegram]              → Boolean                               #56D4
+[2026-10-07 00:20:42.055] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #20A8
+[2026-10-07 00:20:42.080] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:41Z
+[2026-10-07 00:20:42.080] [DEBUG] [WTelegram]              → Boolean                               #1458
+[2026-10-07 00:20:42.219] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #33E4
+[2026-10-07 00:20:42.252] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:41Z
+[2026-10-07 00:20:42.252] [DEBUG] [WTelegram]              → Boolean                               #2BC0
+[2026-10-07 00:20:42.382] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #3024
+[2026-10-07 00:20:42.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:42Z
+[2026-10-07 00:20:42.400] [DEBUG] [WTelegram]              → Boolean                               #37A8
+[2026-10-07 00:20:42.543] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:41Z (svc)
+[2026-10-07 00:20:42.543] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4C55
+[2026-10-07 00:20:42.543] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:42.565] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:42Z
+[2026-10-07 00:20:42.565] [DEBUG] [WTelegram]              → Boolean                               #20A8
+[2026-10-07 00:20:42.701] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:41Z (svc)
+[2026-10-07 00:20:42.701] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5B69
+[2026-10-07 00:20:42.702] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:42.717] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:42Z
+[2026-10-07 00:20:42.717] [DEBUG] [WTelegram]              → Boolean                               #33E4
+[2026-10-07 00:20:42.856] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:41Z (svc)
+[2026-10-07 00:20:42.856] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4A91
+[2026-10-07 00:20:42.856] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:42.866] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:42Z (svc)
+[2026-10-07 00:20:42.867] [DEBUG] [WTelegram]             → Updates                                2026-10-06 21:20:42Z  
+[2026-10-07 00:20:42.867] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:42Z (svc) 
+[2026-10-07 00:20:42.898] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:42Z
+[2026-10-07 00:20:42.898] [DEBUG] [WTelegram]              → Boolean                               #3024
+[2026-10-07 00:20:43.007] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:41Z (svc)
+[2026-10-07 00:20:43.007] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #289D
+[2026-10-07 00:20:43.007] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:43.022] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:42Z
+[2026-10-07 00:20:43.022] [DEBUG] [WTelegram]              → Boolean                               #4C55
+[2026-10-07 00:20:43.083] [DEBUG] [WTelegram] 2>Receiving Updates                                  2026-10-06 21:20:42Z  
+[2026-10-07 00:20:43.222] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:41Z (svc)
+[2026-10-07 00:20:43.222] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C625
+[2026-10-07 00:20:43.222] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:43.243] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:42Z
+[2026-10-07 00:20:43.243] [DEBUG] [WTelegram]              → Boolean                               #5B69
+[2026-10-07 00:20:43.437] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:41Z (svc)
+[2026-10-07 00:20:43.437] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1B8D
+[2026-10-07 00:20:43.438] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:43.453] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:43Z
+[2026-10-07 00:20:43.453] [DEBUG] [WTelegram]              → Boolean                               #4A91
+[2026-10-07 00:20:43.650] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:42Z (svc)
+[2026-10-07 00:20:43.650] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #853A
+[2026-10-07 00:20:43.651] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:43.701] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:43Z
+[2026-10-07 00:20:43.701] [DEBUG] [WTelegram]              → Boolean                               #289D
+[2026-10-07 00:20:43.859] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:42Z (svc)
+[2026-10-07 00:20:43.859] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5F0E
+[2026-10-07 00:20:43.860] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:43.879] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:43Z
+[2026-10-07 00:20:43.880] [DEBUG] [WTelegram]              → Boolean                               #C625
+[2026-10-07 00:20:44.066] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:42Z (svc)
+[2026-10-07 00:20:44.066] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #28B2
+[2026-10-07 00:20:44.067] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:44.092] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:43Z
+[2026-10-07 00:20:44.092] [DEBUG] [WTelegram]              → Boolean                               #1B8D
+[2026-10-07 00:20:44.265] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:42Z (svc)
+[2026-10-07 00:20:44.265] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8C2E
+[2026-10-07 00:20:44.266] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:44.311] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:43Z
+[2026-10-07 00:20:44.311] [DEBUG] [WTelegram]              → Boolean                               #853A
+[2026-10-07 00:20:44.462] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:42Z (svc)
+[2026-10-07 00:20:44.462] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #95DE
+[2026-10-07 00:20:44.462] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:44.498] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:44Z
+[2026-10-07 00:20:44.498] [DEBUG] [WTelegram]              → Boolean                               #5F0E
+[2026-10-07 00:20:44.648] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:42Z (svc)
+[2026-10-07 00:20:44.648] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #52AE
+[2026-10-07 00:20:44.648] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:44.664] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:44Z
+[2026-10-07 00:20:44.664] [DEBUG] [WTelegram]              → Boolean                               #28B2
+[2026-10-07 00:20:44.841] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:43Z (svc)
+[2026-10-07 00:20:44.841] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #110F
+[2026-10-07 00:20:44.841] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:44.919] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:44Z
+[2026-10-07 00:20:44.919] [DEBUG] [WTelegram]              → Boolean                               #8C2E
+[2026-10-07 00:20:45.035] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:43Z (svc)
+[2026-10-07 00:20:45.035] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CE2B
+[2026-10-07 00:20:45.035] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:45.114] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:44Z
+[2026-10-07 00:20:45.114] [DEBUG] [WTelegram]              → Boolean                               #95DE
+[2026-10-07 00:20:45.302] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:44Z
+[2026-10-07 00:20:45.302] [DEBUG] [WTelegram]              → Boolean                               #52AE
+[2026-10-07 00:20:45.525] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:45Z
+[2026-10-07 00:20:45.525] [DEBUG] [WTelegram]              → Boolean                               #110F
+[2026-10-07 00:20:45.602] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:45Z
+[2026-10-07 00:20:45.602] [DEBUG] [WTelegram]              → Boolean                               #CE2B
+[2026-10-07 00:20:45.602] [INFO ] [TelegramService] Файл 'IMG_20201018_131419 (12 mb).jpg' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /image/IMG_20201018_131419 (12 mb)_v1.jpg
 #latest')...
-[2026-10-06 23:50:58.267] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:58Z (svc)
-[2026-10-06 23:50:58.267] [DEBUG] [WTelegram]             → Messages_SendMedia                     #3AFA
-[2026-10-06 23:50:58.267] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.033] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:58Z
-[2026-10-06 23:50:59.033] [DEBUG] [WTelegram]              → Updates                               #3AFA
-[2026-10-06 23:50:59.033] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:58Z (svc)
-[2026-10-06 23:50:59.033] [DEBUG] [WTelegram]             → Messages_EditMessage                   #81C2
-[2026-10-06 23:50:59.033] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.113] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:58Z
-[2026-10-06 23:50:59.113] [DEBUG] [WTelegram]              → Updates                               #81C2
-[2026-10-06 23:50:59.113] [INFO ] [TelegramService] Файл 'LAYAH-Flashback.mp3' успешно сохранен в Telegram. Message ID: 1712
-[2026-10-06 23:50:59.113] [INFO ] [TrayContext] Событие OnUploadCompleted для 'LAYAH-Flashback.mp3' получено из TelegramService.
-[2026-10-06 23:50:59.113] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'LAYAH-Flashback.mp3'. Запуск _completionTimer...
-[2026-10-06 23:50:59.114] [INFO ] [TelegramService] Прямая потоковая передача файла 'Miley_Cyrus_-_Midnight_Sky.mp3' (8950388 байт) в Telegram...
-[2026-10-06 23:50:59.114] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:58Z (svc)
-[2026-10-06 23:50:59.114] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B4A6
-[2026-10-06 23:50:59.114] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.121] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #EC92
-[2026-10-06 23:50:59.127] [INFO ] [WinFsp] Файл 'LAYAH-Flashback.mp3' успешно сохранен в Telegram (Msg ID: 1712, дата изменения: 2023-05-21 19:47:28). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:50:59.127] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6E16
-[2026-10-06 23:50:59.132] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DB0A
-[2026-10-06 23:50:59.137] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5C96
-[2026-10-06 23:50:59.215] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #0C3A
-[2026-10-06 23:50:59.233] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:58Z
-[2026-10-06 23:50:59.233] [DEBUG] [WTelegram]              → Boolean                               #B4A6
-[2026-10-06 23:50:59.233] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Miley_Cyrus_-_Midnight_Sky.mp3
-[2026-10-06 23:50:59.267] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #01CE
-[2026-10-06 23:50:59.289] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.289] [DEBUG] [WTelegram]              → Boolean                               #EC92
-[2026-10-06 23:50:59.318] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #C6C6
-[2026-10-06 23:50:59.352] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.352] [DEBUG] [WTelegram]              → Boolean                               #6E16
-[2026-10-06 23:50:59.371] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7CB2
-[2026-10-06 23:50:59.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.400] [DEBUG] [WTelegram]              → Boolean                               #DB0A
-[2026-10-06 23:50:59.430] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DC72
-[2026-10-06 23:50:59.442] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.442] [DEBUG] [WTelegram]              → Boolean                               #5C96
-[2026-10-06 23:50:59.484] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.484] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #818B
-[2026-10-06 23:50:59.484] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.507] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.507] [DEBUG] [WTelegram]              → Boolean                               #0C3A
-[2026-10-06 23:50:59.537] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.537] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #CE07
-[2026-10-06 23:50:59.538] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.554] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.554] [DEBUG] [WTelegram]              → Boolean                               #01CE
-[2026-10-06 23:50:59.591] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.591] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #2D77
-[2026-10-06 23:50:59.591] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.608] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.608] [DEBUG] [WTelegram]              → Boolean                               #C6C6
-[2026-10-06 23:50:59.643] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.643] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #EF23
-[2026-10-06 23:50:59.643] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.671] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.671] [DEBUG] [WTelegram]              → Boolean                               #7CB2
-[2026-10-06 23:50:59.695] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.695] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B52B
-[2026-10-06 23:50:59.695] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.708] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.708] [DEBUG] [WTelegram]              → Boolean                               #DC72
-[2026-10-06 23:50:59.753] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.753] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #24A7
-[2026-10-06 23:50:59.753] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.767] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.767] [DEBUG] [WTelegram]              → Boolean                               #818B
-[2026-10-06 23:50:59.807] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.807] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #198F
-[2026-10-06 23:50:59.807] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.820] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.820] [DEBUG] [WTelegram]              → Boolean                               #CE07
-[2026-10-06 23:50:59.860] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:50:59.860] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5D97
-[2026-10-06 23:50:59.860] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:50:59.896] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.896] [DEBUG] [WTelegram]              → Boolean                               #2D77
-[2026-10-06 23:50:59.969] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:50:59.969] [DEBUG] [WTelegram]              → Boolean                               #EF23
-[2026-10-06 23:51:00.006] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:51:00.006] [DEBUG] [WTelegram]              → Boolean                               #B52B
-[2026-10-06 23:51:00.033] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:51:00.033] [DEBUG] [WTelegram]              → Boolean                               #24A7
-[2026-10-06 23:51:00.088] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:51:00.088] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:50:59Z
-[2026-10-06 23:51:00.088] [DEBUG] [WTelegram]              → Boolean                               #5D97
-[2026-10-06 23:51:00.088] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:50:59Z (svc) 
-[2026-10-06 23:51:00.103] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:51:00.103] [DEBUG] [WTelegram]              → Boolean                               #198F
-[2026-10-06 23:51:00.104] [INFO ] [TelegramService] Файл 'Miley_Cyrus_-_Midnight_Sky.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/Miley_Cyrus_-_Midnight_Sky_v1.mp3
+[2026-10-07 00:20:45.603] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:45Z (svc)
+[2026-10-07 00:20:45.603] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #3F9D
+[2026-10-07 00:20:45.603] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:45.609] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #245D
+[2026-10-07 00:20:45.615] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #88A9
+[2026-10-07 00:20:45.844] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:45Z
+[2026-10-07 00:20:45.844] [DEBUG] [WTelegram]              → Boolean                               #3F9D
+[2026-10-07 00:20:46.007] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:45Z
+[2026-10-07 00:20:46.007] [DEBUG] [WTelegram]              → Boolean                               #245D
+[2026-10-07 00:20:46.167] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:45Z
+[2026-10-07 00:20:46.167] [DEBUG] [WTelegram]              → Boolean                               #88A9
+[2026-10-07 00:20:46.168] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:45Z (svc)
+[2026-10-07 00:20:46.168] [DEBUG] [WTelegram]             → Messages_SendMedia                     #9A79
+[2026-10-07 00:20:46.168] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:46.316] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:45Z
+[2026-10-07 00:20:46.316] [DEBUG] [WTelegram]              → Updates                               #9A79
+[2026-10-07 00:20:46.316] [INFO ] [TelegramService] Фото-превью для галереи успешно опубликовано в Telegram (Message ID: 1738, имя: 'IMG_20201018_131419 (12 mb)_preview.jpg').
+[2026-10-07 00:20:46.317] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:46Z (svc)
+[2026-10-07 00:20:46.317] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #51C6
+[2026-10-07 00:20:46.317] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:46.323] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #ABC2
+[2026-10-07 00:20:46.329] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #033E
+[2026-10-07 00:20:46.536] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:46Z
+[2026-10-07 00:20:46.536] [DEBUG] [WTelegram]              → Boolean                               #51C6
+[2026-10-07 00:20:46.687] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:46Z
+[2026-10-07 00:20:46.687] [DEBUG] [WTelegram]              → Boolean                               #ABC2
+[2026-10-07 00:20:46.753] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:46Z
+[2026-10-07 00:20:46.753] [DEBUG] [WTelegram]              → Boolean                               #033E
+[2026-10-07 00:20:46.753] [INFO ] [TelegramService] К документу >10 МБ 'IMG_20201018_131419 (12 mb).jpg' успешно прикреплена миниатюра (thumb).
+[2026-10-07 00:20:46.754] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:46Z (svc)
+[2026-10-07 00:20:46.754] [DEBUG] [WTelegram]             → Messages_SendMedia                     #C9EA
+[2026-10-07 00:20:46.754] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:46.941] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:46Z
+[2026-10-07 00:20:46.942] [DEBUG] [WTelegram]              → Updates                               #C9EA
+[2026-10-07 00:20:46.942] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:46Z (svc)
+[2026-10-07 00:20:46.942] [DEBUG] [WTelegram]             → Messages_EditMessage                   #184E
+[2026-10-07 00:20:46.942] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:47.004] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:46Z
+[2026-10-07 00:20:47.004] [DEBUG] [WTelegram]              → Updates                               #184E
+[2026-10-07 00:20:47.004] [INFO ] [TelegramService] Файл 'IMG_20201018_131419 (12 mb).jpg' успешно сохранен в Telegram. Message ID: 1739, Preview ID: 1738
+[2026-10-07 00:20:47.004] [INFO ] [TrayContext] Событие OnUploadCompleted для 'IMG_20201018_131419 (12 mb).jpg' получено из TelegramService.
+[2026-10-07 00:20:47.005] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'IMG_20201018_131419 (12 mb).jpg'. Запуск _completionTimer...
+[2026-10-07 00:20:47.019] [INFO ] [WinFsp] Файл 'IMG_20201018_131419 (12 mb).jpg' успешно сохранен в Telegram (Msg ID: 1739, Preview ID: 1738, дата изменения: 2020-12-25 21:19:06). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:47.022] [INFO ] [WinFsp] Создан новый каталог: '/new big video' (ID 154)
+[2026-10-07 00:20:47.023] [INFO ] [WinFsp] Обновлены системные даты для 'new big video' (ID 154): Изменен: 2026-09-28 16:38:29, Создан: 2026-10-06 21:20:47
+[2026-10-07 00:20:47.027] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'KOMODO- All 4 U (Official video).mp4' (виртуальный путь: '/new big video/KOMODO- All 4 U (Official video).mp4')...
+[2026-10-07 00:20:47.027] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:47.030] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:47.035] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78823 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:47.070] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
+[2026-10-07 00:20:47.070] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:47.070] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4' существует и доступен для чтения (размер: 17915288 байт).
+[2026-10-07 00:20:47.070] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
+[2026-10-07 00:20:47.070] [INFO ] [WinFsp] Создан файл для записи: '/new big video/KOMODO- All 4 U (Official video).mp4' (ID 155, alloc: 17915904), источник: 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
+[2026-10-07 00:20:47.071] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\KOMODO- All 4 U (Official video).mp4'
+[2026-10-07 00:20:47.073] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 854x480
+[2026-10-07 00:20:47.073] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'KOMODO- All 4 U (Official video).mp4': 854x480, 238 сек
+[2026-10-07 00:20:47.119] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'KOMODO- All 4 U (Official video).mp4'
+[2026-10-07 00:20:47.123] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'KOMODO- All 4 U (Official video).mp4' (9605 байт, 320x180)
+[2026-10-07 00:20:47.125] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'KOMODO- All 4 U (Official video).mp4' (9605 байт)
+[2026-10-07 00:20:47.125] [INFO ] [VideoMetadataExtractor] Метаданные видео 'KOMODO- All 4 U (Official video).mp4': 854x480, 238 сек, превью: 9605 байт
+[2026-10-07 00:20:47.125] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'KOMODO- All 4 U (Official video).mp4': длительность = 238 сек, разрешение = 854x480, обложка = 9605 байт
+[2026-10-07 00:20:47.125] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'KOMODO- All 4 U (Official video).mp4' (17915288 байт) в Telegram на лету (Zero-Temp), видео: 854x480, 238 сек, обложка: ДА...
+[2026-10-07 00:20:47.125] [INFO ] [TelegramService] Прямая потоковая передача файла 'KOMODO- All 4 U (Official video).mp4' (17915288 байт) в Telegram...
+[2026-10-07 00:20:47.126] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:46Z (svc)
+[2026-10-07 00:20:47.126] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BE0A
+[2026-10-07 00:20:47.127] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:47.134] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #75DA
+[2026-10-07 00:20:47.136] [INFO ] [WinFsp] Обновлены системные даты для 'KOMODO- All 4 U (Official video).mp4' (ID 155): Изменен: 2024-08-29 00:13:26, Создан: 2026-10-06 21:20:47
+[2026-10-07 00:20:47.140] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #5BA6
+[2026-10-07 00:20:47.312] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D682
+[2026-10-07 00:20:47.370] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:47.370] [DEBUG] [WTelegram]              → Boolean                               #BE0A
+[2026-10-07 00:20:47.370] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла KOMODO- All 4 U (Official video).mp4
+[2026-10-07 00:20:47.462] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #DCEE
+[2026-10-07 00:20:47.489] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:47.489] [DEBUG] [WTelegram]              → Boolean                               #75DA
+[2026-10-07 00:20:47.591] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #61C6
+[2026-10-07 00:20:47.620] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:47.620] [DEBUG] [WTelegram]              → Boolean                               #5BA6
+[2026-10-07 00:20:47.733] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #4712
+[2026-10-07 00:20:47.782] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:47.782] [DEBUG] [WTelegram]              → Boolean                               #D682
+[2026-10-07 00:20:47.865] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6C3A
+[2026-10-07 00:20:47.881] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:47.881] [DEBUG] [WTelegram]              → Boolean                               #DCEE
+[2026-10-07 00:20:48.002] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #4792
+[2026-10-07 00:20:48.024] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:48.024] [DEBUG] [WTelegram]              → Boolean                               #61C6
+[2026-10-07 00:20:48.134] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #4586
+[2026-10-07 00:20:48.153] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:48.153] [DEBUG] [WTelegram]              → Boolean                               #4712
+[2026-10-07 00:20:48.269] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:47Z (svc)
+[2026-10-07 00:20:48.269] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #78FF
+[2026-10-07 00:20:48.269] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:48.295] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:47Z
+[2026-10-07 00:20:48.295] [DEBUG] [WTelegram]              → Boolean                               #6C3A
+[2026-10-07 00:20:48.396] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:47Z (svc)
+[2026-10-07 00:20:48.396] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CF27
+[2026-10-07 00:20:48.396] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:48.411] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:48.411] [DEBUG] [WTelegram]              → Boolean                               #4792
+[2026-10-07 00:20:48.519] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:47Z (svc)
+[2026-10-07 00:20:48.519] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E1CB
+[2026-10-07 00:20:48.519] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:48.544] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:48.544] [DEBUG] [WTelegram]              → Boolean                               #4586
+[2026-10-07 00:20:48.644] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:47Z (svc)
+[2026-10-07 00:20:48.644] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C21F
+[2026-10-07 00:20:48.645] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:48.661] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:48.661] [DEBUG] [WTelegram]              → Boolean                               #78FF
+[2026-10-07 00:20:48.767] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:47Z (svc)
+[2026-10-07 00:20:48.767] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1683
+[2026-10-07 00:20:48.767] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:48.791] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:48.791] [DEBUG] [WTelegram]              → Boolean                               #CF27
+[2026-10-07 00:20:48.889] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:47Z (svc)
+[2026-10-07 00:20:48.889] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4B4F
+[2026-10-07 00:20:48.889] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:48.919] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:48.919] [DEBUG] [WTelegram]              → Boolean                               #E1CB
+[2026-10-07 00:20:49.015] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:47Z (svc)
+[2026-10-07 00:20:49.015] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A993
+[2026-10-07 00:20:49.016] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.039] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:49.039] [DEBUG] [WTelegram]              → Boolean                               #C21F
+[2026-10-07 00:20:49.133] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.133] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B328
+[2026-10-07 00:20:49.133] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.149] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:49.149] [DEBUG] [WTelegram]              → Boolean                               #1683
+[2026-10-07 00:20:49.250] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.250] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BF54
+[2026-10-07 00:20:49.250] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.270] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:48Z
+[2026-10-07 00:20:49.270] [DEBUG] [WTelegram]              → Boolean                               #4B4F
+[2026-10-07 00:20:49.368] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.368] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8D8C
+[2026-10-07 00:20:49.369] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.388] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:49.388] [DEBUG] [WTelegram]              → Boolean                               #A993
+[2026-10-07 00:20:49.487] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.487] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A644
+[2026-10-07 00:20:49.487] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.526] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:49.526] [DEBUG] [WTelegram]              → Boolean                               #B328
+[2026-10-07 00:20:49.600] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.600] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3A10
+[2026-10-07 00:20:49.600] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.616] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:49.616] [DEBUG] [WTelegram]              → Boolean                               #BF54
+[2026-10-07 00:20:49.715] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.715] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D390
+[2026-10-07 00:20:49.715] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.737] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:49.737] [DEBUG] [WTelegram]              → Boolean                               #8D8C
+[2026-10-07 00:20:49.829] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.829] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8A8C
+[2026-10-07 00:20:49.830] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.843] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:49.843] [DEBUG] [WTelegram]              → Boolean                               #A644
+[2026-10-07 00:20:49.935] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:49.935] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #83D4
+[2026-10-07 00:20:49.935] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:49.966] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:49.966] [DEBUG] [WTelegram]              → Boolean                               #3A10
+[2026-10-07 00:20:50.047] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:48Z (svc)
+[2026-10-07 00:20:50.047] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #277C
+[2026-10-07 00:20:50.047] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.060] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:50.060] [DEBUG] [WTelegram]              → Boolean                               #D390
+[2026-10-07 00:20:50.158] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.158] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6B31
+[2026-10-07 00:20:50.158] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.198] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:50.198] [DEBUG] [WTelegram]              → Boolean                               #8A8C
+[2026-10-07 00:20:50.262] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.262] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0435
+[2026-10-07 00:20:50.262] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.280] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:49Z
+[2026-10-07 00:20:50.280] [DEBUG] [WTelegram]              → Boolean                               #83D4
+[2026-10-07 00:20:50.372] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.372] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1959
+[2026-10-07 00:20:50.372] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.394] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:50.394] [DEBUG] [WTelegram]              → Boolean                               #277C
+[2026-10-07 00:20:50.476] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.476] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E875
+[2026-10-07 00:20:50.476] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.493] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:50.493] [DEBUG] [WTelegram]              → Boolean                               #6B31
+[2026-10-07 00:20:50.584] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.584] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7585
+[2026-10-07 00:20:50.585] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.609] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:50.609] [DEBUG] [WTelegram]              → Boolean                               #0435
+[2026-10-07 00:20:50.686] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.686] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A60D
+[2026-10-07 00:20:50.686] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.700] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:50.700] [DEBUG] [WTelegram]              → Boolean                               #1959
+[2026-10-07 00:20:50.789] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.789] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EB71
+[2026-10-07 00:20:50.789] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.812] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:50.812] [DEBUG] [WTelegram]              → Boolean                               #E875
+[2026-10-07 00:20:50.889] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.889] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6305
+[2026-10-07 00:20:50.889] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:50.905] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:50.905] [DEBUG] [WTelegram]              → Boolean                               #7585
+[2026-10-07 00:20:50.994] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:49Z (svc)
+[2026-10-07 00:20:50.994] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BBED
+[2026-10-07 00:20:50.994] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:51.023] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:51.023] [DEBUG] [WTelegram]              → Boolean                               #A60D
+[2026-10-07 00:20:51.117] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:51.117] [DEBUG] [WTelegram]              → Boolean                               #EB71
+[2026-10-07 00:20:51.219] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:20:50Z (svc)
+[2026-10-07 00:20:51.219] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:20:50Z
+[2026-10-07 00:20:51.219] [DEBUG] [WTelegram]              → Boolean                               #BBED
+[2026-10-07 00:20:51.219] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:20:50Z (svc) 
+[2026-10-07 00:20:51.220] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:51.220] [DEBUG] [WTelegram]              → Boolean                               #6305
+[2026-10-07 00:20:51.220] [INFO ] [TelegramService] Файл 'KOMODO- All 4 U (Official video).mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/KOMODO- All 4 U (Official video)_v1.mp4
 #latest')...
-[2026-10-06 23:51:00.104] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:51:00.104] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #2D23
-[2026-10-06 23:51:00.104] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:00.157] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:50:59Z
-[2026-10-06 23:51:00.157] [DEBUG] [WTelegram]              → Boolean                               #2D23
-[2026-10-06 23:51:00.157] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:50:59Z (svc)
-[2026-10-06 23:51:00.157] [DEBUG] [WTelegram]             → Messages_SendMedia                     #B523
-[2026-10-06 23:51:00.157] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.058] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:00Z
-[2026-10-06 23:51:01.058] [DEBUG] [WTelegram]              → Updates                               #B523
-[2026-10-06 23:51:01.059] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:00Z (svc)
-[2026-10-06 23:51:01.059] [DEBUG] [WTelegram]             → Messages_EditMessage                   #0A38
-[2026-10-06 23:51:01.059] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.226] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:00Z
-[2026-10-06 23:51:01.227] [DEBUG] [WTelegram]              → Updates                               #0A38
-[2026-10-06 23:51:01.227] [INFO ] [TelegramService] Файл 'Miley_Cyrus_-_Midnight_Sky.mp3' успешно сохранен в Telegram. Message ID: 1713
-[2026-10-06 23:51:01.227] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Miley_Cyrus_-_Midnight_Sky.mp3' получено из TelegramService.
-[2026-10-06 23:51:01.227] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Miley_Cyrus_-_Midnight_Sky.mp3'. Запуск _completionTimer...
-[2026-10-06 23:51:01.227] [INFO ] [TelegramService] Прямая потоковая передача файла 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' (10204517 байт) в Telegram...
-[2026-10-06 23:51:01.227] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.227] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #2109
-[2026-10-06 23:51:01.228] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.228] [INFO ] [WinFsp] Файл 'Miley_Cyrus_-_Midnight_Sky.mp3' успешно сохранен в Telegram (Msg ID: 1713, дата изменения: 2023-05-15 21:28:52). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:51:01.234] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6845
-[2026-10-06 23:51:01.240] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #3491
-[2026-10-06 23:51:01.246] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DB2D
-[2026-10-06 23:51:01.251] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4B3D
-[2026-10-06 23:51:01.330] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #04D5
-[2026-10-06 23:51:01.386] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2045
-[2026-10-06 23:51:01.395] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.395] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.395] [DEBUG] [WTelegram]              → Boolean                               #2109
-[2026-10-06 23:51:01.395] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:01Z (svc) 
-[2026-10-06 23:51:01.396] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3
-[2026-10-06 23:51:01.441] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.441] [DEBUG] [WTelegram]              → Boolean                               #6845
-[2026-10-06 23:51:01.442] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #4DE5
-[2026-10-06 23:51:01.501] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #D229
-[2026-10-06 23:51:01.508] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.508] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.508] [DEBUG] [WTelegram]              → Boolean                               #3491
-[2026-10-06 23:51:01.508] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:01Z (svc) 
-[2026-10-06 23:51:01.556] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #B115
-[2026-10-06 23:51:01.611] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.611] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #B289
-[2026-10-06 23:51:01.611] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.619] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.619] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.619] [DEBUG] [WTelegram]              → Boolean                               #DB2D
-[2026-10-06 23:51:01.619] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:01Z (svc) 
-[2026-10-06 23:51:01.648] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.648] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.648] [DEBUG] [WTelegram]              → Boolean                               #4B3D
-[2026-10-06 23:51:01.648] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:01Z (svc) 
-[2026-10-06 23:51:01.663] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.663] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F0CD
-[2026-10-06 23:51:01.663] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.672] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.672] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.672] [DEBUG] [WTelegram]              → Boolean                               #04D5
-[2026-10-06 23:51:01.672] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:01Z (svc) 
-[2026-10-06 23:51:01.698] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.698] [DEBUG] [WTelegram]              → Boolean                               #2045
-[2026-10-06 23:51:01.722] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.722] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #162D
-[2026-10-06 23:51:01.722] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.737] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.737] [DEBUG] [WTelegram]              → Boolean                               #4DE5
-[2026-10-06 23:51:01.774] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.774] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #FDE1
-[2026-10-06 23:51:01.775] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.792] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.792] [DEBUG] [WTelegram]              → Boolean                               #D229
-[2026-10-06 23:51:01.829] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.829] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F135
-[2026-10-06 23:51:01.830] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.847] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.847] [DEBUG] [WTelegram]              → Boolean                               #B115
-[2026-10-06 23:51:01.883] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.883] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #2C3D
-[2026-10-06 23:51:01.884] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.907] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.907] [DEBUG] [WTelegram]              → Boolean                               #B289
-[2026-10-06 23:51:01.935] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.936] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #49C1
-[2026-10-06 23:51:01.936] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:01.949] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:01.949] [DEBUG] [WTelegram]              → Boolean                               #F0CD
-[2026-10-06 23:51:01.987] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:01.987] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #8C15
-[2026-10-06 23:51:01.988] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:02.008] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:02.008] [DEBUG] [WTelegram]              → Boolean                               #162D
-[2026-10-06 23:51:02.039] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:02.039] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #5031
-[2026-10-06 23:51:02.040] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:02.064] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:02.064] [DEBUG] [WTelegram]              → Boolean                               #FDE1
-[2026-10-06 23:51:02.095] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:01Z (svc)
-[2026-10-06 23:51:02.095] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #684D
-[2026-10-06 23:51:02.095] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:02.142] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:02.142] [DEBUG] [WTelegram]              → Boolean                               #F135
-[2026-10-06 23:51:02.200] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:02.200] [DEBUG] [WTelegram]              → Boolean                               #2C3D
-[2026-10-06 23:51:02.258] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:01Z
-[2026-10-06 23:51:02.258] [DEBUG] [WTelegram]              → Boolean                               #49C1
-[2026-10-06 23:51:02.373] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:02Z (svc)
-[2026-10-06 23:51:02.373] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:02Z
-[2026-10-06 23:51:02.374] [DEBUG] [WTelegram]              → Boolean                               #8C15
-[2026-10-06 23:51:02.374] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:02Z (svc) 
-[2026-10-06 23:51:02.472] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:02Z
-[2026-10-06 23:51:02.472] [DEBUG] [WTelegram]              → Boolean                               #5031
-[2026-10-06 23:51:02.539] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:02Z
-[2026-10-06 23:51:02.539] [DEBUG] [WTelegram]              → Boolean                               #684D
-[2026-10-06 23:51:02.539] [INFO ] [TelegramService] Файл 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix)_v1.mp3
+[2026-10-07 00:20:51.220] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:50Z (svc)
+[2026-10-07 00:20:51.220] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #77C2
+[2026-10-07 00:20:51.220] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:51.269] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:50Z
+[2026-10-07 00:20:51.269] [DEBUG] [WTelegram]              → Boolean                               #77C2
+[2026-10-07 00:20:51.269] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:50Z (svc)
+[2026-10-07 00:20:51.269] [DEBUG] [WTelegram]             → Messages_SendMedia                     #FDF6
+[2026-10-07 00:20:51.269] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:51.397] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:51Z
+[2026-10-07 00:20:51.397] [DEBUG] [WTelegram]              → Updates                               #FDF6
+[2026-10-07 00:20:51.397] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:51Z (svc)
+[2026-10-07 00:20:51.397] [DEBUG] [WTelegram]             → Messages_EditMessage                   #C313
+[2026-10-07 00:20:51.397] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:51.459] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:51Z
+[2026-10-07 00:20:51.459] [DEBUG] [WTelegram]              → Updates                               #C313
+[2026-10-07 00:20:51.459] [INFO ] [TelegramService] Файл 'KOMODO- All 4 U (Official video).mp4' успешно сохранен в Telegram. Message ID: 1740
+[2026-10-07 00:20:51.459] [INFO ] [TrayContext] Событие OnUploadCompleted для 'KOMODO- All 4 U (Official video).mp4' получено из TelegramService.
+[2026-10-07 00:20:51.459] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'KOMODO- All 4 U (Official video).mp4'. Запуск _completionTimer...
+[2026-10-07 00:20:51.472] [INFO ] [WinFsp] Файл 'KOMODO- All 4 U (Official video).mp4' успешно сохранен в Telegram (Msg ID: 1740, дата изменения: 2024-08-29 00:13:26). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:51.475] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (виртуальный путь: '/new big video/LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4')...
+[2026-10-07 00:20:51.475] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' существует и доступен для чтения (размер: 10283683 байт).
+[2026-10-07 00:20:51.475] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
+[2026-10-07 00:20:51.475] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:20:51.475] [INFO ] [WinFsp] Создан файл для записи: '/new big video/LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 156, alloc: 10285056), источник: 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
+[2026-10-07 00:20:51.476] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
+[2026-10-07 00:20:51.476] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
+[2026-10-07 00:20:51.476] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': 640x480, 238 сек
+[2026-10-07 00:20:51.488] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'
+[2026-10-07 00:20:51.493] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (9260 байт, 320x240)
+[2026-10-07 00:20:51.494] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (9260 байт)
+[2026-10-07 00:20:51.494] [INFO ] [VideoMetadataExtractor] Метаданные видео 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': 640x480, 238 сек, превью: 9260 байт
+[2026-10-07 00:20:51.494] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4': длительность = 238 сек, разрешение = 640x480, обложка = 9260 байт
+[2026-10-07 00:20:51.494] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (10283683 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 238 сек, обложка: ДА...
+[2026-10-07 00:20:51.495] [INFO ] [TelegramService] Прямая потоковая передача файла 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (10283683 байт) в Telegram...
+[2026-10-07 00:20:51.495] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:51Z (svc)
+[2026-10-07 00:20:51.495] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #2B3B
+[2026-10-07 00:20:51.496] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:51.500] [INFO ] [WinFsp] Обновлены системные даты для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' (ID 156): Изменен: 2022-08-04 15:29:21, Создан: 2026-10-06 21:20:51
+[2026-10-07 00:20:51.502] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #8FCB
+[2026-10-07 00:20:51.507] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6633
+[2026-10-07 00:20:51.639] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #85AF
+[2026-10-07 00:20:51.660] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:51Z
+[2026-10-07 00:20:51.660] [DEBUG] [WTelegram]              → Boolean                               #2B3B
+[2026-10-07 00:20:51.661] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4
+[2026-10-07 00:20:51.761] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A5D7
+[2026-10-07 00:20:51.777] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:51Z
+[2026-10-07 00:20:51.777] [DEBUG] [WTelegram]              → Boolean                               #8FCB
+[2026-10-07 00:20:51.922] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #66BB
+[2026-10-07 00:20:51.939] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:51Z
+[2026-10-07 00:20:51.939] [DEBUG] [WTelegram]              → Boolean                               #6633
+[2026-10-07 00:20:52.107] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2A0B
+[2026-10-07 00:20:52.153] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:51Z
+[2026-10-07 00:20:52.153] [DEBUG] [WTelegram]              → Boolean                               #85AF
+[2026-10-07 00:20:52.301] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #915B
+[2026-10-07 00:20:52.354] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:52Z
+[2026-10-07 00:20:52.354] [DEBUG] [WTelegram]              → Boolean                               #A5D7
+[2026-10-07 00:20:52.484] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2B13
+[2026-10-07 00:20:52.501] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:52Z
+[2026-10-07 00:20:52.501] [DEBUG] [WTelegram]              → Boolean                               #66BB
+[2026-10-07 00:20:52.669] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #1683
+[2026-10-07 00:20:52.684] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:52Z
+[2026-10-07 00:20:52.685] [DEBUG] [WTelegram]              → Boolean                               #2A0B
+[2026-10-07 00:20:52.849] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:51Z (svc)
+[2026-10-07 00:20:52.849] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #CE87
+[2026-10-07 00:20:52.850] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:52.907] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:52Z
+[2026-10-07 00:20:52.907] [DEBUG] [WTelegram]              → Boolean                               #915B
+[2026-10-07 00:20:53.026] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:51Z (svc)
+[2026-10-07 00:20:53.026] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #3E2B
+[2026-10-07 00:20:53.026] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:53.063] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:52Z
+[2026-10-07 00:20:53.063] [DEBUG] [WTelegram]              → Boolean                               #2B13
+[2026-10-07 00:20:53.195] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:51Z (svc)
+[2026-10-07 00:20:53.195] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #FB2F
+[2026-10-07 00:20:53.196] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:53.219] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:52Z
+[2026-10-07 00:20:53.219] [DEBUG] [WTelegram]              → Boolean                               #1683
+[2026-10-07 00:20:53.368] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:51Z (svc)
+[2026-10-07 00:20:53.368] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F3F7
+[2026-10-07 00:20:53.369] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:53.385] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:53Z
+[2026-10-07 00:20:53.385] [DEBUG] [WTelegram]              → Boolean                               #CE87
+[2026-10-07 00:20:53.535] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:52Z (svc)
+[2026-10-07 00:20:53.535] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #84AC
+[2026-10-07 00:20:53.536] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:53.553] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:53Z
+[2026-10-07 00:20:53.553] [DEBUG] [WTelegram]              → Boolean                               #3E2B
+[2026-10-07 00:20:53.706] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:52Z (svc)
+[2026-10-07 00:20:53.706] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D264
+[2026-10-07 00:20:53.706] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:53.720] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:53Z
+[2026-10-07 00:20:53.720] [DEBUG] [WTelegram]              → Boolean                               #FB2F
+[2026-10-07 00:20:53.866] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:52Z (svc)
+[2026-10-07 00:20:53.866] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #0F0C
+[2026-10-07 00:20:53.867] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:53.881] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:53Z
+[2026-10-07 00:20:53.881] [DEBUG] [WTelegram]              → Boolean                               #F3F7
+[2026-10-07 00:20:54.026] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:52Z (svc)
+[2026-10-07 00:20:54.026] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #38C8
+[2026-10-07 00:20:54.026] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:54.040] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:53Z
+[2026-10-07 00:20:54.040] [DEBUG] [WTelegram]              → Boolean                               #84AC
+[2026-10-07 00:20:54.190] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:52Z (svc)
+[2026-10-07 00:20:54.190] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #550C
+[2026-10-07 00:20:54.190] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:54.205] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:53Z
+[2026-10-07 00:20:54.205] [DEBUG] [WTelegram]              → Boolean                               #D264
+[2026-10-07 00:20:54.347] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:52Z (svc)
+[2026-10-07 00:20:54.347] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #42A8
+[2026-10-07 00:20:54.348] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:54.361] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:54Z
+[2026-10-07 00:20:54.361] [DEBUG] [WTelegram]              → Boolean                               #0F0C
+[2026-10-07 00:20:54.522] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:54Z
+[2026-10-07 00:20:54.522] [DEBUG] [WTelegram]              → Boolean                               #38C8
+[2026-10-07 00:20:54.675] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:54Z
+[2026-10-07 00:20:54.675] [DEBUG] [WTelegram]              → Boolean                               #550C
+[2026-10-07 00:20:54.772] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:54Z
+[2026-10-07 00:20:54.772] [DEBUG] [WTelegram]              → Boolean                               #42A8
+[2026-10-07 00:20:54.772] [INFO ] [TelegramService] Файл 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0]_v1.mp4
 #latest')...
-[2026-10-06 23:51:02.539] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:02Z (svc)
-[2026-10-06 23:51:02.539] [DEBUG] [WTelegram]             → Messages_SendMedia                     #0A76
-[2026-10-06 23:51:02.539] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:03.458] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:03Z
-[2026-10-06 23:51:03.458] [DEBUG] [WTelegram]              → Updates                               #0A76
-[2026-10-06 23:51:03.458] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:03Z (svc)
-[2026-10-06 23:51:03.458] [DEBUG] [WTelegram]             → Messages_EditMessage                   #D017
-[2026-10-06 23:51:03.458] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:03.532] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:03Z
-[2026-10-06 23:51:03.532] [DEBUG] [WTelegram]              → Updates                               #D017
-[2026-10-06 23:51:03.532] [INFO ] [TelegramService] Файл 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' успешно сохранен в Telegram. Message ID: 1714
-[2026-10-06 23:51:03.532] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' получено из TelegramService.
-[2026-10-06 23:51:03.532] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3'. Запуск _completionTimer...
-[2026-10-06 23:51:03.533] [INFO ] [TelegramService] Прямая потоковая передача файла 'dj day - demo mix.mp3' (1337804 байт) в Telegram...
-[2026-10-06 23:51:03.533] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:03Z (svc)
-[2026-10-06 23:51:03.533] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #C8B7
-[2026-10-06 23:51:03.533] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:03.533] [INFO ] [WinFsp] Файл 'Ministers De-La-Funk feat. Jocelyn Brown - Believe (Ministers Vocal Mix).mp3' успешно сохранен в Telegram (Msg ID: 1714, дата изменения: 2023-05-29 22:36:34). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:51:03.540] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #7E63
-[2026-10-06 23:51:03.546] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #6523
-[2026-10-06 23:51:03.660] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:03Z
-[2026-10-06 23:51:03.660] [DEBUG] [WTelegram]              → Boolean                               #C8B7
-[2026-10-06 23:51:03.660] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла dj day - demo mix.mp3
-[2026-10-06 23:51:03.706] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:03Z
-[2026-10-06 23:51:03.706] [DEBUG] [WTelegram]              → Boolean                               #7E63
-[2026-10-06 23:51:03.732] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:03Z
-[2026-10-06 23:51:03.732] [DEBUG] [WTelegram]              → Boolean                               #6523
-[2026-10-06 23:51:03.732] [INFO ] [TelegramService] Файл 'dj day - demo mix.mp3' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /audio/small/test/dj day - demo mix_v1.mp3
+[2026-10-07 00:20:54.772] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:54Z (svc)
+[2026-10-07 00:20:54.772] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #CE1A
+[2026-10-07 00:20:54.772] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:54.819] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:54Z
+[2026-10-07 00:20:54.819] [DEBUG] [WTelegram]              → Boolean                               #CE1A
+[2026-10-07 00:20:54.819] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:54Z (svc)
+[2026-10-07 00:20:54.819] [DEBUG] [WTelegram]             → Messages_SendMedia                     #2672
+[2026-10-07 00:20:54.819] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:55.107] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:54Z
+[2026-10-07 00:20:55.107] [DEBUG] [WTelegram]              → Updates                               #2672
+[2026-10-07 00:20:55.108] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:54Z (svc)
+[2026-10-07 00:20:55.108] [DEBUG] [WTelegram]             → Messages_EditMessage                   #5EFA
+[2026-10-07 00:20:55.108] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:55.167] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:54Z
+[2026-10-07 00:20:55.167] [DEBUG] [WTelegram]              → Updates                               #5EFA
+[2026-10-07 00:20:55.167] [INFO ] [TelegramService] Файл 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' успешно сохранен в Telegram. Message ID: 1741
+[2026-10-07 00:20:55.167] [INFO ] [TrayContext] Событие OnUploadCompleted для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' получено из TelegramService.
+[2026-10-07 00:20:55.168] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4'. Запуск _completionTimer...
+[2026-10-07 00:20:55.181] [INFO ] [WinFsp] Файл 'LISETTE MELENDEZ - TOGETHER FOREVER [6l2bDaTvow0].mp4' успешно сохранен в Telegram (Msg ID: 1741, дата изменения: 2022-08-04 15:29:21). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:20:55.183] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (виртуальный путь: '/new big video/Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4')...
+[2026-10-07 00:20:55.183] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:20:55.186] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:20:55.191] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78881 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:20:55.227] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
+[2026-10-07 00:20:55.227] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:20:55.227] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' существует и доступен для чтения (размер: 24891313 байт).
+[2026-10-07 00:20:55.227] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
+[2026-10-07 00:20:55.227] [INFO ] [WinFsp] Создан файл для записи: '/new big video/Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 157, alloc: 24891392), источник: 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
+[2026-10-07 00:20:55.228] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
+[2026-10-07 00:20:55.228] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
+[2026-10-07 00:20:55.228] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': 640x480, 214 сек
+[2026-10-07 00:20:55.259] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'
+[2026-10-07 00:20:55.265] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (11848 байт, 320x240)
+[2026-10-07 00:20:55.266] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (11848 байт)
+[2026-10-07 00:20:55.266] [INFO ] [VideoMetadataExtractor] Метаданные видео 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': 640x480, 214 сек, превью: 11848 байт
+[2026-10-07 00:20:55.266] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4': длительность = 214 сек, разрешение = 640x480, обложка = 11848 байт
+[2026-10-07 00:20:55.266] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (24891313 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 214 сек, обложка: ДА...
+[2026-10-07 00:20:55.266] [INFO ] [TelegramService] Прямая потоковая передача файла 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (24891313 байт) в Telegram...
+[2026-10-07 00:20:55.267] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:54Z (svc)
+[2026-10-07 00:20:55.267] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #542A
+[2026-10-07 00:20:55.267] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:55.274] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #54AE
+[2026-10-07 00:20:55.279] [INFO ] [WinFsp] Обновлены системные даты для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' (ID 157): Изменен: 2021-10-24 18:43:52, Создан: 2026-10-06 21:20:55
+[2026-10-07 00:20:55.280] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1BAE
+[2026-10-07 00:20:55.506] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #4317
+[2026-10-07 00:20:55.553] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:55Z
+[2026-10-07 00:20:55.553] [DEBUG] [WTelegram]              → Boolean                               #542A
+[2026-10-07 00:20:55.553] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4
+[2026-10-07 00:20:55.721] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #3C9B
+[2026-10-07 00:20:55.743] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:55Z
+[2026-10-07 00:20:55.743] [DEBUG] [WTelegram]              → Boolean                               #54AE
+[2026-10-07 00:20:55.947] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6A13
+[2026-10-07 00:20:55.965] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:55Z
+[2026-10-07 00:20:55.965] [DEBUG] [WTelegram]              → Boolean                               #1BAE
+[2026-10-07 00:20:56.170] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #F11F
+[2026-10-07 00:20:56.181] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:55Z
+[2026-10-07 00:20:56.181] [DEBUG] [WTelegram]              → Boolean                               #4317
+[2026-10-07 00:20:56.384] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0E53
+[2026-10-07 00:20:56.399] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:56Z
+[2026-10-07 00:20:56.399] [DEBUG] [WTelegram]              → Boolean                               #3C9B
+[2026-10-07 00:20:56.583] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #A027
+[2026-10-07 00:20:56.608] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:56Z
+[2026-10-07 00:20:56.608] [DEBUG] [WTelegram]              → Boolean                               #6A13
+[2026-10-07 00:20:56.779] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #65CF
+[2026-10-07 00:20:56.797] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:56Z
+[2026-10-07 00:20:56.797] [DEBUG] [WTelegram]              → Boolean                               #F11F
+[2026-10-07 00:20:56.964] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:55Z (svc)
+[2026-10-07 00:20:56.965] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #274F
+[2026-10-07 00:20:56.965] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:56.995] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:56Z
+[2026-10-07 00:20:56.995] [DEBUG] [WTelegram]              → Boolean                               #0E53
+[2026-10-07 00:20:57.167] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:55Z (svc)
+[2026-10-07 00:20:57.167] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2507
+[2026-10-07 00:20:57.167] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:57.206] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:56Z
+[2026-10-07 00:20:57.206] [DEBUG] [WTelegram]              → Boolean                               #A027
+[2026-10-07 00:20:57.357] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:55Z (svc)
+[2026-10-07 00:20:57.357] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1237
+[2026-10-07 00:20:57.357] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:57.447] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:57Z
+[2026-10-07 00:20:57.447] [DEBUG] [WTelegram]              → Boolean                               #65CF
+[2026-10-07 00:20:57.543] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:55Z (svc)
+[2026-10-07 00:20:57.543] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #ED67
+[2026-10-07 00:20:57.543] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:57.563] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:57Z
+[2026-10-07 00:20:57.563] [DEBUG] [WTelegram]              → Boolean                               #274F
+[2026-10-07 00:20:57.740] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:56Z (svc)
+[2026-10-07 00:20:57.740] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1FDC
+[2026-10-07 00:20:57.740] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:57.769] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:57Z
+[2026-10-07 00:20:57.769] [DEBUG] [WTelegram]              → Boolean                               #2507
+[2026-10-07 00:20:57.939] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:56Z (svc)
+[2026-10-07 00:20:57.939] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #87E0
+[2026-10-07 00:20:57.940] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:57.969] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:57Z
+[2026-10-07 00:20:57.969] [DEBUG] [WTelegram]              → Boolean                               #1237
+[2026-10-07 00:20:58.112] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:56Z (svc)
+[2026-10-07 00:20:58.112] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #38E8
+[2026-10-07 00:20:58.113] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:58.138] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:57Z
+[2026-10-07 00:20:58.138] [DEBUG] [WTelegram]              → Boolean                               #ED67
+[2026-10-07 00:20:58.291] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:56Z (svc)
+[2026-10-07 00:20:58.291] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9E84
+[2026-10-07 00:20:58.292] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:58.309] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:57Z
+[2026-10-07 00:20:58.309] [DEBUG] [WTelegram]              → Boolean                               #1FDC
+[2026-10-07 00:20:58.519] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:56Z (svc)
+[2026-10-07 00:20:58.519] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1D74
+[2026-10-07 00:20:58.520] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:58.567] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:58Z
+[2026-10-07 00:20:58.567] [DEBUG] [WTelegram]              → Boolean                               #87E0
+[2026-10-07 00:20:58.771] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:57Z (svc)
+[2026-10-07 00:20:58.771] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0DB1
+[2026-10-07 00:20:58.771] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:58.792] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:58Z
+[2026-10-07 00:20:58.792] [DEBUG] [WTelegram]              → Boolean                               #38E8
+[2026-10-07 00:20:59.041] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:57Z (svc)
+[2026-10-07 00:20:59.041] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7E51
+[2026-10-07 00:20:59.041] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:59.063] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:58Z
+[2026-10-07 00:20:59.063] [DEBUG] [WTelegram]              → Boolean                               #9E84
+[2026-10-07 00:20:59.287] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:57Z (svc)
+[2026-10-07 00:20:59.287] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CB15
+[2026-10-07 00:20:59.288] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:59.304] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:58Z
+[2026-10-07 00:20:59.304] [DEBUG] [WTelegram]              → Boolean                               #1D74
+[2026-10-07 00:20:59.519] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:57Z (svc)
+[2026-10-07 00:20:59.519] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5025
+[2026-10-07 00:20:59.520] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:59.540] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:59Z
+[2026-10-07 00:20:59.540] [DEBUG] [WTelegram]              → Boolean                               #0DB1
+[2026-10-07 00:20:59.753] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:57Z (svc)
+[2026-10-07 00:20:59.753] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #228D
+[2026-10-07 00:20:59.753] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:59.773] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:59Z
+[2026-10-07 00:20:59.773] [DEBUG] [WTelegram]              → Boolean                               #7E51
+[2026-10-07 00:20:59.966] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:58Z (svc)
+[2026-10-07 00:20:59.966] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A8E6
+[2026-10-07 00:20:59.966] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:20:59.997] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:59Z
+[2026-10-07 00:20:59.997] [DEBUG] [WTelegram]              → Boolean                               #CB15
+[2026-10-07 00:21:00.173] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:58Z (svc)
+[2026-10-07 00:21:00.173] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B1E2
+[2026-10-07 00:21:00.174] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:00.187] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:20:59Z
+[2026-10-07 00:21:00.187] [DEBUG] [WTelegram]              → Boolean                               #5025
+[2026-10-07 00:21:00.389] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:58Z (svc)
+[2026-10-07 00:21:00.389] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B99E
+[2026-10-07 00:21:00.389] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:00.436] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:00Z
+[2026-10-07 00:21:00.436] [DEBUG] [WTelegram]              → Boolean                               #228D
+[2026-10-07 00:21:00.592] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:58Z (svc)
+[2026-10-07 00:21:00.592] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D3DA
+[2026-10-07 00:21:00.592] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:00.609] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:00Z
+[2026-10-07 00:21:00.609] [DEBUG] [WTelegram]              → Boolean                               #A8E6
+[2026-10-07 00:21:00.794] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:59Z (svc)
+[2026-10-07 00:21:00.794] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8DEB
+[2026-10-07 00:21:00.795] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:00.815] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:00Z
+[2026-10-07 00:21:00.815] [DEBUG] [WTelegram]              → Boolean                               #B1E2
+[2026-10-07 00:21:00.984] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:59Z (svc)
+[2026-10-07 00:21:00.984] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #785B
+[2026-10-07 00:21:00.985] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:00.999] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:00Z
+[2026-10-07 00:21:00.999] [DEBUG] [WTelegram]              → Boolean                               #B99E
+[2026-10-07 00:21:01.184] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:59Z (svc)
+[2026-10-07 00:21:01.184] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B9F7
+[2026-10-07 00:21:01.185] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:01.215] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:00Z
+[2026-10-07 00:21:01.215] [DEBUG] [WTelegram]              → Boolean                               #D3DA
+[2026-10-07 00:21:01.363] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:59Z (svc)
+[2026-10-07 00:21:01.363] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5E23
+[2026-10-07 00:21:01.363] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:01.384] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:01Z
+[2026-10-07 00:21:01.384] [DEBUG] [WTelegram]              → Boolean                               #8DEB
+[2026-10-07 00:21:01.545] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:20:59Z (svc)
+[2026-10-07 00:21:01.545] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A27B
+[2026-10-07 00:21:01.545] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:01.590] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:01Z
+[2026-10-07 00:21:01.590] [DEBUG] [WTelegram]              → Boolean                               #785B
+[2026-10-07 00:21:01.723] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:00Z (svc)
+[2026-10-07 00:21:01.723] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4FF8
+[2026-10-07 00:21:01.723] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:01.749] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:01Z
+[2026-10-07 00:21:01.749] [DEBUG] [WTelegram]              → Boolean                               #B9F7
+[2026-10-07 00:21:01.897] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:00Z (svc)
+[2026-10-07 00:21:01.897] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #20DC
+[2026-10-07 00:21:01.897] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:01.921] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:01Z
+[2026-10-07 00:21:01.921] [DEBUG] [WTelegram]              → Boolean                               #5E23
+[2026-10-07 00:21:02.059] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:00Z (svc)
+[2026-10-07 00:21:02.059] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DD14
+[2026-10-07 00:21:02.060] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:02.077] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:01Z
+[2026-10-07 00:21:02.077] [DEBUG] [WTelegram]              → Boolean                               #A27B
+[2026-10-07 00:21:02.215] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:00Z (svc)
+[2026-10-07 00:21:02.215] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BED0
+[2026-10-07 00:21:02.215] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:02.233] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:01Z
+[2026-10-07 00:21:02.233] [DEBUG] [WTelegram]              → Boolean                               #4FF8
+[2026-10-07 00:21:02.365] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:00Z (svc)
+[2026-10-07 00:21:02.366] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3928
+[2026-10-07 00:21:02.366] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:02.382] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:02Z
+[2026-10-07 00:21:02.382] [DEBUG] [WTelegram]              → Boolean                               #20DC
+[2026-10-07 00:21:02.522] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:01Z (svc)
+[2026-10-07 00:21:02.522] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7295
+[2026-10-07 00:21:02.522] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:02.548] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:02Z
+[2026-10-07 00:21:02.548] [DEBUG] [WTelegram]              → Boolean                               #DD14
+[2026-10-07 00:21:02.670] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:01Z (svc)
+[2026-10-07 00:21:02.670] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #A589
+[2026-10-07 00:21:02.671] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:02.684] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:02Z
+[2026-10-07 00:21:02.684] [DEBUG] [WTelegram]              → Boolean                               #BED0
+[2026-10-07 00:21:02.819] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:01Z (svc)
+[2026-10-07 00:21:02.819] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D049
+[2026-10-07 00:21:02.819] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:02.848] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:02Z
+[2026-10-07 00:21:02.848] [DEBUG] [WTelegram]              → Boolean                               #3928
+[2026-10-07 00:21:02.959] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:01Z (svc)
+[2026-10-07 00:21:02.959] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0541
+[2026-10-07 00:21:02.959] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:02.972] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:02Z
+[2026-10-07 00:21:02.972] [DEBUG] [WTelegram]              → Boolean                               #7295
+[2026-10-07 00:21:03.113] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:01Z (svc)
+[2026-10-07 00:21:03.113] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6D69
+[2026-10-07 00:21:03.113] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:03.140] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:02Z
+[2026-10-07 00:21:03.140] [DEBUG] [WTelegram]              → Boolean                               #A589
+[2026-10-07 00:21:03.247] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:01Z (svc)
+[2026-10-07 00:21:03.247] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DFE5
+[2026-10-07 00:21:03.247] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:03.261] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:02Z
+[2026-10-07 00:21:03.261] [DEBUG] [WTelegram]              → Boolean                               #D049
+[2026-10-07 00:21:03.387] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:02Z (svc)
+[2026-10-07 00:21:03.387] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B852
+[2026-10-07 00:21:03.387] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:03.408] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:03.408] [DEBUG] [WTelegram]              → Boolean                               #0541
+[2026-10-07 00:21:03.527] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:02Z (svc)
+[2026-10-07 00:21:03.527] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B81A
+[2026-10-07 00:21:03.527] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:03.546] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:03.546] [DEBUG] [WTelegram]              → Boolean                               #6D69
+[2026-10-07 00:21:03.659] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:02Z (svc)
+[2026-10-07 00:21:03.659] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #16D2
+[2026-10-07 00:21:03.659] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:03.682] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:03.682] [DEBUG] [WTelegram]              → Boolean                               #DFE5
+[2026-10-07 00:21:03.788] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:02Z (svc)
+[2026-10-07 00:21:03.788] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #44CE
+[2026-10-07 00:21:03.789] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:03.804] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:03.804] [DEBUG] [WTelegram]              → Boolean                               #B852
+[2026-10-07 00:21:03.970] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:03.970] [DEBUG] [WTelegram]              → Boolean                               #B81A
+[2026-10-07 00:21:04.071] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:04.071] [DEBUG] [WTelegram]              → Boolean                               #16D2
+[2026-10-07 00:21:04.121] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:04.121] [DEBUG] [WTelegram]              → Boolean                               #44CE
+[2026-10-07 00:21:04.121] [INFO ] [TelegramService] Файл 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg]_v1.mp4
 #latest')...
-[2026-10-06 23:51:03.733] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:03Z (svc)
-[2026-10-06 23:51:03.733] [DEBUG] [WTelegram]             → Messages_SendMedia                     #A057
-[2026-10-06 23:51:03.733] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:04.432] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:04Z
-[2026-10-06 23:51:04.432] [DEBUG] [WTelegram]              → Updates                               #A057
-[2026-10-06 23:51:04.432] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:04Z (svc)
-[2026-10-06 23:51:04.432] [DEBUG] [WTelegram]             → Messages_EditMessage                   #8BA8
-[2026-10-06 23:51:04.432] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:04.502] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:04Z
-[2026-10-06 23:51:04.502] [DEBUG] [WTelegram]              → Updates                               #8BA8
-[2026-10-06 23:51:04.502] [INFO ] [TelegramService] Файл 'dj day - demo mix.mp3' успешно сохранен в Telegram. Message ID: 1715
-[2026-10-06 23:51:04.502] [INFO ] [TrayContext] Событие OnUploadCompleted для 'dj day - demo mix.mp3' получено из TelegramService.
-[2026-10-06 23:51:04.502] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'dj day - demo mix.mp3'. Запуск _completionTimer...
-[2026-10-06 23:51:04.517] [INFO ] [WinFsp] Файл 'dj day - demo mix.mp3' успешно сохранен в Telegram (Msg ID: 1715, дата изменения: 2007-12-27 13:57:28). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:51:04.809] [INFO ] [TelegramService] Прямая потоковая передача файла 'DSC_0270 __ (6 mb) __.JPG' (6195435 байт) в Telegram...
-[2026-10-06 23:51:04.810] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:04Z (svc)
-[2026-10-06 23:51:04.810] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #45C8
-[2026-10-06 23:51:04.810] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:04.816] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #B198
-[2026-10-06 23:51:04.827] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #F688
-[2026-10-06 23:51:04.831] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #003C
-[2026-10-06 23:51:04.836] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #A850
-[2026-10-06 23:51:04.913] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #B88C
-[2026-10-06 23:51:04.966] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:04Z
-[2026-10-06 23:51:04.966] [DEBUG] [WTelegram]              → Boolean                               #45C8
-[2026-10-06 23:51:04.966] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла DSC_0270 __ (6 mb) __.JPG
-[2026-10-06 23:51:04.969] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #2BA0
-[2026-10-06 23:51:05.011] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:04Z
-[2026-10-06 23:51:05.011] [DEBUG] [WTelegram]              → Boolean                               #B198
-[2026-10-06 23:51:05.023] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E1A4
-[2026-10-06 23:51:05.047] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:04Z
-[2026-10-06 23:51:05.047] [DEBUG] [WTelegram]              → Boolean                               #F688
-[2026-10-06 23:51:05.075] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #634C
-[2026-10-06 23:51:05.105] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:04Z
-[2026-10-06 23:51:05.105] [DEBUG] [WTelegram]              → Boolean                               #003C
-[2026-10-06 23:51:05.129] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #F478
-[2026-10-06 23:51:05.154] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:04Z
-[2026-10-06 23:51:05.154] [DEBUG] [WTelegram]              → Boolean                               #A850
-[2026-10-06 23:51:05.192] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:04Z (svc)
-[2026-10-06 23:51:05.192] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #561C
-[2026-10-06 23:51:05.195] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:05.247] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:04Z (svc)
-[2026-10-06 23:51:05.247] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #EA3C
-[2026-10-06 23:51:05.247] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:05.264] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:04Z (svc)
-[2026-10-06 23:51:05.264] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:04Z
-[2026-10-06 23:51:05.264] [DEBUG] [WTelegram]              → Boolean                               #B88C
-[2026-10-06 23:51:05.264] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:04Z (svc) 
-[2026-10-06 23:51:05.298] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.298] [DEBUG] [WTelegram]              → Boolean                               #2BA0
-[2026-10-06 23:51:05.344] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.344] [DEBUG] [WTelegram]              → Boolean                               #E1A4
-[2026-10-06 23:51:05.384] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.384] [DEBUG] [WTelegram]              → Boolean                               #634C
-[2026-10-06 23:51:05.430] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.430] [DEBUG] [WTelegram]              → Boolean                               #F478
-[2026-10-06 23:51:05.512] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:05Z (svc)
-[2026-10-06 23:51:05.512] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.512] [DEBUG] [WTelegram]              → Boolean                               #561C
-[2026-10-06 23:51:05.512] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:05Z (svc) 
-[2026-10-06 23:51:05.554] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.554] [DEBUG] [WTelegram]              → Boolean                               #EA3C
-[2026-10-06 23:51:05.554] [INFO ] [TelegramService] Файл 'DSC_0270 __ (6 mb) __.JPG' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /image/DSC_0270 __ (6 mb) ___v1.JPG
+[2026-10-07 00:21:04.121] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:03Z (svc)
+[2026-10-07 00:21:04.121] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #D8EF
+[2026-10-07 00:21:04.121] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:04.170] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:04.170] [DEBUG] [WTelegram]              → Boolean                               #D8EF
+[2026-10-07 00:21:04.170] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:03Z (svc)
+[2026-10-07 00:21:04.170] [DEBUG] [WTelegram]             → Messages_SendMedia                     #535F
+[2026-10-07 00:21:04.170] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:04.313] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:03Z
+[2026-10-07 00:21:04.313] [DEBUG] [WTelegram]              → Updates                               #535F
+[2026-10-07 00:21:04.313] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:04Z (svc)
+[2026-10-07 00:21:04.313] [DEBUG] [WTelegram]             → Messages_EditMessage                   #A48C
+[2026-10-07 00:21:04.313] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:04.374] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:04Z
+[2026-10-07 00:21:04.375] [DEBUG] [WTelegram]              → Updates                               #A48C
+[2026-10-07 00:21:04.375] [INFO ] [TelegramService] Файл 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' успешно сохранен в Telegram. Message ID: 1742
+[2026-10-07 00:21:04.375] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' получено из TelegramService.
+[2026-10-07 00:21:04.375] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4'. Запуск _completionTimer...
+[2026-10-07 00:21:04.377] [INFO ] [WinFsp] Файл 'Nina Sky - Move Ya Body (Album Version, Edited) ft. Jabba [u2_E62NY3hg].mp4' успешно сохранен в Telegram (Msg ID: 1742, дата изменения: 2021-10-24 18:43:52). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:21:05.788] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-07 00:21:05.790] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
+[2026-10-07 00:21:08.594] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (виртуальный путь: '/new big video/Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4')...
+[2026-10-07 00:21:08.594] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' существует и доступен для чтения (размер: 19456938 байт).
+[2026-10-07 00:21:08.594] [INFO ] [WinFsp] [Источник] Найдено совпадение в активной сессии (осталось файлов: 0/1): 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
+[2026-10-07 00:21:08.594] [INFO ] [WinFsp] [Источник] Все файлы текущей сессии (1 шт.) обработаны. Сессия завершена.
+[2026-10-07 00:21:08.594] [INFO ] [WinFsp] Создан файл для записи: '/new big video/Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 158, alloc: 19460096), источник: 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
+[2026-10-07 00:21:08.595] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
+[2026-10-07 00:21:08.595] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
+[2026-10-07 00:21:08.595] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': 640x480, 222 сек
+[2026-10-07 00:21:08.607] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'
+[2026-10-07 00:21:08.611] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (13190 байт, 320x240)
+[2026-10-07 00:21:08.612] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (13190 байт)
+[2026-10-07 00:21:08.612] [INFO ] [VideoMetadataExtractor] Метаданные видео 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': 640x480, 222 сек, превью: 13190 байт
+[2026-10-07 00:21:08.612] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4': длительность = 222 сек, разрешение = 640x480, обложка = 13190 байт
+[2026-10-07 00:21:08.612] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (19456938 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 222 сек, обложка: ДА...
+[2026-10-07 00:21:08.612] [INFO ] [TelegramService] Прямая потоковая передача файла 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (19456938 байт) в Telegram...
+[2026-10-07 00:21:08.613] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:08Z (svc)
+[2026-10-07 00:21:08.613] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0CA4
+[2026-10-07 00:21:08.613] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:08.620] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #9B30
+[2026-10-07 00:21:08.622] [INFO ] [WinFsp] Обновлены системные даты для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' (ID 158): Изменен: 2021-08-10 20:53:55, Создан: 2026-10-06 21:21:08
+[2026-10-07 00:21:08.626] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #FAFC
+[2026-10-07 00:21:08.842] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #43D4
+[2026-10-07 00:21:08.855] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:08Z
+[2026-10-07 00:21:08.855] [DEBUG] [WTelegram]              → Boolean                               #0CA4
+[2026-10-07 00:21:08.855] [INFO ] [TrayProgressOverlay] Показ окна прогресса [Upload] для Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4 (524288/19456938)
+[2026-10-07 00:21:09.033] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #E314
+[2026-10-07 00:21:09.053] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:08Z
+[2026-10-07 00:21:09.053] [DEBUG] [WTelegram]              → Boolean                               #9B30
+[2026-10-07 00:21:09.197] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #8354
+[2026-10-07 00:21:09.213] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:08Z
+[2026-10-07 00:21:09.213] [DEBUG] [WTelegram]              → Boolean                               #FAFC
+[2026-10-07 00:21:09.354] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #8A70
+[2026-10-07 00:21:09.381] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:09Z
+[2026-10-07 00:21:09.381] [DEBUG] [WTelegram]              → Boolean                               #43D4
+[2026-10-07 00:21:09.507] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #54A4
+[2026-10-07 00:21:09.521] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:09Z
+[2026-10-07 00:21:09.521] [DEBUG] [WTelegram]              → Boolean                               #E314
+[2026-10-07 00:21:09.660] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #2F54
+[2026-10-07 00:21:09.682] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:09Z
+[2026-10-07 00:21:09.682] [DEBUG] [WTelegram]              → Boolean                               #8354
+[2026-10-07 00:21:09.808] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #ADA8
+[2026-10-07 00:21:09.823] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:09Z
+[2026-10-07 00:21:09.823] [DEBUG] [WTelegram]              → Boolean                               #8A70
+[2026-10-07 00:21:09.951] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:08Z (svc)
+[2026-10-07 00:21:09.951] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6800
+[2026-10-07 00:21:09.951] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:09.995] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:09Z
+[2026-10-07 00:21:09.995] [DEBUG] [WTelegram]              → Boolean                               #54A4
+[2026-10-07 00:21:10.090] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:08Z (svc)
+[2026-10-07 00:21:10.090] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #2C5C
+[2026-10-07 00:21:10.090] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:10.129] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:09Z
+[2026-10-07 00:21:10.129] [DEBUG] [WTelegram]              → Boolean                               #2F54
+[2026-10-07 00:21:10.234] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:08Z (svc)
+[2026-10-07 00:21:10.234] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F480
+[2026-10-07 00:21:10.234] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:10.266] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:09Z
+[2026-10-07 00:21:10.266] [DEBUG] [WTelegram]              → Boolean                               #ADA8
+[2026-10-07 00:21:10.371] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:09Z (svc)
+[2026-10-07 00:21:10.371] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F845
+[2026-10-07 00:21:10.371] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:10.385] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:10.385] [DEBUG] [WTelegram]              → Boolean                               #6800
+[2026-10-07 00:21:10.511] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:09Z (svc)
+[2026-10-07 00:21:10.511] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E8F1
+[2026-10-07 00:21:10.511] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:10.530] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:10.530] [DEBUG] [WTelegram]              → Boolean                               #2C5C
+[2026-10-07 00:21:10.646] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:09Z (svc)
+[2026-10-07 00:21:10.646] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #3779
+[2026-10-07 00:21:10.646] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:10.670] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:10.670] [DEBUG] [WTelegram]              → Boolean                               #F480
+[2026-10-07 00:21:10.778] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:09Z (svc)
+[2026-10-07 00:21:10.778] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1689
+[2026-10-07 00:21:10.779] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:10.797] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:10.797] [DEBUG] [WTelegram]              → Boolean                               #F845
+[2026-10-07 00:21:10.914] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:09Z (svc)
+[2026-10-07 00:21:10.914] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #41C5
+[2026-10-07 00:21:10.914] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:10.938] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:10.938] [DEBUG] [WTelegram]              → Boolean                               #E8F1
+[2026-10-07 00:21:11.047] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:09Z (svc)
+[2026-10-07 00:21:11.047] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #70ED
+[2026-10-07 00:21:11.047] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.071] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:11.071] [DEBUG] [WTelegram]              → Boolean                               #3779
+[2026-10-07 00:21:11.181] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:09Z (svc)
+[2026-10-07 00:21:11.181] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8FC9
+[2026-10-07 00:21:11.181] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.226] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:11.226] [DEBUG] [WTelegram]              → Boolean                               #1689
+[2026-10-07 00:21:11.310] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:10Z (svc)
+[2026-10-07 00:21:11.310] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #429E
+[2026-10-07 00:21:11.310] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.331] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:10Z
+[2026-10-07 00:21:11.331] [DEBUG] [WTelegram]              → Boolean                               #41C5
+[2026-10-07 00:21:11.446] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:10Z (svc)
+[2026-10-07 00:21:11.446] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #764A
+[2026-10-07 00:21:11.446] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.462] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:11Z
+[2026-10-07 00:21:11.462] [DEBUG] [WTelegram]              → Boolean                               #70ED
+[2026-10-07 00:21:11.580] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:10Z (svc)
+[2026-10-07 00:21:11.580] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B8F6
+[2026-10-07 00:21:11.580] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.610] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:11Z
+[2026-10-07 00:21:11.610] [DEBUG] [WTelegram]              → Boolean                               #8FC9
+[2026-10-07 00:21:11.710] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:10Z (svc)
+[2026-10-07 00:21:11.710] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5BDE
+[2026-10-07 00:21:11.710] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.723] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:11Z
+[2026-10-07 00:21:11.723] [DEBUG] [WTelegram]              → Boolean                               #429E
+[2026-10-07 00:21:11.834] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:10Z (svc)
+[2026-10-07 00:21:11.834] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #ECDA
+[2026-10-07 00:21:11.835] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.856] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:11Z
+[2026-10-07 00:21:11.856] [DEBUG] [WTelegram]              → Boolean                               #764A
+[2026-10-07 00:21:11.960] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:10Z (svc)
+[2026-10-07 00:21:11.960] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #305A
+[2026-10-07 00:21:11.960] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:11.978] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:11Z
+[2026-10-07 00:21:11.978] [DEBUG] [WTelegram]              → Boolean                               #B8F6
+[2026-10-07 00:21:12.088] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:10Z (svc)
+[2026-10-07 00:21:12.088] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #ADF2
+[2026-10-07 00:21:12.088] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:12.120] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:11Z
+[2026-10-07 00:21:12.120] [DEBUG] [WTelegram]              → Boolean                               #5BDE
+[2026-10-07 00:21:12.210] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:12.210] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9E0F
+[2026-10-07 00:21:12.210] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:12.228] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:11Z
+[2026-10-07 00:21:12.228] [DEBUG] [WTelegram]              → Boolean                               #ECDA
+[2026-10-07 00:21:12.333] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:12.333] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1C63
+[2026-10-07 00:21:12.333] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:12.400] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:12.400] [DEBUG] [WTelegram]              → Boolean                               #305A
+[2026-10-07 00:21:12.456] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:12.456] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E4F7
+[2026-10-07 00:21:12.456] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:12.470] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:12.470] [DEBUG] [WTelegram]              → Boolean                               #ADF2
+[2026-10-07 00:21:12.582] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:12.582] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E9AB
+[2026-10-07 00:21:12.582] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:12.605] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:12.605] [DEBUG] [WTelegram]              → Boolean                               #9E0F
+[2026-10-07 00:21:12.703] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:12.703] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0ECB
+[2026-10-07 00:21:12.703] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:12.728] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:12.728] [DEBUG] [WTelegram]              → Boolean                               #1C63
+[2026-10-07 00:21:12.821] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:12.821] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0B97
+[2026-10-07 00:21:12.821] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:12.848] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:12.848] [DEBUG] [WTelegram]              → Boolean                               #E4F7
+[2026-10-07 00:21:12.970] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:12.970] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #C553
+[2026-10-07 00:21:12.970] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:13.020] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:13.020] [DEBUG] [WTelegram]              → Boolean                               #E9AB
+[2026-10-07 00:21:13.134] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:11Z (svc)
+[2026-10-07 00:21:13.134] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #77CF
+[2026-10-07 00:21:13.134] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:13.181] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:13.181] [DEBUG] [WTelegram]              → Boolean                               #0ECB
+[2026-10-07 00:21:13.288] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:12Z (svc)
+[2026-10-07 00:21:13.288] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1478
+[2026-10-07 00:21:13.288] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:13.329] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:12Z
+[2026-10-07 00:21:13.329] [DEBUG] [WTelegram]              → Boolean                               #0B97
+[2026-10-07 00:21:13.439] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:12Z (svc)
+[2026-10-07 00:21:13.439] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D734
+[2026-10-07 00:21:13.439] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:13.480] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:13Z
+[2026-10-07 00:21:13.480] [DEBUG] [WTelegram]              → Boolean                               #C553
+[2026-10-07 00:21:13.579] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:12Z (svc)
+[2026-10-07 00:21:13.579] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6720
+[2026-10-07 00:21:13.579] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:13.600] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:13Z
+[2026-10-07 00:21:13.600] [DEBUG] [WTelegram]              → Boolean                               #77CF
+[2026-10-07 00:21:13.755] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:13Z
+[2026-10-07 00:21:13.755] [DEBUG] [WTelegram]              → Boolean                               #1478
+[2026-10-07 00:21:13.878] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:21:13Z (svc)
+[2026-10-07 00:21:13.878] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:21:13Z
+[2026-10-07 00:21:13.878] [DEBUG] [WTelegram]              → Boolean                               #D734
+[2026-10-07 00:21:13.878] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:21:13Z (svc) 
+[2026-10-07 00:21:13.904] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:13Z
+[2026-10-07 00:21:13.904] [DEBUG] [WTelegram]              → Boolean                               #6720
+[2026-10-07 00:21:13.904] [INFO ] [TelegramService] Файл 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/Rachel McFarlane - Lover (jQ6HqFa0jmI)_v1.mp4
 #latest')...
-[2026-10-06 23:51:05.555] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:05Z (svc)
-[2026-10-06 23:51:05.555] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #E509
-[2026-10-06 23:51:05.555] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:05.562] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #E981
-[2026-10-06 23:51:05.696] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:05Z (svc)
-[2026-10-06 23:51:05.696] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.696] [DEBUG] [WTelegram]              → Boolean                               #E509
-[2026-10-06 23:51:05.696] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:05Z (svc) 
-[2026-10-06 23:51:05.700] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.700] [DEBUG] [WTelegram]              → Boolean                               #E981
-[2026-10-06 23:51:05.700] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:05Z (svc)
-[2026-10-06 23:51:05.700] [DEBUG] [WTelegram]             → Messages_SendMedia                     #0EB1
-[2026-10-06 23:51:05.700] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:05.812] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:05.812] [DEBUG] [WTelegram]              → Updates                               #0EB1
-[2026-10-06 23:51:05.812] [INFO ] [TelegramService] Фото-превью для галереи успешно опубликовано в Telegram (Message ID: 1716, имя: 'DSC_0270 __ (6 mb) ___preview.jpg').
-[2026-10-06 23:51:05.813] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:05Z (svc)
-[2026-10-06 23:51:05.813] [DEBUG] [WTelegram]             → Messages_SendMedia                     #1015
-[2026-10-06 23:51:05.813] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:06.136] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:06.136] [DEBUG] [WTelegram]              → Updates                               #1015
-[2026-10-06 23:51:06.137] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:05Z (svc)
-[2026-10-06 23:51:06.137] [DEBUG] [WTelegram]             → Messages_EditMessage                   #8BD9
-[2026-10-06 23:51:06.137] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:06.240] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:05Z
-[2026-10-06 23:51:06.240] [DEBUG] [WTelegram]              → Updates                               #8BD9
-[2026-10-06 23:51:06.240] [INFO ] [TelegramService] Файл 'DSC_0270 __ (6 mb) __.JPG' успешно сохранен в Telegram. Message ID: 1717, Preview ID: 1716
-[2026-10-06 23:51:06.240] [INFO ] [TrayContext] Событие OnUploadCompleted для 'DSC_0270 __ (6 mb) __.JPG' получено из TelegramService.
-[2026-10-06 23:51:06.240] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'DSC_0270 __ (6 mb) __.JPG'. Запуск _completionTimer...
-[2026-10-06 23:51:06.241] [INFO ] [WinFsp] Файл 'DSC_0270 __ (6 mb) __.JPG' успешно сохранен в Telegram (Msg ID: 1717, Preview ID: 1716, дата изменения: 2023-07-26 12:27:41). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:51:06.635] [INFO ] [TelegramService] Прямая потоковая передача файла 'IMG_20201018_131419 (12 mb).jpg' (12414274 байт) в Telegram...
-[2026-10-06 23:51:06.636] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:06.636] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4696
-[2026-10-06 23:51:06.636] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:06.642] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #43F2
-[2026-10-06 23:51:06.647] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #569A
-[2026-10-06 23:51:06.652] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #631A
-[2026-10-06 23:51:06.657] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #DC66
-[2026-10-06 23:51:06.740] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #693A
-[2026-10-06 23:51:06.801] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #DC66
-[2026-10-06 23:51:06.808] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:06.808] [DEBUG] [WTelegram]              → Boolean                               #4696
-[2026-10-06 23:51:06.808] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла IMG_20201018_131419 (12 mb).jpg
-[2026-10-06 23:51:06.842] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:06.842] [DEBUG] [WTelegram]              → Boolean                               #43F2
-[2026-10-06 23:51:06.856] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #DD1E
-[2026-10-06 23:51:06.888] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:06.888] [DEBUG] [WTelegram]              → Boolean                               #569A
-[2026-10-06 23:51:06.913] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D5CE
-[2026-10-06 23:51:06.947] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:06.947] [DEBUG] [WTelegram]              → Boolean                               #631A
-[2026-10-06 23:51:06.968] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D686
-[2026-10-06 23:51:06.984] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:06.984] [DEBUG] [WTelegram]              → Boolean                               #DC66
-[2026-10-06 23:51:07.023] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.023] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #311A
-[2026-10-06 23:51:07.023] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.047] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:07.047] [DEBUG] [WTelegram]              → Boolean                               #693A
-[2026-10-06 23:51:07.076] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.076] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #03EA
-[2026-10-06 23:51:07.076] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.095] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:07.095] [DEBUG] [WTelegram]              → Boolean                               #DC66
-[2026-10-06 23:51:07.135] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.135] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #BEF2
-[2026-10-06 23:51:07.135] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.166] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:07.166] [DEBUG] [WTelegram]              → Boolean                               #DD1E
-[2026-10-06 23:51:07.190] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.190] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B6EE
-[2026-10-06 23:51:07.191] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.209] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:07.209] [DEBUG] [WTelegram]              → Boolean                               #D5CE
-[2026-10-06 23:51:07.245] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.245] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #751E
-[2026-10-06 23:51:07.245] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.266] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:06Z
-[2026-10-06 23:51:07.266] [DEBUG] [WTelegram]              → Boolean                               #D686
-[2026-10-06 23:51:07.299] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.299] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CA06
-[2026-10-06 23:51:07.299] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.335] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.335] [DEBUG] [WTelegram]              → Boolean                               #311A
-[2026-10-06 23:51:07.353] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.353] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #D542
-[2026-10-06 23:51:07.353] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.391] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.391] [DEBUG] [WTelegram]              → Boolean                               #03EA
-[2026-10-06 23:51:07.404] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:06Z (svc)
-[2026-10-06 23:51:07.404] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7CBA
-[2026-10-06 23:51:07.404] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.424] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.424] [DEBUG] [WTelegram]              → Boolean                               #BEF2
-[2026-10-06 23:51:07.455] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:07.455] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CFDF
-[2026-10-06 23:51:07.456] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.489] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.489] [DEBUG] [WTelegram]              → Boolean                               #B6EE
-[2026-10-06 23:51:07.510] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:07.510] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #5173
-[2026-10-06 23:51:07.510] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.531] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.531] [DEBUG] [WTelegram]              → Boolean                               #751E
-[2026-10-06 23:51:07.565] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:07.565] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #CFAF
-[2026-10-06 23:51:07.565] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.599] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.599] [DEBUG] [WTelegram]              → Boolean                               #CA06
-[2026-10-06 23:51:07.618] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:07.618] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #967F
-[2026-10-06 23:51:07.618] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.638] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.638] [DEBUG] [WTelegram]              → Boolean                               #D542
-[2026-10-06 23:51:07.669] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:07.669] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #E9EF
-[2026-10-06 23:51:07.670] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.702] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.702] [DEBUG] [WTelegram]              → Boolean                               #7CBA
-[2026-10-06 23:51:07.724] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:07.724] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #F6A7
-[2026-10-06 23:51:07.724] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.740] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.740] [DEBUG] [WTelegram]              → Boolean                               #CFDF
-[2026-10-06 23:51:07.799] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.799] [DEBUG] [WTelegram]              → Boolean                               #5173
-[2026-10-06 23:51:07.854] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.854] [DEBUG] [WTelegram]              → Boolean                               #CFAF
-[2026-10-06 23:51:07.908] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.908] [DEBUG] [WTelegram]              → Boolean                               #967F
-[2026-10-06 23:51:07.951] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.951] [DEBUG] [WTelegram]              → Boolean                               #E9EF
-[2026-10-06 23:51:07.980] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:07.980] [DEBUG] [WTelegram]              → Boolean                               #F6A7
-[2026-10-06 23:51:07.980] [INFO ] [TelegramService] Файл 'IMG_20201018_131419 (12 mb).jpg' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /image/IMG_20201018_131419 (12 mb)_v1.jpg
+[2026-10-07 00:21:13.905] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:13Z (svc)
+[2026-10-07 00:21:13.905] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #877D
+[2026-10-07 00:21:13.905] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:13.970] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:13Z
+[2026-10-07 00:21:13.970] [DEBUG] [WTelegram]              → Boolean                               #877D
+[2026-10-07 00:21:13.971] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:13Z (svc)
+[2026-10-07 00:21:13.971] [DEBUG] [WTelegram]             → Messages_SendMedia                     #B72D
+[2026-10-07 00:21:13.971] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:14.105] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:13Z
+[2026-10-07 00:21:14.105] [DEBUG] [WTelegram]              → Updates                               #B72D
+[2026-10-07 00:21:14.105] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:13Z (svc)
+[2026-10-07 00:21:14.105] [DEBUG] [WTelegram]             → Messages_EditMessage                   #E849
+[2026-10-07 00:21:14.105] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:14.166] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:13Z
+[2026-10-07 00:21:14.166] [DEBUG] [WTelegram]              → Updates                               #E849
+[2026-10-07 00:21:14.166] [INFO ] [TelegramService] Файл 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' успешно сохранен в Telegram. Message ID: 1743
+[2026-10-07 00:21:14.166] [INFO ] [TrayContext] Событие OnUploadCompleted для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' получено из TelegramService.
+[2026-10-07 00:21:14.167] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4'. Запуск _completionTimer...
+[2026-10-07 00:21:14.180] [INFO ] [WinFsp] Файл 'Rachel McFarlane - Lover (jQ6HqFa0jmI).mp4' успешно сохранен в Telegram (Msg ID: 1743, дата изменения: 2021-08-10 20:53:55). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:21:14.183] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (виртуальный путь: '/new big video/The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4')...
+[2026-10-07 00:21:14.183] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:21:14.185] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:21:14.191] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78753 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:21:14.217] [INFO ] [WinFsp] [Handles DragDrop] Проверено дескрипторов Explorer: 236, найдено совпадений файлов: 0
+[2026-10-07 00:21:14.217] [WARN ] [WinFsp] [Источник] Файл 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' не найден среди доступных источников.
+[2026-10-07 00:21:14.217] [INFO ] [WinFsp] Создан файл для записи: '/new big video/The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 159, alloc: 16412672)
+[2026-10-07 00:21:14.218] [INFO ] [WinFsp] [Write] Пробуем определить источник (Drag-and-Drop / Буфер обмена) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'...
+[2026-10-07 00:21:14.218] [INFO ] [WinFsp] [Источник] Поиск оригинального файла для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (виртуальный путь: '/new big video/The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4')...
+[2026-10-07 00:21:14.218] [INFO ] [WinFsp] [Источник] Запрос нового дерева копирования для нового источника...
+[2026-10-07 00:21:14.220] [INFO ] [WinFsp] [Handles DragDrop] Сканирование хэндлов для 2 процессов explorer (PID: 7416, 8784)...
+[2026-10-07 00:21:14.226] [INFO ] [WinFsp] [Handles DragDrop] В системе обнаружено 78761 дескрипторов ядра (File Type Index: 37).
+[2026-10-07 00:21:14.260] [INFO ] [WinFsp] [Handles DragDrop] Обнаружен открытый файл в explorer (PID 8784): 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
+[2026-10-07 00:21:14.260] [INFO ] [WinFsp] [Источник] Инициализирована новая сессия копирования: файлов в очереди 1, папок-источников 1
+[2026-10-07 00:21:14.260] [INFO ] [WinFsp] [Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' существует и доступен для чтения (размер: 16411173 байт).
+[2026-10-07 00:21:14.260] [INFO ] [WinFsp] [Источник] Найдено совпадение в новой сессии: 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
+[2026-10-07 00:21:14.260] [INFO ] [WinFsp] [Write] Начинаем извлечение метаданных из оригинального файла: 'D:\TGtest\For test tg downloads\new big video\The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
+[2026-10-07 00:21:14.260] [INFO ] [VideoMetadataExtractor] MP4 Box parser определил габариты: 640x480
+[2026-10-07 00:21:14.260] [INFO ] [VideoMetadataExtractor] MP4 parser успешно прочитал 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': 640x480, 262 сек
+[2026-10-07 00:21:14.268] [DEBUG] [VideoMetadataExtractor] Успешно получен HBITMAP через IThumbnailProvider ({c5aec3ec-e812-4677-a9a7-4fee1f9aa000}) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'
+[2026-10-07 00:21:14.274] [INFO ] [VideoMetadataExtractor] Успешно сгенерирован стоп-кадр через Windows Shell (K-Lite/Icaros) для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (9756 байт, 320x240)
+[2026-10-07 00:21:14.275] [INFO ] [VideoMetadataExtractor] Shell Thumbnail (K-Lite/Icaros) успешно создал эскиз 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (9756 байт)
+[2026-10-07 00:21:14.275] [INFO ] [VideoMetadataExtractor] Метаданные видео 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': 640x480, 262 сек, превью: 9756 байт
+[2026-10-07 00:21:14.275] [INFO ] [WinFsp] [Write] Результат VideoMetadataExtractor для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4': длительность = 262 сек, разрешение = 640x480, обложка = 9756 байт
+[2026-10-07 00:21:14.275] [INFO ] [WinFsp] Запуск прямой потоковой передачи 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (16411173 байт) в Telegram на лету (Zero-Temp), видео: 640x480, 262 сек, обложка: ДА...
+[2026-10-07 00:21:14.275] [INFO ] [TelegramService] Прямая потоковая передача файла 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (16411173 байт) в Telegram...
+[2026-10-07 00:21:14.275] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:13Z (svc)
+[2026-10-07 00:21:14.275] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6E61
+[2026-10-07 00:21:14.276] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:14.282] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #A399
+[2026-10-07 00:21:14.285] [INFO ] [WinFsp] Обновлены системные даты для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' (ID 159): Изменен: 2021-08-09 23:21:53, Создан: 2026-10-06 21:21:14
+[2026-10-07 00:21:14.288] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #66F2
+[2026-10-07 00:21:14.461] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #1DCE
+[2026-10-07 00:21:14.474] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:14Z
+[2026-10-07 00:21:14.474] [DEBUG] [WTelegram]              → Boolean                               #6E61
+[2026-10-07 00:21:14.474] [INFO ] [TrayProgressOverlay] Остановлен активный _completionTimer для файла The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4
+[2026-10-07 00:21:14.590] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #0FEA
+[2026-10-07 00:21:14.626] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:14Z
+[2026-10-07 00:21:14.626] [DEBUG] [WTelegram]              → Boolean                               #A399
+[2026-10-07 00:21:14.712] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #6432
+[2026-10-07 00:21:14.735] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:14Z
+[2026-10-07 00:21:14.735] [DEBUG] [WTelegram]              → Boolean                               #66F2
+[2026-10-07 00:21:14.837] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #3352
+[2026-10-07 00:21:14.860] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:14Z
+[2026-10-07 00:21:14.860] [DEBUG] [WTelegram]              → Boolean                               #1DCE
+[2026-10-07 00:21:14.963] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #DE3A
+[2026-10-07 00:21:14.979] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:14Z
+[2026-10-07 00:21:14.979] [DEBUG] [WTelegram]              → Boolean                               #0FEA
+[2026-10-07 00:21:15.091] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #D386
+[2026-10-07 00:21:15.113] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:14Z
+[2026-10-07 00:21:15.113] [DEBUG] [WTelegram]              → Boolean                               #6432
+[2026-10-07 00:21:15.213] [DEBUG] [WTelegram] 2>Sending   Upload_SaveBigFilePart                   #15EA
+[2026-10-07 00:21:15.229] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:14Z
+[2026-10-07 00:21:15.229] [DEBUG] [WTelegram]              → Boolean                               #3352
+[2026-10-07 00:21:15.333] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:14Z (svc)
+[2026-10-07 00:21:15.333] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7032
+[2026-10-07 00:21:15.334] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:15.379] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:15.379] [DEBUG] [WTelegram]              → Boolean                               #DE3A
+[2026-10-07 00:21:15.453] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:14Z (svc)
+[2026-10-07 00:21:15.453] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EF82
+[2026-10-07 00:21:15.453] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:15.470] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:15.470] [DEBUG] [WTelegram]              → Boolean                               #D386
+[2026-10-07 00:21:15.575] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:14Z (svc)
+[2026-10-07 00:21:15.575] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0A36
+[2026-10-07 00:21:15.575] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:15.645] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:15.645] [DEBUG] [WTelegram]              → Boolean                               #15EA
+[2026-10-07 00:21:15.703] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:14Z (svc)
+[2026-10-07 00:21:15.703] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1FEE
+[2026-10-07 00:21:15.703] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:15.729] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:15.729] [DEBUG] [WTelegram]              → Boolean                               #7032
+[2026-10-07 00:21:15.815] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:14Z (svc)
+[2026-10-07 00:21:15.815] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0F02
+[2026-10-07 00:21:15.815] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:15.841] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:15.841] [DEBUG] [WTelegram]              → Boolean                               #EF82
+[2026-10-07 00:21:15.939] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:14Z (svc)
+[2026-10-07 00:21:15.939] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #6E06
+[2026-10-07 00:21:15.940] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:15.950] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:15.950] [DEBUG] [WTelegram]              → Boolean                               #0A36
+[2026-10-07 00:21:16.055] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:14Z (svc)
+[2026-10-07 00:21:16.055] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1676
+[2026-10-07 00:21:16.055] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.074] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:16.074] [DEBUG] [WTelegram]              → Boolean                               #1FEE
+[2026-10-07 00:21:16.175] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:16.175] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #FD9B
+[2026-10-07 00:21:16.176] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.208] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:16.208] [DEBUG] [WTelegram]              → Boolean                               #0F02
+[2026-10-07 00:21:16.299] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:16.299] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #DEB3
+[2026-10-07 00:21:16.299] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.322] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:15Z
+[2026-10-07 00:21:16.322] [DEBUG] [WTelegram]              → Boolean                               #6E06
+[2026-10-07 00:21:16.419] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:16.419] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #767B
+[2026-10-07 00:21:16.420] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.461] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:16.461] [DEBUG] [WTelegram]              → Boolean                               #1676
+[2026-10-07 00:21:16.532] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:16.532] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #8177
+[2026-10-07 00:21:16.532] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.584] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:16.584] [DEBUG] [WTelegram]              → Boolean                               #FD9B
+[2026-10-07 00:21:16.647] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:16.647] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #13E7
+[2026-10-07 00:21:16.647] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.710] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:16.710] [DEBUG] [WTelegram]              → Boolean                               #DEB3
+[2026-10-07 00:21:16.765] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:16.765] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #1E73
+[2026-10-07 00:21:16.765] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.799] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:16.799] [DEBUG] [WTelegram]              → Boolean                               #767B
+[2026-10-07 00:21:16.886] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:16.886] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #4A13
+[2026-10-07 00:21:16.886] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:16.899] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:16.899] [DEBUG] [WTelegram]              → Boolean                               #8177
+[2026-10-07 00:21:17.007] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:15Z (svc)
+[2026-10-07 00:21:17.007] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #73B7
+[2026-10-07 00:21:17.007] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.037] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:17.037] [DEBUG] [WTelegram]              → Boolean                               #13E7
+[2026-10-07 00:21:17.118] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:16Z (svc)
+[2026-10-07 00:21:17.118] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #B1EC
+[2026-10-07 00:21:17.119] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.159] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:17.159] [DEBUG] [WTelegram]              → Boolean                               #1E73
+[2026-10-07 00:21:17.232] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:16Z (svc)
+[2026-10-07 00:21:17.232] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #7964
+[2026-10-07 00:21:17.232] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.253] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:16Z
+[2026-10-07 00:21:17.253] [DEBUG] [WTelegram]              → Boolean                               #4A13
+[2026-10-07 00:21:17.345] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:16Z (svc)
+[2026-10-07 00:21:17.345] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0FA8
+[2026-10-07 00:21:17.345] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.382] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:17.382] [DEBUG] [WTelegram]              → Boolean                               #73B7
+[2026-10-07 00:21:17.449] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:16Z (svc)
+[2026-10-07 00:21:17.449] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #0028
+[2026-10-07 00:21:17.450] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.470] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:17.470] [DEBUG] [WTelegram]              → Boolean                               #B1EC
+[2026-10-07 00:21:17.563] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:16Z (svc)
+[2026-10-07 00:21:17.563] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #EB2C
+[2026-10-07 00:21:17.563] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.582] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:17.582] [DEBUG] [WTelegram]              → Boolean                               #7964
+[2026-10-07 00:21:17.666] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:16Z (svc)
+[2026-10-07 00:21:17.666] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #60D0
+[2026-10-07 00:21:17.666] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.689] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:17.689] [DEBUG] [WTelegram]              → Boolean                               #0FA8
+[2026-10-07 00:21:17.775] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:16Z (svc)
+[2026-10-07 00:21:17.775] [DEBUG] [WTelegram]             → Upload_SaveBigFilePart                 #9C90
+[2026-10-07 00:21:17.775] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:17.798] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:17.798] [DEBUG] [WTelegram]              → Boolean                               #0028
+[2026-10-07 00:21:17.933] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:17.933] [DEBUG] [WTelegram]              → Boolean                               #EB2C
+[2026-10-07 00:21:18.018] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 21:21:17Z (svc)
+[2026-10-07 00:21:18.018] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 21:21:17Z
+[2026-10-07 00:21:18.018] [DEBUG] [WTelegram]              → Boolean                               #60D0
+[2026-10-07 00:21:18.018] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 21:21:17Z (svc) 
+[2026-10-07 00:21:18.088] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:18.088] [DEBUG] [WTelegram]              → Boolean                               #9C90
+[2026-10-07 00:21:18.088] [INFO ] [TelegramService] Файл 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' загружен в MTProto, финализация сообщения в канале (подпись: '🟢 /new big video/The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs)_v1.mp4
 #latest')...
-[2026-10-06 23:51:07.981] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:07.981] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #A5C7
-[2026-10-06 23:51:07.981] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:07.988] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #B41F
-[2026-10-06 23:51:07.994] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #5693
-[2026-10-06 23:51:08.103] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:08.103] [DEBUG] [WTelegram]              → Boolean                               #A5C7
-[2026-10-06 23:51:08.150] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:08.150] [DEBUG] [WTelegram]              → Boolean                               #B41F
-[2026-10-06 23:51:08.167] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:07Z
-[2026-10-06 23:51:08.167] [DEBUG] [WTelegram]              → Boolean                               #5693
-[2026-10-06 23:51:08.167] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:07Z (svc)
-[2026-10-06 23:51:08.167] [DEBUG] [WTelegram]             → Messages_SendMedia                     #434F
-[2026-10-06 23:51:08.167] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:08.328] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:08Z
-[2026-10-06 23:51:08.328] [DEBUG] [WTelegram]              → Updates                               #434F
-[2026-10-06 23:51:08.328] [INFO ] [TelegramService] Фото-превью для галереи успешно опубликовано в Telegram (Message ID: 1718, имя: 'IMG_20201018_131419 (12 mb)_preview.jpg').
-[2026-10-06 23:51:08.329] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:08Z (svc)
-[2026-10-06 23:51:08.329] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #F33C
-[2026-10-06 23:51:08.329] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:08.336] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #DE60
-[2026-10-06 23:51:08.342] [DEBUG] [WTelegram] 2>Sending   Upload_SaveFilePart                      #69A0
-[2026-10-06 23:51:08.497] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:08Z (svc)
-[2026-10-06 23:51:08.497] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:08Z
-[2026-10-06 23:51:08.497] [DEBUG] [WTelegram]              → Boolean                               #F33C
-[2026-10-06 23:51:08.497] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:08Z (svc) 
-[2026-10-06 23:51:08.542] [DEBUG] [WTelegram] 2>Receiving MsgContainer                             2026-10-06 20:51:08Z (svc)
-[2026-10-06 23:51:08.542] [DEBUG] [WTelegram]             → RpcResult                              2026-10-06 20:51:08Z
-[2026-10-06 23:51:08.542] [DEBUG] [WTelegram]              → Boolean                               #DE60
-[2026-10-06 23:51:08.542] [DEBUG] [WTelegram]             → MsgsAck                                2026-10-06 20:51:08Z (svc) 
-[2026-10-06 23:51:08.546] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:08Z
-[2026-10-06 23:51:08.546] [DEBUG] [WTelegram]              → Boolean                               #69A0
-[2026-10-06 23:51:08.546] [INFO ] [TelegramService] К документу >10 МБ 'IMG_20201018_131419 (12 mb).jpg' успешно прикреплена миниатюра (thumb).
-[2026-10-06 23:51:08.547] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:08Z (svc)
-[2026-10-06 23:51:08.547] [DEBUG] [WTelegram]             → Messages_SendMedia                     #BA94
-[2026-10-06 23:51:08.547] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:08.744] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:08Z
-[2026-10-06 23:51:08.744] [DEBUG] [WTelegram]              → Updates                               #BA94
-[2026-10-06 23:51:08.745] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:08Z (svc)
-[2026-10-06 23:51:08.745] [DEBUG] [WTelegram]             → Messages_EditMessage                   #8C04
-[2026-10-06 23:51:08.745] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:08.819] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 20:51:08Z
-[2026-10-06 23:51:08.819] [DEBUG] [WTelegram]              → Updates                               #8C04
-[2026-10-06 23:51:08.819] [INFO ] [TelegramService] Файл 'IMG_20201018_131419 (12 mb).jpg' успешно сохранен в Telegram. Message ID: 1719, Preview ID: 1718
-[2026-10-06 23:51:08.819] [INFO ] [TrayContext] Событие OnUploadCompleted для 'IMG_20201018_131419 (12 mb).jpg' получено из TelegramService.
-[2026-10-06 23:51:08.819] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'IMG_20201018_131419 (12 mb).jpg'. Запуск _completionTimer...
-[2026-10-06 23:51:08.833] [INFO ] [WinFsp] Файл 'IMG_20201018_131419 (12 mb).jpg' успешно сохранен в Telegram (Msg ID: 1719, Preview ID: 1718, дата изменения: 2020-12-25 21:19:06). Загрузка на лету (Zero-Temp) завершена.
-[2026-10-06 23:51:10.233] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
-[2026-10-06 23:51:10.234] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
-[2026-10-06 23:51:17.565] [DEBUG] [WTelegram] 2>Receiving Updates                                  2026-10-06 20:51:17Z  
-[2026-10-06 23:51:20.653] [DEBUG] [WTelegram] 2>Receiving UpdateShort                              2026-10-06 20:51:20Z  
-[2026-10-06 23:51:21.122] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 20:51:20Z (svc)
-[2026-10-06 23:51:21.122] [DEBUG] [WTelegram]             → PingDelayDisconnect                    #C510
-[2026-10-06 23:51:21.122] [DEBUG] [WTelegram]             → MsgsAck                               
-[2026-10-06 23:51:21.166] [DEBUG] [WTelegram] 2>Receiving Pong                                     2026-10-06 20:51:20Z (svc) 
+[2026-10-07 00:21:18.088] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:17Z (svc)
+[2026-10-07 00:21:18.088] [DEBUG] [WTelegram]             → Upload_SaveFilePart                    #0475
+[2026-10-07 00:21:18.089] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:18.198] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:17Z
+[2026-10-07 00:21:18.198] [DEBUG] [WTelegram]              → Boolean                               #0475
+[2026-10-07 00:21:18.198] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:17Z (svc)
+[2026-10-07 00:21:18.199] [DEBUG] [WTelegram]             → Messages_SendMedia                     #F3B1
+[2026-10-07 00:21:18.199] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:18.405] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:18Z
+[2026-10-07 00:21:18.405] [DEBUG] [WTelegram]              → Updates                               #F3B1
+[2026-10-07 00:21:18.406] [DEBUG] [WTelegram] 2>Sending   MsgContainer                             2026-10-06 21:21:18Z (svc)
+[2026-10-07 00:21:18.406] [DEBUG] [WTelegram]             → Messages_EditMessage                   #9AFE
+[2026-10-07 00:21:18.406] [DEBUG] [WTelegram]             → MsgsAck                               
+[2026-10-07 00:21:18.675] [DEBUG] [WTelegram] 2>Receiving RpcResult                                2026-10-06 21:21:18Z
+[2026-10-07 00:21:18.675] [DEBUG] [WTelegram]              → Updates                               #9AFE
+[2026-10-07 00:21:18.675] [INFO ] [TelegramService] Файл 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' успешно сохранен в Telegram. Message ID: 1744
+[2026-10-07 00:21:18.675] [INFO ] [TrayContext] Событие OnUploadCompleted для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' получено из TelegramService.
+[2026-10-07 00:21:18.675] [INFO ] [TrayProgressOverlay] CompleteTransfer [Upload] вызван для 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4'. Запуск _completionTimer...
+[2026-10-07 00:21:18.688] [INFO ] [WinFsp] Файл 'The Cardigans - My Favourite Game “Stone Version” (u9WgtlgGAgs).mp4' успешно сохранен в Telegram (Msg ID: 1744, дата изменения: 2021-08-09 23:21:53). Загрузка на лету (Zero-Temp) завершена.
+[2026-10-07 00:21:20.078] [INFO ] [TrayProgressOverlay] _completionTimer Tick! _isTransferring=False, _isCompleted=True, Visible=True
+[2026-10-07 00:21:20.079] [INFO ] [TrayProgressOverlay] Оверлей успешно скрыт по завершению таймаута.
