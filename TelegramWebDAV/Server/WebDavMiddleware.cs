@@ -594,10 +594,15 @@ namespace TelegramWebDAV.Server
                     {
                         tgMessageIds.Add(n.TgMessageId.Value);
                     }
+                    else if (!n.IsDir)
+                    {
+                        AppLogger.Warn("WebDAV", $"[HandleDeleteAsync Subtree] ВНИМАНИЕ: Файл '{n.Name}' (ID {n.Id}) не имеет TgMessageId в БД (null/0). Сообщение в Telegram не может быть удалено!");
+                    }
                     if (n.TgPreviewMessageId.HasValue && n.TgPreviewMessageId.Value > 0)
                     {
                         tgMessageIds.Add(n.TgPreviewMessageId.Value);
                     }
+                    AppLogger.Info("WebDAV", $"[HandleDeleteAsync Subtree] Элемент поддерева: ID {n.Id} ('{n.Name}'), IsDir={n.IsDir}, InTrash={n.InTrash}, ParentId={n.ParentId}, TgMessageId={n.TgMessageId?.ToString() ?? "NULL"}, TgPreviewMessageId={n.TgPreviewMessageId?.ToString() ?? "NULL"}");
                 }
 
                 // Атомарно помещаем сообщения в гарантированную очередь удаления и удаляем узлы из базы

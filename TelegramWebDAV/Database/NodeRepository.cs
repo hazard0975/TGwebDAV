@@ -50,31 +50,46 @@ namespace TelegramWebDAV.Database
 
             foreach (var part in parts)
             {
-                if (currentNode == null) return null;
+                if (currentNode == null)
+                {
+                    AppLogger.Warn("NodeRepository", $"[GetNodeByPath NULL] Поиск пути '{path}' прерван: родительский узел равен null на элементе '{part}'.");
+                    return null;
+                }
 
                 if (!insideTrash && part.Equals(".Trash", StringComparison.OrdinalIgnoreCase) && currentNode.ParentId == null)
                 {
+                    int rootId = currentNode.Id;
                     using (var connection = _dbManager.GetConnection())
                     using (var command = connection.CreateCommand())
                     {
                         command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 0 LIMIT 1;";
-                        command.Parameters.AddWithValue("@parentId", currentNode.Id);
+                        command.Parameters.AddWithValue("@parentId", rootId);
                         command.Parameters.AddWithValue("@name", part);
                         currentNode = ReadNode(command);
+                    }
+                    if (currentNode == null)
+                    {
+                        AppLogger.Warn("NodeRepository", $"[GetNodeByPath NOT FOUND] Не найдена системная корзина '.Trash' в корне (Root ID={rootId}).");
                     }
                     insideTrash = true;
                     continue;
                 }
 
                 int expectedInTrash = insideTrash ? 1 : 0;
+                int parentIdForSearch = currentNode.Id;
                 using (var connection = _dbManager.GetConnection())
                 using (var command = connection.CreateCommand())
                 {
                     command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = @inTrash LIMIT 1;";
-                    command.Parameters.AddWithValue("@parentId", currentNode.Id);
+                    command.Parameters.AddWithValue("@parentId", parentIdForSearch);
                     command.Parameters.AddWithValue("@name", part);
                     command.Parameters.AddWithValue("@inTrash", expectedInTrash);
                     currentNode = ReadNode(command);
+                }
+
+                if (currentNode == null)
+                {
+                    AppLogger.Warn("NodeRepository", $"[GetNodeByPath NOT FOUND] Путь: '{path}' -> Не найден элемент '{part}' (parentId={parentIdForSearch}, expectedInTrash={expectedInTrash}).");
                 }
             }
 
@@ -670,14 +685,26 @@ namespace TelegramWebDAV.Database
         /// </summary>
         public void EnqueuePermanentDeletion(List<int> tgMessageIds, List<int> dbNodeIds)
         {
+            var uniqueMsgIds = (tgMessageIds != null) ? tgMessageIds.Where(id => id > 0).Distinct().ToList() : new List<int>();
+            int nodeCount = dbNodeIds?.Count ?? 0;
+
+            AppLogger.Info("Database", $"[EnqueuePermanentDeletion] Транзакция перманентного удаления: {nodeCount} узлов из БД, {uniqueMsgIds.Count} уникальных сообщений Telegram в очередь pending_deletions.");
+            if (uniqueMsgIds.Count > 0)
+            {
+                AppLogger.Info("Database", $"[EnqueuePermanentDeletion] Список Telegram Message ID для очистки: [{string.Join(", ", uniqueMsgIds)}]");
+            }
+            if (nodeCount > 0)
+            {
+                AppLogger.Info("Database", $"[EnqueuePermanentDeletion] Список ID узлов БД для удаления: [{string.Join(", ", dbNodeIds!)}]");
+            }
+
             using (var connection = _dbManager.GetConnection())
             using (var transaction = connection.BeginTransaction())
             {
                 try
                 {
-                    if (tgMessageIds != null && tgMessageIds.Count > 0)
+                    if (uniqueMsgIds.Count > 0)
                     {
-                        var uniqueMsgIds = tgMessageIds.Where(id => id > 0).Distinct().ToList();
                         using (var insertCmd = connection.CreateCommand())
                         {
                             insertCmd.Transaction = transaction;
@@ -709,10 +736,12 @@ namespace TelegramWebDAV.Database
                     }
 
                     transaction.Commit();
+                    AppLogger.Info("Database", $"[EnqueuePermanentDeletion] Транзакция успешно зафиксирована.");
                 }
-                catch
+                catch (Exception ex)
                 {
                     transaction.Rollback();
+                    AppLogger.Error("Database", $"[EnqueuePermanentDeletion] Сбой транзакции перманентного удаления: {ex.Message}", ex);
                     throw;
                 }
             }
@@ -952,6 +981,7 @@ namespace TelegramWebDAV.Database
                                 string nameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(existingNode.Name);
                                 trashName = $"{nameWithoutExt}_v{existingNode.Version}{ext}";
                             }
+                            AppLogger.Info("Database", $"[CreateOrUpdateFile] Версионирование файла '{name}' (ID {existingNode.Id}): предыдущая версия v{existingNode.Version} отправлена в корзину под именем '{trashName}' (trashParentId={targetTrashParentId}, TgMessageId={existingNode.TgMessageId?.ToString() ?? "NULL"}).");
                             updateCmd.CommandText = "UPDATE nodes SET in_trash = 1, parent_id = @trashId, name = @trashName WHERE id = @nodeId;";
                             updateCmd.Parameters.AddWithValue("@trashId", targetTrashParentId);
                             updateCmd.Parameters.AddWithValue("@trashName", trashName);

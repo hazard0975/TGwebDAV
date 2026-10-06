@@ -579,5 +579,13 @@
     2. **Модели и Репозиторий**: Добавлены классы `TelegramAccount.cs`, `TelegramChannel.cs` и полный набор CRUD-методов в `NodeRepository`.
     3. **Очистка `AppSettings.cs`**: Секция `Telegram` полностью удалена из JSON. `appsettings.json` содержит только системные настройки приложения.
     4. **Интеграция в UI и `TelegramService`**: Настройки Telegram загружаются и сохраняются напрямую через SQLite базу данных.
+- [x] **7.50. Детализированный аудит и логирование поиска, версионирования и удаления файлов (Deletion & Search Diagnostic Logging)**:
+  - **Контекст**: Исключение неопределенности и догадок при диагностике пропущенных или неудаленных файлов в Telegram и SQLite.
+  - **Реализовано**:
+    1. **`WinFspServer.Cleanup` & `WebDavMiddleware.HandleDeleteAsync`**: Расширенное протоколирование каждого элемента удаляемого поддерева (`ID`, `Name`, `IsDir`, `InTrash`, `ParentId`, `TgMessageId`, `TgPreviewMessageId`) с выведением явного предупреждения `[WARN]`, если `TgMessageId` у файла равен `null`/`0`.
+    2. **`NodeRepository.EnqueuePermanentDeletion`**: Подробный логируемый аудит транзакции перманентного удаления с выведением списков ID узлов SQLite и массивов Telegram Message ID, помещаемых в очередь `pending_deletions`.
+    3. **`NodeRepository.CreateOrUpdateFile`**: Логирование архивного перемещения прежней версии в корзину при перезаписи файла (`_v1`, `_v2`) с указанием родительского ID корзины и `TgMessageId`.
+    4. **`TelegramService.DeleteBatchWithBisectAsync`**: Полный логируемый трассировочный след отправки массивов Message ID в Telegram API (`Channels_DeleteMessages` / `Messages_DeleteMessages`) и точечный лог алгоритма биссекции при сетевых сбоях.
+
 
 

@@ -391,6 +391,7 @@ namespace TelegramWebDAV.Services
             if (node == null)
             {
                 fileAttributes = 0;
+                AppLogger.Warn("WinFsp", $"[GetSecurityByName NOT FOUND] Файл/папка '{fileName}' (path: '{cleanPath}') не найден в SQLite.");
                 return NT_STATUS_OBJECT_NAME_NOT_FOUND;
             }
 
@@ -436,6 +437,7 @@ namespace TelegramWebDAV.Services
                 node = _repository.GetNodeByPath(cleanPath);
                 if (node == null)
                 {
+                    AppLogger.Warn("WinFsp", $"[Open NOT FOUND] Проводник пытается открыть элемент '{fileName}' (path: '{cleanPath}'), но узел равен NULL.");
                     fileNode = null!;
                     fileDesc = null!;
                     fileInfo = default;
@@ -792,6 +794,7 @@ namespace TelegramWebDAV.Services
         public override int CanDelete(object fileNode, object fileDesc, string fileName)
         {
             var node = (Node)fileNode;
+            AppLogger.Info("WinFsp", $"[CanDelete] Проводник запрашивает возможность удаления '{fileName}' (ID {node.Id}, Name '{node.Name}', InTrash={node.InTrash}).");
 
             // Защита системной папки .Trash от удаления снаружи
             if (_repository.IsTrashFolder(node.Id) || string.Equals(fileName.Trim('/', '\\'), ".Trash", StringComparison.OrdinalIgnoreCase))
@@ -805,6 +808,7 @@ namespace TelegramWebDAV.Services
                 var children = _repository.GetChildren(node.Id);
                 if (children.Count > 0)
                 {
+                    AppLogger.Warn("WinFsp", $"[CanDelete] Нельзя удалить непустую папку '{node.Name}' (ID {node.Id}, детей: {children.Count}).");
                     return NT_STATUS_DIRECTORY_NOT_EMPTY;
                 }
             }
@@ -813,6 +817,8 @@ namespace TelegramWebDAV.Services
 
         public override int SetDelete(object fileNode, object fileDesc, string fileName, bool deleteFile)
         {
+            var node = (Node)fileNode;
+            AppLogger.Info("WinFsp", $"[SetDelete] Проводник установил deleteFile={deleteFile} для '{fileName}' (ID {node.Id}, Name '{node.Name}').");
             if (fileDesc is FspNodeContext ctx)
             {
                 ctx.DeleteOnClose = deleteFile;
@@ -863,6 +869,8 @@ namespace TelegramWebDAV.Services
 
             if ((flags & CleanupDelete) != 0 || ctx.DeleteOnClose)
             {
+                AppLogger.Info("WinFsp", $"[CleanupDelete] Закрытие с флагом удаления для '{fileName}' (ID {node.Id}, Name '{node.Name}', flags={flags}, DeleteOnClose={ctx.DeleteOnClose}).");
+
                 // Защита от удаления системной папки корзины
                 if (_repository.IsTrashFolder(node.Id) || string.Equals(fileName.Trim('/', '\\'), ".Trash", StringComparison.OrdinalIgnoreCase))
                 {
@@ -888,10 +896,15 @@ namespace TelegramWebDAV.Services
                         {
                             tgMessageIds.Add(n.TgMessageId.Value);
                         }
+                        else if (!n.IsDir)
+                        {
+                            AppLogger.Warn("WinFsp", $"[CleanupDelete Subtree] ВНИМАНИЕ: Файл '{n.Name}' (ID {n.Id}) не имеет TgMessageId в БД (null/0). Сообщение в Telegram не может быть удалено!");
+                        }
                         if (n.TgPreviewMessageId.HasValue && n.TgPreviewMessageId.Value > 0)
                         {
                             tgMessageIds.Add(n.TgPreviewMessageId.Value);
                         }
+                        AppLogger.Info("WinFsp", $"[CleanupDelete Subtree] Элемент поддерева: ID {n.Id} ('{n.Name}'), IsDir={n.IsDir}, InTrash={n.InTrash}, ParentId={n.ParentId}, TgMessageId={n.TgMessageId?.ToString() ?? "NULL"}, TgPreviewMessageId={n.TgPreviewMessageId?.ToString() ?? "NULL"}");
                     }
 
                     // Атомарно помещаем сообщения в гарантированную очередь удаления и удаляем узлы из базы
@@ -1124,6 +1137,7 @@ namespace TelegramWebDAV.Services
 
                 children.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
                 context = new FspDirectoryEnumContext(children);
+                AppLogger.Info("WinFsp", $"[ReadDirectoryEntry START] Запрос листинга папки '{dirNode.Name}' (ID {dirNode.Id}), загружено элементов из SQLite: {children.Count}.");
             }
 
             var dirEnum = (FspDirectoryEnumContext)context;
