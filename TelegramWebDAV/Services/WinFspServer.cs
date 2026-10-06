@@ -1,5 +1,6 @@
 using System;
 using System.Buffers;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -1263,7 +1264,7 @@ namespace TelegramWebDAV.Services
             return lastSlash >= 0 ? p.Substring(lastSlash + 1) : p;
         }
 
-        #region Windows Clipboard Source Detection (CF_HDROP & Desktop)
+#region Windows Drag-and-Drop & Clipboard Source Detection (NtHandles & CF_HDROP)
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -1282,7 +1283,32 @@ namespace TelegramWebDAV.Services
         [DllImport("shell32.dll", CharSet = CharSet.Unicode, EntryPoint = "DragQueryFileW", SetLastError = true)]
         private static extern uint DragQueryFile(IntPtr hDrop, uint iFile, [Out] StringBuilder lpszFile, uint cch);
 
+        [DllImport("ntdll.dll")]
+        private static extern int NtQuerySystemInformation(int SystemInformationClass, IntPtr SystemInformation, int SystemInformationLength, out int ReturnLength);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr OpenProcess(uint processAccess, bool bInheritHandle, int processId);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool DuplicateHandle(IntPtr hSourceProcessHandle, IntPtr hSourceHandle, IntPtr hTargetProcessHandle, out IntPtr lpTargetHandle, uint dwDesiredAccess, bool bInheritHandle, uint dwOptions);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool CloseHandle(IntPtr hObject);
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        private static extern uint GetFinalPathNameByHandle(IntPtr hFile, [Out] StringBuilder lpszFilePath, uint cchFilePath, uint dwFlags);
+
+        [DllImport("kernel32.dll")]
+        private static extern uint GetFileType(IntPtr hFile);
+
         private const uint CF_HDROP = 15;
+        private const int SystemExtendedHandleInformation = 64;
+        private const uint FILE_TYPE_DISK = 0x0001;
+        private const uint PROCESS_DUP_HANDLE = 0x0040;
+        private const uint DUPLICATE_SAME_ACCESS = 0x00000002;
+        private const uint VOLUME_NAME_DOS = 0x00000000;
 
         private static readonly object _sessionLock = new object();
         private static CopySession? _activeSession = null;
@@ -1332,6 +1358,7 @@ namespace TelegramWebDAV.Services
                     {
                         session.PendingFiles.Add(raw);
                     }
+
                     string? dir = Path.GetDirectoryName(raw);
                     if (!string.IsNullOrEmpty(dir) && !session.SourceRoots.Exists(r => string.Equals(r, dir, StringComparison.OrdinalIgnoreCase)))
                     {
@@ -1369,10 +1396,10 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Детерминированный метод обнаружения пути к оригинальному файлу-источнику (Zero Timers).
         /// Использует честную пофайловую модель сессии копирования (CopySession):
-        /// - Считывает точный список файлов и корневых папок пачки (CF_HDROP, Desktop).
+        /// - Перехватывает пути через открытые файловые хэндлы explorer.exe (Drag-and-Drop) и системный буфер CF_HDROP (Ctrl+C/V).
+        /// - Без COM/STA-вызовов (100% защита от дедлока Проводника).
         /// - Пофайлово вычеркивает каждый обработанный файл из списка сессии (0 мс доступ для всей пачки).
         /// - Автоматически завершает сессию, как только последний файл пачки взят в обработку.
-        /// - При начале новой операции с новыми путями источников создает новую независимую сессию.
         /// </summary>
         private static string? TryFindSourceFile(string targetFileName, string? relativeVirtualPath = null)
         {
@@ -1401,8 +1428,7 @@ namespace TelegramWebDAV.Services
 
                 // Шаг 2: Файл не входит в активную сессию -> значит началось НОВОЕ копирование!
                 AppLogger.Info("WinFsp", $"[Источник] Запрос нового дерева копирования для нового источника...");
-                var freshRawCandidates = CollectAllCandidates();
-
+                var freshRawCandidates = CollectAllCandidates(targetFileName);
                 if (freshRawCandidates.Count > 0)
                 {
                     var newSession = CreateCopySession(freshRawCandidates);
@@ -1430,18 +1456,19 @@ namespace TelegramWebDAV.Services
             }
         }
 
-        private static List<string> CollectAllCandidates()
+        private static List<string> CollectAllCandidates(string? targetFileName = null)
         {
             var list = new List<string>();
 
             // 1. Системный буфер обмена Windows (Ctrl+C / Ctrl+V, CF_HDROP)
-            // Прямое чтение структуры памяти без блокирующих COM/STA RPC вызовов
+            // Быстрое чтение структуры памяти без блокирующих вызовов
             var clipList = CollectClipboardCandidates();
             list.AddRange(clipList);
 
-            // 2. Рабочий стол Windows
-            var desktopList = CollectDesktopCandidates();
-            list.AddRange(desktopList);
+            // 2. Инспекция файловых дескрипторов (Handles) процесса explorer.exe для Drag-and-Drop
+            // Работает на уровне ядра через NtQuerySystemInformation, без COM/UI сообщений
+            var handleList = CollectExplorerOpenFileHandles(targetFileName);
+            list.AddRange(handleList);
 
             return list;
         }
@@ -1449,7 +1476,7 @@ namespace TelegramWebDAV.Services
         private static List<string> CollectClipboardCandidates()
         {
             var results = new List<string>();
-            for (int attempt = 1; attempt <= 5; attempt++)
+            for (int attempt = 1; attempt <= 3; attempt++)
             {
                 if (OpenClipboard(IntPtr.Zero))
                 {
@@ -1478,25 +1505,136 @@ namespace TelegramWebDAV.Services
                         CloseClipboard();
                     }
                 }
-                Thread.Sleep(20);
+                Thread.Sleep(10);
             }
             return results;
         }
 
-        private static List<string> CollectDesktopCandidates()
+        /// <summary>
+        /// Безопасное извлечение путей к файлам, открытым процессом explorer.exe при перетаскивании (Drag-and-Drop).
+        /// Опрашивает открытые файловые дескрипторы через ядро Windows (NtQuerySystemInformation),
+        /// не отправляя оконных сообщений и не обращаясь к OLE/COM, что полностью исключает дедлоки.
+        /// </summary>
+        private static List<string> CollectExplorerOpenFileHandles(string? targetFileName)
         {
             var results = new List<string>();
             try
             {
-                string userDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                if (!string.IsNullOrEmpty(userDesktop) && Directory.Exists(userDesktop))
-                    results.Add(userDesktop);
+                var explorerProcesses = Process.GetProcessesByName("explorer");
+                if (explorerProcesses.Length == 0) return results;
 
-                string commonDesktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
-                if (!string.IsNullOrEmpty(commonDesktop) && Directory.Exists(commonDesktop))
-                    results.Add(commonDesktop);
+                var explorerPids = new HashSet<int>();
+                foreach (var p in explorerProcesses)
+                {
+                    explorerPids.Add(p.Id);
+                }
+
+                int bufferSize = 2 * 1024 * 1024; // 2 MB
+                IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
+
+                try
+                {
+                    int status = NtQuerySystemInformation(SystemExtendedHandleInformation, buffer, bufferSize, out int returnLength);
+                    if (status != 0 && returnLength > bufferSize)
+                    {
+                        Marshal.FreeHGlobal(buffer);
+                        bufferSize = returnLength + 64 * 1024;
+                        buffer = Marshal.AllocHGlobal(bufferSize);
+                        status = NtQuerySystemInformation(SystemExtendedHandleInformation, buffer, bufferSize, out returnLength);
+                    }
+
+                    if (status != 0) return results;
+
+                    long handleCount = Marshal.ReadInt64(buffer);
+                    IntPtr currentPtr = IntPtr.Add(buffer, 16); // Пропуск NumberOfHandles и Reserved
+
+                    int entrySize = 32; // SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX (32 байта на x64)
+                    var processHandles = new Dictionary<int, IntPtr>();
+                    var pathSb = new StringBuilder(1024);
+                    IntPtr currentProcess = Process.GetCurrentProcess().Handle;
+
+                    try
+                    {
+                        for (long i = 0; i < handleCount; i++)
+                        {
+                            IntPtr entryPtr = IntPtr.Add(currentPtr, (int)(i * entrySize));
+                            int processId = (int)Marshal.ReadInt64(IntPtr.Add(entryPtr, 8)); // UniqueProcessId
+
+                            if (explorerPids.Contains(processId))
+                            {
+                                IntPtr handleValue = (IntPtr)Marshal.ReadInt64(IntPtr.Add(entryPtr, 16)); // HandleValue
+
+                                if (!processHandles.TryGetValue(processId, out IntPtr hProcess))
+                                {
+                                    hProcess = OpenProcess(PROCESS_DUP_HANDLE, false, processId);
+                                    processHandles[processId] = hProcess;
+                                }
+
+                                if (hProcess != IntPtr.Zero)
+                                {
+                                    if (DuplicateHandle(hProcess, handleValue, currentProcess, out IntPtr targetHandle, 0, false, DUPLICATE_SAME_ACCESS))
+                                    {
+                                        try
+                                        {
+                                            if (GetFileType(targetHandle) == FILE_TYPE_DISK)
+                                            {
+                                                pathSb.Clear();
+                                                uint len = GetFinalPathNameByHandle(targetHandle, pathSb, (uint)pathSb.Capacity, VOLUME_NAME_DOS);
+                                                if (len > 0)
+                                                {
+                                                    string path = pathSb.ToString();
+                                                    // Убираем префикс \\?\ если есть
+                                                    if (path.StartsWith(@"\\?\"))
+                                                    {
+                                                        path = path.Substring(4);
+                                                    }
+
+                                                    if (File.Exists(path) || Directory.Exists(path))
+                                                    {
+                                                        string name = Path.GetFileName(path);
+                                                        if (string.IsNullOrEmpty(targetFileName) ||
+                                                            string.Equals(name, targetFileName, StringComparison.OrdinalIgnoreCase))
+                                                        {
+                                                            if (!results.Exists(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase)))
+                                                            {
+                                                                results.Add(path);
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch { }
+                                        finally
+                                        {
+                                            CloseHandle(targetHandle);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        foreach (var kvp in processHandles)
+                        {
+                            if (kvp.Value != IntPtr.Zero)
+                            {
+                                CloseHandle(kvp.Value);
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    Marshal.FreeHGlobal(buffer);
+                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("WinFsp", $"[Handles DragDrop] Ошибка сканирования хэндлов: {ex.Message}");
+            }
+
             return results;
         }
 
