@@ -529,7 +529,7 @@ namespace TelegramWebDAV.Services
                 {
                     IsModified = true,
                     KnownTargetSize = allocationSize > 0 ? (long)allocationSize : -1,
-                    OriginalSourcePath = TryFindSourceFileFromClipboard(itemName, cleanPath)
+                    OriginalSourcePath = TryFindSourceFile(itemName, cleanPath)
                 };
 
                 fileNode = node;
@@ -561,7 +561,7 @@ namespace TelegramWebDAV.Services
             ctx.PipeStream = null;
             ctx.UploadTask = null;
             ctx.UploadCts = null;
-            ctx.OriginalSourcePath = TryFindSourceFileFromClipboard(node.Name, _repository.GetNodeFullPath(node.Id));
+            ctx.OriginalSourcePath = TryFindSourceFile(node.Name, _repository.GetNodeFullPath(node.Id));
             FillFileInfo(node, out fileInfo);
             return STATUS_SUCCESS;
         }
@@ -621,8 +621,8 @@ namespace TelegramWebDAV.Services
 
                         if (string.IsNullOrEmpty(ctx.OriginalSourcePath))
                         {
-                            AppLogger.Info("WinFsp", $"[Write] Пробуем определить источник из буфера обмена для '{nodeName}'...");
-                            ctx.OriginalSourcePath = TryFindSourceFileFromClipboard(nodeName, $"{parentPath}/{nodeName}");
+                            AppLogger.Info("WinFsp", $"[Write] Пробуем определить источник (Drag-and-Drop / Буфер обмена) для '{nodeName}'...");
+                            ctx.OriginalSourcePath = TryFindSourceFile(nodeName, $"{parentPath}/{nodeName}");
                         }
 
                         AudioMetadataResult? audioMeta = null;
@@ -1263,7 +1263,7 @@ namespace TelegramWebDAV.Services
             return lastSlash >= 0 ? p.Substring(lastSlash + 1) : p;
         }
 
-        #region Windows Clipboard Source Detection (CF_HDROP)
+        #region Windows Drag-and-Drop & Clipboard Source Detection (IShellWindows & CF_HDROP)
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -1284,84 +1284,270 @@ namespace TelegramWebDAV.Services
 
         private const uint CF_HDROP = 15;
 
+        private static readonly object _candidatesLock = new object();
+        private static readonly List<string> _cachedCandidates = new List<string>();
+        private static DateTime _cachedCandidatesTime = DateTime.MinValue;
+        private static readonly TimeSpan CacheTtl = TimeSpan.FromSeconds(3);
+
         /// <summary>
-        /// Извлекает путь к оригинальному файлу-источнику из буфера обмена Windows (Ctrl+C / Ctrl+V).
-        /// Поддерживает как одиночные файлы, так и папки со вложенными файлами.
-        /// Позволяет генерировать превью и считывать метаданные напрямую из оригинала,
-        /// полностью исключая промежуточную буферизацию гигабайтных файлов на системный диск C:.
+        /// Универсальный метод обнаружения пути к оригинальному файлу-источнику.
+        /// Поддерживает:
+        /// 1) Drag-and-Drop (перетаскивание мышью из окон Проводника через COM IShellWindows);
+        /// 2) Копирование через системный буфер обмена Windows (Ctrl+C / Ctrl+V, CF_HDROP);
+        /// 3) Перетаскивание с Рабочего стола Windows (Desktop).
+        /// Включает сессионное кэширование снимка кандидатов на 3 секунды для пакетного копирования.
         /// </summary>
-        private static string? TryFindSourceFileFromClipboard(string targetFileName, string? relativeVirtualPath = null)
+        private static string? TryFindSourceFile(string targetFileName, string? relativeVirtualPath = null)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return null;
 
-            AppLogger.Info("WinFsp", $"[Буфер обмена] Старт поиска оригинального файла для '{targetFileName}' (виртуальный путь: '{relativeVirtualPath}')...");
+            AppLogger.Info("WinFsp", $"[Источник] Старт поиска оригинального файла для '{targetFileName}' (виртуальный путь: '{relativeVirtualPath}')...");
 
-            for (int attempt = 1; attempt <= 10; attempt++)
+            // Шаг 1: Быстрая проверка недавнего сессионного кэша (0 мс)
+            lock (_candidatesLock)
+            {
+                if (DateTime.UtcNow - _cachedCandidatesTime < CacheTtl && _cachedCandidates.Count > 0)
+                {
+                    foreach (var candidate in _cachedCandidates)
+                    {
+                        string? match = CheckCandidate(candidate, targetFileName, relativeVirtualPath);
+                        if (match != null)
+                        {
+                            AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение из сессионного кэша (0 мс): '{match}'");
+                            return match;
+                        }
+                    }
+                }
+            }
+
+            // Шаг 2: Активный сбор кандидатов (Drag-and-Drop + Буфер обмена + Рабочий стол)
+            var freshCandidates = CollectAllCandidates();
+
+            lock (_candidatesLock)
+            {
+                _cachedCandidates.Clear();
+                foreach (var c in freshCandidates)
+                {
+                    if (!_cachedCandidates.Exists(x => string.Equals(x, c, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        _cachedCandidates.Add(c);
+                    }
+                }
+                _cachedCandidatesTime = DateTime.UtcNow;
+
+                AppLogger.Info("WinFsp", $"[Источник] Собрано уникальных кандидатов источников: {_cachedCandidates.Count}");
+
+                for (int i = 0; i < _cachedCandidates.Count; i++)
+                {
+                    string candidate = _cachedCandidates[i];
+                    string? match = CheckCandidate(candidate, targetFileName, relativeVirtualPath);
+                    if (match != null)
+                    {
+                        return match;
+                    }
+                }
+            }
+
+            AppLogger.Warn("WinFsp", $"[Источник] Проверено {_cachedCandidates.Count} кандидатов, но ни один не совпал с целевым именем '{targetFileName}'.");
+            return null;
+        }
+
+        private static List<string> CollectAllCandidates()
+        {
+            var list = new List<string>();
+
+            // 1. Окна Проводника Windows Shell (Drag-and-Drop)
+            var shellList = CollectExplorerCandidates();
+            list.AddRange(shellList);
+
+            // 2. Системный буфер обмена Windows (Ctrl+C / Ctrl+V)
+            var clipList = CollectClipboardCandidates();
+            list.AddRange(clipList);
+
+            // 3. Рабочий стол Windows
+            var desktopList = CollectDesktopCandidates();
+            list.AddRange(desktopList);
+
+            return list;
+        }
+
+        private static List<string> CollectExplorerCandidates()
+        {
+            var results = new List<string>();
+            try
+            {
+                var clsid = new Guid("9BA05972-F6A8-11CF-A442-00A0C90A8F39"); // CLSID_ShellWindows
+                var shellWindowsType = Type.GetTypeFromCLSID(clsid);
+                if (shellWindowsType == null) return results;
+
+                object? shellWindows = Activator.CreateInstance(shellWindowsType);
+                if (shellWindows == null) return results;
+
+                try
+                {
+                    dynamic windows = shellWindows;
+                    int count = (int)windows.Count;
+                    AppLogger.Debug("WinFsp", $"[Shell DragDrop] Обнаружено открытых окон Explorer: {count}");
+
+                    for (int i = 0; i < count; i++)
+                    {
+                        object? winObj = null;
+                        try
+                        {
+                            winObj = windows.Item(i);
+                            if (winObj == null) continue;
+
+                            dynamic window = winObj;
+                            object? docObj = null;
+                            try
+                            {
+                                docObj = window.Document;
+                                if (docObj == null) continue;
+
+                                dynamic doc = docObj;
+
+                                // 1. Выделенные пользователем элементы при Drag-and-Drop (SelectedItems)
+                                object? selectedObj = null;
+                                try
+                                {
+                                    selectedObj = doc.SelectedItems();
+                                    if (selectedObj != null)
+                                    {
+                                        dynamic selectedItems = selectedObj;
+                                        int selCount = (int)selectedItems.Count;
+                                        for (int s = 0; s < selCount; s++)
+                                        {
+                                            object? itemObj = null;
+                                            try
+                                            {
+                                                itemObj = selectedItems.Item(s);
+                                                if (itemObj != null)
+                                                {
+                                                    dynamic item = itemObj;
+                                                    string? path = item.Path as string;
+                                                    if (!string.IsNullOrEmpty(path))
+                                                    {
+                                                        results.Add(path);
+                                                    }
+                                                }
+                                            }
+                                            catch { }
+                                            finally
+                                            {
+                                                if (itemObj != null && Marshal.IsComObject(itemObj))
+                                                    Marshal.ReleaseComObject(itemObj);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch { }
+                                finally
+                                {
+                                    if (selectedObj != null && Marshal.IsComObject(selectedObj))
+                                        Marshal.ReleaseComObject(selectedObj);
+                                }
+
+                                // 2. Путь к самой открытой папке окна-источника (Folder.Self.Path)
+                                try
+                                {
+                                    dynamic folder = doc.Folder;
+                                    if (folder != null)
+                                    {
+                                        dynamic self = folder.Self;
+                                        if (self != null)
+                                        {
+                                            string? folderPath = self.Path as string;
+                                            if (!string.IsNullOrEmpty(folderPath) && Directory.Exists(folderPath))
+                                            {
+                                                results.Add(folderPath);
+                                            }
+                                        }
+                                    }
+                                }
+                                catch { }
+                            }
+                            catch { }
+                            finally
+                            {
+                                if (docObj != null && Marshal.IsComObject(docObj))
+                                    Marshal.ReleaseComObject(docObj);
+                            }
+                        }
+                        catch { }
+                        finally
+                        {
+                            if (winObj != null && Marshal.IsComObject(winObj))
+                                Marshal.ReleaseComObject(winObj);
+                        }
+                    }
+                }
+                finally
+                {
+                    if (Marshal.IsComObject(shellWindows))
+                        Marshal.ReleaseComObject(shellWindows);
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("WinFsp", $"[Shell DragDrop] Опрос IShellWindows: {ex.Message}");
+            }
+
+            return results;
+        }
+
+        private static List<string> CollectClipboardCandidates()
+        {
+            var results = new List<string>();
+            for (int attempt = 1; attempt <= 5; attempt++)
             {
                 if (OpenClipboard(IntPtr.Zero))
                 {
                     try
                     {
                         IntPtr hDrop = GetClipboardData(CF_HDROP);
-                        if (hDrop == IntPtr.Zero)
+                        if (hDrop != IntPtr.Zero)
                         {
-                            int lastErr = Marshal.GetLastWin32Error();
-                            if (attempt == 10)
+                            uint fileCount = DragQueryFileCount(hDrop, 0xFFFFFFFFU, IntPtr.Zero, 0);
+                            var sb = new StringBuilder(1024);
+                            for (uint i = 0; i < fileCount; i++)
                             {
-                                AppLogger.Warn("WinFsp", $"[Буфер обмена] OpenClipboard успешен, но формат CF_HDROP (файлы) отсутствует в буфере обмена (код Win32: {lastErr}).");
-                            }
-                            continue;
-                        }
-
-                        uint fileCount = DragQueryFileCount(hDrop, 0xFFFFFFFFU, IntPtr.Zero, 0);
-                        AppLogger.Info("WinFsp", $"[Буфер обмена] Успешно получен CF_HDROP, файлов в буфере: {fileCount}");
-
-                        var sb = new StringBuilder(1024);
-
-                        for (uint i = 0; i < fileCount; i++)
-                        {
-                            sb.Clear();
-                            uint len = DragQueryFile(hDrop, i, sb, (uint)sb.Capacity);
-                            if (len > 0)
-                            {
-                                string candidatePath = sb.ToString();
-                                string candidateName = Path.GetFileName(candidatePath);
-
-                                AppLogger.Info("WinFsp", $"[Буфер обмена] Элемент #{i + 1}/{fileCount}: '{candidatePath}' (имя: '{candidateName}')");
-
-                                string? matchedPath = CheckCandidate(candidatePath, targetFileName, relativeVirtualPath);
-                                if (matchedPath != null)
+                                sb.Clear();
+                                uint len = DragQueryFile(hDrop, i, sb, (uint)sb.Capacity);
+                                if (len > 0)
                                 {
-                                    return matchedPath;
+                                    results.Add(sb.ToString());
                                 }
                             }
                         }
-
-                        AppLogger.Warn("WinFsp", $"[Буфер обмена] Проверено {fileCount} записей, но ни одна не совпала с целевым именем '{targetFileName}'.");
-                        return null;
+                        break;
                     }
-                    catch (Exception ex)
-                    {
-                        AppLogger.Error("WinFsp", $"[Буфер обмена] Ошибка чтения содержимого буфера обмена: {ex.Message}", ex);
-                        return null;
-                    }
+                    catch { }
                     finally
                     {
                         CloseClipboard();
                     }
                 }
-                else
-                {
-                    int lastErr = Marshal.GetLastWin32Error();
-                    AppLogger.Debug("WinFsp", $"[Буфер обмена] Попытка {attempt}/10: OpenClipboard вернул false (код ошибки Win32: {lastErr})");
-                }
-
-                Thread.Sleep(25);
+                Thread.Sleep(20);
             }
+            return results;
+        }
 
-            AppLogger.Warn("WinFsp", $"[Буфер обмена] Не удалось захватить буфер обмена за 10 попыток (буфер удерживается Проводником или другим процессом).");
-            return null;
+        private static List<string> CollectDesktopCandidates()
+        {
+            var results = new List<string>();
+            try
+            {
+                string userDesktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                if (!string.IsNullOrEmpty(userDesktop) && Directory.Exists(userDesktop))
+                    results.Add(userDesktop);
+
+                string commonDesktop = Environment.GetFolderPath(Environment.SpecialFolder.CommonDesktopDirectory);
+                if (!string.IsNullOrEmpty(commonDesktop) && Directory.Exists(commonDesktop))
+                    results.Add(commonDesktop);
+            }
+            catch { }
+            return results;
         }
 
         private static string? CheckCandidate(string candidatePath, string targetFileName, string? relativeVirtualPath)
@@ -1413,7 +1599,7 @@ namespace TelegramWebDAV.Services
                 }
                 catch (Exception ex)
                 {
-                    AppLogger.Debug("WinFsp", $"[Буфер обмена] Ошибка перечисления файлов в папке '{candidatePath}': {ex.Message}");
+                    AppLogger.Debug("WinFsp", $"[Источник] Ошибка перечисления файлов в папке '{candidatePath}': {ex.Message}");
                 }
             }
 
@@ -1425,12 +1611,12 @@ namespace TelegramWebDAV.Services
             try
             {
                 using var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                AppLogger.Info("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл '{filePath}' существует и доступен для чтения (размер: {fs.Length} байт).");
+                AppLogger.Info("WinFsp", $"[Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл '{filePath}' существует и доступен для чтения (размер: {fs.Length} байт).");
                 return filePath;
             }
             catch (Exception fsEx)
             {
-                AppLogger.Warn("WinFsp", $"[Буфер обмена] НАЙДЕНО СОВПАДЕНИЕ, но файл '{filePath}' заблокирован другим процессом: {fsEx.Message}");
+                AppLogger.Warn("WinFsp", $"[Источник] НАЙДЕНО СОВПАДЕНИЕ, но файл '{filePath}' заблокирован другим процессом: {fsEx.Message}");
                 return filePath;
             }
         }
