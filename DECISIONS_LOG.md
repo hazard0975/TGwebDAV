@@ -864,4 +864,21 @@ _telegramService.UpdateSettings(_settings);
 4. **Аудит сетевых запросов удаления Telegram (`TelegramService.DeleteBatchWithBisectAsync`)**:
    Логируются точные массивы Message ID, передаваемые в вызовы Telegram API (`Channels_DeleteMessages` / `Messages_DeleteMessages`), а также результаты алгоритма бинарного деления (биссекции) при сбоях.
 
+## 34. Синхронизация встроенной схемы базы данных (EmbeddedFallbackSchema) и авто-создание таблиц telegram_accounts / telegram_channels
+
+### Проблема:
+При первом запуске приложения с чистой базой данных возникала критическая ошибка:
+`SQLite Error 1: 'no such table: telegram_accounts'` в методе `TelegramService.ConnectAsync()`.
+
+### Первопричина (Root Cause Analysis):
+1. **Рассинхронизация `EmbeddedFallbackSchema`**: В `DatabaseManager.cs` строковая константа `EmbeddedFallbackSchema` содержала устаревшую схему базы без таблиц `telegram_accounts`, `telegram_channels` и колонки `nodes.tg_channel_id`.
+2. При запуске исполняемого файла (когда внешний файл `Schema.sql` отсутствовал рядом с бинарником) `DatabaseManager` применял встроенную резервную схему, из-за чего таблицы аккаунтов и каналов физически не создавались.
+3. Кроме того, метод `InitializeDatabase()` вызывал `ApplySchema()` только если отсутствовала таблица `nodes`.
+
+### Принятое решение (Root Cause Fix):
+1. **Синхронизация `EmbeddedFallbackSchema`**: Таблицы `telegram_accounts`, `telegram_channels` и колонка `nodes.tg_channel_id` добавлены непосредственно в константу `EmbeddedFallbackSchema` в `DatabaseManager.cs`.
+2. **Безусловное применение схемы при старте (`ApplySchema`)**: В `InitializeDatabase()` вызов `ApplySchema` выполняется всегда (все инструкции содержат `CREATE TABLE/INDEX IF NOT EXISTS`), гарантируя появление всех необходимых таблиц.
+3. **Метод `EnsureSchemaColumns`**: Добавлена автоматическая проверка и создание колонки `tg_channel_id` в таблице `nodes` через `ALTER TABLE nodes ADD COLUMN tg_channel_id INTEGER;` для гарантированной целостности схемы.
+
+
 

@@ -29,17 +29,43 @@ namespace TelegramWebDAV.Database
                 // Включаем WAL режим для конкурентного доступа
                 EnableWalMode(connection);
 
-                if (!HasNodesTable(connection))
+                // Всегда применяем схему (все команды содержат CREATE TABLE/INDEX IF NOT EXISTS)
+                ApplySchema(connection);
+                EnsureSchemaColumns(connection);
+                SeedSystemFolders(connection);
+            }
+        }
+
+        private void EnsureSchemaColumns(SqliteConnection connection)
+        {
+            try
+            {
+                // Проверяем наличие колонки tg_channel_id в nodes
+                using var cmd = connection.CreateCommand();
+                cmd.CommandText = "PRAGMA table_info(nodes);";
+                using var reader = cmd.ExecuteReader();
+                bool hasTgChannelId = false;
+                while (reader.Read())
                 {
-                    Console.WriteLine("Создание структуры базы данных SQLite (base.db)...");
-                    ApplySchema(connection);
-                    SeedSystemFolders(connection);
-                    Console.WriteLine("База данных успешно инициализирована.");
+                    string colName = reader["name"]?.ToString() ?? "";
+                    if (colName.Equals("tg_channel_id", StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasTgChannelId = true;
+                        break;
+                    }
                 }
-                else
+                reader.Close();
+
+                if (!hasTgChannelId)
                 {
-                    SeedSystemFolders(connection);
+                    using var alterCmd = connection.CreateCommand();
+                    alterCmd.CommandText = "ALTER TABLE nodes ADD COLUMN tg_channel_id INTEGER;";
+                    alterCmd.ExecuteNonQuery();
                 }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("Database", $"Проверка схемы колонок: {ex.Message}");
             }
         }
 
@@ -72,6 +98,33 @@ namespace TelegramWebDAV.Database
         private const string EmbeddedFallbackSchema = @"
 PRAGMA journal_mode=WAL;
 
+-- Таблица аккаунтов / профилей Telegram
+CREATE TABLE IF NOT EXISTS telegram_accounts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    api_id INTEGER NOT NULL DEFAULT 0,
+    api_hash TEXT NOT NULL DEFAULT '',
+    phone_number TEXT,
+    session_path TEXT NOT NULL DEFAULT 'user.session',
+    is_active INTEGER NOT NULL DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Таблица подключенных каналов-хранилищ Telegram
+CREATE TABLE IF NOT EXISTS telegram_channels (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER NOT NULL,
+    channel_id INTEGER NOT NULL UNIQUE,
+    access_hash INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    is_primary INTEGER NOT NULL DEFAULT 1,
+    is_active INTEGER NOT NULL DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES telegram_accounts(id) ON DELETE CASCADE
+);
+
+-- Таблица узлов виртуальной файловой системы (Файлы и Папки)
 CREATE TABLE IF NOT EXISTS nodes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     parent_id INTEGER,
@@ -82,6 +135,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     in_trash INTEGER NOT NULL DEFAULT 0,
     tg_message_id INTEGER,
     tg_preview_message_id INTEGER,
+    tg_channel_id INTEGER,
     size INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -91,6 +145,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     FOREIGN KEY (original_node_id) REFERENCES nodes(id) ON DELETE CASCADE
 );
 
+-- Таблица трекинга незавершенных загрузок (для докачки при обрывах)
 CREATE TABLE IF NOT EXISTS upload_progress (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     node_id INTEGER NOT NULL,
