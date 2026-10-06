@@ -1566,7 +1566,7 @@ namespace TelegramWebDAV.Services
                     AppLogger.Info("WinFsp", $"[Handles DragDrop] В системе обнаружено {handleCount} дескрипторов ядра.");
 
                     IntPtr currentPtr = IntPtr.Add(buffer, 16); // Пропуск NumberOfHandles и Reserved (16 байт)
-                    int entrySize = 32; // SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX (32 байта на 64-битной Windows)
+                    int entrySize = IntPtr.Size == 8 ? 40 : 28; // SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX (40 байт на x64, 28 на x86)
                     var processHandles = new Dictionary<int, IntPtr>();
                     var pathSb = new StringBuilder(1024);
                     IntPtr currentProcess = Process.GetCurrentProcess().Handle;
@@ -1613,6 +1613,7 @@ namespace TelegramWebDAV.Services
                                                         path = path.Substring(4);
                                                     }
 
+                                                    AppLogger.Debug("WinFsp", $"[Handles DragDrop] Проверен путь хэндла (PID {processId}): '{path}'");
                                                     if (File.Exists(path) || Directory.Exists(path))
                                                     {
                                                         string name = Path.GetFileName(path);
