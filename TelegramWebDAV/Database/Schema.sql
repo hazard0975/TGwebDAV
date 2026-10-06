@@ -1,6 +1,32 @@
 -- Включение режима WAL для безопасного конкурентного доступа
 PRAGMA journal_mode=WAL;
 
+-- Таблица аккаунтов / профилей Telegram
+CREATE TABLE IF NOT EXISTS telegram_accounts (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    api_id INTEGER NOT NULL DEFAULT 0,
+    api_hash TEXT NOT NULL DEFAULT '',
+    phone_number TEXT,
+    session_path TEXT NOT NULL DEFAULT 'user.session',
+    is_active INTEGER NOT NULL DEFAULT 1,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Таблица подключенных каналов-хранилищ Telegram
+CREATE TABLE IF NOT EXISTS telegram_channels (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    account_id INTEGER NOT NULL,
+    channel_id INTEGER NOT NULL UNIQUE,          -- Telegram Channel ID (например 4323453199)
+    access_hash INTEGER NOT NULL,                 -- Telegram Channel Access Hash
+    title TEXT NOT NULL,                          -- Название канала ("Telegram WebDAV Drive")
+    is_primary INTEGER NOT NULL DEFAULT 1,        -- 1 = основной канал для новых загрузок
+    is_active INTEGER NOT NULL DEFAULT 1,         -- 1 = активен для чтения/записи
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (account_id) REFERENCES telegram_accounts(id) ON DELETE CASCADE
+);
+
 -- Таблица узлов виртуальной файловой системы (Файлы и Папки)
 CREATE TABLE IF NOT EXISTS nodes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -12,6 +38,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     in_trash INTEGER NOT NULL DEFAULT 0,
     tg_message_id INTEGER,
     tg_preview_message_id INTEGER,
+    tg_channel_id INTEGER,
     size INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,

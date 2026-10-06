@@ -611,10 +611,25 @@ namespace TelegramWebDAV.Services
         private TL.InputPeer? _storagePeer;
         private readonly SemaphoreSlim _storageLock = new SemaphoreSlim(1, 1);
 
-        public void UpdateApiCredentials(int apiId, string apiHash)
+        public void UpdateApiCredentials(int apiId, string apiHash, string? channelTitle = null)
         {
-            _currentSettings.Telegram.ApiId = apiId;
-            _currentSettings.Telegram.ApiHash = apiHash;
+            if (_repository != null)
+            {
+                var account = _repository.SaveTelegramAccount(apiId, apiHash);
+                if (!string.IsNullOrWhiteSpace(channelTitle))
+                {
+                    var primary = _repository.GetPrimaryTelegramChannel(account.Id);
+                    if (primary != null)
+                    {
+                        _repository.UpdateChannelTitle(primary.ChannelId, channelTitle.Trim());
+                    }
+                    else
+                    {
+                        _repository.SaveOrUpdateTelegramChannel(account.Id, 0, 0, channelTitle.Trim(), isPrimary: true);
+                    }
+                }
+            }
+
             _storagePeer = null;
             try { _client?.Dispose(); } catch { }
             _client = null;
@@ -623,14 +638,15 @@ namespace TelegramWebDAV.Services
 
         public void UpdateStorageChannelTitle(string title)
         {
-            if (string.IsNullOrWhiteSpace(title)) return;
-            if (_currentSettings.Telegram.StorageChannelTitle != title)
+            if (string.IsNullOrWhiteSpace(title) || _repository == null) return;
+            var account = _repository.GetActiveTelegramAccount();
+            if (account == null) return;
+
+            var primary = _repository.GetPrimaryTelegramChannel(account.Id);
+            if (primary != null && primary.Title != title.Trim())
             {
-                _currentSettings.Telegram.StorageChannelTitle = title.Trim();
-                _currentSettings.Telegram.StorageChannelId = 0; // Сбрасываем ID для поиска или создания с новым именем
-                _currentSettings.Telegram.StorageChannelAccessHash = 0;
+                _repository.UpdateChannelTitle(primary.ChannelId, title.Trim());
                 _storagePeer = null;
-                _configManager.Save(_currentSettings);
             }
         }
 
@@ -640,15 +656,38 @@ namespace TelegramWebDAV.Services
         public void InvalidateStoragePeer()
         {
             _storagePeer = null;
-            _currentSettings.Telegram.StorageChannelAccessHash = 0;
-            _configManager.Save(_currentSettings);
         }
 
         /// <summary>
         /// Получает или создает приватный канал-хранилище в Telegram для WebDAV файлов.
+        /// Поддерживает явный выбор канала по specificChannelId.
         /// </summary>
-        public async Task<TL.InputPeer> GetStoragePeerAsync()
+        public async Task<TL.InputPeer> GetStoragePeerAsync(long? specificChannelId = null)
         {
+            // Если передан конкретный ID канала (например, папка привязана к отдельной группе):
+            if (specificChannelId.HasValue && specificChannelId.Value != 0)
+            {
+                var channelInfo = _repository?.GetTelegramChannel(specificChannelId.Value);
+                if (channelInfo != null && channelInfo.AccessHash != 0)
+                {
+                    return new TL.InputPeerChannel(channelInfo.ChannelId, channelInfo.AccessHash);
+                }
+
+                if (_client != null && IsAuthorized)
+                {
+                    var chats = await _client.Messages_GetAllChats();
+                    if (chats.chats.TryGetValue(specificChannelId.Value, out var ch) && ch is TL.Channel channel)
+                    {
+                        var account = _repository?.GetActiveTelegramAccount();
+                        if (account != null && _repository != null)
+                        {
+                            _repository.SaveOrUpdateTelegramChannel(account.Id, channel.ID, channel.access_hash, channel.Title, isPrimary: false);
+                        }
+                        return channel.ToInputPeer();
+                    }
+                }
+            }
+
             if (_storagePeer != null)
                 return _storagePeer;
 
@@ -661,39 +700,43 @@ namespace TelegramWebDAV.Services
                 if (_client == null || !IsAuthorized)
                     throw new InvalidOperationException("Клиент Telegram не авторизован.");
 
-                string targetTitle = string.IsNullOrWhiteSpace(_currentSettings.Telegram.StorageChannelTitle)
-                    ? "Telegram WebDAV Drive"
-                    : _currentSettings.Telegram.StorageChannelTitle.Trim();
+                var account = _repository?.GetActiveTelegramAccount();
+                if (account == null)
+                    throw new InvalidOperationException("Аккаунт Telegram не найден в базе данных.");
 
-                // 1. Если StorageChannelId и StorageChannelAccessHash уже сохранены в настройках — мгновенно используем их без сетевых запросов!
-                if (_currentSettings.Telegram.StorageChannelId != 0 && _currentSettings.Telegram.StorageChannelAccessHash != 0)
+                var primaryChannel = _repository?.GetPrimaryTelegramChannel(account.Id);
+                string targetTitle = primaryChannel != null && !string.IsNullOrWhiteSpace(primaryChannel.Title)
+                    ? primaryChannel.Title.Trim()
+                    : "Telegram WebDAV Drive";
+
+                // 1. Если StorageChannelId и StorageChannelAccessHash уже сохранены в базе SQLite — мгновенно используем их без сетевых вызовов!
+                if (primaryChannel != null && primaryChannel.ChannelId != 0 && primaryChannel.AccessHash != 0)
                 {
-                    _storagePeer = new TL.InputPeerChannel(_currentSettings.Telegram.StorageChannelId, _currentSettings.Telegram.StorageChannelAccessHash);
-                    AppLogger.Info("TelegramService", $"Подключен канал-хранилище из настроек: '{targetTitle}' (ID: {_currentSettings.Telegram.StorageChannelId}).");
+                    _storagePeer = new TL.InputPeerChannel(primaryChannel.ChannelId, primaryChannel.AccessHash);
+                    AppLogger.Info("TelegramService", $"Подключен канал-хранилище из базы SQLite: '{primaryChannel.Title}' (ID: {primaryChannel.ChannelId}).");
                     return _storagePeer;
                 }
 
-                // 2. Если StorageChannelId есть, но хэш еще не сохранен (или сброшен) — находим канал в диалогах
-                if (_currentSettings.Telegram.StorageChannelId != 0)
+                // 2. Если StorageChannelId есть, но хэш еще не сохранен — находим канал в диалогах
+                if (primaryChannel != null && primaryChannel.ChannelId != 0)
                 {
                     var chats = await _client.Messages_GetAllChats();
-                    if (chats.chats.TryGetValue(_currentSettings.Telegram.StorageChannelId, out var savedChat) &&
+                    if (chats.chats.TryGetValue(primaryChannel.ChannelId, out var savedChat) &&
                         savedChat is TL.Channel sc)
                     {
                         _storagePeer = sc.ToInputPeer();
-                        _currentSettings.Telegram.StorageChannelAccessHash = sc.access_hash;
-                        _configManager.Save(_currentSettings);
-                        AppLogger.Info("TelegramService", $"Подключен существующий приватный канал-хранилище: {sc.Title} (ID: {sc.ID}, AccessHash сохранен в конфиг).");
+                        _repository?.SaveOrUpdateTelegramChannel(account.Id, sc.ID, sc.access_hash, sc.Title, isPrimary: true);
+                        AppLogger.Info("TelegramService", $"Подключен существующий приватный канал-хранилище: {sc.Title} (ID: {sc.ID}, AccessHash сохранен в SQLite).");
                         return _storagePeer;
                     }
                     else
                     {
-                        AppLogger.Warn("TelegramService", $"Канал с сохраненным ID {_currentSettings.Telegram.StorageChannelId} не найден в диалогах пользователя. Создаем новый.");
+                        AppLogger.Warn("TelegramService", $"Канал с сохраненным ID {primaryChannel.ChannelId} не найден в диалогах пользователя. Создаем новый.");
                     }
                 }
 
-                // 3. Если ID канала нет в конфиге (StorageChannelId == 0), создаем новый приватный канал
-                AppLogger.Info("TelegramService", $"ID канала-хранилища не задан. Создание нового приватного канала '{targetTitle}'...");
+                // 3. Если ID канала нет в БД, создаем новый приватный канал
+                AppLogger.Info("TelegramService", $"Основной канал-хранилище не найден. Создание нового приватного канала '{targetTitle}'...");
                 var createReq = new TL.Methods.Channels_CreateChannel
                 {
                     flags = TL.Methods.Channels_CreateChannel.Flags.broadcast,
@@ -710,10 +753,8 @@ namespace TelegramWebDAV.Services
                         if (chat is TL.Channel newCh)
                         {
                             _storagePeer = newCh.ToInputPeer();
-                            _currentSettings.Telegram.StorageChannelId = newCh.ID;
-                            _currentSettings.Telegram.StorageChannelAccessHash = newCh.access_hash;
-                            _configManager.Save(_currentSettings);
-                            AppLogger.Info("TelegramService", $"Создан новый приватный канал '{newCh.Title}' (ID: {newCh.ID}). ID и AccessHash сохранены в конфиг.");
+                            _repository?.SaveOrUpdateTelegramChannel(account.Id, newCh.ID, newCh.access_hash, newCh.Title, isPrimary: true);
+                            AppLogger.Info("TelegramService", $"Создан новый приватный канал '{newCh.Title}' (ID: {newCh.ID}). Записан в SQLite.");
                             return _storagePeer;
                         }
                     }
@@ -737,15 +778,16 @@ namespace TelegramWebDAV.Services
             SetPacingDelay(_currentSettings.Server.PacingDelayMs);
             AppLogger.Info("TelegramService", $"[Streaming Config] Воркеры: {_currentSettings.Server.DownloadWorkerCount} | Пейсинг: {_globalPacingDelayMs} мс | RAM Кэш: {_currentSettings.Server.MemoryCacheSizeMb} МБ (TTL: {_currentSettings.Server.ChunkMemoryCacheTtlMinutes} мин) | Буфер аудио: {_currentSettings.Server.AudioPrefetchWindowMb} МБ | Окно стриминга: {_currentSettings.Server.StreamingPrefetchWindowMb} МБ | Дисковый кэш: {(_currentSettings.Server.EnableDiskReadCache ? "ВКЛ" : "ВЫКЛ (100% RAM)")}");
             
-            if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
+            var account = _repository?.GetActiveTelegramAccount();
+            if (account == null || account.ApiId == 0 || string.IsNullOrWhiteSpace(account.ApiHash))
             {
-                LastError = "API ID или API Hash не заданы.";
+                LastError = "API ID или API Hash не заданы в базе данных.";
                 IsAuthorized = false;
                 CurrentStep = AuthStep.NeedsPhone;
                 return;
             }
 
-            string sessionPath = _currentSettings.Telegram.SessionPath;
+            string sessionPath = account.SessionPath;
             if (!File.Exists(sessionPath))
             {
                 AppLogger.Info("TelegramService", "Файл сессии не найден. Ожидается ввод номера телефона пользователем.");
@@ -782,15 +824,20 @@ namespace TelegramWebDAV.Services
         {
             if (_client != null) return;
 
-            string sessionPath = _currentSettings.Telegram.SessionPath;
+            var account = _repository?.GetActiveTelegramAccount();
+            int apiId = account?.ApiId ?? 0;
+            string apiHash = account?.ApiHash ?? string.Empty;
+            string sessionPath = account?.SessionPath ?? "user.session";
+            string? phoneNumber = account?.PhoneNumber;
+
             _client = new WTelegram.Client(what =>
             {
                 switch (what)
                 {
-                    case "api_id": return _currentSettings.Telegram.ApiId.ToString();
-                    case "api_hash": return _currentSettings.Telegram.ApiHash;
+                    case "api_id": return apiId > 0 ? apiId.ToString() : null;
+                    case "api_hash": return !string.IsNullOrEmpty(apiHash) ? apiHash : null;
                     case "session_pathname": return sessionPath;
-                    case "phone_number": return _currentSettings.Telegram.PhoneNumber;
+                    case "phone_number": return phoneNumber;
                     default: return null;
                 }
             });
@@ -865,13 +912,13 @@ namespace TelegramWebDAV.Services
                     };
                     AppLogger.Info("TelegramService", $"Успешная авторизация пользователя: {u.first_name} (ID: {u.ID})");
 
-                    if (!string.IsNullOrEmpty(u.phone))
+                    if (!string.IsNullOrEmpty(u.phone) && _repository != null)
                     {
                         string phoneFormatted = u.phone.StartsWith("+") ? u.phone : "+" + u.phone;
-                        if (_currentSettings.Telegram.PhoneNumber != phoneFormatted)
+                        var account = _repository.GetActiveTelegramAccount();
+                        if (account != null && account.PhoneNumber != phoneFormatted)
                         {
-                            _currentSettings.Telegram.PhoneNumber = phoneFormatted;
-                            _configManager.Save(_currentSettings);
+                            _repository.UpdateAccountPhone(account.Id, phoneFormatted);
                         }
                     }
 
@@ -937,7 +984,8 @@ namespace TelegramWebDAV.Services
             if (string.IsNullOrWhiteSpace(input))
                 throw new ArgumentException("Входные данные не могут быть пустыми", nameof(input));
 
-            if (_currentSettings.Telegram.ApiId == 0 || string.IsNullOrWhiteSpace(_currentSettings.Telegram.ApiHash))
+            var account = _repository?.GetActiveTelegramAccount();
+            if (account == null || account.ApiId == 0 || string.IsNullOrWhiteSpace(account.ApiHash))
             {
                 LastError = "Сначала укажите и сохраните API ID и API Hash.";
                 throw new InvalidOperationException(LastError);
@@ -951,8 +999,7 @@ namespace TelegramWebDAV.Services
                 {
                     phoneFormatted = "+" + phoneFormatted;
                 }
-                _currentSettings.Telegram.PhoneNumber = phoneFormatted;
-                _configManager.Save(_currentSettings);
+                _repository?.UpdateAccountPhone(account.Id, phoneFormatted);
 
                 try { _client?.Dispose(); } catch { }
                 _client = null;
@@ -1013,20 +1060,26 @@ namespace TelegramWebDAV.Services
             }
             catch { }
 
-            if (File.Exists(_currentSettings.Telegram.SessionPath))
+            var account = _repository?.GetActiveTelegramAccount();
+            string sessionPath = account?.SessionPath ?? "user.session";
+
+            if (File.Exists(sessionPath))
             {
                 try
                 {
-                    File.Delete(_currentSettings.Telegram.SessionPath);
+                    File.Delete(sessionPath);
                 }
                 catch { }
             }
-            _currentSettings.Telegram.PhoneNumber = null;
-            _configManager.Save(_currentSettings);
+            if (account != null && _repository != null)
+            {
+                _repository.ClearAccountSession(account.Id);
+            }
 
             IsAuthorized = false;
             CurrentStep = AuthStep.NeedsPhone;
             CurrentUser = null;
+            _storagePeer = null;
             AppLogger.Info("TelegramService", "Сессия сброшена.");
         }
 

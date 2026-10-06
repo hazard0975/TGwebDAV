@@ -15,6 +15,7 @@ namespace TelegramWebDAV.Models
         // Telegram Data
         public int? TgMessageId { get; set; }
         public int? TgPreviewMessageId { get; set; }
+        public long? TgChannelId { get; set; }
         
         // Versioning & Trash
         public int Version { get; set; } = 1;

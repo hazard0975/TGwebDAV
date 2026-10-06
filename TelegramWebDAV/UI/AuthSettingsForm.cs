@@ -320,13 +320,16 @@ namespace TelegramWebDAV.UI
             var grpTelegramApi = UIFactory.CreateGroupBox("Параметры приложения (my.telegram.org)");
             var pnlTgApiInner = UIFactory.CreateVerticalContainer();
 
-            _txtApiId = new TextBox { Text = _settings.Telegram.ApiId > 0 ? _settings.Telegram.ApiId.ToString() : "", Width = 150, Font = UITheme.BaseFont };
+            var currentAccount = _repository.GetActiveTelegramAccount();
+            var primaryChannel = _repository.GetPrimaryTelegramChannel(currentAccount?.Id);
+
+            _txtApiId = new TextBox { Text = currentAccount != null && currentAccount.ApiId > 0 ? currentAccount.ApiId.ToString() : "", Width = 150, Font = UITheme.BaseFont };
             var rowApiId = UIFactory.CreateSettingRow("API ID:", _txtApiId, 90, 240);
 
-            _txtApiHash = new TextBox { Text = _settings.Telegram.ApiHash ?? "", Width = 150, UseSystemPasswordChar = true, Font = UITheme.BaseFont };
+            _txtApiHash = new TextBox { Text = currentAccount?.ApiHash ?? "", Width = 150, UseSystemPasswordChar = true, Font = UITheme.BaseFont };
             var rowApiHash = UIFactory.CreateSettingRow("API Hash:", _txtApiHash, 90, 240);
 
-            _txtChannelTitle = new TextBox { Text = string.IsNullOrWhiteSpace(_settings.Telegram.StorageChannelTitle) ? "Telegram WebDAV Drive" : _settings.Telegram.StorageChannelTitle, Width = 150, Font = UITheme.BaseFont };
+            _txtChannelTitle = new TextBox { Text = primaryChannel != null && !string.IsNullOrWhiteSpace(primaryChannel.Title) ? primaryChannel.Title : "Telegram WebDAV Drive", Width = 150, Font = UITheme.BaseFont };
             var rowChannel = UIFactory.CreateSettingRow("Имя канала:", _txtChannelTitle, 90, 240);
 
             var btnSaveApi = UIFactory.CreateButton("Сохранить параметры Telegram", (s, e) => SaveTelegramApiKeys(), width: 240);
@@ -697,21 +700,16 @@ namespace TelegramWebDAV.UI
                 _txtChannelTitle.Text = channelTitle;
             }
 
-            _settings.Telegram.ApiId = apiId;
-            _settings.Telegram.ApiHash = apiHash;
-            _settings.Telegram.StorageChannelTitle = channelTitle;
-            _configManager.Save(_settings);
-
-            _telegramService.UpdateApiCredentials(apiId, apiHash);
-            _telegramService.UpdateStorageChannelTitle(channelTitle);
+            _telegramService.UpdateApiCredentials(apiId, apiHash, channelTitle);
             UpdateUiState();
 
-            MessageBox.Show("Настройки Telegram (API ID, Hash и имя канала) успешно сохранены!", "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Настройки Telegram (API ID, Hash и имя канала) успешно сохранены в базу данных!", "Telegram WebDAV", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void UpdateUiState()
         {
-            bool hasApiKeys = _settings.Telegram.ApiId > 0 && !string.IsNullOrEmpty(_settings.Telegram.ApiHash);
+            var account = _repository.GetActiveTelegramAccount();
+            bool hasApiKeys = account != null && account.ApiId > 0 && !string.IsNullOrEmpty(account.ApiHash);
 
             if (_telegramService.IsAuthorized)
             {

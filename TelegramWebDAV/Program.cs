@@ -158,7 +158,7 @@ namespace TelegramWebDAV
 
                 if (node != null && node.TgMessageId.HasValue && node.TgMessageId.Value > 1)
                 {
-                    long channelId = settings.Telegram.StorageChannelId;
+                    long channelId = node.TgChannelId ?? repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
                     if (channelId != 0)
                     {
                         string cleanChannel = channelId.ToString().Trim();

@@ -569,4 +569,15 @@
     2. **Поддержка Рабочего стола Windows**: Включение системных каталогов Desktop пользователя и Common Desktop в пул поиска кандидатов.
     3. **Честная пофайловая модель сессии копирования (`CopySession`, Zero Timers)**: Полный отказ от любых таймеров и эвристик. В начале операции фиксируется точный список файлов пачки (`PendingFiles`) и каталоги источников (`SourceRoots`). По мере обработки файлов на виртуальном диске они поштучно вычеркиваются из сессии. Когда последний файл пачки обработан (`PendingFiles.Count == 0`), сессия автоматически завершается. При поступлении файла вне активной сессии (или из другой корневой папки) мгновенно инициируется новая независимая сессия.
     4. **Универсальная цепочка источников**: Метод `TryFindSourceFile` объединяет Shell Drag-and-Drop, системный буфер обмена (`CF_HDROP`) и десктоп с последующей верификацией через `CheckCandidate` и `VerifyReadable`.
+- [x] **7.49. Перенос учетных записей и каналов Telegram в SQLite БД (`telegram_accounts` / `telegram_channels`) и очистка JSON**:
+  - **Контекст**: Выделение настроек хоста (в `appsettings.json`) и критических данных хранилища/каналов (в `base.db`).
+  - **Реализовано**:
+    1. **Схема БД (`Schema.sql`)**:
+       - Создана таблица `telegram_accounts` (`id`, `api_id`, `api_hash`, `phone_number`, `session_path`, `is_active`, `created_at`, `updated_at`).
+       - Создана таблица `telegram_channels` (`id`, `account_id`, `channel_id`, `access_hash`, `title`, `is_primary`, `is_active`, `created_at`, `updated_at`).
+       - В таблицу `nodes` добавлена колонка `tg_channel_id` с индексами для будущей маршрутизации папок по разным каналам Telegram.
+    2. **Модели и Репозиторий**: Добавлены классы `TelegramAccount.cs`, `TelegramChannel.cs` и полный набор CRUD-методов в `NodeRepository`.
+    3. **Очистка `AppSettings.cs`**: Секция `Telegram` полностью удалена из JSON. `appsettings.json` содержит только системные настройки приложения.
+    4. **Интеграция в UI и `TelegramService`**: Настройки Telegram загружаются и сохраняются напрямую через SQLite базу данных.
+
 

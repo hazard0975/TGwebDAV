@@ -880,7 +880,7 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Создание или перезапись файла с поддержкой версионирования, локального inline_data для микрофайлов и сохранения оригинальных дат
         /// </summary>
-        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, int? tgPreviewMessageId = null, byte[]? inlineData = null, DateTime? lastModified = null, DateTime? creationDate = null)
+        public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, int? tgPreviewMessageId = null, byte[]? inlineData = null, DateTime? lastModified = null, DateTime? creationDate = null, long? tgChannelId = null)
         {
             using (var connection = _dbManager.GetConnection())
             {
@@ -906,6 +906,7 @@ namespace TelegramWebDAV.Database
                                     size = @size,
                                     tg_message_id = @tgMessageId,
                                     tg_preview_message_id = @tgPreviewMessageId,
+                                    tg_channel_id = @tgChannelId,
                                     inline_data = @inlineData,
                                     updated_at = " + (lastModified.HasValue ? "@updatedAt" : "CURRENT_TIMESTAMP") +
                                     (creationDate.HasValue ? ", created_at = @createdAt" : "") + @"
@@ -915,6 +916,7 @@ namespace TelegramWebDAV.Database
                             updateCmd.Parameters.AddWithValue("@size", size);
                             updateCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
+                            updateCmd.Parameters.AddWithValue("@tgChannelId", (object?)tgChannelId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
                             if (lastModified.HasValue)
@@ -963,10 +965,10 @@ namespace TelegramWebDAV.Database
                             insertCmd.CommandText = @"
                                 INSERT INTO nodes (
                                     parent_id, original_node_id, name, is_dir, version, in_trash,
-                                    tg_message_id, tg_preview_message_id, size, created_at, updated_at, inline_data
+                                    tg_message_id, tg_preview_message_id, tg_channel_id, size, created_at, updated_at, inline_data
                                 ) VALUES (
                                     @parentId, @originalId, @name, 0, @version, 0,
-                                    @tgMessageId, @tgPreviewMessageId, @size, @createdAt, @updatedAt, @inlineData
+                                    @tgMessageId, @tgPreviewMessageId, @tgChannelId, @size, @createdAt, @updatedAt, @inlineData
                                 );";
                             insertCmd.Parameters.AddWithValue("@parentId", parentId);
                             insertCmd.Parameters.AddWithValue("@name", name);
@@ -975,6 +977,7 @@ namespace TelegramWebDAV.Database
                             insertCmd.Parameters.AddWithValue("@originalId", existingNode.Id);
                             insertCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
+                            insertCmd.Parameters.AddWithValue("@tgChannelId", (object?)tgChannelId ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                                 ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
@@ -1049,16 +1052,17 @@ namespace TelegramWebDAV.Database
                         command.CommandText = @"
                             INSERT INTO nodes (
                                 parent_id, original_node_id, name, is_dir, version, in_trash,
-                                tg_message_id, tg_preview_message_id, size, created_at, updated_at, inline_data
+                                tg_message_id, tg_preview_message_id, tg_channel_id, size, created_at, updated_at, inline_data
                             ) VALUES (
                                 @parentId, NULL, @name, 0, 1, 0,
-                                @tgMessageId, @tgPreviewMessageId, @size, @createdAt, @updatedAt, @inlineData
+                                @tgMessageId, @tgPreviewMessageId, @tgChannelId, @size, @createdAt, @updatedAt, @inlineData
                             );";
                         command.Parameters.AddWithValue("@parentId", parentId);
                         command.Parameters.AddWithValue("@name", name);
                         command.Parameters.AddWithValue("@size", size);
                         command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                         command.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@tgChannelId", (object?)tgChannelId ?? DBNull.Value);
                         command.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                         command.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                             ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
@@ -1200,6 +1204,7 @@ namespace TelegramWebDAV.Database
                 InTrash = Convert.ToInt32(reader["in_trash"]) == 1,
                 TgMessageId = reader["tg_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_message_id"]) : (int?)null,
                 TgPreviewMessageId = reader["tg_preview_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_preview_message_id"]) : (int?)null,
+                TgChannelId = reader["tg_channel_id"] != DBNull.Value ? Convert.ToInt64(reader["tg_channel_id"]) : (long?)null,
                 Size = Convert.ToInt64(reader["size"]),
                 CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
                 UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc),
@@ -1424,6 +1429,271 @@ namespace TelegramWebDAV.Database
                 return result != null ? Convert.ToInt32(result) : 0;
             }
         }
+
+        #region Telegram Accounts & Channels Repository
+
+        /// <summary>
+        /// Возвращает активный аккаунт Telegram.
+        /// </summary>
+        public TelegramAccount? GetActiveTelegramAccount()
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM telegram_accounts WHERE is_active = 1 ORDER BY id ASC LIMIT 1;";
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new TelegramAccount
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            ApiId = Convert.ToInt32(reader["api_id"]),
+                            ApiHash = Convert.ToString(reader["api_hash"]) ?? string.Empty,
+                            PhoneNumber = reader["phone_number"] != DBNull.Value ? Convert.ToString(reader["phone_number"]) : null,
+                            SessionPath = Convert.ToString(reader["session_path"]) ?? "user.session",
+                            IsActive = Convert.ToInt32(reader["is_active"]) == 1,
+                            CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
+                            UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc)
+                        };
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Создает или обновляет активный аккаунт Telegram.
+        /// </summary>
+        public TelegramAccount SaveTelegramAccount(int apiId, string apiHash, string? phoneNumber = null, string sessionPath = "user.session")
+        {
+            var active = GetActiveTelegramAccount();
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                if (active != null)
+                {
+                    command.CommandText = @"
+                        UPDATE telegram_accounts 
+                        SET api_id = @apiId, api_hash = @apiHash, phone_number = @phone, session_path = @session, updated_at = CURRENT_TIMESTAMP 
+                        WHERE id = @id;";
+                    command.Parameters.AddWithValue("@apiId", apiId);
+                    command.Parameters.AddWithValue("@apiHash", apiHash);
+                    command.Parameters.AddWithValue("@phone", (object?)phoneNumber ?? (object?)active.PhoneNumber ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@session", sessionPath);
+                    command.Parameters.AddWithValue("@id", active.Id);
+                    command.ExecuteNonQuery();
+                    return GetActiveTelegramAccount()!;
+                }
+                else
+                {
+                    command.CommandText = @"
+                        INSERT INTO telegram_accounts (api_id, api_hash, phone_number, session_path, is_active)
+                        VALUES (@apiId, @apiHash, @phone, @session, 1);";
+                    command.Parameters.AddWithValue("@apiId", apiId);
+                    command.Parameters.AddWithValue("@apiHash", apiHash);
+                    command.Parameters.AddWithValue("@phone", (object?)phoneNumber ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@session", sessionPath);
+                    command.ExecuteNonQuery();
+                    return GetActiveTelegramAccount()!;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Обновляет телефон для аккаунта.
+        /// </summary>
+        public void UpdateAccountPhone(int accountId, string? phoneNumber)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE telegram_accounts SET phone_number = @phone, updated_at = CURRENT_TIMESTAMP WHERE id = @id;";
+                command.Parameters.AddWithValue("@phone", (object?)phoneNumber ?? DBNull.Value);
+                command.Parameters.AddWithValue("@id", accountId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Сбрасывает авторизацию (удаляет телефон) для аккаунта.
+        /// </summary>
+        public void ClearAccountSession(int accountId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE telegram_accounts SET phone_number = NULL, updated_at = CURRENT_TIMESTAMP WHERE id = @id;";
+                command.Parameters.AddWithValue("@id", accountId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Возвращает основной канал-хранилище (Primary).
+        /// </summary>
+        public TelegramChannel? GetPrimaryTelegramChannel(int? accountId = null)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                if (accountId.HasValue)
+                {
+                    command.CommandText = "SELECT * FROM telegram_channels WHERE account_id = @accountId AND is_primary = 1 AND is_active = 1 LIMIT 1;";
+                    command.Parameters.AddWithValue("@accountId", accountId.Value);
+                }
+                else
+                {
+                    command.CommandText = "SELECT * FROM telegram_channels WHERE is_primary = 1 AND is_active = 1 LIMIT 1;";
+                }
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return MapReaderToTelegramChannel(reader);
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Возвращает канал-хранилище по его Telegram Channel ID.
+        /// </summary>
+        public TelegramChannel? GetTelegramChannel(long channelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT * FROM telegram_channels WHERE channel_id = @channelId LIMIT 1;";
+                command.Parameters.AddWithValue("@channelId", channelId);
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return MapReaderToTelegramChannel(reader);
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Возвращает список всех каналов.
+        /// </summary>
+        public List<TelegramChannel> GetTelegramChannels(int? accountId = null)
+        {
+            var list = new List<TelegramChannel>();
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                if (accountId.HasValue)
+                {
+                    command.CommandText = "SELECT * FROM telegram_channels WHERE account_id = @accountId AND is_active = 1 ORDER BY id ASC;";
+                    command.Parameters.AddWithValue("@accountId", accountId.Value);
+                }
+                else
+                {
+                    command.CommandText = "SELECT * FROM telegram_channels WHERE is_active = 1 ORDER BY id ASC;";
+                }
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(MapReaderToTelegramChannel(reader));
+                    }
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Сохраняет или обновляет канал-хранилище в SQLite.
+        /// </summary>
+        public void SaveOrUpdateTelegramChannel(int accountId, long channelId, long accessHash, string title, bool isPrimary = true)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    if (isPrimary)
+                    {
+                        using (var resetCmd = connection.CreateCommand())
+                        {
+                            resetCmd.Transaction = transaction;
+                            resetCmd.CommandText = "UPDATE telegram_channels SET is_primary = 0 WHERE account_id = @accountId;";
+                            resetCmd.Parameters.AddWithValue("@accountId", accountId);
+                            resetCmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    using (var upsertCmd = connection.CreateCommand())
+                    {
+                        upsertCmd.Transaction = transaction;
+                        upsertCmd.CommandText = @"
+                            INSERT INTO telegram_channels (account_id, channel_id, access_hash, title, is_primary, is_active)
+                            VALUES (@accountId, @channelId, @accessHash, @title, @isPrimary, 1)
+                            ON CONFLICT(channel_id) DO UPDATE SET
+                                account_id = excluded.account_id,
+                                access_hash = excluded.access_hash,
+                                title = excluded.title,
+                                is_primary = excluded.is_primary,
+                                is_active = 1,
+                                updated_at = CURRENT_TIMESTAMP;
+                        ";
+                        upsertCmd.Parameters.AddWithValue("@accountId", accountId);
+                        upsertCmd.Parameters.AddWithValue("@channelId", channelId);
+                        upsertCmd.Parameters.AddWithValue("@accessHash", accessHash);
+                        upsertCmd.Parameters.AddWithValue("@title", title);
+                        upsertCmd.Parameters.AddWithValue("@isPrimary", isPrimary ? 1 : 0);
+                        upsertCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Обновляет название канала в базе.
+        /// </summary>
+        public void UpdateChannelTitle(long channelId, string newTitle)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE telegram_channels SET title = @title, updated_at = CURRENT_TIMESTAMP WHERE channel_id = @channelId;";
+                command.Parameters.AddWithValue("@title", newTitle);
+                command.Parameters.AddWithValue("@channelId", channelId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private static TelegramChannel MapReaderToTelegramChannel(SqliteDataReader reader)
+        {
+            return new TelegramChannel
+            {
+                Id = Convert.ToInt32(reader["id"]),
+                AccountId = Convert.ToInt32(reader["account_id"]),
+                ChannelId = Convert.ToInt64(reader["channel_id"]),
+                AccessHash = Convert.ToInt64(reader["access_hash"]),
+                Title = Convert.ToString(reader["title"]) ?? string.Empty,
+                IsPrimary = Convert.ToInt32(reader["is_primary"]) == 1,
+                IsActive = Convert.ToInt32(reader["is_active"]) == 1,
+                CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
+                UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc)
+            };
+        }
+
+        #endregion
     }
 
     public class PendingCaptionItem

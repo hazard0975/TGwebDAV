@@ -11,7 +11,6 @@ namespace TelegramWebDAV.Config
 
     public class AppSettings
     {
-        public TelegramSettings Telegram { get; set; } = new TelegramSettings();
         public ServerSettings Server { get; set; } = new ServerSettings();
         public DatabaseSettings Database { get; set; } = new DatabaseSettings();
         public LoggingSettings Logging { get; set; } = new LoggingSettings();
@@ -24,17 +23,6 @@ namespace TelegramWebDAV.Config
             DriveName = Server.DriveName,
             AutoMountOnStartup = Server.MountDrive
         };
-    }
-
-    public class TelegramSettings
-    {
-        public int ApiId { get; set; } = 0;
-        public string ApiHash { get; set; } = "";
-        public string SessionPath { get; set; } = "user.session";
-        public string StorageChannelTitle { get; set; } = "Telegram WebDAV Drive";
-        public long StorageChannelId { get; set; } = 0;
-        public long StorageChannelAccessHash { get; set; } = 0;
-        public string? PhoneNumber { get; set; }
     }
 
     public class ServerSettings
