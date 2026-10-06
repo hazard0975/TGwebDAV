@@ -33,8 +33,12 @@ namespace TelegramWebDAV.Database
                 {
                     Console.WriteLine("Создание структуры базы данных SQLite (base.db)...");
                     ApplySchema(connection);
-                    SeedRootFolder(connection);
+                    SeedSystemFolders(connection);
                     Console.WriteLine("База данных успешно инициализирована.");
+                }
+                else
+                {
+                    SeedSystemFolders(connection);
                 }
 
                 // Гарантируем наличие всех необходимых столбцов (миграция старых БД)
@@ -74,19 +78,16 @@ PRAGMA journal_mode=WAL;
 CREATE TABLE IF NOT EXISTS nodes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     parent_id INTEGER,
+    original_node_id INTEGER,
     name TEXT NOT NULL,
     is_dir INTEGER NOT NULL DEFAULT 0,
+    version INTEGER NOT NULL DEFAULT 1,
+    in_trash INTEGER NOT NULL DEFAULT 0,
+    tg_message_id INTEGER,
+    tg_preview_message_id INTEGER,
     size INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    tg_message_id INTEGER,
-    tg_preview_message_id INTEGER,
-    
-    version INTEGER NOT NULL DEFAULT 1,
-    is_deleted INTEGER NOT NULL DEFAULT 0,
-    original_node_id INTEGER,
-    
     inline_data BLOB,
     
     FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE,
@@ -106,7 +107,7 @@ CREATE TABLE IF NOT EXISTS upload_progress (
 
 CREATE INDEX IF NOT EXISTS idx_nodes_parent_id ON nodes(parent_id);
 CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
-CREATE INDEX IF NOT EXISTS idx_nodes_is_deleted ON nodes(is_deleted);
+CREATE INDEX IF NOT EXISTS idx_nodes_in_trash ON nodes(in_trash);
 CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_id);
 
 CREATE TABLE IF NOT EXISTS pending_caption_updates (
@@ -199,6 +200,21 @@ CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_
                 }
             }
 
+            // Поддержка миграции is_deleted -> in_trash для старых баз
+            if (existingColumns.Contains("is_deleted") && !existingColumns.Contains("in_trash"))
+            {
+                try
+                {
+                    using (var renameCmd = connection.CreateCommand())
+                    {
+                        renameCmd.CommandText = "ALTER TABLE nodes RENAME COLUMN is_deleted TO in_trash;";
+                        renameCmd.ExecuteNonQuery();
+                    }
+                    existingColumns.Add("in_trash");
+                }
+                catch { }
+            }
+
             void AddColumnIfMissing(string columnName, string columnDefinition)
             {
                 if (!existingColumns.Contains(columnName))
@@ -212,7 +228,7 @@ CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_
             }
 
             AddColumnIfMissing("version", "INTEGER NOT NULL DEFAULT 1");
-            AddColumnIfMissing("is_deleted", "INTEGER NOT NULL DEFAULT 0");
+            AddColumnIfMissing("in_trash", "INTEGER NOT NULL DEFAULT 0");
             AddColumnIfMissing("original_node_id", "INTEGER");
             AddColumnIfMissing("inline_data", "BLOB");
             AddColumnIfMissing("tg_preview_message_id", "INTEGER");
@@ -264,17 +280,32 @@ CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_
             return path1;
         }
 
-        private void SeedRootFolder(SqliteConnection connection)
+        private void SeedSystemFolders(SqliteConnection connection)
         {
-            // Создаем корневую директорию, если её нет
-            using (var command = connection.CreateCommand())
+            // 1. Создаем корневую директорию 'Root' (ID = 1), если её нет
+            using (var rootCmd = connection.CreateCommand())
             {
-                command.CommandText = @"
+                rootCmd.CommandText = @"
                     INSERT INTO nodes (parent_id, name, is_dir)
                     SELECT NULL, 'Root', 1
                     WHERE NOT EXISTS (SELECT 1 FROM nodes WHERE parent_id IS NULL AND name = 'Root');
                 ";
-                command.ExecuteNonQuery();
+                rootCmd.ExecuteNonQuery();
+            }
+
+            // 2. Создаем системную корзину '.Trash' (ID = 2) в корневом каталоге, если её нет
+            using (var trashCmd = connection.CreateCommand())
+            {
+                trashCmd.CommandText = @"
+                    INSERT INTO nodes (parent_id, name, is_dir)
+                    SELECT (SELECT id FROM nodes WHERE parent_id IS NULL AND name = 'Root' LIMIT 1), '.Trash', 1
+                    WHERE NOT EXISTS (
+                        SELECT 1 FROM nodes 
+                        WHERE parent_id = (SELECT id FROM nodes WHERE parent_id IS NULL AND name = 'Root' LIMIT 1) 
+                          AND name = '.Trash'
+                    );
+                ";
+                trashCmd.ExecuteNonQuery();
             }
         }
 

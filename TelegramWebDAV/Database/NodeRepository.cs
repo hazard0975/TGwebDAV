@@ -57,7 +57,7 @@ namespace TelegramWebDAV.Database
                     using (var connection = _dbManager.GetConnection())
                     using (var command = connection.CreateCommand())
                     {
-                        command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                        command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 0 LIMIT 1;";
                         command.Parameters.AddWithValue("@parentId", currentNode.Id);
                         command.Parameters.AddWithValue("@name", part);
                         currentNode = ReadNode(command);
@@ -70,7 +70,7 @@ namespace TelegramWebDAV.Database
                 using (var connection = _dbManager.GetConnection())
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = @isDeleted LIMIT 1;";
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = @isDeleted LIMIT 1;";
                     command.Parameters.AddWithValue("@parentId", currentNode.Id);
                     command.Parameters.AddWithValue("@name", part);
                     command.Parameters.AddWithValue("@isDeleted", expectedDeleted);
@@ -170,7 +170,7 @@ namespace TelegramWebDAV.Database
             using (var connection = _dbManager.GetConnection())
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT version, size, tg_message_id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                command.CommandText = "SELECT version, size, tg_message_id FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 0 LIMIT 1;";
                 command.Parameters.AddWithValue("@parentId", parentId);
                 command.Parameters.AddWithValue("@name", fileName);
                 using (var reader = command.ExecuteReader())
@@ -210,12 +210,12 @@ namespace TelegramWebDAV.Database
                     if (currentId == trash.Id) return true;
                     using (var cmd = connection.CreateCommand())
                     {
-                        cmd.CommandText = "SELECT parent_id, is_deleted FROM nodes WHERE id = @id LIMIT 1;";
+                        cmd.CommandText = "SELECT parent_id, in_trash FROM nodes WHERE id = @id LIMIT 1;";
                         cmd.Parameters.AddWithValue("@id", currentId);
                         using (var reader = cmd.ExecuteReader())
                         {
                             if (!reader.Read()) return false;
-                            bool isDel = Convert.ToInt32(reader["is_deleted"]) == 1;
+                            bool isDel = Convert.ToInt32(reader["in_trash"]) == 1;
                             if (isDel) return true;
                             if (reader.IsDBNull(0)) return false;
                             currentId = Convert.ToInt32(reader["parent_id"]);
@@ -280,7 +280,7 @@ namespace TelegramWebDAV.Database
                     int? foundId = null;
                     using (var searchCmd = connection.CreateCommand())
                     {
-                        searchCmd.CommandText = "SELECT id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_dir = 1 AND is_deleted = 1 LIMIT 1;";
+                        searchCmd.CommandText = "SELECT id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_dir = 1 AND in_trash = 1 LIMIT 1;";
                         searchCmd.Parameters.AddWithValue("@parentId", currentTrashParentId);
                         searchCmd.Parameters.AddWithValue("@name", folderName);
                         var scalar = searchCmd.ExecuteScalar();
@@ -298,7 +298,7 @@ namespace TelegramWebDAV.Database
                     {
                         using (var insertCmd = connection.CreateCommand())
                         {
-                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, is_deleted) VALUES (@parentId, @name, 1, 1); SELECT last_insert_rowid();";
+                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, in_trash) VALUES (@parentId, @name, 1, 1); SELECT last_insert_rowid();";
                             insertCmd.Parameters.AddWithValue("@parentId", currentTrashParentId);
                             insertCmd.Parameters.AddWithValue("@name", folderName);
                             currentTrashParentId = Convert.ToInt32(insertCmd.ExecuteScalar());
@@ -323,11 +323,11 @@ namespace TelegramWebDAV.Database
             {
                 if (isTrash)
                 {
-                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND is_deleted = 1;";
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND in_trash = 1;";
                 }
                 else
                 {
-                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND is_deleted = 0;";
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND in_trash = 0;";
                 }
                 command.Parameters.AddWithValue("@parentId", parentId);
                 
@@ -351,7 +351,7 @@ namespace TelegramWebDAV.Database
             using (var command = connection.CreateCommand())
             {
                 // Проверяем, нет ли уже такого узла
-                command.CommandText = "SELECT COUNT(*) FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0;";
+                command.CommandText = "SELECT COUNT(*) FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 0;";
                 command.Parameters.AddWithValue("@parentId", parentId);
                 command.Parameters.AddWithValue("@name", name);
                 long count = Convert.ToInt64(command.ExecuteScalar() ?? 0);
@@ -396,7 +396,7 @@ namespace TelegramWebDAV.Database
                     Node? nextNode = null;
                     using (var searchCmd = connection.CreateCommand())
                     {
-                        searchCmd.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                        searchCmd.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 0 LIMIT 1;";
                         searchCmd.Parameters.AddWithValue("@parentId", currentNode.Id);
                         searchCmd.Parameters.AddWithValue("@name", part);
                         nextNode = ReadNode(searchCmd);
@@ -416,7 +416,7 @@ namespace TelegramWebDAV.Database
                         // Папка отсутствует — атомарно создаем её
                         using (var insertCmd = connection.CreateCommand())
                         {
-                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, is_deleted) VALUES (@parentId, @name, 1, 0); SELECT last_insert_rowid();";
+                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, in_trash) VALUES (@parentId, @name, 1, 0); SELECT last_insert_rowid();";
                             insertCmd.Parameters.AddWithValue("@parentId", currentNode.Id);
                             insertCmd.Parameters.AddWithValue("@name", part);
                             int newFolderId = Convert.ToInt32(insertCmd.ExecuteScalar());
@@ -446,7 +446,7 @@ namespace TelegramWebDAV.Database
             if (node == null) return;
 
             // Защита: если узел уже удален или находится в корзине, повторное мягкое удаление не требуется
-            if (node.IsDeleted || IsNodeInTrash(node.Id))
+            if (node.InTrash || IsNodeInTrash(node.Id))
             {
                 AppLogger.Warn("NodeRepository", $"Попытка мягкого удаления узла ID {node.Id} ('{node.Name}'), который уже находится в корзине. Операция пропущена.");
                 return;
@@ -470,7 +470,7 @@ namespace TelegramWebDAV.Database
                         using (var checkCmd = connection.CreateCommand())
                         {
                             checkCmd.Transaction = transaction;
-                            checkCmd.CommandText = "SELECT id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_dir = 1 AND is_deleted = 1 LIMIT 1;";
+                            checkCmd.CommandText = "SELECT id FROM nodes WHERE parent_id = @parentId AND name = @name AND is_dir = 1 AND in_trash = 1 LIMIT 1;";
                             checkCmd.Parameters.AddWithValue("@parentId", targetTrashParentId);
                             checkCmd.Parameters.AddWithValue("@name", node.Name);
                             var scalar = checkCmd.ExecuteScalar();
@@ -488,7 +488,7 @@ namespace TelegramWebDAV.Database
                             using (var moveChildrenCmd = connection.CreateCommand())
                             {
                                 moveChildrenCmd.Transaction = transaction;
-                                moveChildrenCmd.CommandText = "UPDATE nodes SET parent_id = @existingId, is_deleted = 1, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @nodeId;";
+                                moveChildrenCmd.CommandText = "UPDATE nodes SET parent_id = @existingId, in_trash = 1, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @nodeId;";
                                 moveChildrenCmd.Parameters.AddWithValue("@existingId", existingTrashFolderId.Value);
                                 moveChildrenCmd.Parameters.AddWithValue("@nodeId", nodeId);
                                 moveChildrenCmd.ExecuteNonQuery();
@@ -509,7 +509,7 @@ namespace TelegramWebDAV.Database
                             using (var command = connection.CreateCommand())
                             {
                                 command.Transaction = transaction;
-                                command.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashParentId, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
+                                command.CommandText = "UPDATE nodes SET in_trash = 1, parent_id = @trashParentId, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
                                 command.Parameters.AddWithValue("@trashParentId", targetTrashParentId);
                                 command.Parameters.AddWithValue("@nodeId", nodeId);
                                 command.ExecuteNonQuery();
@@ -530,7 +530,7 @@ namespace TelegramWebDAV.Database
                             using (var checkCmd = connection.CreateCommand())
                             {
                                 checkCmd.Transaction = transaction;
-                                checkCmd.CommandText = "SELECT COUNT(*) FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 1 AND id != @nodeId;";
+                                checkCmd.CommandText = "SELECT COUNT(*) FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 1 AND id != @nodeId;";
                                 checkCmd.Parameters.AddWithValue("@parentId", targetTrashParentId);
                                 checkCmd.Parameters.AddWithValue("@name", finalName);
                                 checkCmd.Parameters.AddWithValue("@nodeId", nodeId);
@@ -545,7 +545,7 @@ namespace TelegramWebDAV.Database
                         using (var command = connection.CreateCommand())
                         {
                             command.Transaction = transaction;
-                            command.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashParentId, name = @name, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
+                            command.CommandText = "UPDATE nodes SET in_trash = 1, parent_id = @trashParentId, name = @name, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
                             command.Parameters.AddWithValue("@trashParentId", targetTrashParentId);
                             command.Parameters.AddWithValue("@name", finalName);
                             command.Parameters.AddWithValue("@nodeId", nodeId);
@@ -785,7 +785,7 @@ namespace TelegramWebDAV.Database
                     using (var command = connection.CreateCommand())
                     {
                         command.Transaction = transaction;
-                        command.CommandText = "UPDATE nodes SET parent_id = @newParentId, name = @newName, is_deleted = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
+                        command.CommandText = "UPDATE nodes SET parent_id = @newParentId, name = @newName, in_trash = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
                         command.Parameters.AddWithValue("@newParentId", newParentId);
                         command.Parameters.AddWithValue("@newName", newName);
                         command.Parameters.AddWithValue("@isDeleted", isDeletedVal);
@@ -793,7 +793,7 @@ namespace TelegramWebDAV.Database
                         command.ExecuteNonQuery();
                     }
 
-                    // Если перемещаемый узел - папка, рекурсивно обновляем флаг is_deleted для всех её потомков
+                    // Если перемещаемый узел - папка, рекурсивно обновляем флаг in_trash для всех её потомков
                     UpdateChildrenDeletedStateRecursive(connection, transaction, nodeId, isDeletedVal);
 
                     transaction.Commit();
@@ -831,7 +831,7 @@ namespace TelegramWebDAV.Database
             using (var updateCmd = connection.CreateCommand())
             {
                 updateCmd.Transaction = transaction;
-                updateCmd.CommandText = "UPDATE nodes SET is_deleted = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @parentId;";
+                updateCmd.CommandText = "UPDATE nodes SET in_trash = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @parentId;";
                 updateCmd.Parameters.AddWithValue("@isDeleted", isDeletedVal);
                 updateCmd.Parameters.AddWithValue("@parentId", parentId);
                 updateCmd.ExecuteNonQuery();
@@ -884,7 +884,7 @@ namespace TelegramWebDAV.Database
                 Node? existingNode = null;
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 0 LIMIT 1;";
                     command.Parameters.AddWithValue("@parentId", parentId);
                     command.Parameters.AddWithValue("@name", name);
                     existingNode = ReadNode(command);
@@ -947,7 +947,7 @@ namespace TelegramWebDAV.Database
                                 string nameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(existingNode.Name);
                                 trashName = $"{nameWithoutExt}_v{existingNode.Version}{ext}";
                             }
-                            updateCmd.CommandText = "UPDATE nodes SET is_deleted = 1, parent_id = @trashId, name = @trashName WHERE id = @nodeId;";
+                            updateCmd.CommandText = "UPDATE nodes SET in_trash = 1, parent_id = @trashId, name = @trashName WHERE id = @nodeId;";
                             updateCmd.Parameters.AddWithValue("@trashId", targetTrashParentId);
                             updateCmd.Parameters.AddWithValue("@trashName", trashName);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
@@ -959,11 +959,11 @@ namespace TelegramWebDAV.Database
                             insertCmd.Transaction = transaction;
                             insertCmd.CommandText = @"
                                 INSERT INTO nodes (
-                                    parent_id, name, is_dir, size, version, original_node_id, tg_message_id, tg_preview_message_id,
-                                    inline_data, created_at, updated_at
+                                    parent_id, original_node_id, name, is_dir, version, in_trash,
+                                    tg_message_id, tg_preview_message_id, size, created_at, updated_at, inline_data
                                 ) VALUES (
-                                    @parentId, @name, 0, @size, @version, @originalId, @tgMessageId, @tgPreviewMessageId,
-                                    @inlineData, @createdAt, @updatedAt
+                                    @parentId, @originalId, @name, 0, @version, 0,
+                                    @tgMessageId, @tgPreviewMessageId, @size, @createdAt, @updatedAt, @inlineData
                                 );";
                             insertCmd.Parameters.AddWithValue("@parentId", parentId);
                             insertCmd.Parameters.AddWithValue("@name", name);
@@ -1045,11 +1045,11 @@ namespace TelegramWebDAV.Database
                     {
                         command.CommandText = @"
                             INSERT INTO nodes (
-                                parent_id, name, is_dir, size, version, tg_message_id, tg_preview_message_id,
-                                inline_data, created_at, updated_at
+                                parent_id, original_node_id, name, is_dir, version, in_trash,
+                                tg_message_id, tg_preview_message_id, size, created_at, updated_at, inline_data
                             ) VALUES (
-                                @parentId, @name, 0, @size, 1, @tgMessageId, @tgPreviewMessageId,
-                                @inlineData, @createdAt, @updatedAt
+                                @parentId, NULL, @name, 0, 1, 0,
+                                @tgMessageId, @tgPreviewMessageId, @size, @createdAt, @updatedAt, @inlineData
                             );";
                         command.Parameters.AddWithValue("@parentId", parentId);
                         command.Parameters.AddWithValue("@name", name);
@@ -1081,7 +1081,7 @@ namespace TelegramWebDAV.Database
                 Node? node = null;
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND is_deleted = 0 LIMIT 1;";
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = 0 LIMIT 1;";
                     command.Parameters.AddWithValue("@parentId", parentId);
                     command.Parameters.AddWithValue("@name", name);
                     node = ReadNode(command);
@@ -1186,19 +1186,44 @@ namespace TelegramWebDAV.Database
 
         private Node MapReaderToNode(SqliteDataReader reader)
         {
+            int inTrashVal = 0;
+            try
+            {
+                if (reader["in_trash"] != DBNull.Value)
+                    inTrashVal = Convert.ToInt32(reader["in_trash"]);
+            }
+            catch
+            {
+                try
+                {
+                    if (reader["is_deleted"] != DBNull.Value)
+                        inTrashVal = Convert.ToInt32(reader["is_deleted"]);
+                }
+                catch { }
+            }
+
+            int? originalNodeId = null;
+            try
+            {
+                if (reader["original_node_id"] != DBNull.Value)
+                    originalNodeId = Convert.ToInt32(reader["original_node_id"]);
+            }
+            catch { }
+
             var node = new Node
             {
                 Id = Convert.ToInt32(reader["id"]),
                 ParentId = reader["parent_id"] != DBNull.Value ? Convert.ToInt32(reader["parent_id"]) : (int?)null,
+                OriginalNodeId = originalNodeId,
                 Name = Convert.ToString(reader["name"]) ?? string.Empty,
                 IsDir = Convert.ToInt32(reader["is_dir"]) == 1,
-                Size = Convert.ToInt64(reader["size"]),
-                CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
-                UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc),
+                Version = Convert.ToInt32(reader["version"]),
+                InTrash = inTrashVal == 1,
                 TgMessageId = reader["tg_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_message_id"]) : (int?)null,
                 TgPreviewMessageId = reader["tg_preview_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_preview_message_id"]) : (int?)null,
-                Version = Convert.ToInt32(reader["version"]),
-                IsDeleted = Convert.ToInt32(reader["is_deleted"]) == 1
+                Size = Convert.ToInt64(reader["size"]),
+                CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
+                UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc)
             };
 
             // Чтение локальных байтов для файлов без tg_message_id (<= 1 байт или плейсхолдеры)
@@ -1236,7 +1261,7 @@ namespace TelegramWebDAV.Database
                 command.CommandText = @"
                     SELECT COALESCE(SUM(size), 0) 
                     FROM nodes 
-                    WHERE is_dir = 0 AND (@includeTrash = 1 OR is_deleted = 0);";
+                    WHERE is_dir = 0 AND (@includeTrash = 1 OR in_trash = 0);";
                 command.Parameters.AddWithValue("@includeTrash", includeTrash ? 1 : 0);
 
                 object? result = command.ExecuteScalar();

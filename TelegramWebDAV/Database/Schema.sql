@@ -5,22 +5,16 @@ PRAGMA journal_mode=WAL;
 CREATE TABLE IF NOT EXISTS nodes (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     parent_id INTEGER,
+    original_node_id INTEGER, -- Ссылка на актуальный файл, если это старая версия в корзине
     name TEXT NOT NULL,
     is_dir INTEGER NOT NULL DEFAULT 0,
+    version INTEGER NOT NULL DEFAULT 1,
+    in_trash INTEGER NOT NULL DEFAULT 0,
+    tg_message_id INTEGER,
+    tg_preview_message_id INTEGER,
     size INTEGER NOT NULL DEFAULT 0,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    
-    -- Telegram специфика
-    tg_message_id INTEGER,
-    tg_preview_message_id INTEGER,
-    
-    -- Версионирование и Корзина
-    version INTEGER NOT NULL DEFAULT 1,
-    is_deleted INTEGER NOT NULL DEFAULT 0,
-    original_node_id INTEGER, -- Ссылка на актуальный файл, если это старая версия в корзине
-    
-    -- Локальные данные для микрофайлов/заглушек (<= 1 байт или без загрузки в Telegram)
     inline_data BLOB,
     
     FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE,
@@ -42,7 +36,7 @@ CREATE TABLE IF NOT EXISTS upload_progress (
 -- Индексы для оптимизации поиска
 CREATE INDEX IF NOT EXISTS idx_nodes_parent_id ON nodes(parent_id);
 CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
-CREATE INDEX IF NOT EXISTS idx_nodes_is_deleted ON nodes(is_deleted);
+CREATE INDEX IF NOT EXISTS idx_nodes_in_trash ON nodes(in_trash);
 CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_id);
 
 -- Таблица персистентной очереди гарантированного удаления файлов из Telegram
