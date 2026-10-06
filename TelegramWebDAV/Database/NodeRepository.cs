@@ -456,7 +456,11 @@ namespace TelegramWebDAV.Database
             int originalParentId = node.ParentId ?? root?.Id ?? 1;
 
             int targetTrashParentId = EnsureTrashHierarchyForParent(originalParentId);
-            int targetCaptionNodeId = nodeId;
+
+            // Собираем точный список перемещаемых файлов ДО выполнения операции в БД,
+            // чтобы обновить подписи ТОЛЬКО для них (не затрагивая файлы, уже лежащие в корзине)
+            var movedFiles = new List<Node>();
+            GetFilesRecursive(nodeId, movedFiles);
 
             using (var connection = _dbManager.GetConnection())
             using (var transaction = connection.BeginTransaction())
@@ -482,7 +486,6 @@ namespace TelegramWebDAV.Database
 
                         if (existingTrashFolderId.HasValue)
                         {
-                            targetCaptionNodeId = existingTrashFolderId.Value;
 
                             // Если папка уже создана в корзине, переносим дочерние узлы в неё
                             using (var moveChildrenCmd = connection.CreateCommand())
@@ -562,14 +565,14 @@ namespace TelegramWebDAV.Database
                 }
             }
 
-            // Ставим в очередь обновление подписей на #trash для всех перемещенных в корзину файлов
+            // Ставим в очередь обновление подписей на #trash ТОЛЬКО для реально перемещенных в корзину файлов
             try
             {
-                EnqueueCaptionUpdatesForSubtree(targetCaptionNodeId);
+                EnqueueCaptionUpdatesForFiles(movedFiles);
             }
             catch (Exception ex)
             {
-                AppLogger.Warn("Database", $"Не удалось поставить в очередь обновление подписей корзины для #{targetCaptionNodeId}: {ex.Message}");
+                AppLogger.Warn("Database", $"Не удалось поставить в очередь обновление подписей корзины: {ex.Message}");
             }
         }
 
@@ -1263,25 +1266,29 @@ namespace TelegramWebDAV.Database
         /// Помещает в стойкую очередь SQLite все файлы указанного поддерева для фонового обновления подписей в Telegram.
         /// Гарантирует устойчивость к выключению ПК или перезапуску приложения.
         /// </summary>
-        public void EnqueueCaptionUpdatesForSubtree(int nodeId)
+        /// <summary>
+        /// Поставить в очередь обновление подписей для конкретного списка файлов.
+        /// Обновляет только те сообщения, чей текст в базе данных действительно изменился,
+        /// предотвращая спам Telegram и ошибку 400 MESSAGE_NOT_MODIFIED.
+        /// </summary>
+        public void EnqueueCaptionUpdatesForFiles(List<Node> files)
         {
-            var filesToUpdate = new List<Node>();
-            GetFilesRecursive(nodeId, filesToUpdate);
-
-            if (filesToUpdate.Count == 0) return;
+            if (files == null || files.Count == 0) return;
 
             using (var connection = _dbManager.GetConnection())
             using (var transaction = connection.BeginTransaction())
             {
                 try
                 {
-                    foreach (var file in filesToUpdate)
+                    int queuedCount = 0;
+                    foreach (var file in files)
                     {
-                        string pathWithVersion = GetNodeFullPathWithVersion(file.Id);
+                        var freshFile = GetNodeById(file.Id) ?? file;
+                        string pathWithVersion = GetNodeFullPathWithVersion(freshFile.Id);
 
-                        if (file.TgMessageId.HasValue && file.TgMessageId.Value > 1)
+                        if (freshFile.TgMessageId.HasValue && freshFile.TgMessageId.Value > 1)
                         {
-                            string newCaption = FormatTelegramCaption(pathWithVersion, file.TgMessageId.Value, !file.InTrash);
+                            string newCaption = FormatTelegramCaption(pathWithVersion, freshFile.TgMessageId.Value, !freshFile.InTrash);
                             using (var cmd = connection.CreateCommand())
                             {
                                 cmd.Transaction = transaction;
@@ -1290,18 +1297,20 @@ namespace TelegramWebDAV.Database
                                     VALUES (@nodeId, @tgMessageId, @newCaption)
                                     ON CONFLICT(tg_message_id) DO UPDATE SET
                                         new_caption = excluded.new_caption,
-                                        status = 0;
+                                        status = 0
+                                    WHERE pending_caption_updates.new_caption != excluded.new_caption;
                                 ";
-                                cmd.Parameters.AddWithValue("@nodeId", file.Id);
-                                cmd.Parameters.AddWithValue("@tgMessageId", file.TgMessageId.Value);
+                                cmd.Parameters.AddWithValue("@nodeId", freshFile.Id);
+                                cmd.Parameters.AddWithValue("@tgMessageId", freshFile.TgMessageId.Value);
                                 cmd.Parameters.AddWithValue("@newCaption", newCaption);
-                                cmd.ExecuteNonQuery();
+                                int affected = cmd.ExecuteNonQuery();
+                                if (affected > 0) queuedCount++;
                             }
                         }
 
-                        if (file.TgPreviewMessageId.HasValue && file.TgPreviewMessageId.Value > 1)
+                        if (freshFile.TgPreviewMessageId.HasValue && freshFile.TgPreviewMessageId.Value > 1)
                         {
-                            string previewCaption = FormatTelegramCaption(pathWithVersion, file.TgPreviewMessageId.Value, !file.InTrash);
+                            string previewCaption = FormatTelegramCaption(pathWithVersion, freshFile.TgPreviewMessageId.Value, !freshFile.InTrash);
                             using (var cmd = connection.CreateCommand())
                             {
                                 cmd.Transaction = transaction;
@@ -1310,17 +1319,23 @@ namespace TelegramWebDAV.Database
                                     VALUES (@nodeId, @tgMessageId, @newCaption)
                                     ON CONFLICT(tg_message_id) DO UPDATE SET
                                         new_caption = excluded.new_caption,
-                                        status = 0;
+                                        status = 0
+                                    WHERE pending_caption_updates.new_caption != excluded.new_caption;
                                 ";
-                                cmd.Parameters.AddWithValue("@nodeId", file.Id);
-                                cmd.Parameters.AddWithValue("@tgMessageId", file.TgPreviewMessageId.Value);
+                                cmd.Parameters.AddWithValue("@nodeId", freshFile.Id);
+                                cmd.Parameters.AddWithValue("@tgMessageId", freshFile.TgPreviewMessageId.Value);
                                 cmd.Parameters.AddWithValue("@newCaption", previewCaption);
-                                cmd.ExecuteNonQuery();
+                                int affected = cmd.ExecuteNonQuery();
+                                if (affected > 0) queuedCount++;
                             }
                         }
                     }
+
                     transaction.Commit();
-                    AppLogger.Info("Database", $"Поставлено в фоновую очередь обновление подписей Telegram для {filesToUpdate.Count} файлов.");
+                    if (queuedCount > 0)
+                    {
+                        AppLogger.Info("Database", $"Поставлено в фоновую очередь обновление подписей Telegram для {queuedCount} элементов.");
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -1328,6 +1343,16 @@ namespace TelegramWebDAV.Database
                     AppLogger.Warn("Database", $"Ошибка при добавлении подписей в очередь: {ex.Message}");
                 }
             }
+        }
+
+        /// <summary>
+        /// Поставить в очередь обновление подписей для всех файлов в поддереве.
+        /// </summary>
+        public void EnqueueCaptionUpdatesForSubtree(int nodeId)
+        {
+            var filesToUpdate = new List<Node>();
+            GetFilesRecursive(nodeId, filesToUpdate);
+            EnqueueCaptionUpdatesForFiles(filesToUpdate);
         }
 
         private void GetFilesRecursive(int parentId, List<Node> result)
