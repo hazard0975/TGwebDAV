@@ -66,14 +66,14 @@ namespace TelegramWebDAV.Database
                     continue;
                 }
 
-                int expectedDeleted = insideTrash ? 1 : 0;
+                int expectedInTrash = insideTrash ? 1 : 0;
                 using (var connection = _dbManager.GetConnection())
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = @isDeleted LIMIT 1;";
+                    command.CommandText = "SELECT * FROM nodes WHERE parent_id = @parentId AND name = @name AND in_trash = @inTrash LIMIT 1;";
                     command.Parameters.AddWithValue("@parentId", currentNode.Id);
                     command.Parameters.AddWithValue("@name", part);
-                    command.Parameters.AddWithValue("@isDeleted", expectedDeleted);
+                    command.Parameters.AddWithValue("@inTrash", expectedInTrash);
                     currentNode = ReadNode(command);
                 }
             }
@@ -494,7 +494,7 @@ namespace TelegramWebDAV.Database
                                 moveChildrenCmd.ExecuteNonQuery();
                             }
 
-                            UpdateChildrenDeletedStateRecursive(connection, transaction, existingTrashFolderId.Value, 1);
+                            UpdateChildrenTrashStateRecursive(connection, transaction, existingTrashFolderId.Value, 1);
 
                             using (var deleteFolderCmd = connection.CreateCommand())
                             {
@@ -515,7 +515,7 @@ namespace TelegramWebDAV.Database
                                 command.ExecuteNonQuery();
                             }
 
-                            UpdateChildrenDeletedStateRecursive(connection, transaction, nodeId, 1);
+                            UpdateChildrenTrashStateRecursive(connection, transaction, nodeId, 1);
                         }
                     }
                     else
@@ -775,7 +775,7 @@ namespace TelegramWebDAV.Database
         public void MoveNode(int nodeId, int newParentId, string newName)
         {
             bool isTrash = IsNodeInTrash(newParentId);
-            int isDeletedVal = isTrash ? 1 : 0;
+            int inTrashVal = isTrash ? 1 : 0;
 
             using (var connection = _dbManager.GetConnection())
             using (var transaction = connection.BeginTransaction())
@@ -785,16 +785,16 @@ namespace TelegramWebDAV.Database
                     using (var command = connection.CreateCommand())
                     {
                         command.Transaction = transaction;
-                        command.CommandText = "UPDATE nodes SET parent_id = @newParentId, name = @newName, in_trash = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
+                        command.CommandText = "UPDATE nodes SET parent_id = @newParentId, name = @newName, in_trash = @inTrash, updated_at = CURRENT_TIMESTAMP WHERE id = @nodeId;";
                         command.Parameters.AddWithValue("@newParentId", newParentId);
                         command.Parameters.AddWithValue("@newName", newName);
-                        command.Parameters.AddWithValue("@isDeleted", isDeletedVal);
+                        command.Parameters.AddWithValue("@inTrash", inTrashVal);
                         command.Parameters.AddWithValue("@nodeId", nodeId);
                         command.ExecuteNonQuery();
                     }
 
                     // Если перемещаемый узел - папка, рекурсивно обновляем флаг in_trash для всех её потомков
-                    UpdateChildrenDeletedStateRecursive(connection, transaction, nodeId, isDeletedVal);
+                    UpdateChildrenTrashStateRecursive(connection, transaction, nodeId, inTrashVal);
 
                     transaction.Commit();
                 }
@@ -809,7 +809,7 @@ namespace TelegramWebDAV.Database
             EnqueueCaptionUpdatesForSubtree(nodeId);
         }
 
-        private void UpdateChildrenDeletedStateRecursive(SqliteConnection connection, SqliteTransaction transaction, int parentId, int isDeletedVal)
+        private void UpdateChildrenTrashStateRecursive(SqliteConnection connection, SqliteTransaction transaction, int parentId, int inTrashVal)
         {
             var childIds = new List<(int Id, bool IsDir)>();
             using (var selectCmd = connection.CreateCommand())
@@ -831,8 +831,8 @@ namespace TelegramWebDAV.Database
             using (var updateCmd = connection.CreateCommand())
             {
                 updateCmd.Transaction = transaction;
-                updateCmd.CommandText = "UPDATE nodes SET in_trash = @isDeleted, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @parentId;";
-                updateCmd.Parameters.AddWithValue("@isDeleted", isDeletedVal);
+                updateCmd.CommandText = "UPDATE nodes SET in_trash = @inTrash, updated_at = CURRENT_TIMESTAMP WHERE parent_id = @parentId;";
+                updateCmd.Parameters.AddWithValue("@inTrash", inTrashVal);
                 updateCmd.Parameters.AddWithValue("@parentId", parentId);
                 updateCmd.ExecuteNonQuery();
             }
@@ -841,7 +841,7 @@ namespace TelegramWebDAV.Database
             {
                 if (child.IsDir)
                 {
-                    UpdateChildrenDeletedStateRecursive(connection, transaction, child.Id, isDeletedVal);
+                    UpdateChildrenTrashStateRecursive(connection, transaction, child.Id, inTrashVal);
                 }
             }
         }
