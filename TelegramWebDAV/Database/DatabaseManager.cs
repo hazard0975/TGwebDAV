@@ -111,12 +111,13 @@ CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_i
 
 CREATE TABLE IF NOT EXISTS pending_caption_updates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    node_id INTEGER NOT NULL UNIQUE,
-    tg_message_id INTEGER NOT NULL,
+    node_id INTEGER NOT NULL,
+    tg_message_id INTEGER NOT NULL UNIQUE,
     new_caption TEXT NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     status INTEGER NOT NULL DEFAULT 0
 );
+CREATE UNIQUE INDEX IF NOT EXISTS idx_pending_caption_tg_msg ON pending_caption_updates(tg_message_id);
 
 CREATE TABLE IF NOT EXISTS pending_deletions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -128,21 +129,45 @@ CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_
 
         private void EnsureColumnsExist(SqliteConnection connection)
         {
-            // Гарантируем наличие таблицы pending_caption_updates в старых БД
+            // Гарантируем наличие таблицы pending_caption_updates с уникальностью по tg_message_id
             using (var createTableCmd = connection.CreateCommand())
             {
                 createTableCmd.CommandText = @"
                     CREATE TABLE IF NOT EXISTS pending_caption_updates (
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        node_id INTEGER NOT NULL UNIQUE,
-                        tg_message_id INTEGER NOT NULL,
+                        node_id INTEGER NOT NULL,
+                        tg_message_id INTEGER NOT NULL UNIQUE,
                         new_caption TEXT NOT NULL,
                         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
                         status INTEGER NOT NULL DEFAULT 0
                     );
+                    CREATE UNIQUE INDEX IF NOT EXISTS idx_pending_caption_tg_msg ON pending_caption_updates(tg_message_id);
                 ";
                 createTableCmd.ExecuteNonQuery();
             }
+
+            // Миграция со старых версий схемы, где было ограничение UNIQUE(node_id)
+            try
+            {
+                using var migrateCaptionCmd = connection.CreateCommand();
+                migrateCaptionCmd.CommandText = @"
+                    CREATE TABLE IF NOT EXISTS pending_caption_updates_new (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        node_id INTEGER NOT NULL,
+                        tg_message_id INTEGER NOT NULL UNIQUE,
+                        new_caption TEXT NOT NULL,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                        status INTEGER NOT NULL DEFAULT 0
+                    );
+                    INSERT OR IGNORE INTO pending_caption_updates_new (id, node_id, tg_message_id, new_caption, created_at, status)
+                    SELECT id, node_id, tg_message_id, new_caption, created_at, status FROM pending_caption_updates;
+                    DROP TABLE pending_caption_updates;
+                    ALTER TABLE pending_caption_updates_new RENAME TO pending_caption_updates;
+                    CREATE UNIQUE INDEX IF NOT EXISTS idx_pending_caption_tg_msg ON pending_caption_updates(tg_message_id);
+                ";
+                migrateCaptionCmd.ExecuteNonQuery();
+            }
+            catch { }
 
             // Гарантируем наличие таблицы pending_deletions в существующих БД
             using (var createDeletionsTableCmd = connection.CreateCommand())

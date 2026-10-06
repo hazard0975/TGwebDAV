@@ -983,10 +983,11 @@ namespace TelegramWebDAV.Database
                             insertCmd.ExecuteNonQuery();
                         }
 
-                        // Старая версия отправляется в корзину: обновляем её подпись в Telegram на #trash
+                        // Старая версия отправляется в корзину: обновляем её подпись в Telegram на #trash (для документа и фото-превью)
+                        string oldPathWithVersion = GetNodeFullPathWithVersion(existingNode.Id);
+
                         if (existingNode.TgMessageId.HasValue && existingNode.TgMessageId.Value > 1)
                         {
-                            string oldPathWithVersion = GetNodeFullPathWithVersion(existingNode.Id);
                             string trashCaption = FormatTelegramCaption(oldPathWithVersion, existingNode.TgMessageId.Value, isLatest: false);
                             using (var captionCmd = connection.CreateCommand())
                             {
@@ -994,14 +995,33 @@ namespace TelegramWebDAV.Database
                                 captionCmd.CommandText = @"
                                     INSERT INTO pending_caption_updates (node_id, tg_message_id, new_caption)
                                     VALUES (@nodeId, @tgMessageId, @newCaption)
-                                    ON CONFLICT(node_id) DO UPDATE SET
-                                        tg_message_id = excluded.tg_message_id,
+                                    ON CONFLICT(tg_message_id) DO UPDATE SET
                                         new_caption = excluded.new_caption,
                                         status = 0;
                                 ";
                                 captionCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
                                 captionCmd.Parameters.AddWithValue("@tgMessageId", existingNode.TgMessageId.Value);
                                 captionCmd.Parameters.AddWithValue("@newCaption", trashCaption);
+                                captionCmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        if (existingNode.TgPreviewMessageId.HasValue && existingNode.TgPreviewMessageId.Value > 1)
+                        {
+                            string trashPreviewCaption = FormatTelegramCaption(oldPathWithVersion, existingNode.TgPreviewMessageId.Value, isLatest: false);
+                            using (var captionCmd = connection.CreateCommand())
+                            {
+                                captionCmd.Transaction = transaction;
+                                captionCmd.CommandText = @"
+                                    INSERT INTO pending_caption_updates (node_id, tg_message_id, new_caption)
+                                    VALUES (@nodeId, @tgMessageId, @newCaption)
+                                    ON CONFLICT(tg_message_id) DO UPDATE SET
+                                        new_caption = excluded.new_caption,
+                                        status = 0;
+                                ";
+                                captionCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
+                                captionCmd.Parameters.AddWithValue("@tgMessageId", existingNode.TgPreviewMessageId.Value);
+                                captionCmd.Parameters.AddWithValue("@newCaption", trashPreviewCaption);
                                 captionCmd.ExecuteNonQuery();
                             }
                         }
@@ -1265,9 +1285,10 @@ namespace TelegramWebDAV.Database
                 {
                     foreach (var file in filesToUpdate)
                     {
+                        string pathWithVersion = GetNodeFullPathWithVersion(file.Id);
+
                         if (file.TgMessageId.HasValue && file.TgMessageId.Value > 1)
                         {
-                            string pathWithVersion = GetNodeFullPathWithVersion(file.Id);
                             string newCaption = FormatTelegramCaption(pathWithVersion, file.TgMessageId.Value, !file.IsDeleted);
                             using (var cmd = connection.CreateCommand())
                             {
@@ -1275,14 +1296,33 @@ namespace TelegramWebDAV.Database
                                 cmd.CommandText = @"
                                     INSERT INTO pending_caption_updates (node_id, tg_message_id, new_caption)
                                     VALUES (@nodeId, @tgMessageId, @newCaption)
-                                    ON CONFLICT(node_id) DO UPDATE SET
-                                        tg_message_id = excluded.tg_message_id,
+                                    ON CONFLICT(tg_message_id) DO UPDATE SET
                                         new_caption = excluded.new_caption,
                                         status = 0;
                                 ";
                                 cmd.Parameters.AddWithValue("@nodeId", file.Id);
                                 cmd.Parameters.AddWithValue("@tgMessageId", file.TgMessageId.Value);
                                 cmd.Parameters.AddWithValue("@newCaption", newCaption);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
+                        if (file.TgPreviewMessageId.HasValue && file.TgPreviewMessageId.Value > 1)
+                        {
+                            string previewCaption = FormatTelegramCaption(pathWithVersion, file.TgPreviewMessageId.Value, !file.IsDeleted);
+                            using (var cmd = connection.CreateCommand())
+                            {
+                                cmd.Transaction = transaction;
+                                cmd.CommandText = @"
+                                    INSERT INTO pending_caption_updates (node_id, tg_message_id, new_caption)
+                                    VALUES (@nodeId, @tgMessageId, @newCaption)
+                                    ON CONFLICT(tg_message_id) DO UPDATE SET
+                                        new_caption = excluded.new_caption,
+                                        status = 0;
+                                ";
+                                cmd.Parameters.AddWithValue("@nodeId", file.Id);
+                                cmd.Parameters.AddWithValue("@tgMessageId", file.TgPreviewMessageId.Value);
+                                cmd.Parameters.AddWithValue("@newCaption", previewCaption);
                                 cmd.ExecuteNonQuery();
                             }
                         }
