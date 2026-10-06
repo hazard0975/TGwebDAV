@@ -1284,73 +1284,150 @@ namespace TelegramWebDAV.Services
 
         private const uint CF_HDROP = 15;
 
-        private static readonly object _candidatesLock = new object();
-        private static readonly List<string> _cachedCandidates = new List<string>();
-        private static DateTime _cachedCandidatesTime = DateTime.MinValue;
-        private static readonly TimeSpan CacheTtl = TimeSpan.FromSeconds(3);
+        private static readonly object _sessionLock = new object();
+        private static CopySession? _activeSession = null;
+
+        private class CopySession
+        {
+            public List<string> PendingFiles { get; } = new List<string>();
+            public List<string> SourceRoots { get; } = new List<string>();
+            public int InitialCount { get; set; }
+
+            public string? FindAndConsume(string targetFileName, string? relativeVirtualPath)
+            {
+                for (int i = 0; i < PendingFiles.Count; i++)
+                {
+                    string candidate = PendingFiles[i];
+                    string? match = CheckCandidate(candidate, targetFileName, relativeVirtualPath);
+                    if (match != null)
+                    {
+                        PendingFiles.RemoveAt(i);
+                        return match;
+                    }
+                }
+
+                foreach (var root in SourceRoots)
+                {
+                    string? match = CheckCandidate(root, targetFileName, relativeVirtualPath);
+                    if (match != null)
+                    {
+                        return match;
+                    }
+                }
+
+                return null;
+            }
+        }
+
+        private static CopySession CreateCopySession(List<string> rawCandidates)
+        {
+            var session = new CopySession();
+            var addedFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (var raw in rawCandidates)
+            {
+                if (File.Exists(raw))
+                {
+                    if (addedFiles.Add(raw))
+                    {
+                        session.PendingFiles.Add(raw);
+                    }
+                    string? dir = Path.GetDirectoryName(raw);
+                    if (!string.IsNullOrEmpty(dir) && !session.SourceRoots.Exists(r => string.Equals(r, dir, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        session.SourceRoots.Add(dir);
+                    }
+                }
+                else if (Directory.Exists(raw))
+                {
+                    if (!session.SourceRoots.Exists(r => string.Equals(r, raw, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        session.SourceRoots.Add(raw);
+                    }
+
+                    try
+                    {
+                        foreach (var file in Directory.EnumerateFiles(raw, "*", SearchOption.AllDirectories))
+                        {
+                            if (addedFiles.Add(file))
+                            {
+                                session.PendingFiles.Add(file);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Debug("WinFsp", $"[Сессия] Ошибка перечисления файлов папки '{raw}': {ex.Message}");
+                    }
+                }
+            }
+
+            session.InitialCount = session.PendingFiles.Count;
+            return session;
+        }
 
         /// <summary>
-        /// Универсальный метод обнаружения пути к оригинальному файлу-источнику.
-        /// Поддерживает:
-        /// 1) Drag-and-Drop (перетаскивание мышью из окон Проводника через COM IShellWindows);
-        /// 2) Копирование через системный буфер обмена Windows (Ctrl+C / Ctrl+V, CF_HDROP);
-        /// 3) Перетаскивание с Рабочего стола Windows (Desktop).
-        /// Включает сессионное кэширование снимка кандидатов на 3 секунды для пакетного копирования.
+        /// Детерминированный метод обнаружения пути к оригинальному файлу-источнику (Zero Timers).
+        /// Использует честную пофайловую модель сессии копирования (CopySession):
+        /// - Считывает точный список файлов и корневых папок пачки (Drag-and-Drop IShellWindows, CF_HDROP, Desktop).
+        /// - Пофайлово вычеркивает каждый обработанный файл из списка сессии (0 мс доступ для всей пачки).
+        /// - Автоматически завершает сессию, как только последний файл пачки взят в обработку.
+        /// - При начале новой операции с новыми путями источников создает новую независимую сессию.
         /// </summary>
         private static string? TryFindSourceFile(string targetFileName, string? relativeVirtualPath = null)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return null;
 
-            AppLogger.Info("WinFsp", $"[Источник] Старт поиска оригинального файла для '{targetFileName}' (виртуальный путь: '{relativeVirtualPath}')...");
+            AppLogger.Info("WinFsp", $"[Источник] Поиск оригинального файла для '{targetFileName}' (виртуальный путь: '{relativeVirtualPath}')...");
 
-            // Шаг 1: Быстрая проверка недавнего сессионного кэша (0 мс)
-            lock (_candidatesLock)
+            lock (_sessionLock)
             {
-                if (DateTime.UtcNow - _cachedCandidatesTime < CacheTtl && _cachedCandidates.Count > 0)
+                // Шаг 1: Проверяем активную сессию (0 мс)
+                if (_activeSession != null)
                 {
-                    foreach (var candidate in _cachedCandidates)
-                    {
-                        string? match = CheckCandidate(candidate, targetFileName, relativeVirtualPath);
-                        if (match != null)
-                        {
-                            AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение из сессионного кэша (0 мс): '{match}'");
-                            return match;
-                        }
-                    }
-                }
-            }
-
-            // Шаг 2: Активный сбор кандидатов (Drag-and-Drop + Буфер обмена + Рабочий стол)
-            var freshCandidates = CollectAllCandidates();
-
-            lock (_candidatesLock)
-            {
-                _cachedCandidates.Clear();
-                foreach (var c in freshCandidates)
-                {
-                    if (!_cachedCandidates.Exists(x => string.Equals(x, c, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        _cachedCandidates.Add(c);
-                    }
-                }
-                _cachedCandidatesTime = DateTime.UtcNow;
-
-                AppLogger.Info("WinFsp", $"[Источник] Собрано уникальных кандидатов источников: {_cachedCandidates.Count}");
-
-                for (int i = 0; i < _cachedCandidates.Count; i++)
-                {
-                    string candidate = _cachedCandidates[i];
-                    string? match = CheckCandidate(candidate, targetFileName, relativeVirtualPath);
+                    string? match = _activeSession.FindAndConsume(targetFileName, relativeVirtualPath);
                     if (match != null)
                     {
+                        AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение в активной сессии (осталось файлов: {_activeSession.PendingFiles.Count}/{_activeSession.InitialCount}): '{match}'");
+                        if (_activeSession.PendingFiles.Count == 0)
+                        {
+                            AppLogger.Info("WinFsp", $"[Источник] Все файлы текущей сессии ({_activeSession.InitialCount} шт.) обработаны. Сессия завершена.");
+                            _activeSession = null;
+                        }
                         return match;
                     }
                 }
-            }
 
-            AppLogger.Warn("WinFsp", $"[Источник] Проверено {_cachedCandidates.Count} кандидатов, но ни один не совпал с целевым именем '{targetFileName}'.");
-            return null;
+                // Шаг 2: Файл не входит в активную сессию -> значит началось НОВОЕ копирование!
+                AppLogger.Info("WinFsp", $"[Источник] Запрос нового дерева копирования для нового источника...");
+                var freshRawCandidates = CollectAllCandidates();
+
+                if (freshRawCandidates.Count > 0)
+                {
+                    var newSession = CreateCopySession(freshRawCandidates);
+                    AppLogger.Info("WinFsp", $"[Источник] Инициализирована новая сессия копирования: файлов в очереди {newSession.PendingFiles.Count}, папок-источников {newSession.SourceRoots.Count}");
+
+                    string? match = newSession.FindAndConsume(targetFileName, relativeVirtualPath);
+                    if (match != null)
+                    {
+                        AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение в новой сессии (осталось файлов: {newSession.PendingFiles.Count}/{newSession.InitialCount}): '{match}'");
+                        if (newSession.PendingFiles.Count > 0)
+                        {
+                            _activeSession = newSession;
+                        }
+                        else
+                        {
+                            AppLogger.Info("WinFsp", $"[Источник] Единственный файл сессии обработан. Сессия завершена.");
+                            _activeSession = null;
+                        }
+                        return match;
+                    }
+                }
+
+                AppLogger.Warn("WinFsp", $"[Источник] Файл '{targetFileName}' не найден среди доступных источников.");
+                return null;
+            }
         }
 
         private static List<string> CollectAllCandidates()
