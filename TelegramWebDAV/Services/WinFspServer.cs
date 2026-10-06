@@ -1263,7 +1263,7 @@ namespace TelegramWebDAV.Services
             return lastSlash >= 0 ? p.Substring(lastSlash + 1) : p;
         }
 
-        #region Windows Drag-and-Drop & Clipboard Source Detection (IShellWindows & CF_HDROP)
+        #region Windows Clipboard Source Detection (CF_HDROP & Desktop)
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -1369,7 +1369,7 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Детерминированный метод обнаружения пути к оригинальному файлу-источнику (Zero Timers).
         /// Использует честную пофайловую модель сессии копирования (CopySession):
-        /// - Считывает точный список файлов и корневых папок пачки (Drag-and-Drop IShellWindows, CF_HDROP, Desktop).
+        /// - Считывает точный список файлов и корневых папок пачки (CF_HDROP, Desktop).
         /// - Пофайлово вычеркивает каждый обработанный файл из списка сессии (0 мс доступ для всей пачки).
         /// - Автоматически завершает сессию, как только последний файл пачки взят в обработку.
         /// - При начале новой операции с новыми путями источников создает новую независимую сессию.
@@ -1434,143 +1434,16 @@ namespace TelegramWebDAV.Services
         {
             var list = new List<string>();
 
-            // 1. Окна Проводника Windows Shell (Drag-and-Drop)
-            var shellList = CollectExplorerCandidates();
-            list.AddRange(shellList);
-
-            // 2. Системный буфер обмена Windows (Ctrl+C / Ctrl+V)
+            // 1. Системный буфер обмена Windows (Ctrl+C / Ctrl+V, CF_HDROP)
+            // Прямое чтение структуры памяти без блокирующих COM/STA RPC вызовов
             var clipList = CollectClipboardCandidates();
             list.AddRange(clipList);
 
-            // 3. Рабочий стол Windows
+            // 2. Рабочий стол Windows
             var desktopList = CollectDesktopCandidates();
             list.AddRange(desktopList);
 
             return list;
-        }
-
-        private static List<string> CollectExplorerCandidates()
-        {
-            var results = new List<string>();
-            try
-            {
-                var clsid = new Guid("9BA05972-F6A8-11CF-A442-00A0C90A8F39"); // CLSID_ShellWindows
-                var shellWindowsType = Type.GetTypeFromCLSID(clsid);
-                if (shellWindowsType == null) return results;
-
-                object? shellWindows = Activator.CreateInstance(shellWindowsType);
-                if (shellWindows == null) return results;
-
-                try
-                {
-                    dynamic windows = shellWindows;
-                    int count = (int)windows.Count;
-                    AppLogger.Debug("WinFsp", $"[Shell DragDrop] Обнаружено открытых окон Explorer: {count}");
-
-                    for (int i = 0; i < count; i++)
-                    {
-                        object? winObj = null;
-                        try
-                        {
-                            winObj = windows.Item(i);
-                            if (winObj == null) continue;
-
-                            dynamic window = winObj;
-                            object? docObj = null;
-                            try
-                            {
-                                docObj = window.Document;
-                                if (docObj == null) continue;
-
-                                dynamic doc = docObj;
-
-                                // 1. Выделенные пользователем элементы при Drag-and-Drop (SelectedItems)
-                                object? selectedObj = null;
-                                try
-                                {
-                                    selectedObj = doc.SelectedItems();
-                                    if (selectedObj != null)
-                                    {
-                                        dynamic selectedItems = selectedObj;
-                                        int selCount = (int)selectedItems.Count;
-                                        for (int s = 0; s < selCount; s++)
-                                        {
-                                            object? itemObj = null;
-                                            try
-                                            {
-                                                itemObj = selectedItems.Item(s);
-                                                if (itemObj != null)
-                                                {
-                                                    dynamic item = itemObj;
-                                                    string? path = item.Path as string;
-                                                    if (!string.IsNullOrEmpty(path))
-                                                    {
-                                                        results.Add(path);
-                                                    }
-                                                }
-                                            }
-                                            catch { }
-                                            finally
-                                            {
-                                                if (itemObj != null && Marshal.IsComObject(itemObj))
-                                                    Marshal.ReleaseComObject(itemObj);
-                                            }
-                                        }
-                                    }
-                                }
-                                catch { }
-                                finally
-                                {
-                                    if (selectedObj != null && Marshal.IsComObject(selectedObj))
-                                        Marshal.ReleaseComObject(selectedObj);
-                                }
-
-                                // 2. Путь к самой открытой папке окна-источника (Folder.Self.Path)
-                                try
-                                {
-                                    dynamic folder = doc.Folder;
-                                    if (folder != null)
-                                    {
-                                        dynamic self = folder.Self;
-                                        if (self != null)
-                                        {
-                                            string? folderPath = self.Path as string;
-                                            if (!string.IsNullOrEmpty(folderPath) && Directory.Exists(folderPath))
-                                            {
-                                                results.Add(folderPath);
-                                            }
-                                        }
-                                    }
-                                }
-                                catch { }
-                            }
-                            catch { }
-                            finally
-                            {
-                                if (docObj != null && Marshal.IsComObject(docObj))
-                                    Marshal.ReleaseComObject(docObj);
-                            }
-                        }
-                        catch { }
-                        finally
-                        {
-                            if (winObj != null && Marshal.IsComObject(winObj))
-                                Marshal.ReleaseComObject(winObj);
-                        }
-                    }
-                }
-                finally
-                {
-                    if (Marshal.IsComObject(shellWindows))
-                        Marshal.ReleaseComObject(shellWindows);
-                }
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Debug("WinFsp", $"[Shell DragDrop] Опрос IShellWindows: {ex.Message}");
-            }
-
-            return results;
         }
 
         private static List<string> CollectClipboardCandidates()
