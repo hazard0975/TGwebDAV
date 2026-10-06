@@ -34,9 +34,9 @@ namespace TelegramWebDAV.Services
         /// Инициализирует потоковый пайп.
         /// </summary>
         /// <param name="length">Ожидаемая общая длина файла в байтах.</param>
-        /// <param name="maxBufferedChunks">Максимальное количество чанков в очереди (по умолчанию 32 шт по 64-128 КБ ~2-4 МБ).</param>
+        /// <param name="maxBufferedChunks">Максимальное количество чанков в очереди (по умолчанию 64 шт по 64-128 КБ ~4-8 МБ).</param>
         /// <param name="onProgress">Опциональный колбэк прогресса.</param>
-        public StreamingPipeStream(long length, int maxBufferedChunks = 32, Action<long, long>? onProgress = null)
+        public StreamingPipeStream(long length, int maxBufferedChunks = 64, Action<long, long>? onProgress = null)
         {
             _length = length;
             _queue = new BlockingCollection<byte[]>(maxBufferedChunks);

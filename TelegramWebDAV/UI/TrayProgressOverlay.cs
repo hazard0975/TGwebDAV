@@ -317,10 +317,10 @@ namespace TelegramWebDAV.UI
         {
             if (!Visible) return;
 
-            // Если прошло более 1.5 сек с момента последнего обновления данных при отсутствии активности,
-            // скрываем оверлей (защита от зависания окна при обрыве потока/завершении чтения)
+            // Защита от зависания окна при обрыве потока: при передаче данных таймаут 4 сек, при финализации в Telegram - до 12 сек
             var secondsSinceProgress = (DateTime.UtcNow - _lastProgressUpdateTime).TotalSeconds;
-            if ((_isTransferring || _isFinalizing) && secondsSinceProgress >= 1.5)
+            double maxAllowedInactivity = _isFinalizing ? 12.0 : 4.0;
+            if ((_isTransferring || _isFinalizing) && secondsSinceProgress >= maxAllowedInactivity)
             {
                 if (!_completionTimer.Enabled)
                 {
