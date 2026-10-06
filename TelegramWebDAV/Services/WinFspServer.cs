@@ -1510,6 +1510,89 @@ namespace TelegramWebDAV.Services
             return results;
         }
 
+        private static ushort? _cachedFileObjectTypeIndex = null;
+        private static readonly object _fileTypeIndexLock = new object();
+
+        /// <summary>
+        /// Безопасно определяет ObjectTypeIndex для типа 'File' в ядре NT.
+        /// Создает временный файловый хэндл в собственном процессе и считывает его ObjectTypeIndex из таблицы NT.
+        /// Гарантирует, что DuplicateHandle будет вызываться ТОЛЬКО для реальных дисковых файлов,
+        /// полностью исключая зависания ядра на IPC/NamedPipe/Socket хэндлах.
+        /// </summary>
+        private static ushort? GetFileObjectTypeIndex()
+        {
+            if (_cachedFileObjectTypeIndex.HasValue)
+                return _cachedFileObjectTypeIndex.Value;
+
+            lock (_fileTypeIndexLock)
+            {
+                if (_cachedFileObjectTypeIndex.HasValue)
+                    return _cachedFileObjectTypeIndex.Value;
+
+                string tempFile = Path.GetTempFileName();
+                try
+                {
+                    using (var fs = new FileStream(tempFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                    {
+                        IntPtr myHandle = fs.SafeFileHandle.DangerousGetHandle();
+                        int myPid = Process.GetCurrentProcess().Id;
+
+                        int bufferSize = 2 * 1024 * 1024;
+                        IntPtr buffer = Marshal.AllocHGlobal(bufferSize);
+                        try
+                        {
+                            int status = NtQuerySystemInformation(SystemExtendedHandleInformation, buffer, bufferSize, out int returnLength);
+                            if (status != 0 && returnLength > bufferSize)
+                            {
+                                Marshal.FreeHGlobal(buffer);
+                                bufferSize = returnLength + 256 * 1024;
+                                buffer = Marshal.AllocHGlobal(bufferSize);
+                                status = NtQuerySystemInformation(SystemExtendedHandleInformation, buffer, bufferSize, out returnLength);
+                            }
+
+                            if (status == 0)
+                            {
+                                long handleCount = Marshal.ReadInt64(buffer);
+                                IntPtr currentPtr = IntPtr.Add(buffer, 16);
+                                int entrySize = IntPtr.Size == 8 ? 40 : 28;
+
+                                for (long i = 0; i < handleCount; i++)
+                                {
+                                    IntPtr entryPtr = IntPtr.Add(currentPtr, (int)(i * entrySize));
+                                    int pid = (int)Marshal.ReadInt64(IntPtr.Add(entryPtr, 8));
+                                    if (pid == myPid)
+                                    {
+                                        IntPtr val = (IntPtr)Marshal.ReadInt64(IntPtr.Add(entryPtr, 16));
+                                        if (val == myHandle)
+                                        {
+                                            ushort typeIndex = (ushort)Marshal.ReadInt16(IntPtr.Add(entryPtr, 30));
+                                            _cachedFileObjectTypeIndex = typeIndex;
+                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Системный индекс типа 'File' ядра Windows: {typeIndex}");
+                                            return typeIndex;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        finally
+                        {
+                            Marshal.FreeHGlobal(buffer);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Debug("WinFsp", $"[Handles DragDrop] Не удалось определить FileObjectTypeIndex: {ex.Message}");
+                }
+                finally
+                {
+                    try { File.Delete(tempFile); } catch { }
+                }
+
+                return null;
+            }
+        }
+
         /// <summary>
         /// Безопасное извлечение путей к файлам, открытым процессом explorer.exe при перетаскивании (Drag-and-Drop).
         /// Опрашивает открытые файловые дескрипторы через ядро Windows (NtQuerySystemInformation),
@@ -1563,7 +1646,8 @@ namespace TelegramWebDAV.Services
                     }
 
                     long handleCount = Marshal.ReadInt64(buffer);
-                    AppLogger.Info("WinFsp", $"[Handles DragDrop] В системе обнаружено {handleCount} дескрипторов ядра.");
+                    ushort? fileTypeIndex = GetFileObjectTypeIndex();
+                    AppLogger.Info("WinFsp", $"[Handles DragDrop] В системе обнаружено {handleCount} дескрипторов ядра (File Type Index: {fileTypeIndex?.ToString() ?? "не определен"}).");
 
                     IntPtr currentPtr = IntPtr.Add(buffer, 16); // Пропуск NumberOfHandles и Reserved (16 байт)
                     int entrySize = IntPtr.Size == 8 ? 40 : 28; // SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX (40 байт на x64, 28 на x86)
@@ -1581,6 +1665,14 @@ namespace TelegramWebDAV.Services
 
                             if (explorerPids.Contains(processId))
                             {
+                                // КРИТИЧЕСКИЙ Root Cause Фильтр: проверяем тип объекта в ядре NT перед любыми DuplicateHandle!
+                                // Трогаем ТОЛЬКО файловые дескрипторы (никаких Named Pipe, Socket, ALPC Port, Mutex)
+                                ushort objectTypeIndex = (ushort)Marshal.ReadInt16(IntPtr.Add(entryPtr, 30));
+                                if (fileTypeIndex.HasValue && objectTypeIndex != fileTypeIndex.Value)
+                                {
+                                    continue; // Мгновенно пропускаем не-файловый дескриптор в памяти ядра
+                                }
+
                                 matchedHandles++;
                                 IntPtr handleValue = (IntPtr)Marshal.ReadInt64(IntPtr.Add(entryPtr, 16)); // HandleValue
 

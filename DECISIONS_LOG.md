@@ -769,3 +769,13 @@ _telegramService.UpdateSettings(_settings);
 
 ### Решение (Root Cause Fix):
 Как только целевой файл `targetFileName` обнаружен и проверен на существование, метод `CollectExplorerOpenFileHandles` мгновенно прерывает цикл (`return results`), не трогая посторонние дескрипторы операционной системы.
+
+## 26. Фильтрация дескрипторов ядра по ObjectTypeIndex для предотвращения Kernel IRP Deadlock
+
+### Первопричина зависания процесса (Root Cause):
+Среди тысяч дескрипторов процесса `explorer.exe` присутствуют синхронные именованные каналы (Named Pipes), почтовые ящики (Mailslots) и RPC-сокеты. При вызове `DuplicateHandle` и последующем `GetFileType` или `GetFinalPathNameByHandle` для блокирующего канала Windows отправляет синхронный запрос в драйвер устройства (`IRP_MJ_QUERY_INFORMATION`). Если канал ждет данных, поток засыпает в ядре в состоянии `Kernel Executive Wait` намертво. В таком состоянии процесс невозможно снять даже через диспетчер задач («Отказано в доступе»).
+
+### Решение (Root Cause Fix):
+1. Метод `GetFileObjectTypeIndex()` один раз динамически определяет системный индекс типа `File` в ядре NT для текущей версии Windows.
+2. В цикле перебора дескрипторов `SYSTEM_HANDLE_TABLE_ENTRY_INFO_EX` выполняется мгновенная проверка `objectTypeIndex == fileTypeIndex`.
+3. Все дескрипторы не-файловых типов (пайпы, сокеты, порты ALPC, мьютексы) отсекаются в памяти до вызова `DuplicateHandle`. `DuplicateHandle` вызывается строго и исключительно для дисковых файлов.
