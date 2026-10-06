@@ -875,7 +875,7 @@ namespace TelegramWebDAV.Services
                 }
 
                 // Проверяем, находится ли элемент уже в корзине (.Trash) или помечен ли он как удаленный
-                bool isPermanent = node.IsDeleted || _repository.IsNodeInTrash(node.Id);
+                bool isPermanent = node.InTrash || _repository.IsNodeInTrash(node.Id);
 
                 if (isPermanent)
                 {

@@ -19,7 +19,6 @@ namespace TelegramWebDAV.Models
         // Versioning & Trash
         public int Version { get; set; } = 1;
         public bool InTrash { get; set; }
-        public bool IsDeleted { get => InTrash; set => InTrash = value; }
         public int? OriginalNodeId { get; set; }
 
         // Local payload for small files (<= 1 byte or unuploaded placeholders)

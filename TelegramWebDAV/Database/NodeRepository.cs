@@ -1186,55 +1186,22 @@ namespace TelegramWebDAV.Database
 
         private Node MapReaderToNode(SqliteDataReader reader)
         {
-            int inTrashVal = 0;
-            try
-            {
-                if (reader["in_trash"] != DBNull.Value)
-                    inTrashVal = Convert.ToInt32(reader["in_trash"]);
-            }
-            catch
-            {
-                try
-                {
-                    if (reader["is_deleted"] != DBNull.Value)
-                        inTrashVal = Convert.ToInt32(reader["is_deleted"]);
-                }
-                catch { }
-            }
-
-            int? originalNodeId = null;
-            try
-            {
-                if (reader["original_node_id"] != DBNull.Value)
-                    originalNodeId = Convert.ToInt32(reader["original_node_id"]);
-            }
-            catch { }
-
             var node = new Node
             {
                 Id = Convert.ToInt32(reader["id"]),
                 ParentId = reader["parent_id"] != DBNull.Value ? Convert.ToInt32(reader["parent_id"]) : (int?)null,
-                OriginalNodeId = originalNodeId,
+                OriginalNodeId = reader["original_node_id"] != DBNull.Value ? Convert.ToInt32(reader["original_node_id"]) : (int?)null,
                 Name = Convert.ToString(reader["name"]) ?? string.Empty,
                 IsDir = Convert.ToInt32(reader["is_dir"]) == 1,
                 Version = Convert.ToInt32(reader["version"]),
-                InTrash = inTrashVal == 1,
+                InTrash = Convert.ToInt32(reader["in_trash"]) == 1,
                 TgMessageId = reader["tg_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_message_id"]) : (int?)null,
                 TgPreviewMessageId = reader["tg_preview_message_id"] != DBNull.Value ? Convert.ToInt32(reader["tg_preview_message_id"]) : (int?)null,
                 Size = Convert.ToInt64(reader["size"]),
                 CreatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["created_at"]), DateTimeKind.Utc),
-                UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc)
+                UpdatedAt = DateTime.SpecifyKind(Convert.ToDateTime(reader["updated_at"]), DateTimeKind.Utc),
+                InlineData = reader["inline_data"] != DBNull.Value ? (byte[])reader["inline_data"] : null
             };
-
-            // Чтение локальных байтов для файлов без tg_message_id (<= 1 байт или плейсхолдеры)
-            try
-            {
-                if (reader["inline_data"] != DBNull.Value) node.InlineData = (byte[])reader["inline_data"];
-            }
-            catch
-            {
-                // Игнорируем отсутствие колонки при старой схеме или частичных SELECT
-            }
 
             return node;
         }
@@ -1314,7 +1281,7 @@ namespace TelegramWebDAV.Database
 
                         if (file.TgMessageId.HasValue && file.TgMessageId.Value > 1)
                         {
-                            string newCaption = FormatTelegramCaption(pathWithVersion, file.TgMessageId.Value, !file.IsDeleted);
+                            string newCaption = FormatTelegramCaption(pathWithVersion, file.TgMessageId.Value, !file.InTrash);
                             using (var cmd = connection.CreateCommand())
                             {
                                 cmd.Transaction = transaction;
@@ -1334,7 +1301,7 @@ namespace TelegramWebDAV.Database
 
                         if (file.TgPreviewMessageId.HasValue && file.TgPreviewMessageId.Value > 1)
                         {
-                            string previewCaption = FormatTelegramCaption(pathWithVersion, file.TgPreviewMessageId.Value, !file.IsDeleted);
+                            string previewCaption = FormatTelegramCaption(pathWithVersion, file.TgPreviewMessageId.Value, !file.InTrash);
                             using (var cmd = connection.CreateCommand())
                             {
                                 cmd.Transaction = transaction;

@@ -576,7 +576,7 @@ namespace TelegramWebDAV.Server
 
             // Проверяем, находится ли файл уже в корзине или помечен ли он как удаленный.
             // Но также, если путь начинается с "/.Trash/", то это перманентное удаление содержимого корзины!
-            bool isPermanent = node.IsDeleted || path.StartsWith("/.Trash/", StringComparison.OrdinalIgnoreCase);
+            bool isPermanent = node.InTrash || path.StartsWith("/.Trash/", StringComparison.OrdinalIgnoreCase);
 
             if (isPermanent)
             {

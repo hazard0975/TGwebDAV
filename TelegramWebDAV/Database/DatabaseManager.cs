@@ -18,7 +18,7 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Инициализация БД при запуске (разворачивание схемы при отсутствии таблиц или миграция полей)
+        /// Инициализация БД при запуске (разворачивание чистой схемы при отсутствии таблиц и создание системных папок)
         /// </summary>
         public void InitializeDatabase()
         {
@@ -40,9 +40,6 @@ namespace TelegramWebDAV.Database
                 {
                     SeedSystemFolders(connection);
                 }
-
-                // Гарантируем наличие всех необходимых столбцов (миграция старых БД)
-                EnsureColumnsExist(connection);
             }
         }
 
@@ -127,112 +124,6 @@ CREATE TABLE IF NOT EXISTS pending_deletions (
 );
 CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_message_id);
 ";
-
-        private void EnsureColumnsExist(SqliteConnection connection)
-        {
-            // Гарантируем наличие таблицы pending_caption_updates с уникальностью по tg_message_id
-            using (var createTableCmd = connection.CreateCommand())
-            {
-                createTableCmd.CommandText = @"
-                    CREATE TABLE IF NOT EXISTS pending_caption_updates (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        node_id INTEGER NOT NULL,
-                        tg_message_id INTEGER NOT NULL UNIQUE,
-                        new_caption TEXT NOT NULL,
-                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        status INTEGER NOT NULL DEFAULT 0
-                    );
-                    CREATE UNIQUE INDEX IF NOT EXISTS idx_pending_caption_tg_msg ON pending_caption_updates(tg_message_id);
-                ";
-                createTableCmd.ExecuteNonQuery();
-            }
-
-            // Миграция со старых версий схемы, где было ограничение UNIQUE(node_id)
-            try
-            {
-                using var migrateCaptionCmd = connection.CreateCommand();
-                migrateCaptionCmd.CommandText = @"
-                    CREATE TABLE IF NOT EXISTS pending_caption_updates_new (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        node_id INTEGER NOT NULL,
-                        tg_message_id INTEGER NOT NULL UNIQUE,
-                        new_caption TEXT NOT NULL,
-                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-                        status INTEGER NOT NULL DEFAULT 0
-                    );
-                    INSERT OR IGNORE INTO pending_caption_updates_new (id, node_id, tg_message_id, new_caption, created_at, status)
-                    SELECT id, node_id, tg_message_id, new_caption, created_at, status FROM pending_caption_updates;
-                    DROP TABLE pending_caption_updates;
-                    ALTER TABLE pending_caption_updates_new RENAME TO pending_caption_updates;
-                    CREATE UNIQUE INDEX IF NOT EXISTS idx_pending_caption_tg_msg ON pending_caption_updates(tg_message_id);
-                ";
-                migrateCaptionCmd.ExecuteNonQuery();
-            }
-            catch { }
-
-            // Гарантируем наличие таблицы pending_deletions в существующих БД
-            using (var createDeletionsTableCmd = connection.CreateCommand())
-            {
-                createDeletionsTableCmd.CommandText = @"
-                    CREATE TABLE IF NOT EXISTS pending_deletions (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        tg_message_id INTEGER NOT NULL,
-                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-                    );
-                    CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_message_id);
-                ";
-                createDeletionsTableCmd.ExecuteNonQuery();
-            }
-
-            var existingColumns = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "PRAGMA table_info(nodes);";
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        if (reader["name"] != DBNull.Value)
-                        {
-                            existingColumns.Add(reader["name"].ToString()!);
-                        }
-                    }
-                }
-            }
-
-            // Поддержка миграции is_deleted -> in_trash для старых баз
-            if (existingColumns.Contains("is_deleted") && !existingColumns.Contains("in_trash"))
-            {
-                try
-                {
-                    using (var renameCmd = connection.CreateCommand())
-                    {
-                        renameCmd.CommandText = "ALTER TABLE nodes RENAME COLUMN is_deleted TO in_trash;";
-                        renameCmd.ExecuteNonQuery();
-                    }
-                    existingColumns.Add("in_trash");
-                }
-                catch { }
-            }
-
-            void AddColumnIfMissing(string columnName, string columnDefinition)
-            {
-                if (!existingColumns.Contains(columnName))
-                {
-                    using (var alterCmd = connection.CreateCommand())
-                    {
-                        alterCmd.CommandText = $"ALTER TABLE nodes ADD COLUMN {columnName} {columnDefinition};";
-                        alterCmd.ExecuteNonQuery();
-                    }
-                }
-            }
-
-            AddColumnIfMissing("version", "INTEGER NOT NULL DEFAULT 1");
-            AddColumnIfMissing("in_trash", "INTEGER NOT NULL DEFAULT 0");
-            AddColumnIfMissing("original_node_id", "INTEGER");
-            AddColumnIfMissing("inline_data", "BLOB");
-            AddColumnIfMissing("tg_preview_message_id", "INTEGER");
-        }
 
         private void ApplySchema(SqliteConnection connection)
         {
