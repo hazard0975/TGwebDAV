@@ -1437,15 +1437,22 @@ namespace TelegramWebDAV.Services
                     string? match = newSession.FindAndConsume(targetFileName, relativeVirtualPath);
                     if (match != null)
                     {
-                        AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение в новой сессии (осталось файлов: {newSession.PendingFiles.Count}/{newSession.InitialCount}): '{match}'");
-                        if (newSession.PendingFiles.Count > 0)
+                        AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение в новой сессии: '{match}'");
+                        // Сохраняем сессию и запоминаем найденный корень источника (Multi-Folder Support!)
+                        // Это позволяет следующим файлам из этой же папки мгновенно находиться за 0 мс без опроса дескрипторов!
+                        if (_activeSession == null)
                         {
                             _activeSession = newSession;
                         }
                         else
                         {
-                            AppLogger.Info("WinFsp", $"[Источник] Единственный файл сессии обработан. Сессия завершена.");
-                            _activeSession = null;
+                            foreach (var r in newSession.SourceRoots)
+                            {
+                                if (!_activeSession.SourceRoots.Exists(x => string.Equals(x, r, StringComparison.OrdinalIgnoreCase)))
+                                {
+                                    _activeSession.SourceRoots.Add(r);
+                                }
+                            }
                         }
                         return match;
                     }
@@ -1594,6 +1601,44 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
+        /// Безопасное получение пути к файлу по дескриптору ядра с жестким таймаутом (50 мс).
+        /// Изолирует системный вызов GetFinalPathNameByHandle в выделенном потоке,
+        /// гарантируя, что даже при блокировке чужого дескриптора процесс и драйвер WinFsp НИКОГДА не зависнут.
+        /// </summary>
+        private static string? GetPathWithTimeout(IntPtr targetHandle, int timeoutMs = 50)
+        {
+            string? result = null;
+            var thread = new Thread(() =>
+            {
+                try
+                {
+                    if (GetFileType(targetHandle) == FILE_TYPE_DISK)
+                    {
+                        var sb = new StringBuilder(1024);
+                        uint len = GetFinalPathNameByHandle(targetHandle, sb, (uint)sb.Capacity, VOLUME_NAME_DOS);
+                        if (len > 0)
+                        {
+                            result = sb.ToString();
+                        }
+                    }
+                }
+                catch { }
+            })
+            {
+                IsBackground = true,
+                Priority = ThreadPriority.AboveNormal
+            };
+
+            thread.Start();
+            if (thread.Join(timeoutMs))
+            {
+                return result;
+            }
+
+            return null; // Таймаут: дескриптор заблокирован ядром, не ждем его
+        }
+
+        /// <summary>
         /// Безопасное извлечение путей к файлам, открытым процессом explorer.exe при перетаскивании (Drag-and-Drop).
         /// Опрашивает открытые файловые дескрипторы через ядро Windows (NtQuerySystemInformation),
         /// не отправляя оконных сообщений и не обращаясь к OLE/COM, что полностью исключает дедлоки.
@@ -1693,35 +1738,31 @@ namespace TelegramWebDAV.Services
                                     {
                                         try
                                         {
-                                            if (GetFileType(targetHandle) == FILE_TYPE_DISK)
+                                            string? rawPath = GetPathWithTimeout(targetHandle, 50);
+                                            if (!string.IsNullOrEmpty(rawPath))
                                             {
-                                                pathSb.Clear();
-                                                uint len = GetFinalPathNameByHandle(targetHandle, pathSb, (uint)pathSb.Capacity, VOLUME_NAME_DOS);
-                                                if (len > 0)
+                                                string path = rawPath;
+                                                if (path.StartsWith(@"\\?\"))
                                                 {
-                                                    string path = pathSb.ToString();
-                                                    if (path.StartsWith(@"\\?\"))
-                                                    {
-                                                        path = path.Substring(4);
-                                                    }
+                                                    path = path.Substring(4);
+                                                }
 
-                                                    if (File.Exists(path) || Directory.Exists(path))
+                                                if (File.Exists(path) || Directory.Exists(path))
+                                                {
+                                                    string name = Path.GetFileName(path);
+                                                    if (string.IsNullOrEmpty(targetFileName) ||
+                                                        string.Equals(name, targetFileName, StringComparison.OrdinalIgnoreCase))
                                                     {
-                                                        string name = Path.GetFileName(path);
-                                                        if (string.IsNullOrEmpty(targetFileName) ||
-                                                            string.Equals(name, targetFileName, StringComparison.OrdinalIgnoreCase))
+                                                        if (!results.Exists(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase)))
                                                         {
-                                                            if (!results.Exists(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase)))
-                                                            {
-                                                                AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен открытый файл в explorer (PID {processId}): '{path}'");
-                                                                results.Add(path);
+                                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен открытый файл в explorer (PID {processId}): '{path}'");
+                                                            results.Add(path);
 
-                                                                // Если мы искали конкретный целевой файл и нашли его,
-                                                                // МГНОВЕННО прекращаем опрос остальных дескрипторов (Root Cause Fix: защита от блокировок на чужих системных хэндлах)
-                                                                if (!string.IsNullOrEmpty(targetFileName))
-                                                                {
-                                                                    return results;
-                                                                }
+                                                            // Если мы искали конкретный целевой файл и нашли его,
+                                                            // МГНОВЕННО прекращаем опрос остальных дескрипторов (Fast-Break)
+                                                            if (!string.IsNullOrEmpty(targetFileName))
+                                                            {
+                                                                return results;
                                                             }
                                                         }
                                                     }
