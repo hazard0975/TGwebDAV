@@ -1613,7 +1613,6 @@ namespace TelegramWebDAV.Services
                                                         path = path.Substring(4);
                                                     }
 
-                                                    AppLogger.Debug("WinFsp", $"[Handles DragDrop] Проверен путь хэндла (PID {processId}): '{path}'");
                                                     if (File.Exists(path) || Directory.Exists(path))
                                                     {
                                                         string name = Path.GetFileName(path);
@@ -1624,6 +1623,13 @@ namespace TelegramWebDAV.Services
                                                             {
                                                                 AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен открытый файл в explorer (PID {processId}): '{path}'");
                                                                 results.Add(path);
+
+                                                                // Если мы искали конкретный целевой файл и нашли его,
+                                                                // МГНОВЕННО прекращаем опрос остальных дескрипторов (Root Cause Fix: защита от блокировок на чужих системных хэндлах)
+                                                                if (!string.IsNullOrEmpty(targetFileName))
+                                                                {
+                                                                    return results;
+                                                                }
                                                             }
                                                         }
                                                     }
