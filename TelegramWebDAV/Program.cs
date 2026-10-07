@@ -38,6 +38,13 @@ namespace TelegramWebDAV
                 return;
             }
 
+            // Обработка запроса из контекстного меню Проводника «Привязать папку к отдельному каналу»
+            if (args != null && args.Length >= 2 && args[0] == "--bind-channel")
+            {
+                await HandleBindChannelAsync(args[1]);
+                return;
+            }
+
             // Включаем системную поддержку Assembly.Location в .NET 8 для корректной работы сторонних библиотек (WinFsp)
             AppContext.SetData("Switch.System.Reflection.Assembly.Location.IncludeInSingleFileApp", true);
 
@@ -186,6 +193,90 @@ namespace TelegramWebDAV
                 MessageBox.Show(
                     $"Не удалось открыть сообщение в Telegram:\n{ex.Message}",
                     "Telegram WebDAV",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private static async Task HandleBindChannelAsync(string rawPath)
+        {
+            try
+            {
+                var configManager = new ConfigManager();
+                var settings = configManager.Load();
+
+                string trimmed = rawPath.Trim();
+                int colonIdx = trimmed.IndexOf(':');
+                string relPath = colonIdx >= 0 ? trimmed.Substring(colonIdx + 1) : trimmed;
+                relPath = relPath.Replace('\\', '/').Trim();
+                if (!relPath.StartsWith("/")) relPath = "/" + relPath;
+
+                var dbManager = new DatabaseManager(settings.Database.Path);
+                dbManager.InitializeDatabase();
+                var repository = new NodeRepository(dbManager);
+                var node = repository.GetNodeByPath(relPath);
+
+                if (node == null || !node.IsDir)
+                {
+                    MessageBox.Show(
+                        $"Папка '{relPath}' не найдена на виртуальном диске.",
+                        "Привязка к каналу Telegram",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Проверяем, не привязана ли папка уже к кастомному каналу
+                var primaryChannel = repository.GetPrimaryTelegramChannel();
+                if (node.TgChannelId.HasValue && node.TgChannelId.Value != 0 && (primaryChannel == null || node.TgChannelId.Value != primaryChannel.ChannelId))
+                {
+                    var currentCh = repository.GetTelegramChannel(node.TgChannelId.Value);
+                    MessageBox.Show(
+                        $"Папка '{node.Name}' уже привязана к каналу Telegram: '{currentCh?.Title ?? node.TgChannelId.Value.ToString()}'.",
+                        "Привязка к каналу Telegram",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    return;
+                }
+
+                var telegramService = new TelegramService(configManager, repository);
+                await telegramService.ConnectAsync();
+
+                if (!telegramService.IsAuthorized)
+                {
+                    MessageBox.Show(
+                        "Служба Telegram не авторизована. Авторизуйтесь в настройках приложения.",
+                        "Привязка к каналу Telegram",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var newChannel = await telegramService.CreateCustomChannelAsync(node.Name);
+                if (newChannel != null)
+                {
+                    await telegramService.MigrateSubtreeToChannelAsync(node.Id, newChannel.ChannelId);
+
+                    MessageBox.Show(
+                        $"Папка '{node.Name}' успешно привязана к новому каналу Telegram '{newChannel.Title}'!\n\nВсе файлы папки и её подпапок автоматически перенесены в новый канал.",
+                        "Успешная привязка",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"Не удалось создать новый канал Telegram для папки '{node.Name}'.",
+                        "Ошибка привязки",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"Ошибка при связывании папки с каналом Telegram:\n{ex.Message}",
+                    "Ошибка привязки",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }

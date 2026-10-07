@@ -625,6 +625,41 @@
     2. В алгоритм пакетного удаления сообщений `DeleteBatchWithBisectAsync` внедрен вызов `await EnsurePacingDelayAsync()`, предотвращающий серии спайковых запросов при очистке объемных папок и корзины.
     3. Потоковая загрузка файлов (Upload) сохранена на полной скорости сетевого канала без искусственных задержек чанков.
 
+### Этап 8: Мульти-канальное хранилище и динамическая привязка папок к каналам Telegram
+- [x] **8.1. Базовый сервис управления каналами в `TelegramService` и `NodeRepository`**:
+  - **Реализовано**:
+    1. Создание приватных Telegram-каналов через `Channels_CreateChannel` (`CreateCustomChannelAsync`).
+    2. Кэширование и получение активных каналов из таблицы `telegram_channels` (`GetTelegramChannel`, `SaveOrUpdateTelegramChannel`, `DeleteTelegramChannel`).
+    3. Вызов RPC `Channels_DeleteChannel` (`DeleteChannelAsync`) при полном удалении папки с диска.
+    4. Синхронизация названия через RPC `Channels_EditTitle` (`EditChannelTitleAsync`) при переименовании привязанной папки.
+- [x] **8.2. Рекурсивное вычисление и наследование целевого канала (`GetEffectiveChannelId`)**:
+  - **Реализовано**:
+    1. Метод `GetEffectiveChannelId(parentId)` в `NodeRepository.cs` поднимается по иерархии папок к корню и возвращает первый найденный `tg_channel_id`.
+    2. Все создаваемые вложенные подпапки и файлы в `CreateFolder`, `EnsureDirectoryPathExists` и `CreateOrUpdateFile` автоматически наследуют `tg_channel_id` привязанной родитетельской папки.
+- [x] **8.3. Механизм форвардинга и миграции содержимого папки (`MigrateSubtreeToChannelAsync`)**:
+  - **Реализовано**:
+    1. Пересылка файлов и их галерейных фото-превью (`tg_message_id` и `tg_preview_message_id`) в целевой канал через `Messages_ForwardMessages` с флагом `Flags.drop_author`.
+    2. Атомарное обновление записей `nodes` (`tg_message_id`, `tg_preview_message_id`, `tg_channel_id`) в SQLite через `UpdateNodeTelegramData`.
+    3. Постановка старых Message ID в очередь `pending_deletions` для фонового удаления из предыдущего канала и обновление текстовых подписей через `EnqueueCaptionUpdatesForSubtree`.
+- [x] **8.4. Интеграция в контекстное меню Windows Explorer (`ShellContextMenuHelper`)**:
+  - **Реализовано**:
+    1. Регистрация пункта «Привязать папку к отдельному каналу Telegram» для системных каталогов `HKCU\Software\Classes\Directory\shell\TelegramWebDAVBindChannel`.
+    2. Проверка текущей привязки папки и предотвращение повторного создания дублирующих каналов.
+- [x] **8.5. CLI-обработчик `--bind-channel` и фоновая привязка в `Program.cs`**:
+  - **Реализовано**:
+    1. Перехват аргумента `--bind-channel "<Path>"` при клике из контекстного меню Проводника.
+    2. Фоновое создание приватного канала по имени папки, сохранение записи в `telegram_channels`, обновление `tg_channel_id` папки и запуск миграции содержимого поддерева.
+    3. Вывод нативного уведомления в Windows для пользователя о результатах привязки.
+- [x] **8.6. Автоматическое переименование канала при переименовании папки**:
+  - **Реализовано**:
+    1. Интеграция в `WinFspServer.Rename` и `WebDavMiddleware.HandleMoveAsync`: при переименовании привязанной папки запускается асинхронный вызов `EditChannelTitleAsync`.
+- [x] **8.7. Garbage Collection для каналов при очистке корзины**:
+  - **Реализовано**:
+    1. При перманентном удалении элементов в `WinFspServer.Cleanup` и `WebDavMiddleware.HandleDeleteAsync` выполняется каскадная проверка `HasActiveNodesForChannel`.
+    2. Если для канала больше нет ни одной активной папки или файла на диске, отправляется RPC `Channels_DeleteChannel` и запись канала удаляется из таблицы `telegram_channels`.
+- [x] **8.8. Детализированный аудит, компиляция и фиксация в `DECISIONS_LOG.md`**.
+
+
 - [x] **7.57. Очистка отладочного логирования при удалении и навигации по диску**:
   - **Реализовано**:
     1. Логи штатного отсутствия файлов `GetNodeByPath NOT FOUND` (`NodeRepository.cs`) и `GetSecurityByName NOT FOUND` (`WinFspServer.cs`) переведены из `Warn` в `Debug`, что устранило серии из 20-30 ложных предупреждений при опросе Проводником только что удаленных файлов и служебных ресурсов.

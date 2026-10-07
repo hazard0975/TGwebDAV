@@ -14,11 +14,13 @@ namespace TelegramWebDAV.Utils
     {
         private const string TrashMenuKeyName = "TelegramWebDAVTrash";
         private const string OpenInTgMenuKeyName = "TelegramWebDAVOpenInTg";
+        private const string BindChannelMenuKeyName = "TelegramWebDAVBindChannel";
         
         private const string DriveKeyPath = @"Software\Classes\Drive\shell\" + TrashMenuKeyName;
         private const string DriveBackgroundKeyPath = @"Software\Classes\Drive\Background\shell\" + TrashMenuKeyName;
         private const string BackgroundKeyPath = @"Software\Classes\Directory\Background\shell\" + TrashMenuKeyName;
         private const string DirectoryKeyPath = @"Software\Classes\Directory\shell\" + TrashMenuKeyName;
+        private const string DirectoryBindChannelKeyPath = @"Software\Classes\Directory\shell\" + BindChannelMenuKeyName;
         private const string FileOpenInTgKeyPath = @"Software\Classes\*\shell\" + OpenInTgMenuKeyName;
 
         /// <summary>
@@ -120,6 +122,19 @@ namespace TelegramWebDAV.Utils
                     }
                 }
 
+                // 6. Контекстное меню для папок на диске: «Привязать папку к отдельному каналу Telegram»
+                using (var bindKey = Registry.CurrentUser.CreateSubKey(DirectoryBindChannelKeyPath))
+                {
+                    if (bindKey != null)
+                    {
+                        bindKey.SetValue("", "Привязать папку к отдельному каналу Telegram");
+                        bindKey.SetValue("Icon", File.Exists(exePath) ? $"\"{exePath}\",0" : "shell32.dll,130");
+                        bindKey.SetValue("AppliesTo", appliesToCondition);
+                        using var cmdKey = bindKey.CreateSubKey("command");
+                        cmdKey?.SetValue("", $"\"{exePath}\" --bind-channel \"%1\"");
+                    }
+                }
+
                 AppLogger.Info("Shell", $"Контекстное меню WebDAV и 'Открыть в Telegram' успешно зарегистрировано в реестре для {cleanDrive}");
                 return true;
             }
@@ -155,6 +170,7 @@ namespace TelegramWebDAV.Utils
                 using (var dirShellKey = Registry.CurrentUser.OpenSubKey(@"Software\Classes\Directory\shell", true))
                 {
                     dirShellKey?.DeleteSubKeyTree(TrashMenuKeyName, false);
+                    dirShellKey?.DeleteSubKeyTree(BindChannelMenuKeyName, false);
                 }
 
                 using (var fileShellKey = Registry.CurrentUser.OpenSubKey(@"Software\Classes\*\shell", true))

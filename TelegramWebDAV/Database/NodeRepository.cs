@@ -360,8 +360,9 @@ namespace TelegramWebDAV.Database
         /// <summary>
         /// Создает новую папку.
         /// </summary>
-        public bool CreateFolder(int parentId, string name)
+        public bool CreateFolder(int parentId, string name, long? tgChannelId = null)
         {
+            long? effectiveChannelId = tgChannelId ?? GetEffectiveChannelId(parentId);
             using (var connection = _dbManager.GetConnection())
             using (var command = connection.CreateCommand())
             {
@@ -372,7 +373,10 @@ namespace TelegramWebDAV.Database
                 long count = Convert.ToInt64(command.ExecuteScalar() ?? 0);
                 if (count > 0) return false; // Уже существует
 
-                command.CommandText = "INSERT INTO nodes (parent_id, name, is_dir) VALUES (@parentId, @name, 1);";
+                command.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, tg_channel_id) VALUES (@parentId, @name, 1, @tgChannelId);";
+                command.Parameters.AddWithValue("@parentId", parentId);
+                command.Parameters.AddWithValue("@name", name);
+                command.Parameters.AddWithValue("@tgChannelId", (object?)effectiveChannelId ?? DBNull.Value);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -429,11 +433,13 @@ namespace TelegramWebDAV.Database
                     else
                     {
                         // Папка отсутствует — атомарно создаем её
+                        long? effectiveChannelId = GetEffectiveChannelId(currentNode.Id);
                         using (var insertCmd = connection.CreateCommand())
                         {
-                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, in_trash) VALUES (@parentId, @name, 1, 0); SELECT last_insert_rowid();";
+                            insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, in_trash, tg_channel_id) VALUES (@parentId, @name, 1, 0, @tgChannelId); SELECT last_insert_rowid();";
                             insertCmd.Parameters.AddWithValue("@parentId", currentNode.Id);
                             insertCmd.Parameters.AddWithValue("@name", part);
+                            insertCmd.Parameters.AddWithValue("@tgChannelId", (object?)effectiveChannelId ?? DBNull.Value);
                             int newFolderId = Convert.ToInt32(insertCmd.ExecuteScalar());
 
                             using (var fetchCmd = connection.CreateCommand())
@@ -908,10 +914,97 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Вычисляет эффективный ID Telegram-канала для узла по иерархии родительских папок.
+        /// Поднимается от parentId вверх к корню и возвращает первый найденный tg_channel_id.
+        /// Если кастомный канал не найден, возвращает ID основного (Primary) канала.
+        /// </summary>
+        public long? GetEffectiveChannelId(int? parentId)
+        {
+            if (!parentId.HasValue || parentId.Value <= 0)
+            {
+                return GetPrimaryTelegramChannel()?.ChannelId;
+            }
+
+            using (var connection = _dbManager.GetConnection())
+            {
+                int currentId = parentId.Value;
+                while (currentId > 0)
+                {
+                    using (var cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = "SELECT parent_id, tg_channel_id FROM nodes WHERE id = @id LIMIT 1;";
+                        cmd.Parameters.AddWithValue("@id", currentId);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (!reader.Read()) break;
+                            if (!reader.IsDBNull(reader.GetOrdinal("tg_channel_id")))
+                            {
+                                long chId = Convert.ToInt64(reader["tg_channel_id"]);
+                                if (chId != 0) return chId;
+                            }
+                            if (reader.IsDBNull(reader.GetOrdinal("parent_id"))) break;
+                            currentId = Convert.ToInt32(reader["parent_id"]);
+                        }
+                    }
+                }
+            }
+
+            return GetPrimaryTelegramChannel()?.ChannelId;
+        }
+
+        /// <summary>
+        /// Привязывает папку к указанному Telegram-каналу.
+        /// </summary>
+        public void SetFolderChannelId(int folderNodeId, long? channelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE nodes SET tg_channel_id = @channelId, updated_at = CURRENT_TIMESTAMP WHERE id = @folderNodeId;";
+                command.Parameters.AddWithValue("@channelId", (object?)channelId ?? DBNull.Value);
+                command.Parameters.AddWithValue("@folderNodeId", folderNodeId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
+        /// Проверяет, осталась ли в базе хотя бы одна папка или файл с данным tg_channel_id.
+        /// </summary>
+        public bool HasActiveNodesForChannel(long channelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT COUNT(*) FROM nodes WHERE tg_channel_id = @channelId LIMIT 1;";
+                command.Parameters.AddWithValue("@channelId", channelId);
+                long count = Convert.ToInt64(command.ExecuteScalar() ?? 0);
+                return count > 0;
+            }
+        }
+
+        /// <summary>
+        /// Удаляет запись о канале из базы данных.
+        /// </summary>
+        public void DeleteTelegramChannel(long channelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "DELETE FROM telegram_channels WHERE channel_id = @channelId;";
+                command.Parameters.AddWithValue("@channelId", channelId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// Создание или перезапись файла с поддержкой версионирования, локального inline_data для микрофайлов и сохранения оригинальных дат
         /// </summary>
         public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, int? tgPreviewMessageId = null, byte[]? inlineData = null, DateTime? lastModified = null, DateTime? creationDate = null, long? tgChannelId = null)
         {
+            long? effectiveTgChannelId = (tgChannelId.HasValue && tgChannelId.Value != 0) 
+                ? tgChannelId.Value 
+                : GetEffectiveChannelId(parentId);
+
             using (var connection = _dbManager.GetConnection())
             {
                 Node? existingNode = null;
@@ -946,7 +1039,7 @@ namespace TelegramWebDAV.Database
                             updateCmd.Parameters.AddWithValue("@size", size);
                             updateCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
-                            updateCmd.Parameters.AddWithValue("@tgChannelId", (object?)tgChannelId ?? DBNull.Value);
+                            updateCmd.Parameters.AddWithValue("@tgChannelId", (object?)effectiveTgChannelId ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                             updateCmd.Parameters.AddWithValue("@nodeId", existingNode.Id);
                             if (lastModified.HasValue)
@@ -1008,7 +1101,7 @@ namespace TelegramWebDAV.Database
                             insertCmd.Parameters.AddWithValue("@originalId", existingNode.Id);
                             insertCmd.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
-                            insertCmd.Parameters.AddWithValue("@tgChannelId", (object?)tgChannelId ?? DBNull.Value);
+                            insertCmd.Parameters.AddWithValue("@tgChannelId", (object?)effectiveTgChannelId ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                             insertCmd.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                                 ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
@@ -1093,7 +1186,7 @@ namespace TelegramWebDAV.Database
                         command.Parameters.AddWithValue("@size", size);
                         command.Parameters.AddWithValue("@tgMessageId", (object?)tgMessageId ?? DBNull.Value);
                         command.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@tgChannelId", (object?)tgChannelId ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@tgChannelId", (object?)effectiveTgChannelId ?? DBNull.Value);
                         command.Parameters.AddWithValue("@inlineData", (object?)inlineData ?? DBNull.Value);
                         command.Parameters.AddWithValue("@createdAt", creationDate.HasValue 
                             ? creationDate.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss") 
@@ -1105,6 +1198,29 @@ namespace TelegramWebDAV.Database
                         command.ExecuteNonQuery();
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Обновляет параметры Telegram для узла в базе данных (при миграции/форварде между каналами).
+        /// </summary>
+        public void UpdateNodeTelegramData(int nodeId, int tgMessageId, int? tgPreviewMessageId, long tgChannelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"
+                    UPDATE nodes SET 
+                        tg_message_id = @tgMessageId, 
+                        tg_preview_message_id = @tgPreviewMessageId, 
+                        tg_channel_id = @tgChannelId,
+                        updated_at = CURRENT_TIMESTAMP 
+                    WHERE id = @nodeId;";
+                command.Parameters.AddWithValue("@tgMessageId", tgMessageId);
+                command.Parameters.AddWithValue("@tgPreviewMessageId", (object?)tgPreviewMessageId ?? DBNull.Value);
+                command.Parameters.AddWithValue("@tgChannelId", tgChannelId);
+                command.Parameters.AddWithValue("@nodeId", nodeId);
+                command.ExecuteNonQuery();
             }
         }
 
@@ -1295,6 +1411,29 @@ namespace TelegramWebDAV.Database
             else
             {
                 return $"🗑️ {fullPathWithVersion}{idLine}\n#trash";
+            }
+        }
+
+        /// <summary>
+        /// Помещает единичное обновление подписи сообщения в очередь pending_caption_updates.
+        /// </summary>
+        public void EnqueueCaptionUpdate(int nodeId, int tgMessageId, string newCaption)
+        {
+            if (tgMessageId <= 1 || string.IsNullOrEmpty(newCaption)) return;
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"
+                    INSERT INTO pending_caption_updates (node_id, tg_message_id, new_caption)
+                    VALUES (@nodeId, @tgMessageId, @newCaption)
+                    ON CONFLICT(tg_message_id) DO UPDATE SET
+                        new_caption = excluded.new_caption,
+                        status = 0;
+                ";
+                command.Parameters.AddWithValue("@nodeId", nodeId);
+                command.Parameters.AddWithValue("@tgMessageId", tgMessageId);
+                command.Parameters.AddWithValue("@newCaption", newCaption);
+                command.ExecuteNonQuery();
             }
         }
 

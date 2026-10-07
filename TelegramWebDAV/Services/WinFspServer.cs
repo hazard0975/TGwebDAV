@@ -854,6 +854,20 @@ namespace TelegramWebDAV.Services
                 node.ParentId = targetParent.Id;
                 AppLogger.Info("WinFsp", $"Переименование/перемещение: '{oldClean}' -> '{newClean}'");
 
+                if (node.IsDir && node.TgChannelId.HasValue && node.TgChannelId.Value != 0)
+                {
+                    long primaryId = _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
+                    if (node.TgChannelId.Value != primaryId)
+                    {
+                        long channelToEdit = node.TgChannelId.Value;
+                        string titleToEdit = newName;
+                        _ = Task.Run(async () =>
+                        {
+                            await _telegramService.EditChannelTitleAsync(channelToEdit, titleToEdit);
+                        });
+                    }
+                }
+
                 return STATUS_SUCCESS;
             }
             catch (Exception ex)
@@ -917,6 +931,29 @@ namespace TelegramWebDAV.Services
                     if (tgMessageIds.Count > 0)
                     {
                         _telegramService.TriggerDeletionQueueProcessing();
+                    }
+
+                    // Проверяем, остались ли каналы, принадлежавшие удаленным папкам
+                    var uniqueChannelIds = sortedSubtree
+                        .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0)
+                        .Select(n => n.TgChannelId!.Value)
+                        .Distinct()
+                        .ToList();
+
+                    if (uniqueChannelIds.Count > 0)
+                    {
+                        long primaryChannelId = _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
+                        foreach (var chId in uniqueChannelIds)
+                        {
+                            if (chId != primaryChannelId && !_repository.HasActiveNodesForChannel(chId))
+                            {
+                                AppLogger.Info("WinFsp", $"Канал Telegram ID {chId} больше не содержит активных папок на диске. Авто-удаление канала из Telegram...");
+                                _ = Task.Run(async () =>
+                                {
+                                    await _telegramService.DeleteChannelAsync(chId);
+                                });
+                            }
+                        }
                     }
 
                     if (_configManager.Load().Database.AutoVacuumOnTrashDelete)

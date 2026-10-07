@@ -780,6 +780,250 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
+        /// Создает новый приватный канал Telegram с названием папки и сохраняет его в SQLite.
+        /// </summary>
+        public async Task<TelegramChannel?> CreateCustomChannelAsync(string title)
+        {
+            await EnsureFloodWaitDelayAsync();
+            if (_client == null || !IsAuthorized)
+                throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
+
+            var account = _repository?.GetActiveTelegramAccount();
+            if (account == null)
+                throw new InvalidOperationException("Аккаунт Telegram не найден в базе данных.");
+
+            string cleanTitle = title.Trim();
+            AppLogger.Info("TelegramService", $"Создание нового приватного канала '{cleanTitle}'...");
+
+            var createReq = new TL.Methods.Channels_CreateChannel
+            {
+                flags = TL.Methods.Channels_CreateChannel.Flags.broadcast,
+                title = cleanTitle,
+                about = "Приватный канал хранилища папки " + cleanTitle
+            };
+
+            var createdUpdates = await _client.Invoke(createReq);
+            if (createdUpdates is TL.Updates updates)
+            {
+                foreach (var chat in updates.chats.Values)
+                {
+                    if (chat is TL.Channel newCh)
+                    {
+                        _repository?.SaveOrUpdateTelegramChannel(account.Id, newCh.ID, newCh.access_hash, newCh.Title, isPrimary: false);
+                        AppLogger.Info("TelegramService", $"Создан новый кастомный канал '{newCh.Title}' (ID: {newCh.ID}). Записан в SQLite.");
+                        return _repository?.GetTelegramChannel(newCh.ID);
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Обновляет название канала в Telegram при переименовании привязанной папки.
+        /// </summary>
+        public async Task EditChannelTitleAsync(long channelId, string newTitle)
+        {
+            await EnsureFloodWaitDelayAsync();
+            if (_client == null || !IsAuthorized || channelId == 0) return;
+
+            string cleanTitle = newTitle.Trim();
+            try
+            {
+                var peer = await GetStoragePeerAsync(channelId);
+                if (peer is TL.InputPeerChannel pc)
+                {
+                    var req = new TL.Methods.Channels_EditTitle
+                    {
+                        channel = new TL.InputChannel(pc.channel_id, pc.access_hash),
+                        title = cleanTitle
+                    };
+                    await _client.Invoke(req);
+                    _repository?.UpdateChannelTitle(channelId, cleanTitle);
+                    AppLogger.Info("TelegramService", $"Название канала Telegram (ID: {channelId}) сменено на '{cleanTitle}'.");
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Warn("TelegramService", $"Не удалось изменить название канала ID {channelId} в Telegram: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Перманентно удаляет канал из Telegram при полном уничтожении привязанной папки.
+        /// </summary>
+        public async Task DeleteChannelAsync(long channelId)
+        {
+            await EnsureFloodWaitDelayAsync();
+            if (_client == null || !IsAuthorized || channelId == 0) return;
+
+            try
+            {
+                var peer = await GetStoragePeerAsync(channelId);
+                if (peer is TL.InputPeerChannel pc)
+                {
+                    var req = new TL.Methods.Channels_DeleteChannel
+                    {
+                        channel = new TL.InputChannel(pc.channel_id, pc.access_hash)
+                    };
+                    await _client.Invoke(req);
+                    _repository?.DeleteTelegramChannel(channelId);
+                    AppLogger.Info("TelegramService", $"Канал Telegram ID {channelId} полностью удален.");
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Warn("TelegramService", $"Не удалось удалить канал ID {channelId} из Telegram: {ex.Message}");
+            }
+        }
+
+        /// <summary>
+        /// Мигрирует всё содержимое папки (и её подпапок) в новый канал Telegram через механизмы ForwardMessages и очистки старого канала.
+        /// </summary>
+        public async Task MigrateSubtreeToChannelAsync(int folderNodeId, long targetChannelId, Action<string, int, int>? onProgress = null)
+        {
+            if (_client == null || !IsAuthorized || _repository == null) return;
+
+            var targetPeer = await GetStoragePeerAsync(targetChannelId);
+            if (targetPeer == null)
+            {
+                AppLogger.Error("TelegramService", $"Не удалось получить доступ к целевому каналу ID {targetChannelId}. Миграция отменена.");
+                return;
+            }
+
+            var subtree = _repository.GetSubtreeNodes(folderNodeId);
+            var filesToMigrate = subtree.Where(n => !n.IsDir && n.TgMessageId.HasValue && n.TgMessageId.Value > 0).ToList();
+
+            AppLogger.Info("TelegramService", $"[Migration] Начало миграции {filesToMigrate.Count} файлов поддерева папки ID {folderNodeId} в новый канал ID {targetChannelId}...");
+
+            int migratedCount = 0;
+            int totalCount = filesToMigrate.Count;
+
+            foreach (var file in filesToMigrate)
+            {
+                await EnsureFloodWaitDelayAsync();
+                await EnsurePacingDelayAsync();
+
+                long sourceChannelId = file.TgChannelId ?? _repository.GetEffectiveChannelId(file.ParentId) ?? 0;
+                if (sourceChannelId == targetChannelId)
+                {
+                    migratedCount++;
+                    onProgress?.Invoke(file.Name, migratedCount, totalCount);
+                    continue;
+                }
+
+                var sourcePeer = await GetStoragePeerAsync(sourceChannelId);
+                if (sourcePeer == null) continue;
+
+                try
+                {
+                    int oldMessageId = file.TgMessageId!.Value;
+                    int? oldPreviewId = file.TgPreviewMessageId;
+
+                    int newMsgId = 0;
+                    int? newPreviewId = null;
+
+                    // 1. Пересылаем (Forward) основной документ в целевой канал (drop_author = true)
+                    var fwdReq = new TL.Methods.Messages_ForwardMessages
+                    {
+                        from_peer = sourcePeer,
+                        to_peer = targetPeer,
+                        id = new int[] { oldMessageId },
+                        random_id = new long[] { Random.Shared.NextInt64() },
+                        flags = TL.Methods.Messages_ForwardMessages.Flags.drop_author
+                    };
+
+                    var fwdUpdates = await _client.Invoke(fwdReq);
+                    if (fwdUpdates is TL.Updates updates)
+                    {
+                        foreach (var update in updates.updates)
+                        {
+                            if (update is TL.UpdateNewMessage unm && unm.message is TL.Message m)
+                            {
+                                newMsgId = m.ID;
+                                break;
+                            }
+                            else if (update is TL.UpdateNewChannelMessage uncm && uncm.message is TL.Message cm)
+                            {
+                                newMsgId = cm.ID;
+                                break;
+                            }
+                        }
+                    }
+
+                    // 2. Пересылаем превью для галереи (если есть)
+                    if (oldPreviewId.HasValue && oldPreviewId.Value > 0)
+                    {
+                        await EnsurePacingDelayAsync();
+                        var fwdPreviewReq = new TL.Methods.Messages_ForwardMessages
+                        {
+                            from_peer = sourcePeer,
+                            to_peer = targetPeer,
+                            id = new int[] { oldPreviewId.Value },
+                            random_id = new long[] { Random.Shared.NextInt64() },
+                            flags = TL.Methods.Messages_ForwardMessages.Flags.drop_author
+                        };
+
+                        var previewUpdates = await _client.Invoke(fwdPreviewReq);
+                        if (previewUpdates is TL.Updates pUpdates)
+                        {
+                            foreach (var update in pUpdates.updates)
+                            {
+                                if (update is TL.UpdateNewMessage unm && unm.message is TL.Message m)
+                                {
+                                    newPreviewId = m.ID;
+                                    break;
+                                }
+                                else if (update is TL.UpdateNewChannelMessage uncm && uncm.message is TL.Message cm)
+                                {
+                                    newPreviewId = cm.ID;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (newMsgId > 0)
+                    {
+                        // 3. Добавляем старые сообщения в очередь перманентного удаления из исходного канала
+                        var oldIdsToDelete = new List<int> { oldMessageId };
+                        if (oldPreviewId.HasValue && oldPreviewId.Value > 0)
+                        {
+                            oldIdsToDelete.Add(oldPreviewId.Value);
+                        }
+                        _repository.EnqueuePermanentDeletion(oldIdsToDelete, new List<int>());
+
+                        // 4. Обновляем записи в SQLite
+                        _repository.UpdateNodeTelegramData(file.Id, newMsgId, newPreviewId, targetChannelId);
+
+                        // 5. Обновляем подписи через очередь
+                        string fullPathWithVersion = _repository.GetNodeFullPathWithVersion(file.Id);
+                        string newCaption = NodeRepository.FormatTelegramCaption(fullPathWithVersion, newMsgId, isLatest: !file.InTrash);
+                        _repository.EnqueueCaptionUpdate(file.Id, newMsgId, newCaption);
+
+                        AppLogger.Info("TelegramService", $"[Migration] Файл '{file.Name}' успешно перенесен: старый msg #{oldMessageId} -> новый msg #{newMsgId} в канале ID {targetChannelId}.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    AppLogger.Error("TelegramService", $"[Migration] Ошибка переноса файла '{file.Name}' в канал ID {targetChannelId}: {ex.Message}", ex);
+                }
+
+                migratedCount++;
+                onProgress?.Invoke(file.Name, migratedCount, totalCount);
+            }
+
+            // Назначаем tg_channel_id для самой привязываемой папки и всех ее дочерних папок
+            _repository.SetFolderChannelId(folderNodeId, targetChannelId);
+            foreach (var dir in subtree.Where(n => n.IsDir))
+            {
+                _repository.SetFolderChannelId(dir.Id, targetChannelId);
+            }
+
+            TriggerDeletionQueueProcessing();
+            AppLogger.Info("TelegramService", $"[Migration] Миграция папки ID {folderNodeId} в канал ID {targetChannelId} завершена. Перенесено файлов: {migratedCount}.");
+        }
+
+        /// <summary>
         /// Подключение к серверам Telegram и проверка наличия готовой сессии через WTelegramClient.
         /// </summary>
         public async Task ConnectAsync()

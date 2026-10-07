@@ -615,6 +615,30 @@ namespace TelegramWebDAV.Server
                     telegramService.TriggerDeletionQueueProcessing();
                 }
 
+                // Проверяем, остались ли каналы, принадлежавшие удаленным папкам
+                var uniqueChannelIds = nodesToDelete
+                    .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0)
+                    .Select(n => n.TgChannelId!.Value)
+                    .Distinct()
+                    .ToList();
+
+                if (uniqueChannelIds.Count > 0)
+                {
+                    long primaryChannelId = repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
+                    foreach (var chId in uniqueChannelIds)
+                    {
+                        if (chId != primaryChannelId && !repository.HasActiveNodesForChannel(chId))
+                        {
+                            AppLogger.Info("WebDAV", $"Канал Telegram ID {chId} больше не содержит активных папок на диске. Авто-удаление канала из Telegram...");
+                            _ = Task.Run(async () =>
+                            {
+                                await telegramService.DeleteChannelAsync(chId);
+                                repository.DeleteTelegramChannel(chId);
+                            });
+                        }
+                    }
+                }
+
                 // Автоматическое фоновое сжатие базы SQLite с дебаунсом (через 3 сек спокойствия)
                 if (autoVacuum)
                 {
@@ -677,6 +701,20 @@ namespace TelegramWebDAV.Server
 
             repository.MoveNode(sourceNode.Id, destParentNode.Id, destName);
             AppLogger.Info("WebDAV", $"Узел '{sourceNode.Name}' успешно перемещен/переименован в '{destName}'.");
+
+            if (sourceNode.IsDir && sourceNode.TgChannelId.HasValue && sourceNode.TgChannelId.Value != 0 && telegramService != null)
+            {
+                long primaryId = repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
+                if (sourceNode.TgChannelId.Value != primaryId)
+                {
+                    long channelToEdit = sourceNode.TgChannelId.Value;
+                    string titleToEdit = destName;
+                    _ = Task.Run(async () =>
+                    {
+                        await telegramService.EditChannelTitleAsync(channelToEdit, titleToEdit);
+                    });
+                }
+            }
 
             context.Response.StatusCode = (int)HttpStatusCode.Created;
             return Task.CompletedTask;
