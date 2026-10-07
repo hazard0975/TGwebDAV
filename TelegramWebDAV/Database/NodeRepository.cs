@@ -649,7 +649,7 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Рекурсивно собирает узел и всех его потомков (всю ветку поддерева)
+        /// Рекурсивно собирает узел, всех его потомков (всю ветку поддерева) и все связанные версии файлов
         /// </summary>
         public List<Node> GetSubtreeNodes(int rootNodeId)
         {
@@ -662,7 +662,54 @@ namespace TelegramWebDAV.Database
             {
                 CollectSubtreeRecursive(rootNode.Id, result);
             }
+
+            CollectAssociatedVersions(result);
             return result;
+        }
+
+        private void CollectAssociatedVersions(List<Node> currentList)
+        {
+            if (currentList.Count == 0) return;
+
+            var existingIds = new HashSet<int>(currentList.Select(n => n.Id));
+            var newNodes = new List<Node>();
+
+            using (var connection = _dbManager.GetConnection())
+            {
+                foreach (var node in currentList.ToList())
+                {
+                    if (node.IsDir) continue;
+
+                    int targetOriginalId = node.OriginalNodeId ?? node.Id;
+                    using (var cmd = connection.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                            SELECT * FROM nodes 
+                            WHERE original_node_id = @id 
+                               OR id = @origId 
+                               OR (original_node_id IS NOT NULL AND original_node_id = @origId);";
+                        cmd.Parameters.AddWithValue("@id", node.Id);
+                        cmd.Parameters.AddWithValue("@origId", targetOriginalId);
+
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var versionNode = MapReaderToNode(reader);
+                                if (existingIds.Add(versionNode.Id))
+                                {
+                                    newNodes.Add(versionNode);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (newNodes.Count > 0)
+            {
+                currentList.AddRange(newNodes);
+            }
         }
 
         private void CollectSubtreeRecursive(int parentId, List<Node> result)

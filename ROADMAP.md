@@ -592,6 +592,12 @@
   - **Реализовано (Root Cause Fix)**:
     1. Из схемы `Schema.sql` и `EmbeddedFallbackSchema` удалено правило `ON DELETE CASCADE` для `original_node_id`.
     2. Все версии файлов обрабатываются C#-кодом как независимые узлы корзины, гарантируя 100% занесение всех Telegram Message ID в очередь перманентного удаления.
+- [x] **7.52. Полный отказ от автоматического каскада ON DELETE CASCADE в схеме БД и явный C#-сбор версий (`CollectAssociatedVersions`)**:
+  - **Проблема**: При удалении родителеского элемента или пачки элементов на чистой базе с нуля SQLite каскадно стирал дочерние элементы и связанные версии втайне от C#-кода, из-за чего часть сообщений оставалась в Telegram, а Проводник выводил ошибку.
+  - **Первопричина**: В `Schema.sql` и `DatabaseManager.cs` у внешних ключей `parent_id` и `node_id` содержалась инструкция `ON DELETE CASCADE`.
+  - **Реализовано (Root Cause Fix)**:
+    1. **Полное удаление `ON DELETE CASCADE`**: Из `Schema.sql` и `EmbeddedFallbackSchema` удалены каскадные инструкции `ON DELETE CASCADE`. SQLite больше никогда не удаляет записи по цепочке автоматически.
+    2. **Точечный явный сбор версий (`CollectAssociatedVersions`)**: Метод `GetSubtreeNodes` в `NodeRepository.cs` явно собирает все вложенные узлы и связанные версии файлов (`original_node_id`), гарантируя занесение 100% Telegram Message ID в очередь `pending_deletions` до выполнения `DELETE FROM nodes`.
 
 
 

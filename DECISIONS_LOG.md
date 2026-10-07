@@ -891,6 +891,15 @@ _telegramService.UpdateSettings(_settings);
 Из схемы `Schema.sql` и константы `EmbeddedFallbackSchema` в `DatabaseManager.cs` полностью удалена строчка ограничения `FOREIGN KEY (original_node_id)`.
 Поле `original_node_id` стало обычным числовым полем (`INTEGER`), служащим простым указателем на ID оригинала. Управление удалением узлов полностью находится в руках C#-кода по их уникальному `id` (`DELETE FROM nodes WHERE id = @id;`), гарантируя 100% занесение всех сообщений Telegram в очередь очистки.
 
+## 36. Полный отказ от автоматического каскада ON DELETE CASCADE в схеме БД и явный сбор версий в C#
+
+### Бизнес-цель и первопричина:
+В `Schema.sql` и `DatabaseManager.cs` для внешних ключей `parent_id` и `node_id` содержалось автоматическое правило `ON DELETE CASCADE`. При удалении родительского элемента движок SQLite стирал все дочерние файлы и подпапки каскадом прямо внутри SQL-запроса, из-за чего C#-код не успевал извлечь их `tg_message_id` и занести в `pending_deletions`. Файлы оставались в Telegram, а Проводник выдавал ошибку.
+
+### Принятое решение:
+1. **Удаление `ON DELETE CASCADE` из схемы**: Из `Schema.sql` и `EmbeddedFallbackSchema` убраны директивы `ON DELETE CASCADE` для `parent_id` и `node_id`. Теперь SQLite никогда не удаляет дочерние записи автоматически втайне от приложения.
+2. **Явный сбор всех версий в C# (`CollectAssociatedVersions`)**: Метод `GetSubtreeNodes` в `NodeRepository.cs` расширен для рекурсивного сбора не только дочерних папок, но и всех связанных версий файлов (`original_node_id`). Все их `tg_message_id` гарантированно вносятся в `pending_deletions` до выполнения `DELETE FROM nodes`.
+
 
 
 

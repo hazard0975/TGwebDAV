@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     inline_data BLOB,
     
-    FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES nodes(id)
 );
 
 -- Таблица трекинга незавершенных загрузок (для докачки при обрывах)
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS upload_progress (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     
-    FOREIGN KEY (node_id) REFERENCES nodes(id) ON DELETE CASCADE
+    FOREIGN KEY (node_id) REFERENCES nodes(id)
 );
 
 -- Индексы для оптимизации поиска
