@@ -86,11 +86,6 @@ namespace TelegramWebDAV.Database
                     command.Parameters.AddWithValue("@inTrash", expectedInTrash);
                     currentNode = ReadNode(command);
                 }
-
-                if (currentNode == null)
-                {
-                    AppLogger.Debug("NodeRepository", $"[GetNodeByPath NOT FOUND] Путь: '{path}' -> Не найден элемент '{part}' (parentId={parentIdForSearch}, expectedInTrash={expectedInTrash}).");
-                }
             }
 
             return currentNode;
@@ -1014,21 +1009,6 @@ namespace TelegramWebDAV.Database
             {
                 command.CommandText = "DELETE FROM telegram_channels WHERE channel_id = @channelId;";
                 command.Parameters.AddWithValue("@channelId", channelId);
-                command.ExecuteNonQuery();
-            }
-        }
-
-        /// <summary>
-        /// Обновляет tg_channel_id во всех узлах со старого канала на новый.
-        /// </summary>
-        public void UpdateNodesChannelId(long oldChannelId, long newChannelId)
-        {
-            using (var connection = _dbManager.GetConnection())
-            using (var command = connection.CreateCommand())
-            {
-                command.CommandText = "UPDATE nodes SET tg_channel_id = @newChannelId, updated_at = CURRENT_TIMESTAMP WHERE tg_channel_id = @oldChannelId;";
-                command.Parameters.AddWithValue("@newChannelId", newChannelId);
-                command.Parameters.AddWithValue("@oldChannelId", oldChannelId);
                 command.ExecuteNonQuery();
             }
         }

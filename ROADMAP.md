@@ -681,18 +681,18 @@
     1. В сигнатуры `UploadFileAsync` и `UploadFileChunkAsync` добавлен параметр `long? targetChannelId = null`.
     2. Вычисление эффективного канала на стороне серверов: в `WinFspServer.cs` и `WebDavMiddleware.cs` перед загрузкой определяется `targetChannelId = repository.GetEffectiveChannelId(parentId)`.
     3. Файлы, помещаемые в привязанные папки, физически загружаются в выделенный канал папки, а не в основной канал по умолчанию.
-- [x] **8.14. Изоляция сборщика мусора каналов (Garbage Collection) и автовосстановление при удалении канала в Telegram**:
+- [x] **8.14. Изоляция сборщика мусора каналов (Garbage Collection) в WinFspServer**:
   - **Реализовано**:
     1. В `WinFspServer.Cleanup` авто-удаление канала ограничено условием `n.Id == node.Id && n.IsDir` — удаление файлов или содержимого папки больше не уничтожает сам канал в Telegram.
-    2. В `TelegramService.GetStoragePeerAsync` внедрена проверка доступности канала: если канал был удален в Telegram, запись в SQLite удаляется, создается новый канал с сохранением имени папки, а `tg_channel_id` в таблице `nodes` обновляется автоматически.
+    2. В `TelegramService.GetStoragePeerAsync` соблюдается чистота ответственности: если указанный в SQLite канал не найден в Telegram, выбрасывается понятное исключение `InvalidOperationException` без скрытого создания каналов-дубликатов.
 
 
 
 - [x] **7.57. Очистка отладочного логирования при удалении и навигации по диску**:
   - **Реализовано**:
-    1. Логи штатного отсутствия файлов `GetNodeByPath NOT FOUND` (`NodeRepository.cs`) и `GetSecurityByName NOT FOUND` (`WinFspServer.cs`) переведены из `Warn` в `Debug`, что устранило серии из 20-30 ложных предупреждений при опросе Проводником только что удаленных файлов и служебных ресурсов.
+    1. Полностью удален шум повторяющихся логов навигации Проводника: `[GetNodeByPath NOT FOUND]` (`NodeRepository.cs`), `[GetSecurityByName NOT FOUND]` (`WinFspServer.cs`) и `[ReadDirectoryEntry START]` (`WinFspServer.cs`). При открытии папок и регулярном опросе `desktop.ini` лог остается чистым.
     2. Поэлементный лог поддерева при перманентном удалении папок переведен в `Debug` в `WinFspServer.cs` и `WebDavMiddleware.cs`; в `INFO` сохранена общая сводка по количеству узлов и сообщений.
     3. Дампы массивов Telegram Message ID и Node ID в `EnqueuePermanentDeletion` переведены в `Debug`.
     4. Логирование успешного пакетного удаления в `TelegramService.DeleteBatchWithBisectAsync` сокращено до лаконичного сообщения в `INFO`, а подробный список ID вынесен в `Debug`.
-    5. Вызовы листинга директорий `ReadDirectoryEntry START`, `SetDelete` и `CleanupDelete` переведены в `Debug`.
+    5. Вызовы `SetDelete` и `CleanupDelete` переведены в `Debug`.
 

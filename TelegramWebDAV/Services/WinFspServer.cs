@@ -392,7 +392,6 @@ namespace TelegramWebDAV.Services
             if (node == null)
             {
                 fileAttributes = 0;
-                AppLogger.Debug("WinFsp", $"[GetSecurityByName NOT FOUND] Файл/папка '{fileName}' (path: '{cleanPath}') не найден в SQLite.");
                 return NT_STATUS_OBJECT_NAME_NOT_FOUND;
             }
 
@@ -1215,7 +1214,6 @@ namespace TelegramWebDAV.Services
 
                 children.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
                 context = new FspDirectoryEnumContext(children);
-                AppLogger.Debug("WinFsp", $"[ReadDirectoryEntry START] Запрос листинга папки '{dirNode.Name}' (ID {dirNode.Id}), загружено элементов из SQLite: {children.Count}.");
             }
 
             var dirEnum = (FspDirectoryEnumContext)context;
