@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.AccessControl;
 using System.Text;
@@ -886,10 +887,12 @@ namespace TelegramWebDAV.Services
                 {
                     AppLogger.Info("WinFsp", $"Перманентное удаление элемента '{node.Name}' (ID {node.Id}) из корзины...");
                     var subtree = _repository.GetSubtreeNodes(node.Id);
+                    // Гарантируем порядок: сначала удаляются файлы (is_dir == 0), затем пустые папки (is_dir == 1)
+                    var sortedSubtree = subtree.OrderBy(n => n.IsDir ? 1 : 0).ToList();
                     var dbNodeIds = new List<int>();
                     var tgMessageIds = new List<int>();
 
-                    foreach (var n in subtree)
+                    foreach (var n in sortedSubtree)
                     {
                         dbNodeIds.Add(n.Id);
                         if (n.TgMessageId.HasValue && n.TgMessageId.Value > 0)

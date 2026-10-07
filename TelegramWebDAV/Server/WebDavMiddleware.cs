@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -580,8 +581,8 @@ namespace TelegramWebDAV.Server
 
             if (isPermanent)
             {
-                // По рекурсии получаем все узлы поддерева
-                var nodesToDelete = repository.GetSubtreeNodes(node.Id);
+                // По рекурсии получаем все узлы поддерева: сначала файлы (is_dir == 0), затем пустые папки (is_dir == 1)
+                var nodesToDelete = repository.GetSubtreeNodes(node.Id).OrderBy(n => n.IsDir ? 1 : 0).ToList();
 
                 // Собираем все непустые ID сообщений в Telegram для пакетного удаления
                 var tgMessageIds = new List<int>();
