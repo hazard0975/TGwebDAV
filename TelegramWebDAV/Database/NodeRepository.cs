@@ -953,6 +953,28 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Возвращает tg_channel_id для файла по его tg_message_id (или tg_preview_message_id).
+        /// Позволяет точно знать, в каком канале лежит сообщение Telegram.
+        /// </summary>
+        public long? GetChannelIdByTgMessageId(int messageId)
+        {
+            if (messageId <= 0) return null;
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT tg_channel_id FROM nodes WHERE tg_message_id = @msgId OR tg_preview_message_id = @msgId LIMIT 1;";
+                command.Parameters.AddWithValue("@msgId", messageId);
+                var result = command.ExecuteScalar();
+                if (result != null && result != DBNull.Value)
+                {
+                    long chId = Convert.ToInt64(result);
+                    if (chId != 0) return chId;
+                }
+            }
+            return GetPrimaryTelegramChannel()?.ChannelId;
+        }
+
+        /// <summary>
         /// Привязывает папку к указанному Telegram-каналу.
         /// </summary>
         public void SetFolderChannelId(int folderNodeId, long? channelId)

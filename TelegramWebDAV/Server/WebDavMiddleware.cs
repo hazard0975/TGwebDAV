@@ -211,7 +211,7 @@ namespace TelegramWebDAV.Server
             {
                 try
                 {
-                    await telegramService.DownloadFileAsync(node.TgMessageId.Value, context.Response.OutputStream, start, length, node.Name, totalSize);
+                    await telegramService.DownloadFileAsync(node.TgMessageId.Value, context.Response.OutputStream, start, length, node.Name, totalSize, node.TgChannelId);
                 }
                 catch (Exception ex)
                 {
@@ -354,8 +354,10 @@ namespace TelegramWebDAV.Server
                     string nameNoExt = Path.GetFileNameWithoutExtension(name);
                     string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
 
+                    long? targetChannelId = repository.GetEffectiveChannelId(parentNode.Id);
+
                     // Загружаем чанк в Telegram
-                    var uploadResult = await telegramService.UploadFileChunkAsync(context.Request.InputStream, name, offset, totalSize, caption: fullPathWithVersion);
+                    var uploadResult = await telegramService.UploadFileChunkAsync(context.Request.InputStream, name, offset, totalSize, caption: fullPathWithVersion, targetChannelId: targetChannelId);
                     int? tgMessageId = uploadResult?.MessageId;
                     int? tgPreviewId = uploadResult?.PreviewMessageId;
                     
@@ -469,7 +471,8 @@ namespace TelegramWebDAV.Server
                             string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{fileExt}";
 
                             // Прямая потоковая загрузка в Telegram с сохранением TCP Flow Control для Проводника
-                            var uploadResult = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion, audioMeta: audioMeta, videoMeta: videoMeta);
+                            long? targetChannelId = repository.GetEffectiveChannelId(parentNode.Id);
+                            var uploadResult = await telegramService.UploadFileAsync(uploadStream, name, uploadLength, displayFileName: tgDisplayName, caption: fullPathWithVersion, audioMeta: audioMeta, videoMeta: videoMeta, targetChannelId: targetChannelId);
                             tgMessageId = uploadResult?.MessageId;
                             tgPreviewMessageId = uploadResult?.PreviewMessageId;
                         }

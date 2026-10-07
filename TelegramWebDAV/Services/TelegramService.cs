@@ -1535,7 +1535,7 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Надежная загрузка чанка с поддержкой докачки и отправкой собранного файла в канал Telegram по завершении.
         /// </summary>
-        public async Task<FileUploadResult?> UploadFileChunkAsync(Stream source, string fileName, long offset, long totalSize, string? caption = null)
+        public async Task<FileUploadResult?> UploadFileChunkAsync(Stream source, string fileName, long offset, long totalSize, string? caption = null, long? targetChannelId = null)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -1588,7 +1588,8 @@ namespace TelegramWebDAV.Services
                             fileName, 
                             caption: caption, 
                             audioMeta: chunkAudioMeta, 
-                            videoMeta: chunkVideoMeta
+                            videoMeta: chunkVideoMeta,
+                            targetChannelId: targetChannelId
                         );
                         return uploadResult;
                     }
@@ -1616,7 +1617,8 @@ namespace TelegramWebDAV.Services
             string? caption = null,
             AudioMetadataResult? audioMeta = null,
             VideoMetadataResult? videoMeta = null,
-            string? originalFilePath = null)
+            string? originalFilePath = null,
+            long? targetChannelId = null)
         {
             Interlocked.Increment(ref _pendingUploadsCount);
             await _uploadSemaphore.WaitAsync();
@@ -1636,7 +1638,7 @@ namespace TelegramWebDAV.Services
                 if (_client == null || !IsAuthorized)
                     throw new InvalidOperationException("Клиент Telegram не подключен или не авторизован.");
 
-                var peer = await GetStoragePeerAsync();
+                var peer = await GetStoragePeerAsync(targetChannelId);
                 bool isGallery = _configManager.CurrentSettings.Server.CreatePhotoGalleryPreview && IsGalleryImage(effectiveFileName);
 
                 // Если поток не поддерживает Seek (входящий сетевой поток WebDAV от Проводника)
@@ -1793,7 +1795,7 @@ namespace TelegramWebDAV.Services
                     {
                         AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
                         InvalidateStoragePeer();
-                        peer = await GetStoragePeerAsync();
+                        peer = await GetStoragePeerAsync(targetChannelId);
                         message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
                     }
                 }
@@ -1849,7 +1851,7 @@ namespace TelegramWebDAV.Services
                     {
                         AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
                         InvalidateStoragePeer();
-                        peer = await GetStoragePeerAsync();
+                        peer = await GetStoragePeerAsync(targetChannelId);
                         message = await _client.SendMessageAsync(peer, effectiveCaption, mediaDoc);
                     }
                 }
@@ -1870,7 +1872,7 @@ namespace TelegramWebDAV.Services
                         catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("CHANNEL_INVALID") || rpcEx.Message.Contains("CHANNEL_PRIVATE")))
                         {
                             InvalidateStoragePeer();
-                            peer = await GetStoragePeerAsync();
+                            peer = await GetStoragePeerAsync(targetChannelId);
                             using var photoMs = new MemoryStream(galleryPhotoBytes, false);
                             var photoInput = await _client.UploadFileAsync(photoMs, previewFileName);
                             var photoMedia = new TL.InputMediaUploadedPhoto { file = photoInput };
@@ -1921,7 +1923,7 @@ namespace TelegramWebDAV.Services
                     {
                         AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
                         InvalidateStoragePeer();
-                        peer = await GetStoragePeerAsync();
+                        peer = await GetStoragePeerAsync(targetChannelId);
                         message = await _client.SendMessageAsync(peer, docCaption, mediaDoc, reply_to_msg_id: replyToId);
                     }
 
@@ -2185,7 +2187,7 @@ namespace TelegramWebDAV.Services
             return null;
         }
 
-        private async Task<TL.Document?> GetDocumentFromMessageAsync(int messageId, bool forceRefresh = false)
+        private async Task<TL.Document?> GetDocumentFromMessageAsync(int messageId, long? channelId = null, bool forceRefresh = false)
         {
             if (!forceRefresh && _documentCache.TryGetValue(messageId, out var cached) && cached.expiresAt > DateTime.UtcNow)
             {
@@ -2193,7 +2195,12 @@ namespace TelegramWebDAV.Services
             }
 
             if (_client == null) return null;
-            var peer = await GetStoragePeerAsync();
+
+            long? effectiveChannelId = (channelId.HasValue && channelId.Value != 0)
+                ? channelId.Value
+                : _repository?.GetChannelIdByTgMessageId(messageId);
+
+            var peer = await GetStoragePeerAsync(effectiveChannelId);
             TL.Messages_MessagesBase messagesBase;
             try
             {
@@ -2203,7 +2210,7 @@ namespace TelegramWebDAV.Services
             {
                 AppLogger.Warn("TelegramService", "Канал недоступен по сохраненному хэшу. Сброс хэша и повторный поиск...");
                 InvalidateStoragePeer();
-                peer = await GetStoragePeerAsync();
+                peer = await GetStoragePeerAsync(effectiveChannelId);
                 messagesBase = await _client.GetMessages(peer, new TL.InputMessage[] { new TL.InputMessageID { id = messageId } });
             }
             
@@ -2268,7 +2275,7 @@ namespace TelegramWebDAV.Services
         /// Потоковое скачивание чанков напрямую из Telegram через MTProto Upload_GetFile.
         /// В режиме Pure RAM Mode качает данные 100% через ОЗУ (без файлов на диске), сохраняя чанки в динамический 128 МБ RAM-кэш.
         /// </summary>
-        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, string fileName = "файл", long totalFileSize = -1)
+        public async Task DownloadFileAsync(int messageId, Stream destination, long offset, long length, string fileName = "файл", long totalFileSize = -1, long? channelId = null)
         {
             await EnsureFloodWaitDelayAsync();
 
@@ -2292,7 +2299,7 @@ namespace TelegramWebDAV.Services
             }
 
             // 2. Запрашиваем дескриптор документа
-            var document = await GetDocumentFromMessageAsync(messageId);
+            var document = await GetDocumentFromMessageAsync(messageId, channelId);
             if (document == null)
             {
                 throw new FileNotFoundException($"Не удалось найти медиа-документ для сообщения ID {messageId} в Telegram.");
@@ -2803,12 +2810,12 @@ namespace TelegramWebDAV.Services
             }
         }
 
-        public async Task<bool> DeleteFileFromTelegramAsync(int messageId)
+        public async Task<bool> DeleteFileFromTelegramAsync(int messageId, long? channelId = null)
         {
-            return await DeleteFilesFromTelegramAsync(new System.Collections.Generic.List<int> { messageId });
+            return await DeleteFilesFromTelegramAsync(new System.Collections.Generic.List<int> { messageId }, channelId);
         }
 
-        public async Task<bool> DeleteFilesFromTelegramAsync(System.Collections.Generic.List<int> messageIds)
+        public async Task<bool> DeleteFilesFromTelegramAsync(System.Collections.Generic.List<int> messageIds, long? channelId = null)
         {
             if (messageIds == null || messageIds.Count == 0) return true;
 
@@ -2823,17 +2830,49 @@ namespace TelegramWebDAV.Services
 
             try
             {
-                var peer = await GetStoragePeerAsync();
-                bool isChannel = peer is TL.InputPeerChannel;
-
-                // Разбиваем список по 100 элементов (максимальный размер пакета Telegram)
                 const int batchSize = 100;
-                for (int i = 0; i < validIds.Count; i += batchSize)
-                {
-                    var count = Math.Min(batchSize, validIds.Count - i);
-                    var batch = validIds.GetRange(i, count).ToArray();
 
-                    await DeleteBatchWithBisectAsync(peer, isChannel, batch);
+                if (channelId.HasValue && channelId.Value != 0)
+                {
+                    var peer = await GetStoragePeerAsync(channelId.Value);
+                    bool isChannel = peer is TL.InputPeerChannel;
+
+                    for (int i = 0; i < validIds.Count; i += batchSize)
+                    {
+                        var count = Math.Min(batchSize, validIds.Count - i);
+                        var batch = validIds.GetRange(i, count).ToArray();
+
+                        await DeleteBatchWithBisectAsync(peer, isChannel, batch);
+                    }
+                }
+                else
+                {
+                    // Группируем сообщения по их каналам для корректного удаления из разных каналов
+                    var channelGroups = new Dictionary<long, List<int>>();
+                    foreach (var id in validIds)
+                    {
+                        long chKey = _repository?.GetChannelIdByTgMessageId(id) ?? 0L;
+                        if (!channelGroups.TryGetValue(chKey, out var list))
+                        {
+                            list = new List<int>();
+                            channelGroups[chKey] = list;
+                        }
+                        list.Add(id);
+                    }
+
+                    foreach (var kvp in channelGroups)
+                    {
+                        var peer = await GetStoragePeerAsync(kvp.Key != 0L ? kvp.Key : (long?)null);
+                        bool isChannel = peer is TL.InputPeerChannel;
+
+                        for (int i = 0; i < kvp.Value.Count; i += batchSize)
+                        {
+                            var count = Math.Min(batchSize, kvp.Value.Count - i);
+                            var batch = kvp.Value.GetRange(i, count).ToArray();
+
+                            await DeleteBatchWithBisectAsync(peer, isChannel, batch);
+                        }
+                    }
                 }
                 return true;
             }

@@ -1039,4 +1039,31 @@ _telegramService.UpdateSettings(_settings);
    - Результат возвращается во вторичный CLI-процесс через пайп, и пользователю выводится стандартное нативное уведомление Windows `MessageBox.Show`. Вторичный процесс моментально завершается.
    - Механизм не требует открытия сетевых TCP-портов и не вызывает предупреждений брандмауэра Windows.
 
+## 46. Сквозная маршрутизация целевого Telegram-канала при прямой загрузке новых файлов (Root Cause Fix)
+
+### Симптом:
+При копировании нового файла в привязанную папку (например, `track1.mp3` в `Z:\Музыка`) файл физически отправлялся в основной (Primary) канал Telegram, хотя в базе данных в поле `nodes.tg_channel_id` сохранялся корректный ID нового канала «Музыка».
+
+### Первопричина (Root Cause):
+1. **Точка вызова загрузки (`WinFspServer.Write`, `WinFspServer.CleanupAsync`, `WebDavMiddleware.HandlePutAsync`):**
+   - Вызывался метод `_telegramService.UploadFileAsync(...)` без указания целевого канала (`targetChannelId`).
+2. **Точка отправки сообщения (`TelegramService.UploadFileAsync`):**
+   - Метод вызывал `GetStoragePeerAsync()` без параметров, который всегда возвращал закэшированный `_storagePeer` основного канала по умолчанию.
+   - В результате бинарные данные и сообщение Telegram уходили в общий основной канал.
+3. **Точка фиксации метаданных в БД (`NodeRepository.CreateOrUpdateFile`):**
+   - Метод `CreateOrUpdateFile` честно вычислял `GetEffectiveChannelId(parentId)` и прописывал в таблицу `nodes` ID канала `Музыка`.
+   - Возникало рассинхронизированное состояние: база данных считала, что файл в канале «Музыка», а физическое сообщение лежало в основном канале. При последующем чтении поиск сообщения по ID в канале «Музыка» мог вызывать сбои.
+
+### Принятое решение (Принцип Root Cause First):
+1. **Сквозной параметр `targetChannelId`**:
+   - В сигнатуры `UploadFileAsync` и `UploadFileChunkAsync` добавлен параметр `long? targetChannelId = null`.
+   - `TelegramService` получает целевой `InputPeer` через `await GetStoragePeerAsync(targetChannelId)`. В случае ошибки `CHANNEL_INVALID` повторный запрос также выполняется с правильным `targetChannelId`.
+2. **Вычисление эффективного канала на стороне вызывающих серверов**:
+   - В `WinFspServer.cs` (как для прямого стриминга на лету в `Write`, так и для сохранения из памяти в `CleanupAsync`) перед вызовом загрузки определяется `targetChannelId = _nodeRepository.GetEffectiveChannelId(node.ParentId)`.
+   - В `WebDavMiddleware.cs` (как для одиночного `PUT`, так и для чанковых докачек) определяется `targetChannelId = repository.GetEffectiveChannelId(parentNode.Id)`.
+3. **Отказоустойчивость при чтении и удалении**:
+   - В `NodeRepository.cs` добавлен метод `GetChannelIdByTgMessageId(int messageId)` и создан индекс `idx_nodes_tg_message_id`.
+   - `GetDocumentFromMessageAsync`, `DownloadFileAsync` и `DeleteFilesFromTelegramAsync` используют явный `channelId` с автоматическим фолбэком на поиск канала по `messageId` в БД, если канал не был передан.
+   - Пакетное удаление `DeleteFilesFromTelegramAsync` автоматически группирует удаляемые ID по их каналам.
+
 

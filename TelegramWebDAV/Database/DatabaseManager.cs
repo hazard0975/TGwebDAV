@@ -159,6 +159,7 @@ CREATE TABLE IF NOT EXISTS upload_progress (
 CREATE INDEX IF NOT EXISTS idx_nodes_parent_id ON nodes(parent_id);
 CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
 CREATE INDEX IF NOT EXISTS idx_nodes_in_trash ON nodes(in_trash);
+CREATE INDEX IF NOT EXISTS idx_nodes_tg_message_id ON nodes(tg_message_id);
 CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_id);
 
 CREATE TABLE IF NOT EXISTS pending_channel_migrations (

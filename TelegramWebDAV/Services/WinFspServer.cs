@@ -682,7 +682,9 @@ namespace TelegramWebDAV.Services
                             }
                         }
 
+                        long? targetChannelId = _repository.GetEffectiveChannelId(node.ParentId);
                         AppLogger.Info("WinFsp", $"Запуск прямой потоковой передачи '{nodeName}' ({targetTotalSize} байт) в Telegram на лету (Zero-Temp)" + 
+                            (targetChannelId != null ? $", канал: {targetChannelId}" : "") +
                             (videoMeta != null ? $", видео: {videoMeta.Width}x{videoMeta.Height}, {videoMeta.DurationSeconds} сек, обложка: {(videoMeta.Thumbnail != null ? "ДА" : "НЕТ")}" : "") +
                             (audioMeta != null ? $", аудио: {audioMeta.DurationSeconds} сек, обложка: {(audioMeta.AlbumCover != null ? "ДА" : "НЕТ")}" : "") + "...");
                         ctx.UploadTask = Task.Run(() => _telegramService.UploadFileAsync(
@@ -692,7 +694,8 @@ namespace TelegramWebDAV.Services
                             caption: fullPathWithVersion,
                             audioMeta: audioMeta,
                             videoMeta: videoMeta,
-                            originalFilePath: ctx.OriginalSourcePath
+                            originalFilePath: ctx.OriginalSourcePath,
+                            targetChannelId: targetChannelId
                         ));
                     }
 
@@ -1117,7 +1120,8 @@ namespace TelegramWebDAV.Services
                                 fspAudioMeta = AudioMetadataExtractor.ExtractFromStream(ms, nodeName);
                             }
 
-                            AppLogger.Info("WinFsp", $"Отправка файла '{nodeName}' ({finalLength} байт) из памяти в Telegram (Zero-Temp)...");
+                            long? targetChannelId = _repository.GetEffectiveChannelId(parentId);
+                            AppLogger.Info("WinFsp", $"Отправка файла '{nodeName}' ({finalLength} байт) из памяти в Telegram (Zero-Temp)" + (targetChannelId != null ? $", канал: {targetChannelId}" : "") + "...");
                             using var uploadMs = new MemoryStream(fileBytes, false);
                             var uploadResult = _telegramService.UploadFileAsync(
                                 uploadMs,
@@ -1126,7 +1130,8 @@ namespace TelegramWebDAV.Services
                                 caption: fullPathWithVersion,
                                 audioMeta: fspAudioMeta,
                                 videoMeta: fspVideoMeta,
-                                originalFilePath: ctx.OriginalSourcePath
+                                originalFilePath: ctx.OriginalSourcePath,
+                                targetChannelId: targetChannelId
                             ).GetAwaiter().GetResult();
 
                             if (uploadResult?.MessageId != null)
@@ -1288,7 +1293,7 @@ namespace TelegramWebDAV.Services
                 {
                     // Прямой стриминг в предоставленный ядром Windows буфер без создания промежуточных файлов на диске C:!
                     using var memStream = new UnmanagedMemoryStream((byte*)buffer.ToPointer(), toRead, toRead, FileAccess.Write);
-                    _telegramService.DownloadFileAsync(node.TgMessageId.Value, memStream, (long)offset, (long)toRead, node.Name, node.Size)
+                    _telegramService.DownloadFileAsync(node.TgMessageId.Value, memStream, (long)offset, (long)toRead, node.Name, node.Size, node.TgChannelId)
                                     .GetAwaiter().GetResult();
                     bytesTransferred = (uint)memStream.Position;
                 }
