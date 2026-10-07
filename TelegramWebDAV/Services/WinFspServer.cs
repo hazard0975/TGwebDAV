@@ -876,6 +876,7 @@ namespace TelegramWebDAV.Services
                     {
                         var subtreeFiles = _repository.GetSubtreeNodes(node.Id)
                             .Where(n => !n.IsDir && n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
+                            .OrderBy(n => n.TgMessageId!.Value)
                             .Select(n => n.Id)
                             .ToList();
                         if (subtreeFiles.Count > 0)

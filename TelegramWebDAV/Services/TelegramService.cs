@@ -661,38 +661,9 @@ namespace TelegramWebDAV.Services
                             int newMsgId = 0;
                             int? newPreviewId = null;
 
-                            // 1. Пересылаем основной документ в целевой канал (drop_author = true)
-                            var fwdReq = new TL.Methods.Messages_ForwardMessages
-                            {
-                                from_peer = sourcePeer,
-                                to_peer = targetPeer,
-                                id = new int[] { oldMessageId },
-                                random_id = new long[] { Random.Shared.NextInt64() },
-                                flags = TL.Methods.Messages_ForwardMessages.Flags.drop_author
-                            };
-
-                            var fwdUpdates = await _client.Invoke(fwdReq);
-                            if (fwdUpdates is TL.Updates updates)
-                            {
-                                foreach (var update in updates.updates)
-                                {
-                                    if (update is TL.UpdateNewMessage unm && unm.message is TL.Message m)
-                                    {
-                                        newMsgId = m.ID;
-                                        break;
-                                    }
-                                    else if (update is TL.UpdateNewChannelMessage uncm && uncm.message is TL.Message cm)
-                                    {
-                                        newMsgId = cm.ID;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // 2. Пересылаем превью для галереи (если есть)
+                            // 1. Сначала пересылаем превью для галереи (если есть), чтобы оно появилось в ленте первым
                             if (oldPreviewId.HasValue && oldPreviewId.Value > 0)
                             {
-                                await EnsurePacingDelayAsync(token);
                                 var fwdPreviewReq = new TL.Methods.Messages_ForwardMessages
                                 {
                                     from_peer = sourcePeer,
@@ -717,6 +688,35 @@ namespace TelegramWebDAV.Services
                                             newPreviewId = cm.ID;
                                             break;
                                         }
+                                    }
+                                }
+                                await EnsurePacingDelayAsync(token);
+                            }
+
+                            // 2. Затем пересылаем основной документ (файл) в целевой канал (drop_author = true)
+                            var fwdReq = new TL.Methods.Messages_ForwardMessages
+                            {
+                                from_peer = sourcePeer,
+                                to_peer = targetPeer,
+                                id = new int[] { oldMessageId },
+                                random_id = new long[] { Random.Shared.NextInt64() },
+                                flags = TL.Methods.Messages_ForwardMessages.Flags.drop_author
+                            };
+
+                            var fwdUpdates = await _client.Invoke(fwdReq);
+                            if (fwdUpdates is TL.Updates updates)
+                            {
+                                foreach (var update in updates.updates)
+                                {
+                                    if (update is TL.UpdateNewMessage unm && unm.message is TL.Message m)
+                                    {
+                                        newMsgId = m.ID;
+                                        break;
+                                    }
+                                    else if (update is TL.UpdateNewChannelMessage uncm && uncm.message is TL.Message cm)
+                                    {
+                                        newMsgId = cm.ID;
+                                        break;
                                     }
                                 }
                             }
@@ -1090,7 +1090,10 @@ namespace TelegramWebDAV.Services
                 _repository.SetFolderChannelId(dir.Id, targetChannelId);
             }
 
-            var filesToMigrate = subtree.Where(n => !n.IsDir && n.TgMessageId.HasValue && n.TgMessageId.Value > 0).ToList();
+            var filesToMigrate = subtree
+                .Where(n => !n.IsDir && n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
+                .OrderBy(n => n.TgMessageId!.Value)
+                .ToList();
             if (filesToMigrate.Count == 0)
             {
                 AppLogger.Info("TelegramService", $"[Migration] В папке ID {folderNodeId} нет файлов для миграции.");

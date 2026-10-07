@@ -667,6 +667,10 @@
     1. Таблица `pending_channel_migrations` в `Schema.sql` и `EmbeddedFallbackSchema` с индексами.
     2. Фоновый воркер `ProcessChannelMigrationsAsync` в `TelegramService.cs`: выбирает пачки файлов, пересылает через `Messages_ForwardMessages` с `Flags.drop_author`, ставит старые Message ID в `pending_deletions`, обновляет `nodes` и `pending_caption_updates`.
     3. Полная устойчивость к `FLOOD_WAIT` (авто-пауза на $X$ секунд) и сохранение прогресса миграции при перезапуске сервиса.
+- [x] **8.11. Хронологический порядок миграции по `tg_message_id ASC` и приоритет фото-превью**:
+  - **Реализовано**:
+    1. При постановке файлов в очередь миграции в `TelegramService.MigrateSubtreeToChannelAsync`, `WinFspServer.Rename` и `WebDavMiddleware.HandleMoveAsync` внедрена строгая сортировка `OrderBy(n => n.TgMessageId!.Value)`. Отредактированные файлы сохраняют свое реальное хронологическое место в истории Telegram.
+    2. В воркере `ProcessChannelMigrationsAsync` для файлов с фото-превью сначала пересылается `oldPreviewId`, а затем `oldMessageId`. В новом канале превью гарантированно предшествует оригинальному файлу в ленте и медиа-сетке.
 
 
 - [x] **7.57. Очистка отладочного логирования при удалении и навигации по диску**:
