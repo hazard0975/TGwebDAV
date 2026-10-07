@@ -965,21 +965,22 @@ namespace TelegramWebDAV.Services
                         _telegramService.TriggerDeletionQueueProcessing();
                     }
 
-                    // Проверяем, остались ли каналы, принадлежавшие удаленным папкам
-                    var uniqueChannelIds = sortedSubtree
-                        .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0)
+                    // Проверяем, был ли перманентно удален узел самой привязанной папки с назначенным каналом
+                    // Канал удаляется ТОЛЬКО при удалении самой папки, но НЕ при удалении файлов или подпапок внутри неё
+                    var deletedFoldersWithChannel = sortedSubtree
+                        .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0 && n.Id == node.Id)
                         .Select(n => n.TgChannelId!.Value)
                         .Distinct()
                         .ToList();
 
-                    if (uniqueChannelIds.Count > 0)
+                    if (deletedFoldersWithChannel.Count > 0)
                     {
                         long primaryChannelId = _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
-                        foreach (var chId in uniqueChannelIds)
+                        foreach (var chId in deletedFoldersWithChannel)
                         {
                             if (chId != primaryChannelId && !_repository.HasActiveNodesForChannel(chId))
                             {
-                                AppLogger.Info("WinFsp", $"Канал Telegram ID {chId} больше не содержит активных папок на диске. Авто-удаление канала из Telegram...");
+                                AppLogger.Info("WinFsp", $"Привязанная папка удалена навсегда, канал Telegram ID {chId} больше не используется. Авто-удаление канала из Telegram...");
                                 _ = Task.Run(async () =>
                                 {
                                     await _telegramService.DeleteChannelAsync(chId);

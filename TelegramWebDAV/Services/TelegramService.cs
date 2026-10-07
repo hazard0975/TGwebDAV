@@ -885,15 +885,38 @@ namespace TelegramWebDAV.Services
 
                 if (_client != null && IsAuthorized)
                 {
-                    var chats = await _client.Messages_GetAllChats();
-                    if (chats.chats.TryGetValue(specificChannelId.Value, out var ch) && ch is TL.Channel channel)
+                    try
                     {
-                        var account = _repository?.GetActiveTelegramAccount();
-                        if (account != null && _repository != null)
+                        var chats = await _client.Messages_GetAllChats();
+                        if (chats.chats.TryGetValue(specificChannelId.Value, out var ch) && ch is TL.Channel channel)
                         {
-                            _repository.SaveOrUpdateTelegramChannel(account.Id, channel.ID, channel.access_hash, channel.Title, isPrimary: false);
+                            var account = _repository?.GetActiveTelegramAccount();
+                            if (account != null && _repository != null)
+                            {
+                                _repository.SaveOrUpdateTelegramChannel(account.Id, channel.ID, channel.access_hash, channel.Title, isPrimary: false);
+                            }
+                            return channel.ToInputPeer();
                         }
-                        return channel.ToInputPeer();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Warn("TelegramService", $"Не удалось получить информацию о канале ID {specificChannelId.Value}: {ex.Message}");
+                    }
+
+                    // Если канал числился в базе, но больше не существует в Telegram (был удален):
+                    // очищаем недействительную запись о канале из базы и создаем новый для привязанной папки
+                    if (channelInfo != null)
+                    {
+                        AppLogger.Warn("TelegramService", $"Канал ID {specificChannelId.Value} ('{channelInfo.Title}') больше не существует в Telegram. Пересоздаем канал для папки...");
+                        _repository?.DeleteTelegramChannel(specificChannelId.Value);
+
+                        var newChannel = await CreateCustomChannelAsync(channelInfo.Title);
+                        if (newChannel != null)
+                        {
+                            // Обновляем tg_channel_id во всех узлах, где был привязан старый канал
+                            _repository?.UpdateNodesChannelId(specificChannelId.Value, newChannel.ChannelId);
+                            return new TL.InputPeerChannel(newChannel.ChannelId, newChannel.AccessHash);
+                        }
                     }
                 }
             }

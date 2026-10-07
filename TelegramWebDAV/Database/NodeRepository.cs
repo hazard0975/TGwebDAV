@@ -1019,6 +1019,21 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Обновляет tg_channel_id во всех узлах со старого канала на новый.
+        /// </summary>
+        public void UpdateNodesChannelId(long oldChannelId, long newChannelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "UPDATE nodes SET tg_channel_id = @newChannelId, updated_at = CURRENT_TIMESTAMP WHERE tg_channel_id = @oldChannelId;";
+                command.Parameters.AddWithValue("@newChannelId", newChannelId);
+                command.Parameters.AddWithValue("@oldChannelId", oldChannelId);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        /// <summary>
         /// Создание или перезапись файла с поддержкой версионирования, локального inline_data для микрофайлов и сохранения оригинальных дат
         /// </summary>
         public void CreateOrUpdateFile(int parentId, string name, long size, int? tgMessageId, int? tgPreviewMessageId = null, byte[]? inlineData = null, DateTime? lastModified = null, DateTime? creationDate = null, long? tgChannelId = null)
