@@ -122,7 +122,18 @@ namespace TelegramWebDAV
                 var winFspServer = new WinFspServer(configManager, repository, telegramService);
                 var virtualDriveManager = new VirtualDriveManager(configManager, winFspServer);
 
-                // 6. Запуск приложения в системном трее Windows
+                // 6. Запуск локального IPC сервера (Named Pipe) для команд из контекстного меню Проводника
+                using var ipcServer = new IpcServer(async req =>
+                {
+                    if (req.Command == "bind-channel")
+                    {
+                        return await ExecuteBindChannelAsync(req.Path, repository, telegramService);
+                    }
+                    return new IpcResponse { Success = false, Message = $"Неизвестная команда: {req.Command}" };
+                });
+                ipcServer.Start();
+
+                // 7. Запуск приложения в системном трее Windows
                 Application.Run(new TrayContext(configManager, repository, telegramService, webDavServer, virtualDriveManager));
             }
             catch (Exception ex)
@@ -202,63 +213,21 @@ namespace TelegramWebDAV
         {
             try
             {
-                var configManager = new ConfigManager();
-                var settings = configManager.Load();
-
-                string trimmed = rawPath.Trim();
-                int colonIdx = trimmed.IndexOf(':');
-                string relPath = colonIdx >= 0 ? trimmed.Substring(colonIdx + 1) : trimmed;
-                relPath = relPath.Replace('\\', '/').Trim();
-                if (!relPath.StartsWith("/")) relPath = "/" + relPath;
-
-                var dbManager = new DatabaseManager(settings.Database.Path);
-                dbManager.InitializeDatabase();
-                var repository = new NodeRepository(dbManager);
-                var node = repository.GetNodeByPath(relPath);
-
-                if (node == null || !node.IsDir)
+                var response = await IpcClient.SendCommandAsync("bind-channel", rawPath);
+                if (response == null)
                 {
                     MessageBox.Show(
-                        $"Папка '{relPath}' не найдена на виртуальном диске.",
+                        "Не удалось связаться с запущенной службой Telegram WebDAV.\nУбедитесь, что приложение запущено в системном трее.",
                         "Привязка к каналу Telegram",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Проверяем, не привязана ли папка уже к кастомному каналу
-                var primaryChannel = repository.GetPrimaryTelegramChannel();
-                if (node.TgChannelId.HasValue && node.TgChannelId.Value != 0 && (primaryChannel == null || node.TgChannelId.Value != primaryChannel.ChannelId))
-                {
-                    var currentCh = repository.GetTelegramChannel(node.TgChannelId.Value);
-                    MessageBox.Show(
-                        $"Папка '{node.Name}' уже привязана к каналу Telegram: '{currentCh?.Title ?? node.TgChannelId.Value.ToString()}'.",
-                        "Привязка к каналу Telegram",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                    return;
-                }
-
-                var telegramService = new TelegramService(configManager, repository);
-                await telegramService.ConnectAsync();
-
-                if (!telegramService.IsAuthorized)
+                if (response.Success)
                 {
                     MessageBox.Show(
-                        "Служба Telegram не авторизована. Авторизуйтесь в настройках приложения.",
-                        "Привязка к каналу Telegram",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-                    return;
-                }
-
-                var newChannel = await telegramService.CreateCustomChannelAsync(node.Name);
-                if (newChannel != null)
-                {
-                    await telegramService.MigrateSubtreeToChannelAsync(node.Id, newChannel.ChannelId);
-
-                    MessageBox.Show(
-                        $"Папка '{node.Name}' успешно привязана к новому каналу Telegram '{newChannel.Title}'!\n\nВсе файлы папки и её подпапок автоматически перенесены в новый канал.",
+                        response.Message,
                         "Успешная привязка",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
@@ -266,19 +235,91 @@ namespace TelegramWebDAV
                 else
                 {
                     MessageBox.Show(
-                        $"Не удалось создать новый канал Telegram для папки '{node.Name}'.",
-                        "Ошибка привязки",
+                        response.Message,
+                        "Привязка к каналу Telegram",
                         MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    $"Ошибка при связывании папки с каналом Telegram:\n{ex.Message}",
+                    $"Ошибка отправки команды:\n{ex.Message}",
                     "Ошибка привязки",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
+            }
+        }
+
+        private static async Task<IpcResponse> ExecuteBindChannelAsync(string rawPath, NodeRepository repository, TelegramService telegramService)
+        {
+            try
+            {
+                string trimmed = rawPath.Trim();
+                int colonIdx = trimmed.IndexOf(':');
+                string relPath = colonIdx >= 0 ? trimmed.Substring(colonIdx + 1) : trimmed;
+                relPath = relPath.Replace('\\', '/').Trim();
+                if (!relPath.StartsWith("/")) relPath = "/" + relPath;
+
+                var node = repository.GetNodeByPath(relPath);
+                if (node == null || !node.IsDir)
+                {
+                    return new IpcResponse
+                    {
+                        Success = false,
+                        Message = $"Папка '{relPath}' не найдена на виртуальном диске."
+                    };
+                }
+
+                // Проверяем, не привязана ли папка уже к кастомному каналу
+                var primaryChannel = repository.GetPrimaryTelegramChannel();
+                if (node.TgChannelId.HasValue && node.TgChannelId.Value != 0 && (primaryChannel == null || node.TgChannelId.Value != primaryChannel.ChannelId))
+                {
+                    var currentCh = repository.GetTelegramChannel(node.TgChannelId.Value);
+                    return new IpcResponse
+                    {
+                        Success = false,
+                        Message = $"Папка '{node.Name}' уже привязана к каналу Telegram: '{currentCh?.Title ?? node.TgChannelId.Value.ToString()}'."
+                    };
+                }
+
+                if (!telegramService.IsAuthorized)
+                {
+                    return new IpcResponse
+                    {
+                        Success = false,
+                        Message = "Служба Telegram не авторизована. Пожалуйста, выполните вход в Telegram в окне приложения."
+                    };
+                }
+
+                var newChannel = await telegramService.CreateCustomChannelAsync(node.Name);
+                if (newChannel != null)
+                {
+                    await telegramService.MigrateSubtreeToChannelAsync(node.Id, newChannel.ChannelId);
+
+                    return new IpcResponse
+                    {
+                        Success = true,
+                        Message = $"Папка '{node.Name}' успешно привязана к новому каналу Telegram '{newChannel.Title}'!\n\nВсе файлы папки и её подпапок автоматически переносятся в новый канал в фоновом режиме."
+                    };
+                }
+                else
+                {
+                    return new IpcResponse
+                    {
+                        Success = false,
+                        Message = $"Не удалось создать новый канал Telegram для папки '{node.Name}'."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("IPC", $"Ошибка ExecuteBindChannelAsync: {ex.Message}", ex);
+                return new IpcResponse
+                {
+                    Success = false,
+                    Message = $"Ошибка при связывании папки с каналом Telegram:\n{ex.Message}"
+                };
             }
         }
     }

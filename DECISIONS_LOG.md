@@ -1022,3 +1022,21 @@ _telegramService.UpdateSettings(_settings);
    - В воркере `ProcessChannelMigrationsAsync` пересылка `oldPreviewId` выполняется строго ДО вызова пересылки `oldMessageId`.
    - В целевом Telegram-канале превью всегда оказывается первым сообщением, а оригинальный документ — следующим за ним.
 
+## 45. Межпроцессное взаимодействие (IPC) через Named Pipe для команд контекстного меню Explorer
+
+### Бизнес-цель и первопричина:
+При вызове пункта контекстного меню Проводника Windows «Привязать папку к отдельному каналу Telegram» Explorer запускал новый отдельный процесс `TelegramWebDAV.exe --bind-channel "%1"`. 
+Этот второй процесс пытался самостоятельно инициализировать `TelegramService` и подключиться к файлу сессии `user.session`. Поскольку основной процесс службы уже удерживал монопольную блокировку на `user.session`, второй процесс завершался ошибкой:
+`The process cannot access the file 'D:\Temp\TG webDAV\user.session' because it is being used by another process.`
+
+### Принятое решение:
+1. **Архитектура Local IPC на базе `NamedPipeServerStream` / `NamedPipeClientStream`**:
+   - Создан сервис `IpcService` (`IpcServer` и `IpcClient`), работающий через локальный пайп `TelegramWebDAV_IPC_Pipe`.
+   - Основной процесс службы при старте запускает асинхронный слушатель `IpcServer`.
+2. **Делегирование исполнения в основной процесс**:
+   - При запуске `TelegramWebDAV.exe --bind-channel "%1"` вторичный процесс не трогает сессию Telegram и базу данных напрямую, а через `IpcClient.SendCommandAsync` отправляет команду `"bind-channel"` основному процессу.
+   - Основной процесс выполняет `ExecuteBindChannelAsync`, используя свой уже авторизованный `TelegramService` и соединение с SQLite, создавая канал и запуская миграцию.
+   - Результат возвращается во вторичный CLI-процесс через пайп, и пользователю выводится стандартное нативное уведомление Windows `MessageBox.Show`. Вторичный процесс моментально завершается.
+   - Механизм не требует открытия сетевых TCP-портов и не вызывает предупреждений брандмауэра Windows.
+
+
