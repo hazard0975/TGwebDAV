@@ -586,6 +586,12 @@
     2. **`NodeRepository.EnqueuePermanentDeletion`**: Подробный логируемый аудит транзакции перманентного удаления с выведением списков ID узлов SQLite и массивов Telegram Message ID, помещаемых в очередь `pending_deletions`.
     3. **`NodeRepository.CreateOrUpdateFile`**: Логирование архивного перемещения прежней версии в корзину при перезаписи файла (`_v1`, `_v2`) с указанием родительского ID корзины и `TgMessageId`.
     4. **`TelegramService.DeleteBatchWithBisectAsync`**: Полный логируемый трассировочный след отправки массивов Message ID в Telegram API (`Channels_DeleteMessages` / `Messages_DeleteMessages`) и точечный лог алгоритма биссекции при сетевых сбоях.
+- [x] **7.51. Устранение каскадного удаления версий файлов при очистке корзины (Root Cause Fix для ON DELETE CASCADE)**:
+  - **Проблема**: При редактировании файла несколько раз создавались версии `v1`, `v2`, `v3`... При очистке корзины после стирания версии `v1` сообщения `v2`..`v5` не удалялись из Telegram, а Проводник выводил ошибку «*Элемент не найден*».
+  - **Первопричина**: В схеме базы `original_node_id` содержал правило `FOREIGN KEY (original_node_id) REFERENCES nodes(id) ON DELETE CASCADE`. При удалении `v1` движок SQLite тайком от C#-кода уничтожал строки последующих версий, из-за чего их Message ID не попадали в очередь `pending_deletions`.
+  - **Реализовано (Root Cause Fix)**:
+    1. Из схемы `Schema.sql` и `EmbeddedFallbackSchema` удалено правило `ON DELETE CASCADE` для `original_node_id`.
+    2. Все версии файлов обрабатываются C#-кодом как независимые узлы корзины, гарантируя 100% занесение всех Telegram Message ID в очередь перманентного удаления.
 
 
 

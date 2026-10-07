@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS nodes (
     inline_data BLOB,
     
     FOREIGN KEY (parent_id) REFERENCES nodes(id) ON DELETE CASCADE,
-    FOREIGN KEY (original_node_id) REFERENCES nodes(id) ON DELETE CASCADE
+    FOREIGN KEY (original_node_id) REFERENCES nodes(id)
 );
 
 -- Таблица трекинга незавершенных загрузок (для докачки при обрывах)
