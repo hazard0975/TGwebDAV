@@ -42,6 +42,7 @@ namespace TelegramWebDAV.UI
         private CheckBox _chkContextMenu = null!;
         private CheckBox _chkAutoShowPopup = null!;
         private CheckBox _chkGalleryPreview = null!;
+        private CheckBox _chkAutoVacuum = null!;
         private CheckBox _chkEnableDiskCache = null!;
         private NumericUpDown _numDownloadWorkers = null!;
         private NumericUpDown _numPacingDelayMs = null!;
@@ -290,8 +291,13 @@ namespace TelegramWebDAV.UI
                 }
             };
 
+            _chkAutoVacuum = UIFactory.CreateCheckBox(
+                "Автоматически сжимать базу (VACUUM) при очистке корзины",
+                _settings.Database.AutoVacuumOnTrashDelete
+            );
+
             var rowDbButtons = UIFactory.CreateActionRow(btnVacuum, btnOpenDbFolder);
-            pnlDbInner.Controls.AddRange(new Control[] { lblDbStats, rowDbButtons });
+            pnlDbInner.Controls.AddRange(new Control[] { lblDbStats, _chkAutoVacuum, rowDbButtons });
             grpDb.Controls.Add(pnlDbInner);
 
             pnlGeneral.Controls.AddRange(new Control[] { 
@@ -853,6 +859,7 @@ namespace TelegramWebDAV.UI
             _settings.Logging.EnableError = _chkLogError.Checked;
             _settings.Logging.MaxLogFileSizeMb = (int)_numMaxLogMb.Value;
             _settings.Logging.MaxArchivedFiles = (int)_numMaxLogFiles.Value;
+            _settings.Database.AutoVacuumOnTrashDelete = _chkAutoVacuum.Checked;
 
             if (_chkContextMenu.Checked)
             {

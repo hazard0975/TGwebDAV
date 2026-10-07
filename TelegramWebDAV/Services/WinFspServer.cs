@@ -919,7 +919,10 @@ namespace TelegramWebDAV.Services
                         _telegramService.TriggerDeletionQueueProcessing();
                     }
 
-                    _repository.ScheduleVacuum(3000);
+                    if (_configManager.Load().Database.AutoVacuumOnTrashDelete)
+                    {
+                        _repository.ScheduleVacuum(3000);
+                    }
                 }
                 else
                 {

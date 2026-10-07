@@ -554,7 +554,7 @@ namespace TelegramWebDAV.Server
             return Task.CompletedTask;
         }
 
-        public static Task HandleDeleteAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService telegramService)
+        public static Task HandleDeleteAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService telegramService, bool autoVacuum = true)
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";
             string path = Uri.UnescapeDataString(localPath);
@@ -616,7 +616,10 @@ namespace TelegramWebDAV.Server
                 }
 
                 // Автоматическое фоновое сжатие базы SQLite с дебаунсом (через 3 сек спокойствия)
-                repository.ScheduleVacuum(3000);
+                if (autoVacuum)
+                {
+                    repository.ScheduleVacuum(3000);
+                }
             }
             else
             {

@@ -610,3 +610,11 @@
 
 
 
+
+- [x] **7.55. Настройка автоматического VACUUM при очистке Корзины и стабилизация фоновой очереди подписей (FloodWait)**:
+  - **Реализовано**:
+    1. В `AppSettings.DatabaseSettings` добавлено свойство `AutoVacuumOnTrashDelete` (по умолчанию `true`).
+    2. В `AuthSettingsForm.cs` добавлен чекбокс «Автоматически сжимать базу (VACUUM) при очистке корзины» в группе настроек базы данных вкладки «Общие».
+    3. В `WinFspServer.cs` и `WebDavMiddleware.cs` отложенный запуск `_repository.ScheduleVacuum(3000)` теперь выполняется только если включена эта опция. Пользователь может отключить ее и сжимать базу вручную кнопкой «Сжать базу (VACUUM)».
+    4. В `TelegramService.UpdateMessageCaptionAsync` добавлена корректная обработка `FLOOD_WAIT` (код 420): вызывается `TriggerGlobalFloodWait(rpcEx.X)` и исключение пробрасывается в `ProcessCaptionQueueAsync`, обеспечивая соблюдение пауз Telegram.
+    5. Неустранимые ошибки (код 400, `MESSAGE_ID_INVALID`) обрабатываются удалением элемента из очереди без блокировки фонового воркера.

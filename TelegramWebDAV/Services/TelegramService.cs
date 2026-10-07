@@ -574,16 +574,18 @@ namespace TelegramWebDAV.Services
         {
             while (!token.IsCancellationRequested)
             {
+                PendingCaptionItem? currentItem = null;
                 try
                 {
                     if (IsAuthorized && _client != null && _repository != null)
                     {
-                        var item = _repository.GetNextPendingCaptionUpdate();
-                        if (item != null)
+                        currentItem = _repository.GetNextPendingCaptionUpdate();
+                        if (currentItem != null)
                         {
                             await EnsureFloodWaitDelayAsync();
-                            await UpdateMessageCaptionAsync(item.TgMessageId, item.NewCaption);
-                            _repository.RemovePendingCaptionUpdate(item.Id);
+                            await UpdateMessageCaptionAsync(currentItem.TgMessageId, currentItem.NewCaption);
+                            _repository.RemovePendingCaptionUpdate(currentItem.Id);
+                            currentItem = null;
                             await Task.Delay(120, token); // ~8 файлов в секунду: ровно, плавно, без лимитов Telegram
                             continue;
                         }
@@ -598,9 +600,18 @@ namespace TelegramWebDAV.Services
                     AppLogger.Warn("TelegramService", $"FloodWait при фоновом обновлении подписей: пауза {rpcEx.X} секунд...");
                     await Task.Delay(Math.Max(5000, rpcEx.X * 1000), token);
                 }
+                catch (TL.RpcException rpcEx) when (rpcEx.Code == 400)
+                {
+                    AppLogger.Warn("TelegramService", $"Неустранимая ошибка Telegram при обновлении подписи: {rpcEx.Message}. Удаление элемента из очереди.");
+                    if (currentItem != null && _repository != null)
+                    {
+                        _repository.RemovePendingCaptionUpdate(currentItem.Id);
+                    }
+                    await Task.Delay(500, token);
+                }
                 catch (Exception ex)
                 {
-                    AppLogger.Debug("TelegramService", $"Ошибка обработки фоновой очереди подписей: {ex.Message}");
+                    AppLogger.Warn("TelegramService", $"Ошибка обработки фоновой очереди подписей: {ex.Message}");
                     await Task.Delay(2000, token);
                 }
 
@@ -1668,6 +1679,7 @@ namespace TelegramWebDAV.Services
         public async Task UpdateMessageCaptionAsync(int messageId, string newCaption)
         {
             if (_client == null || !IsAuthorized || messageId <= 1) return;
+
             try
             {
                 var peer = await GetStoragePeerAsync();
@@ -1678,6 +1690,7 @@ namespace TelegramWebDAV.Services
                     id = messageId,
                     message = newCaption
                 };
+
                 await _client.Invoke(editReq);
                 AppLogger.Info("TelegramService", $"Подпись сообщения #{messageId} в Telegram успешно обновлена на: '{newCaption}'.");
             }
@@ -1685,9 +1698,20 @@ namespace TelegramWebDAV.Services
             {
                 AppLogger.Debug("TelegramService", $"Подпись сообщения #{messageId} уже актуальна в Telegram ({newCaption}).");
             }
+            catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+            {
+                TriggerGlobalFloodWait(rpcEx.X);
+                throw;
+            }
+            catch (TL.RpcException rpcEx) when (rpcEx.Code == 400 && (rpcEx.Message.Contains("MESSAGE_ID_INVALID") || rpcEx.Message.Contains("CHAT_ADMIN_REQUIRED")))
+            {
+                // Сообщение удалено или нет прав — логируем и не прерываем очередь
+                AppLogger.Warn("TelegramService", $"Невозможно обновить подпись сообщения #{messageId} (ошибка Telegram: {rpcEx.Message}). Запись будет пропущена.");
+            }
             catch (Exception ex)
             {
                 AppLogger.Warn("TelegramService", $"Не удалось обновить подпись сообщения #{messageId} в Telegram: {ex.Message}");
+                throw;
             }
         }
 

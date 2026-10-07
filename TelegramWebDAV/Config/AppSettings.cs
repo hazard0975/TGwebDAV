@@ -70,6 +70,7 @@ namespace TelegramWebDAV.Config
     public class DatabaseSettings
     {
         public string Path { get; set; } = "base.db";
+        public bool AutoVacuumOnTrashDelete { get; set; } = true;
     }
 
     public class WebDavSettings

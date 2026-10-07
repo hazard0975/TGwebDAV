@@ -129,7 +129,8 @@ namespace TelegramWebDAV.Server
                         await WebDavMiddleware.HandleMkColAsync(context, _repository);
                         break;
                     case "DELETE":
-                        await WebDavMiddleware.HandleDeleteAsync(context, _repository, _telegramService);
+                        bool autoVac = _configManager?.Load().Database.AutoVacuumOnTrashDelete ?? true;
+                        await WebDavMiddleware.HandleDeleteAsync(context, _repository, _telegramService, autoVac);
                         break;
                     case "MOVE":
                         await WebDavMiddleware.HandleMoveAsync(context, _repository, _telegramService);

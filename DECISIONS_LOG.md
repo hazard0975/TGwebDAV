@@ -921,3 +921,18 @@ _telegramService.UpdateSettings(_settings);
 
 
 
+
+## 39. Опция автоматического VACUUM при очистке Корзины и стабилизация фоновой очереди подписей (FloodWait)
+
+### Бизнес-цель и первопричина:
+1. При интенсивном удалении файлов или тестировании очистки Корзины фиксированный вызов _repository.ScheduleVacuum(3000) вызывал пересборку базы SQLite каждые 3 секунды. Для пользователей с большими базами данных частый VACUUM может вызывать кратковременные микрофризы дискового ввода-вывода.
+2. В TelegramService.UpdateMessageCaptionAsync блок catch (Exception ex) логировал предупреждение и глушил исключение без проброса. В результате воркер фоновой очереди ProcessCaptionQueueAsync не получал TL.RpcException с кодом 420 (FLOOD_WAIT), глобальный таймер _globalFloodWaitUntil не взводился, а при возникновении неустранимой ошибки (например, MESSAGE_ID_INVALID) элемент вызывал сбои.
+
+### Принятое решение:
+1. **Настройка AutoVacuumOnTrashDelete**:
+   - В AppSettings.DatabaseSettings добавлено свойство AutoVacuumOnTrashDelete (по умолчанию true).
+   - В AuthSettingsForm.cs добавлен чекбокс «Автоматически сжимать базу (VACUUM) при очистке корзины» в блоке базы данных вкладки «Общие».
+   - В WinFspServer.cs и WebDavMiddleware.cs вызов ScheduleVacuum(3000) теперь выполняется только если опция включена в настройках.
+2. **Прозрачная обработка FLOOD_WAIT и ошибок в очереди подписей**:
+   - В TelegramService.UpdateMessageCaptionAsync добавлен перехват TL.RpcException (Code == 420) с вызовом TriggerGlobalFloodWait(rpcEx.X) и последующим throw, чтобы воркер ProcessCaptionQueueAsync корректно уходил в паузу на запрошенное Telegram время.
+   - Неустранимые ошибки (код 400: MESSAGE_ID_INVALID, CHAT_ADMIN_REQUIRED) логируются, а в ProcessCaptionQueueAsync перехватываются с удалением проблемной записи из pending_caption_updates, предотвращая зависание очереди.
