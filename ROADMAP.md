@@ -690,9 +690,10 @@
 
 - [x] **7.57. Очистка отладочного логирования при удалении и навигации по диску**:
   - **Реализовано**:
-    1. Полностью удален шум повторяющихся логов навигации Проводника: `[GetNodeByPath NOT FOUND]` (`NodeRepository.cs`), `[GetSecurityByName NOT FOUND]` (`WinFspServer.cs`) и `[ReadDirectoryEntry START]` (`WinFspServer.cs`). При открытии папок и регулярном опросе `desktop.ini` лог остается чистым.
-    2. Поэлементный лог поддерева при перманентном удалении папок переведен в `Debug` в `WinFspServer.cs` и `WebDavMiddleware.cs`; в `INFO` сохранена общая сводка по количеству узлов и сообщений.
-    3. Дампы массивов Telegram Message ID и Node ID в `EnqueuePermanentDeletion` переведены в `Debug`.
-    4. Логирование успешного пакетного удаления в `TelegramService.DeleteBatchWithBisectAsync` сокращено до лаконичного сообщения в `INFO`, а подробный список ID вынесен в `Debug`.
-    5. Вызовы `SetDelete` и `CleanupDelete` переведены в `Debug`.
+    1. Полностью удален шум повторяющихся логов навигации Проводника: `[GetNodeByPath NOT FOUND]` (`NodeRepository.cs`), `[GetSecurityByName NOT FOUND]` (`WinFspServer.cs`) для системных файлов Windows (`desktop.ini`).
+    2. В `TelegramWinFspFileSystem.ReadDirectoryEntry` реализовано лаконичное логирование навигации по папкам уровня INFO (видно в стандартном режиме вывода), срабатывающее строго при смене папки (`dirNode.Id != _lastListedDirId`) с защитным окном 500 мс от параллельных дескрипторов Windows Explorer.
+    3. Поэлементный лог поддерева при перманентном удалении папок переведен в `Debug` в `WinFspServer.cs` и `WebDavMiddleware.cs`; в `INFO` сохранена общая сводка по количеству узлов и сообщений.
+    4. Дампы массивов Telegram Message ID и Node ID в `EnqueuePermanentDeletion` переведены в `Debug`.
+    5. Логирование успешного пакетного удаления в `TelegramService.DeleteBatchWithBisectAsync` сокращено до лаконичного сообщения в `INFO`, а подробный список ID вынесен в `Debug`.
+    6. Вызовы `SetDelete` и `CleanupDelete` переведены в `Debug`.
 
