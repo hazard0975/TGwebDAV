@@ -161,6 +161,18 @@ CREATE INDEX IF NOT EXISTS idx_nodes_name ON nodes(name);
 CREATE INDEX IF NOT EXISTS idx_nodes_in_trash ON nodes(in_trash);
 CREATE INDEX IF NOT EXISTS idx_upload_progress_node_id ON upload_progress(node_id);
 
+CREATE TABLE IF NOT EXISTS pending_channel_migrations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    node_id INTEGER NOT NULL,
+    source_channel_id INTEGER NOT NULL,
+    target_channel_id INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(node_id, target_channel_id)
+);
+CREATE INDEX IF NOT EXISTS idx_pending_migrations_node ON pending_channel_migrations(node_id);
+
 CREATE TABLE IF NOT EXISTS pending_caption_updates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     node_id INTEGER NOT NULL,

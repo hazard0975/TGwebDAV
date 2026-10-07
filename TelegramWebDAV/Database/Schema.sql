@@ -73,7 +73,18 @@ CREATE TABLE IF NOT EXISTS pending_deletions (
 );
 CREATE INDEX IF NOT EXISTS idx_pending_deletions_tg_msg ON pending_deletions(tg_message_id);
 
--- Таблица персистентной очереди гарантированного обновления подписей сообщений в Telegram (#latest / #trash / rename)
+-- Таблица персистентной очереди миграции файлов между Telegram-каналами
+CREATE TABLE IF NOT EXISTS pending_channel_migrations (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    node_id INTEGER NOT NULL,
+    source_channel_id INTEGER NOT NULL,
+    target_channel_id INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(node_id, target_channel_id)
+);
+CREATE INDEX IF NOT EXISTS idx_pending_migrations_node ON pending_channel_migrations(node_id);
 CREATE TABLE IF NOT EXISTS pending_caption_updates (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     node_id INTEGER NOT NULL,

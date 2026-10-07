@@ -1864,6 +1864,99 @@ namespace TelegramWebDAV.Database
         }
 
         #endregion
+
+        #region Channel Migration Queue
+
+        /// <summary>
+        /// Помещает файлы в персистентную очередь миграции между Telegram-каналами.
+        /// </summary>
+        public void EnqueueChannelMigrations(IEnumerable<int> nodeIds, long sourceChannelId, long targetChannelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var transaction = connection.BeginTransaction())
+            {
+                try
+                {
+                    using (var command = connection.CreateCommand())
+                    {
+                        command.Transaction = transaction;
+                        command.CommandText = @"
+                            INSERT OR IGNORE INTO pending_channel_migrations (node_id, source_channel_id, target_channel_id, status)
+                            VALUES (@nodeId, @sourceChannelId, @targetChannelId, 'pending');
+                        ";
+
+                        var pNodeId = command.Parameters.Add("@nodeId", SqliteType.Integer);
+                        command.Parameters.AddWithValue("@sourceChannelId", sourceChannelId);
+                        command.Parameters.AddWithValue("@targetChannelId", targetChannelId);
+
+                        foreach (int nodeId in nodeIds)
+                        {
+                            pNodeId.Value = nodeId;
+                            command.ExecuteNonQuery();
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Извлекает пачку файлов из очереди миграции каналов для обработки воркером.
+        /// </summary>
+        public List<ChannelMigrationItem> GetPendingChannelMigrations(int limit = 20)
+        {
+            var list = new List<ChannelMigrationItem>();
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"
+                    SELECT id, node_id, source_channel_id, target_channel_id, status
+                    FROM pending_channel_migrations
+                    WHERE status = 'pending'
+                    ORDER BY id ASC
+                    LIMIT @limit;
+                ";
+                command.Parameters.AddWithValue("@limit", limit);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        list.Add(new ChannelMigrationItem
+                        {
+                            Id = Convert.ToInt32(reader["id"]),
+                            NodeId = Convert.ToInt32(reader["node_id"]),
+                            SourceChannelId = Convert.ToInt64(reader["source_channel_id"]),
+                            TargetChannelId = Convert.ToInt64(reader["target_channel_id"]),
+                            Status = Convert.ToString(reader["status"]) ?? "pending"
+                        });
+                    }
+                }
+            }
+            return list;
+        }
+
+        /// <summary>
+        /// Удаляет успешно перенесенную запись из очереди миграции каналов.
+        /// </summary>
+        public void DeleteChannelMigration(int id)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "DELETE FROM pending_channel_migrations WHERE id = @id;";
+                command.Parameters.AddWithValue("@id", id);
+                command.ExecuteNonQuery();
+            }
+        }
+
+        #endregion
     }
 
     public class PendingCaptionItem
@@ -1872,5 +1965,14 @@ namespace TelegramWebDAV.Database
         public int NodeId { get; set; }
         public int TgMessageId { get; set; }
         public string NewCaption { get; set; } = string.Empty;
+    }
+
+    public class ChannelMigrationItem
+    {
+        public int Id { get; set; }
+        public int NodeId { get; set; }
+        public long SourceChannelId { get; set; }
+        public long TargetChannelId { get; set; }
+        public string Status { get; set; } = "pending";
     }
 }

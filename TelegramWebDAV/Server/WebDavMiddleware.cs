@@ -699,20 +699,48 @@ namespace TelegramWebDAV.Server
                 return Task.CompletedTask;
             }
 
+            long? sourceChannelId = repository.GetEffectiveChannelId(sourceNode.ParentId);
+            long? targetChannelId = repository.GetEffectiveChannelId(destParentNode.Id);
+
             repository.MoveNode(sourceNode.Id, destParentNode.Id, destName);
             AppLogger.Info("WebDAV", $"Узел '{sourceNode.Name}' успешно перемещен/переименован в '{destName}'.");
 
-            if (sourceNode.IsDir && sourceNode.TgChannelId.HasValue && sourceNode.TgChannelId.Value != 0 && telegramService != null)
+            if (sourceNode.IsDir)
             {
-                long primaryId = repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
-                if (sourceNode.TgChannelId.Value != primaryId)
+                if (sourceNode.TgChannelId.HasValue && sourceNode.TgChannelId.Value != 0 && telegramService != null)
                 {
-                    long channelToEdit = sourceNode.TgChannelId.Value;
-                    string titleToEdit = destName;
-                    _ = Task.Run(async () =>
+                    long primaryId = repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
+                    if (sourceNode.TgChannelId.Value != primaryId)
                     {
-                        await telegramService.EditChannelTitleAsync(channelToEdit, titleToEdit);
-                    });
+                        long channelToEdit = sourceNode.TgChannelId.Value;
+                        string titleToEdit = destName;
+                        _ = Task.Run(async () =>
+                        {
+                            await telegramService.EditChannelTitleAsync(channelToEdit, titleToEdit);
+                        });
+                    }
+                }
+                else if (sourceChannelId != targetChannelId && targetChannelId.HasValue && telegramService != null)
+                {
+                    var subtreeFiles = repository.GetSubtreeNodes(sourceNode.Id)
+                        .Where(n => !n.IsDir && n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
+                        .Select(n => n.Id)
+                        .ToList();
+                    if (subtreeFiles.Count > 0)
+                    {
+                        repository.EnqueueChannelMigrations(subtreeFiles, sourceChannelId ?? 0, targetChannelId.Value);
+                        telegramService.TriggerChannelMigrationProcessing();
+                        AppLogger.Info("WebDAV", $"[MOVE] Перемещение папки '{destName}': {subtreeFiles.Count} файлов поставлено в очередь миграции каналов ({sourceChannelId} -> {targetChannelId.Value}).");
+                    }
+                }
+            }
+            else if (sourceChannelId != targetChannelId && targetChannelId.HasValue && telegramService != null)
+            {
+                if (sourceNode.TgMessageId.HasValue && sourceNode.TgMessageId.Value > 0)
+                {
+                    repository.EnqueueChannelMigrations(new[] { sourceNode.Id }, sourceChannelId ?? 0, targetChannelId.Value);
+                    telegramService.TriggerChannelMigrationProcessing();
+                    AppLogger.Info("WebDAV", $"[MOVE] Перемещение файла '{sourceNode.Name}': поставлен в очередь миграции каналов ({sourceChannelId} -> {targetChannelId.Value}).");
                 }
             }
 

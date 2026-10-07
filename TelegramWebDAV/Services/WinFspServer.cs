@@ -849,22 +849,50 @@ namespace TelegramWebDAV.Services
 
             try
             {
+                long? sourceChannelId = _repository.GetEffectiveChannelId(node.ParentId);
+                long? targetChannelId = _repository.GetEffectiveChannelId(targetParent.Id);
+
                 _repository.MoveNode(node.Id, targetParent.Id, newName);
                 node.Name = newName;
                 node.ParentId = targetParent.Id;
                 AppLogger.Info("WinFsp", $"Переименование/перемещение: '{oldClean}' -> '{newClean}'");
 
-                if (node.IsDir && node.TgChannelId.HasValue && node.TgChannelId.Value != 0)
+                if (node.IsDir)
                 {
-                    long primaryId = _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
-                    if (node.TgChannelId.Value != primaryId)
+                    if (node.TgChannelId.HasValue && node.TgChannelId.Value != 0)
                     {
-                        long channelToEdit = node.TgChannelId.Value;
-                        string titleToEdit = newName;
-                        _ = Task.Run(async () =>
+                        long primaryId = _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
+                        if (node.TgChannelId.Value != primaryId)
                         {
-                            await _telegramService.EditChannelTitleAsync(channelToEdit, titleToEdit);
-                        });
+                            long channelToEdit = node.TgChannelId.Value;
+                            string titleToEdit = newName;
+                            _ = Task.Run(async () =>
+                            {
+                                await _telegramService.EditChannelTitleAsync(channelToEdit, titleToEdit);
+                            });
+                        }
+                    }
+                    else if (sourceChannelId != targetChannelId && targetChannelId.HasValue)
+                    {
+                        var subtreeFiles = _repository.GetSubtreeNodes(node.Id)
+                            .Where(n => !n.IsDir && n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
+                            .Select(n => n.Id)
+                            .ToList();
+                        if (subtreeFiles.Count > 0)
+                        {
+                            _repository.EnqueueChannelMigrations(subtreeFiles, sourceChannelId ?? 0, targetChannelId.Value);
+                            _telegramService.TriggerChannelMigrationProcessing();
+                            AppLogger.Info("WinFsp", $"[MOVE] Перемещение папки '{newName}': {subtreeFiles.Count} файлов поставлено в очередь миграции каналов ({sourceChannelId} -> {targetChannelId.Value}).");
+                        }
+                    }
+                }
+                else if (sourceChannelId != targetChannelId && targetChannelId.HasValue)
+                {
+                    if (node.TgMessageId.HasValue && node.TgMessageId.Value > 0)
+                    {
+                        _repository.EnqueueChannelMigrations(new[] { node.Id }, sourceChannelId ?? 0, targetChannelId.Value);
+                        _telegramService.TriggerChannelMigrationProcessing();
+                        AppLogger.Info("WinFsp", $"[MOVE] Перемещение файла '{node.Name}': поставлен в очередь миграции каналов ({sourceChannelId} -> {targetChannelId.Value}).");
                     }
                 }
 

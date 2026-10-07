@@ -658,6 +658,15 @@
     1. При перманентном удалении элементов в `WinFspServer.Cleanup` и `WebDavMiddleware.HandleDeleteAsync` выполняется каскадная проверка `HasActiveNodesForChannel`.
     2. Если для канала больше нет ни одной активной папки или файла на диске, отправляется RPC `Channels_DeleteChannel` и запись канала удаляется из таблицы `telegram_channels`.
 - [x] **8.8. Детализированный аудит, компиляция и фиксация в `DECISIONS_LOG.md`**.
+- [x] **8.9. Автоматический перенос файлов и папок при `MOVE` между разносвязанными каналами**:
+  - **Реализовано**:
+    1. Интеграция в `WinFspServer.Rename` и `WebDavMiddleware.HandleMoveAsync`: при перемещении файла или папки сравниваются `sourceChannelId` и `targetChannelId`.
+    2. При обнаружении смены канала утилита автоматически помещает элементы в очередь `pending_channel_migrations`.
+- [x] **8.10. Персистентная фоновая очередь миграции (`pending_channel_migrations`) и воркер `ProcessChannelMigrationsAsync`**:
+  - **Реализовано**:
+    1. Таблица `pending_channel_migrations` в `Schema.sql` и `EmbeddedFallbackSchema` с индексами.
+    2. Фоновый воркер `ProcessChannelMigrationsAsync` в `TelegramService.cs`: выбирает пачки файлов, пересылает через `Messages_ForwardMessages` с `Flags.drop_author`, ставит старые Message ID в `pending_deletions`, обновляет `nodes` и `pending_caption_updates`.
+    3. Полная устойчивость к `FLOOD_WAIT` (авто-пауза на $X$ секунд) и сохранение прогресса миграции при перезапуске сервиса.
 
 
 - [x] **7.57. Очистка отладочного логирования при удалении и навигации по диску**:
