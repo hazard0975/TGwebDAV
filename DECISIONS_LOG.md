@@ -880,5 +880,17 @@ _telegramService.UpdateSettings(_settings);
 2. **Безусловное применение схемы при старте (`ApplySchema`)**: В `InitializeDatabase()` вызов `ApplySchema` выполняется всегда (все инструкции содержат `CREATE TABLE/INDEX IF NOT EXISTS`), гарантируя появление всех необходимых таблиц.
 3. **Метод `EnsureSchemaColumns`**: Добавлена автоматическая проверка и создание колонки `tg_channel_id` в таблице `nodes` через `ALTER TABLE nodes ADD COLUMN tg_channel_id INTEGER;` для гарантированной целостности схемы.
 
+## 35. Отказ от реляционного FOREIGN KEY для колонки original_node_id
+
+### Бизнес-цель и первопричина:
+В схеме базы данных колонка `original_node_id` содержала реляционное ограничение внешней связи:
+`FOREIGN KEY (original_node_id) REFERENCES nodes(id) ON DELETE CASCADE`.
+При поштучном удалении версий файла из корзины удаление записи `v1` вызывало автоматическое каскадное стирание версий `v2`, `v3`, `v4`... движком SQLite втайне от C#-кода. Из-за этого C# не успевал занести их `tg_message_id` в очередь `pending_deletions`, а Проводник Windows получал статус `NOT FOUND`.
+
+### Принятое решение:
+Из схемы `Schema.sql` и константы `EmbeddedFallbackSchema` в `DatabaseManager.cs` полностью удалена строчка ограничения `FOREIGN KEY (original_node_id)`.
+Поле `original_node_id` стало обычным числовым полем (`INTEGER`), служащим простым указателем на ID оригинала. Управление удалением узлов полностью находится в руках C#-кода по их уникальному `id` (`DELETE FROM nodes WHERE id = @id;`), гарантируя 100% занесение всех сообщений Telegram в очередь очистки.
+
+
 
 
