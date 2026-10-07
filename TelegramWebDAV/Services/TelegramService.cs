@@ -583,10 +583,10 @@ namespace TelegramWebDAV.Services
                         if (currentItem != null)
                         {
                             await EnsureFloodWaitDelayAsync();
+                            await EnsurePacingDelayAsync(token);
                             await UpdateMessageCaptionAsync(currentItem.TgMessageId, currentItem.NewCaption);
                             _repository.RemovePendingCaptionUpdate(currentItem.Id);
                             currentItem = null;
-                            await Task.Delay(120, token); // ~8 файлов в секунду: ровно, плавно, без лимитов Telegram
                             continue;
                         }
                     }
@@ -2515,6 +2515,7 @@ namespace TelegramWebDAV.Services
         private async Task DeleteBatchWithBisectAsync(TL.InputPeer peer, bool isChannel, int[] ids)
         {
             if (ids == null || ids.Length == 0 || _client == null) return;
+            await EnsurePacingDelayAsync();
 
             AppLogger.Info("TelegramService", $"[DeleteBatchWithBisectAsync] Отправка запроса на удаление {ids.Length} сообщений: [{string.Join(", ", ids)}]");
 
