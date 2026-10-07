@@ -649,7 +649,7 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
-        /// Рекурсивно собирает узел, всех его потомков (всю ветку поддерева) и все связанные версии файлов
+        /// Рекурсивно собирает узел и всех его потомков (при удалении папки также собирает ассоциированные версии)
         /// </summary>
         public List<Node> GetSubtreeNodes(int rootNodeId)
         {
@@ -661,9 +661,9 @@ namespace TelegramWebDAV.Database
             if (rootNode.IsDir)
             {
                 CollectSubtreeRecursive(rootNode.Id, result);
+                CollectAssociatedVersions(result);
             }
 
-            CollectAssociatedVersions(result);
             return result;
         }
 
