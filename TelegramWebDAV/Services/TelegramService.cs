@@ -2517,7 +2517,7 @@ namespace TelegramWebDAV.Services
             if (ids == null || ids.Length == 0 || _client == null) return;
             await EnsurePacingDelayAsync();
 
-            AppLogger.Info("TelegramService", $"[DeleteBatchWithBisectAsync] Отправка запроса на удаление {ids.Length} сообщений: [{string.Join(", ", ids)}]");
+            AppLogger.Debug("TelegramService", $"[DeleteBatchWithBisectAsync] Отправка запроса на удаление {ids.Length} сообщений: [{string.Join(", ", ids)}]");
 
             try
             {
@@ -2540,7 +2540,8 @@ namespace TelegramWebDAV.Services
                     await _client.Invoke(deleteReq);
                 }
 
-                AppLogger.Info("TelegramService", $"Пакет из {ids.Length} сообщений успешно удален из Telegram: [{string.Join(", ", ids)}]");
+                AppLogger.Info("TelegramService", $"Пакет из {ids.Length} сообщений успешно удален из Telegram.");
+                AppLogger.Debug("TelegramService", $"Удалены Telegram ID: [{string.Join(", ", ids)}]");
             }
             catch (Exception ex)
             {

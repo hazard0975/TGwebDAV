@@ -89,7 +89,7 @@ namespace TelegramWebDAV.Database
 
                 if (currentNode == null)
                 {
-                    AppLogger.Warn("NodeRepository", $"[GetNodeByPath NOT FOUND] Путь: '{path}' -> Не найден элемент '{part}' (parentId={parentIdForSearch}, expectedInTrash={expectedInTrash}).");
+                    AppLogger.Debug("NodeRepository", $"[GetNodeByPath NOT FOUND] Путь: '{path}' -> Не найден элемент '{part}' (parentId={parentIdForSearch}, expectedInTrash={expectedInTrash}).");
                 }
             }
 
@@ -692,11 +692,11 @@ namespace TelegramWebDAV.Database
             AppLogger.Info("Database", $"[EnqueuePermanentDeletion] Транзакция перманентного удаления: {nodeCount} узлов из БД, {uniqueMsgIds.Count} уникальных сообщений Telegram в очередь pending_deletions.");
             if (uniqueMsgIds.Count > 0)
             {
-                AppLogger.Info("Database", $"[EnqueuePermanentDeletion] Список Telegram Message ID для очистки: [{string.Join(", ", uniqueMsgIds)}]");
+                AppLogger.Debug("Database", $"[EnqueuePermanentDeletion] Список Telegram Message ID для очистки: [{string.Join(", ", uniqueMsgIds)}]");
             }
             if (nodeCount > 0)
             {
-                AppLogger.Info("Database", $"[EnqueuePermanentDeletion] Список ID узлов БД для удаления: [{string.Join(", ", dbNodeIds!)}]");
+                AppLogger.Debug("Database", $"[EnqueuePermanentDeletion] Список ID узлов БД для удаления: [{string.Join(", ", dbNodeIds!)}]");
             }
 
             using (var connection = _dbManager.GetConnection())

@@ -603,7 +603,7 @@ namespace TelegramWebDAV.Server
                     {
                         tgMessageIds.Add(n.TgPreviewMessageId.Value);
                     }
-                    AppLogger.Info("WebDAV", $"[HandleDeleteAsync Subtree] Элемент поддерева: ID {n.Id} ('{n.Name}'), IsDir={n.IsDir}, InTrash={n.InTrash}, ParentId={n.ParentId}, TgMessageId={n.TgMessageId?.ToString() ?? "NULL"}, TgPreviewMessageId={n.TgPreviewMessageId?.ToString() ?? "NULL"}");
+                    AppLogger.Debug("WebDAV", $"[HandleDeleteAsync Subtree] Элемент поддерева: ID {n.Id} ('{n.Name}'), IsDir={n.IsDir}, InTrash={n.InTrash}, ParentId={n.ParentId}, TgMessageId={n.TgMessageId?.ToString() ?? "NULL"}, TgPreviewMessageId={n.TgPreviewMessageId?.ToString() ?? "NULL"}");
                 }
 
                 // Атомарно помещаем сообщения в гарантированную очередь удаления и удаляем узлы из базы

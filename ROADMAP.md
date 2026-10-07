@@ -624,3 +624,12 @@
     1. Фоновая очередь обновления подписей `ProcessCaptionQueueAsync` переведена с фиксированной задержки 120 мс на единый регулятор темпа `await EnsurePacingDelayAsync(token)`.
     2. В алгоритм пакетного удаления сообщений `DeleteBatchWithBisectAsync` внедрен вызов `await EnsurePacingDelayAsync()`, предотвращающий серии спайковых запросов при очистке объемных папок и корзины.
     3. Потоковая загрузка файлов (Upload) сохранена на полной скорости сетевого канала без искусственных задержек чанков.
+
+- [x] **7.57. Очистка отладочного логирования при удалении и навигации по диску**:
+  - **Реализовано**:
+    1. Логи штатного отсутствия файлов `GetNodeByPath NOT FOUND` (`NodeRepository.cs`) и `GetSecurityByName NOT FOUND` (`WinFspServer.cs`) переведены из `Warn` в `Debug`, что устранило серии из 20-30 ложных предупреждений при опросе Проводником только что удаленных файлов и служебных ресурсов.
+    2. Поэлементный лог поддерева при перманентном удалении папок переведен в `Debug` в `WinFspServer.cs` и `WebDavMiddleware.cs`; в `INFO` сохранена общая сводка по количеству узлов и сообщений.
+    3. Дампы массивов Telegram Message ID и Node ID в `EnqueuePermanentDeletion` переведены в `Debug`.
+    4. Логирование успешного пакетного удаления в `TelegramService.DeleteBatchWithBisectAsync` сокращено до лаконичного сообщения в `INFO`, а подробный список ID вынесен в `Debug`.
+    5. Вызовы листинга директорий `ReadDirectoryEntry START`, `SetDelete` и `CleanupDelete` переведены в `Debug`.
+
