@@ -1084,12 +1084,13 @@ namespace TelegramWebDAV.Services
         {
             if (_repository == null) return Task.CompletedTask;
 
-            // Назначаем tg_channel_id для самой привязываемой папки и всех ее дочерних папок
+            // Назначаем tg_channel_id строго для корневой привязываемой папки.
+            // Дочерние папки наследуют канал динамически через GetEffectiveChannelId и не должны иметь собственный tg_channel_id.
             _repository.SetFolderChannelId(folderNodeId, targetChannelId);
             var subtree = _repository.GetSubtreeNodes(folderNodeId);
             foreach (var dir in subtree.Where(n => n.IsDir))
             {
-                _repository.SetFolderChannelId(dir.Id, targetChannelId);
+                _repository.SetFolderChannelId(dir.Id, null);
             }
 
             var filesToMigrate = subtree

@@ -618,9 +618,9 @@ namespace TelegramWebDAV.Server
                     telegramService.TriggerDeletionQueueProcessing();
                 }
 
-                // Проверяем, остались ли каналы, принадлежавшие удаленным папкам
+                // Проверяем, был ли перманентно удален узел самой привязанной папки с назначенным каналом
                 var uniqueChannelIds = nodesToDelete
-                    .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0)
+                    .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0 && n.Id == node.Id)
                     .Select(n => n.TgChannelId!.Value)
                     .Distinct()
                     .ToList();
@@ -713,7 +713,8 @@ namespace TelegramWebDAV.Server
                 if (sourceNode.TgChannelId.HasValue && sourceNode.TgChannelId.Value != 0 && telegramService != null)
                 {
                     long primaryId = repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
-                    if (sourceNode.TgChannelId.Value != primaryId)
+                    long? parentEffectiveChannelId = repository.GetEffectiveChannelId(sourceNode.ParentId);
+                    if (sourceNode.TgChannelId.Value != primaryId && sourceNode.TgChannelId.Value != parentEffectiveChannelId)
                     {
                         long channelToEdit = sourceNode.TgChannelId.Value;
                         string titleToEdit = destName;

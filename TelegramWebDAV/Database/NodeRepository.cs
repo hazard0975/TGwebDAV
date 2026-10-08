@@ -357,7 +357,6 @@ namespace TelegramWebDAV.Database
         /// </summary>
         public bool CreateFolder(int parentId, string name, long? tgChannelId = null)
         {
-            long? effectiveChannelId = tgChannelId ?? GetEffectiveChannelId(parentId);
             using (var connection = _dbManager.GetConnection())
             using (var command = connection.CreateCommand())
             {
@@ -371,7 +370,7 @@ namespace TelegramWebDAV.Database
                 command.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, tg_channel_id) VALUES (@parentId, @name, 1, @tgChannelId);";
                 command.Parameters.AddWithValue("@parentId", parentId);
                 command.Parameters.AddWithValue("@name", name);
-                command.Parameters.AddWithValue("@tgChannelId", (object?)effectiveChannelId ?? DBNull.Value);
+                command.Parameters.AddWithValue("@tgChannelId", (object?)tgChannelId ?? DBNull.Value);
                 command.ExecuteNonQuery();
                 return true;
             }
@@ -428,13 +427,12 @@ namespace TelegramWebDAV.Database
                     else
                     {
                         // Папка отсутствует — атомарно создаем её
-                        long? effectiveChannelId = GetEffectiveChannelId(currentNode.Id);
                         using (var insertCmd = connection.CreateCommand())
                         {
                             insertCmd.CommandText = "INSERT INTO nodes (parent_id, name, is_dir, in_trash, tg_channel_id) VALUES (@parentId, @name, 1, 0, @tgChannelId); SELECT last_insert_rowid();";
                             insertCmd.Parameters.AddWithValue("@parentId", currentNode.Id);
                             insertCmd.Parameters.AddWithValue("@name", part);
-                            insertCmd.Parameters.AddWithValue("@tgChannelId", (object?)effectiveChannelId ?? DBNull.Value);
+                            insertCmd.Parameters.AddWithValue("@tgChannelId", DBNull.Value);
                             int newFolderId = Convert.ToInt32(insertCmd.ExecuteScalar());
 
                             using (var fetchCmd = connection.CreateCommand())

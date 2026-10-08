@@ -30,11 +30,12 @@ namespace TelegramWebDAV.Services
         private readonly NodeRepository _repository;
         private readonly TelegramService _telegramService;
         private FileSystemHost? _host;
-        private string? _currentMountPoint;
+        private static string? _activeMountPoint;
+        public static string? ActiveMountPoint => _activeMountPoint;
         private readonly object _lock = new object();
 
         public bool IsMounted => _host != null;
-        public string? MountPoint => _currentMountPoint;
+        public string? MountPoint => _activeMountPoint;
 
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool SetDllDirectory(string lpPathName);
@@ -220,7 +221,7 @@ namespace TelegramWebDAV.Services
                         return false;
                     }
 
-                    _currentMountPoint = formattedLetter;
+                    _activeMountPoint = formattedLetter;
                     AppLogger.Info("WinFsp", $"Виртуальный диск {formattedLetter} успешно смонтирован через WinFsp (прямой стриминг в ОЗУ).");
                     return true;
                 }
@@ -250,7 +251,7 @@ namespace TelegramWebDAV.Services
                 {
                     try
                     {
-                        AppLogger.Info("WinFsp", $"Размонтирование диска {_currentMountPoint}...");
+                        AppLogger.Info("WinFsp", $"Размонтирование диска {_activeMountPoint}...");
                         _host.Unmount();
                     }
                     catch (Exception ex)
@@ -261,7 +262,7 @@ namespace TelegramWebDAV.Services
                     {
                         _host.Dispose();
                         _host = null;
-                        _currentMountPoint = null;
+                        _activeMountPoint = null;
                     }
                 }
             }
@@ -867,7 +868,8 @@ namespace TelegramWebDAV.Services
                     if (node.TgChannelId.HasValue && node.TgChannelId.Value != 0)
                     {
                         long primaryId = _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
-                        if (node.TgChannelId.Value != primaryId)
+                        long? parentEffectiveChannelId = _repository.GetEffectiveChannelId(node.ParentId);
+                        if (node.TgChannelId.Value != primaryId && node.TgChannelId.Value != parentEffectiveChannelId)
                         {
                             long channelToEdit = node.TgChannelId.Value;
                             string titleToEdit = newName;
@@ -1603,7 +1605,11 @@ namespace TelegramWebDAV.Services
                                 uint len = DragQueryFile(hDrop, i, sb, (uint)sb.Capacity);
                                 if (len > 0)
                                 {
-                                    results.Add(sb.ToString());
+                                    string clipPath = sb.ToString();
+                                    if (!IsCandidateOnMountedDrive(clipPath))
+                                    {
+                                        results.Add(clipPath);
+                                    }
                                 }
                             }
                         }
@@ -1804,10 +1810,17 @@ namespace TelegramWebDAV.Services
                     IntPtr currentProcess = Process.GetCurrentProcess().Handle;
 
                     int matchedHandles = 0;
+                    var scanSw = System.Diagnostics.Stopwatch.StartNew();
                     try
                     {
                         for (long i = 0; i < handleCount; i++)
                         {
+                            if (scanSw.ElapsedMilliseconds > 100)
+                            {
+                                AppLogger.Warn("WinFsp", $"[Handles DragDrop] Превышен общий бюджет времени сканирования хэндлов (100 мс). Обработано дескрипторов: {i}/{handleCount}, найдено совпадений: {results.Count}");
+                                break;
+                            }
+
                             IntPtr entryPtr = IntPtr.Add(currentPtr, (int)(i * entrySize));
                             int processId = (int)Marshal.ReadInt64(IntPtr.Add(entryPtr, 8)); // UniqueProcessId
 
@@ -1848,6 +1861,11 @@ namespace TelegramWebDAV.Services
                                                 if (path.StartsWith(@"\\?\"))
                                                 {
                                                     path = path.Substring(4);
+                                                }
+
+                                                if (IsCandidateOnMountedDrive(path))
+                                                {
+                                                    continue;
                                                 }
 
                                                 if (File.Exists(path) || Directory.Exists(path))
@@ -1908,8 +1926,50 @@ namespace TelegramWebDAV.Services
             return results;
         }
 
+        /// <summary>
+        /// Проверяет, находится ли кандидат на смонтированном виртуальном диске Telegram (например Y:\).
+        /// Все такие пути мгновенно игнорируются для предотвращения дедлоков рекурентного опроса собственных хэндлов WinFsp.
+        /// </summary>
+        private static bool IsCandidateOnMountedDrive(string? path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return false;
+
+            string? mountPoint = WinFspServer.ActiveMountPoint;
+            if (string.IsNullOrWhiteSpace(mountPoint))
+                return false;
+
+            string cleanMount = mountPoint.Trim().TrimEnd('\\', '/').ToUpperInvariant();
+            string cleanPath = path.Trim();
+
+            if (cleanPath.StartsWith(@"\\?\", StringComparison.OrdinalIgnoreCase))
+            {
+                cleanPath = cleanPath.Substring(4);
+            }
+
+            cleanPath = cleanPath.ToUpperInvariant();
+
+            if (cleanPath.StartsWith(@"\DEVICE\WINFSP", StringComparison.OrdinalIgnoreCase) ||
+                cleanPath.Contains(@"\WINFSP."))
+            {
+                return true;
+            }
+
+            if (cleanPath.StartsWith(cleanMount + @"\") ||
+                cleanPath.StartsWith(cleanMount + "/") ||
+                string.Equals(cleanPath, cleanMount, StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private static string? CheckCandidate(string candidatePath, string targetFileName, string? relativeVirtualPath)
         {
+            if (IsCandidateOnMountedDrive(candidatePath))
+                return null;
+
             if (File.Exists(candidatePath))
             {
                 string candidateName = Path.GetFileName(candidatePath);
