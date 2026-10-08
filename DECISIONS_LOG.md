@@ -1194,6 +1194,39 @@ _telegramService.UpdateSettings(_settings);
 3. Свойство экземпляра `MountPoint` перенаправлено на `_activeMountPoint` (`public string? MountPoint => _activeMountPoint;`).
 4. Управление состоянием монтирования в методах `Start()` и `Stop()` консолидировано в `_activeMountPoint`.
 
+---
+
+## 55. Серверное копирование файлов и папок через Telegram ForwardMessages (WebDAV COPY + WinFsp Zero-Traffic Virtual Copy)
+
+### Бизнес-цель:
+Обеспечить мгновенное копирование файлов и папок в пределах одного Telegram-канала или между разными каналами (например, `Z:\Музыка\Рок\track2.mp3` в `Z:\Музыка\новое`) без физического повторного выкачивания и перезагрузки байтов файла в Telegram (0 байт сетевого трафика на повторную загрузку).
+
+### Проблема и Первопричина (Root Cause):
+1. **В WebDAV**: метод HTTP `COPY` отсутствовал в роутере `WebDavServer.cs` и заголовке `Allow`. Любой клиент (Cyberduck, Total Commander, проводник) получал `405 Method Not Allowed` и откатывался к полному скачиванию (`GET`) и повторной загрузке (`PUT`).
+2. **В WinFsp**: Проводник Windows при операции копирования не имеет системного вызова `CopyFile` на уровне ФС, а открывает файл-источник на чтение (`Open` -> `Read`) и создает целевой файл (`Create` -> `Write`).
+3. Механизм поиска источников `TryFindSourceFile` в `WinFspServer.cs` в `CheckCandidate` прямо отсекал пути со смонтированного диска (`if (IsCandidateOnMountedDrive(path)) return null;`). В итоге целевой файл считался новым внешним файлом, открывался `StreamingPipeStream`, и файл заново целиком заливался в Telegram по сети.
+4. В `TelegramService` форвардинг (`Messages_ForwardMessages`) использовался исключительно при миграции между разными каналами при `MOVE`, но не был доступен для операций создания копий.
+
+### Принятое решение (Принцип Root Cause First):
+1. **Ядро TelegramService (`ForwardFileAsync`)**:
+   - Реализован универсальный метод `ForwardFileAsync(sourceMessageId, sourcePreviewMessageId, sourceChannelId, targetChannelId, newCaption)`.
+   - Использует нативный RPC `Messages_ForwardMessages` с флагом `Flags.drop_author`.
+   - Позволяет дублировать медиа-объект на серверах Telegram мгновенно за ~100–300 мс как в рамках одного канала (`from_peer = to_peer`), так и между разными каналами.
+   - Telegram присваивает копии новый уникальный `MessageId` (нет коллизий при удалении оригинала), сохраняя ссылки на исходный документ в облаке.
+   - Автоматически пересылает галерейное фото-превью (если есть) и планирует актуализацию подписи через `pending_caption_updates`.
+2. **WebDAV сервер (`WebDavMiddleware.HandleCopyAsync`)**:
+   - В `WebDavServer.cs` метод `COPY` добавлен в заголовок `Allow` и роутинг.
+   - Реализован обработчик `HandleCopyAsync` согласно RFC 4918 (с поддержкой заголовков `Destination`, `Overwrite`, `Depth`).
+   - Для файлов: мгновенный форвардинг через `ForwardFileAsync` и регистрация в SQLite со статусом `201 Created` (или `204 NoContent`).
+   - Для папок: рекурсивное создание структуры каталогов и форвардинг всех дочерних файлов поддерева.
+3. **WinFsp драйвер (`Zero-Traffic Virtual Copy`)**:
+   - В `WinFspServer.cs` добавлены методы `GetVirtualPathFromMountedPath` и `TryFindVirtualSourceNode`, распознающие копирование файлов и папок с виртуального диска (через буфер обмена `CF_HDROP` и дескрипторы `explorer.exe`).
+   - В `Create` и `Overwrite`: при обнаружении виртуального источника создается контекст `ctx.VirtualSourceNode = virtualSource`, и параллельно в фоне запускается `ForwardFileAsync`.
+   - В `Write`: вызовы записи байтов от Проводника подтверждаются мгновенно за 0 мс без создания `StreamingPipeStream` и без трафика в Telegram.
+   - В `Cleanup`: по завершении копирования фиксируются новые `TgMessageId` и `TgPreviewMessageId` в базе SQLite.
+4. **Результат**:
+   - Копирование гигабайтных файлов в Проводнике Windows и WebDAV происходит за доли секунды без расхода интернет-трафика на повторную загрузку.
+
 
 
 

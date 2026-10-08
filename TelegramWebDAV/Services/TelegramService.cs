@@ -2018,13 +2018,13 @@ namespace TelegramWebDAV.Services
         /// <summary>
         /// Обновляет текстовую подпись (Caption) у существующего сообщения в Telegram (например, при переименовании из .tmp)
         /// </summary>
-        public async Task UpdateMessageCaptionAsync(int messageId, string newCaption)
+        public async Task UpdateMessageCaptionAsync(int messageId, string newCaption, long? channelId = null)
         {
             if (_client == null || !IsAuthorized || messageId <= 1) return;
 
             try
             {
-                var peer = await GetStoragePeerAsync();
+                var peer = await GetStoragePeerAsync(channelId);
                 var editReq = new TL.Methods.Messages_EditMessage
                 {
                     flags = TL.Methods.Messages_EditMessage.Flags.has_message,
@@ -2053,8 +2053,127 @@ namespace TelegramWebDAV.Services
             catch (Exception ex)
             {
                 AppLogger.Warn("TelegramService", $"Не удалось обновить подпись сообщения #{messageId} в Telegram: {ex.Message}");
-                throw;
             }
+        }
+
+        /// <summary>
+        /// Мгновенно копирует (форвардит) файл в Telegram без повторной передачи байтов контента.
+        /// Работает как внутри одного канала (дублирование медиа на серверах Telegram), так и между разными каналами.
+        /// </summary>
+        public async Task<(int MessageId, int? PreviewMessageId)?> ForwardFileAsync(
+            int sourceMessageId,
+            int? sourcePreviewMessageId = null,
+            long? sourceChannelId = null,
+            long? targetChannelId = null,
+            string? newCaption = null,
+            int targetNodeId = 0)
+        {
+            if (_client == null || !IsAuthorized || sourceMessageId <= 0)
+            {
+                AppLogger.Warn("TelegramService", "[ForwardFileAsync] Клиент Telegram не подключен или некорректный ID сообщения.");
+                return null;
+            }
+
+            try
+            {
+                await EnsureFloodWaitDelayAsync();
+
+                var sourcePeer = await GetStoragePeerAsync(sourceChannelId);
+                var targetPeer = await GetStoragePeerAsync(targetChannelId);
+
+                int? newPreviewId = null;
+                int newMsgId = 0;
+
+                // 1. Форвардим превью (если есть)
+                if (sourcePreviewMessageId.HasValue && sourcePreviewMessageId.Value > 0)
+                {
+                    try
+                    {
+                        var fwdPreviewReq = new TL.Methods.Messages_ForwardMessages
+                        {
+                            from_peer = sourcePeer,
+                            to_peer = targetPeer,
+                            id = new int[] { sourcePreviewMessageId.Value },
+                            random_id = new long[] { Random.Shared.NextInt64() },
+                            flags = TL.Methods.Messages_ForwardMessages.Flags.drop_author
+                        };
+
+                        var previewUpdates = await _client.Invoke(fwdPreviewReq);
+                        newPreviewId = ExtractMessageIdFromUpdates(previewUpdates);
+                        await EnsurePacingDelayAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Warn("TelegramService", $"[ForwardFileAsync] Не удалось переслать превью #{sourcePreviewMessageId}: {ex.Message}");
+                    }
+                }
+
+                // 2. Форвардим основной файл
+                var fwdReq = new TL.Methods.Messages_ForwardMessages
+                {
+                    from_peer = sourcePeer,
+                    to_peer = targetPeer,
+                    id = new int[] { sourceMessageId },
+                    random_id = new long[] { Random.Shared.NextInt64() },
+                    flags = TL.Methods.Messages_ForwardMessages.Flags.drop_author
+                };
+
+                var fwdUpdates = await _client.Invoke(fwdReq);
+                newMsgId = ExtractMessageIdFromUpdates(fwdUpdates);
+
+                if (newMsgId > 0)
+                {
+                    AppLogger.Info("TelegramService", $"[ForwardFileAsync] Файл (Msg #{sourceMessageId}) успешно скопирован в Telegram! Новый Msg #{newMsgId}" +
+                        (newPreviewId.HasValue ? $", превью #{newPreviewId}" : "") +
+                        (sourceChannelId != targetChannelId ? $" (канал {sourceChannelId} -> {targetChannelId})" : " (в пределах канала)"));
+
+                    // 3. Если задана новая подпись, планируем её обновление через очередь
+                    if (!string.IsNullOrEmpty(newCaption))
+                    {
+                        _repository?.EnqueueCaptionUpdate(targetNodeId, newMsgId, newCaption);
+                    }
+
+                    return (newMsgId, newPreviewId);
+                }
+                else
+                {
+                    AppLogger.Warn("TelegramService", $"[ForwardFileAsync] Сообщение #{sourceMessageId} переслано, но не удалось извлечь новый MessageId.");
+                    return null;
+                }
+            }
+            catch (TL.RpcException rpcEx) when (rpcEx.Code == 420) // FLOOD_WAIT_X
+            {
+                TriggerGlobalFloodWait(rpcEx.X);
+                AppLogger.Warn("TelegramService", $"[ForwardFileAsync] FloodWait: пауза {rpcEx.X} секунд.");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("TelegramService", $"[ForwardFileAsync] Ошибка пересылки сообщения #{sourceMessageId}: {ex.Message}", ex);
+                return null;
+            }
+        }
+
+        private static int ExtractMessageIdFromUpdates(TL.UpdatesBase? updatesBase)
+        {
+            if (updatesBase == null) return 0;
+            if (updatesBase is TL.Updates u && u.updates != null)
+            {
+                foreach (var update in u.updates)
+                {
+                    if (update is TL.UpdateNewMessage unm && unm.message is TL.Message m) return m.ID;
+                    if (update is TL.UpdateNewChannelMessage uncm && uncm.message is TL.Message cm) return cm.ID;
+                }
+            }
+            else if (updatesBase is TL.UpdatesCombined uc && uc.updates != null)
+            {
+                foreach (var update in uc.updates)
+                {
+                    if (update is TL.UpdateNewMessage unm && unm.message is TL.Message m) return m.ID;
+                    if (update is TL.UpdateNewChannelMessage uncm && uncm.message is TL.Message cm) return cm.ID;
+                }
+            }
+            return 0;
         }
 
         private long GetStreamLengthSafe(Stream stream)

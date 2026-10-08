@@ -753,6 +753,202 @@ namespace TelegramWebDAV.Server
             return Task.CompletedTask;
         }
 
+        public static async Task HandleCopyAsync(HttpListenerContext context, NodeRepository repository, Services.TelegramService telegramService)
+        {
+            string localPath = context.Request.Url?.LocalPath ?? "/";
+            string path = Uri.UnescapeDataString(localPath);
+            var sourceNode = repository.GetNodeByPath(path);
+
+            if (sourceNode == null)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return;
+            }
+
+            // Защита системной папки .Trash от копирования наружу
+            if (repository.IsTrashFolder(sourceNode.Id) || path.TrimEnd('/').Equals("/.Trash", StringComparison.OrdinalIgnoreCase))
+            {
+                AppLogger.Warn("WebDAV", "Попытка копирования системной папки '.Trash' отклонена.");
+                context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }
+
+            string? destinationHeader = context.Request.Headers["Destination"];
+            if (string.IsNullOrEmpty(destinationHeader))
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return;
+            }
+
+            Uri destUri = new Uri(destinationHeader, UriKind.RelativeOrAbsolute);
+            string destPath = destUri.IsAbsoluteUri ? Uri.UnescapeDataString(destUri.LocalPath) : Uri.UnescapeDataString(destinationHeader);
+
+            if (!GetParentPathAndName(destPath, out string destParentPath, out string destName))
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                return;
+            }
+
+            var destParentNode = repository.GetNodeByPath(destParentPath);
+            if (destParentNode == null)
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.Conflict;
+                return;
+            }
+
+            // Проверка заголовка Overwrite (по умолчанию 'T' согласно RFC 4918)
+            string overwriteHeader = context.Request.Headers["Overwrite"] ?? "T";
+            bool overwrite = !string.Equals(overwriteHeader, "F", StringComparison.OrdinalIgnoreCase);
+
+            var existingDestNode = repository.GetNodeByPath(destPath);
+            if (existingDestNode != null)
+            {
+                if (!overwrite)
+                {
+                    context.Response.StatusCode = 412; // Precondition Failed
+                    return;
+                }
+
+                // При перезаписи мягко удаляем старый узел
+                repository.SoftDeleteNode(existingDestNode.Id);
+            }
+
+            int statusCode = existingDestNode != null ? (int)HttpStatusCode.NoContent : (int)HttpStatusCode.Created;
+
+            if (sourceNode.IsDir)
+            {
+                // Копирование папки
+                bool created = repository.CreateFolder(destParentNode.Id, destName);
+                if (!created)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return;
+                }
+
+                var newFolderNode = repository.GetNodeByPath(destPath);
+                if (newFolderNode != null)
+                {
+                    string depthHeader = context.Request.Headers["Depth"] ?? "infinity";
+                    if (!string.Equals(depthHeader, "0", StringComparison.OrdinalIgnoreCase))
+                    {
+                        await CopyDirectorySubtreeAsync(sourceNode.Id, newFolderNode.Id, repository, telegramService);
+                    }
+                }
+            }
+            else
+            {
+                // Копирование файла
+                bool success = await CopySingleFileAsync(sourceNode, destParentNode.Id, destName, repository, telegramService);
+                if (!success)
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    return;
+                }
+            }
+
+            AppLogger.Info("WebDAV", $"[COPY] Узел '{sourceNode.Name}' успешно скопирован в '{destPath}'.");
+            context.Response.StatusCode = statusCode;
+        }
+
+        private static async Task<bool> CopySingleFileAsync(
+            Node sourceFile, 
+            int destParentId, 
+            string destFileName, 
+            NodeRepository repository, 
+            Services.TelegramService telegramService)
+        {
+            try
+            {
+                if (sourceFile.TgMessageId.HasValue && sourceFile.TgMessageId.Value > 0)
+                {
+                    long? sourceChannelId = repository.GetEffectiveChannelId(sourceFile.ParentId);
+                    long? targetChannelId = repository.GetEffectiveChannelId(destParentId);
+
+                    string parentFullPath = repository.GetNodeFullPath(destParentId);
+                    if (parentFullPath == "/") parentFullPath = "";
+                    int nextVersion = repository.GetNextVersionForFile(destParentId, destFileName);
+                    string ext = Path.GetExtension(destFileName);
+                    string nameNoExt = Path.GetFileNameWithoutExtension(destFileName);
+                    string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{ext}";
+
+                    var fwdResult = await telegramService.ForwardFileAsync(
+                        sourceFile.TgMessageId.Value,
+                        sourceFile.TgPreviewMessageId,
+                        sourceChannelId,
+                        targetChannelId,
+                        fullPathWithVersion
+                    );
+
+                    if (fwdResult.HasValue)
+                    {
+                        repository.CreateOrUpdateFile(
+                            destParentId,
+                            destFileName,
+                            sourceFile.Size,
+                            fwdResult.Value.MessageId,
+                            fwdResult.Value.PreviewMessageId,
+                            inlineData: null,
+                            lastModified: sourceFile.UpdatedAt,
+                            creationDate: sourceFile.CreatedAt
+                        );
+                        return true;
+                    }
+
+                    return false;
+                }
+                else
+                {
+                    // Файл без сообщения в Telegram (inline data или 0-байтовый)
+                    repository.CreateOrUpdateFile(
+                        destParentId,
+                        destFileName,
+                        sourceFile.Size,
+                        tgMessageId: null,
+                        tgPreviewMessageId: null,
+                        inlineData: sourceFile.InlineData,
+                        lastModified: sourceFile.UpdatedAt,
+                        creationDate: sourceFile.CreatedAt
+                    );
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Error("WebDAV", $"[COPY] Ошибка копирования файла '{sourceFile.Name}' -> '{destFileName}': {ex.Message}", ex);
+                return false;
+            }
+        }
+
+        private static async Task CopyDirectorySubtreeAsync(
+            int sourceFolderId, 
+            int destFolderId, 
+            NodeRepository repository, 
+            Services.TelegramService telegramService)
+        {
+            var children = repository.GetChildren(sourceFolderId);
+            foreach (var child in children)
+            {
+                if (child.InTrash) continue;
+
+                if (child.IsDir)
+                {
+                    if (repository.CreateFolder(destFolderId, child.Name))
+                    {
+                        var createdChildFolder = repository.GetChildren(destFolderId)
+                            .FirstOrDefault(n => n.IsDir && string.Equals(n.Name, child.Name, StringComparison.OrdinalIgnoreCase));
+                        if (createdChildFolder != null)
+                        {
+                            await CopyDirectorySubtreeAsync(child.Id, createdChildFolder.Id, repository, telegramService);
+                        }
+                    }
+                }
+                else
+                {
+                    await CopySingleFileAsync(child, destFolderId, child.Name, repository, telegramService);
+                }
+            }
+        }
+
         public static async Task HandleLockAsync(HttpListenerContext context)
         {
             string localPath = context.Request.Url?.LocalPath ?? "/";

@@ -521,6 +521,59 @@ namespace TelegramWebDAV.Services
             }
             else
             {
+                var virtualSource = TryFindVirtualSourceNode(itemName, cleanPath, _repository);
+                if (virtualSource != null)
+                {
+                    AppLogger.Info("WinFsp", $"[VirtualCopy] Обнаружен исходный виртуальный файл для '{cleanPath}': ID {virtualSource.Id} ('{virtualSource.Name}'), размер: {virtualSource.Size} байт, MsgId: {virtualSource.TgMessageId?.ToString() ?? "null"}.");
+
+                    _repository.CreateOrUpdateFile(parentNode.Id, itemName, virtualSource.Size, null);
+                    var vNode = _repository.GetNodeByPath(cleanPath);
+                    if (vNode == null)
+                    {
+                        fileNode = null!;
+                        fileDesc = null!;
+                        fileInfo = default;
+                        normalizedName = null!;
+                        return NT_STATUS_UNSUCCESSFUL;
+                    }
+
+                    var vCtx = new FspNodeContext(vNode)
+                    {
+                        IsModified = true,
+                        KnownTargetSize = virtualSource.Size,
+                        VirtualSourceNode = virtualSource
+                    };
+
+                    if (virtualSource.TgMessageId.HasValue && virtualSource.TgMessageId.Value > 0)
+                    {
+                        long? sourceChannelId = _repository.GetEffectiveChannelId(virtualSource.ParentId);
+                        long? targetChannelId = _repository.GetEffectiveChannelId(parentNode.Id);
+
+                        string parentFullPath = _repository.GetNodeFullPath(parentNode.Id);
+                        if (parentFullPath == "/") parentFullPath = "";
+                        int nextVersion = _repository.GetNextVersionForFile(parentNode.Id, itemName);
+                        string ext = Path.GetExtension(itemName);
+                        string nameNoExt = Path.GetFileNameWithoutExtension(itemName);
+                        string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{ext}";
+
+                        AppLogger.Info("WinFsp", $"[VirtualCopy] Запуск мгновенного форвардинга сообщения #{virtualSource.TgMessageId.Value} в Telegram ({sourceChannelId} -> {targetChannelId})...");
+                        vCtx.ForwardTask = Task.Run(() => _telegramService.ForwardFileAsync(
+                            virtualSource.TgMessageId.Value,
+                            virtualSource.TgPreviewMessageId,
+                            sourceChannelId,
+                            targetChannelId,
+                            fullPathWithVersion
+                        ));
+                    }
+
+                    fileNode = vNode;
+                    fileDesc = vCtx;
+                    FillFileInfo(vNode, out fileInfo);
+                    normalizedName = fileName;
+                    AppLogger.Info("WinFsp", $"Создан файл виртуальной копии: '{cleanPath}' (ID {vNode.Id}, размер: {virtualSource.Size})");
+                    return STATUS_SUCCESS;
+                }
+
                 _repository.CreateOrUpdateFile(parentNode.Id, itemName, 0, null);
                 var node = _repository.GetNodeByPath(cleanPath);
                 if (node == null)
@@ -568,7 +621,39 @@ namespace TelegramWebDAV.Services
             ctx.PipeStream = null;
             ctx.UploadTask = null;
             ctx.UploadCts = null;
-            ctx.OriginalSourcePath = TryFindSourceFile(node.Name, _repository.GetNodeFullPath(node.Id));
+
+            var virtualSource = TryFindVirtualSourceNode(node.Name, _repository.GetNodeFullPath(node.Id), _repository);
+            if (virtualSource != null)
+            {
+                ctx.VirtualSourceNode = virtualSource;
+                ctx.KnownTargetSize = virtualSource.Size;
+                if (virtualSource.TgMessageId.HasValue && virtualSource.TgMessageId.Value > 0)
+                {
+                    int parentId = node.ParentId ?? 1;
+                    long? sourceChannelId = _repository.GetEffectiveChannelId(virtualSource.ParentId);
+                    long? targetChannelId = _repository.GetEffectiveChannelId(parentId);
+
+                    string parentFullPath = _repository.GetNodeFullPath(parentId);
+                    if (parentFullPath == "/") parentFullPath = "";
+                    int nextVersion = _repository.GetNextVersionForFile(parentId, node.Name);
+                    string ext = Path.GetExtension(node.Name);
+                    string nameNoExt = Path.GetFileNameWithoutExtension(node.Name);
+                    string fullPathWithVersion = $"{parentFullPath}/{nameNoExt}_v{nextVersion}{ext}";
+
+                    ctx.ForwardTask = Task.Run(() => _telegramService.ForwardFileAsync(
+                        virtualSource.TgMessageId.Value,
+                        virtualSource.TgPreviewMessageId,
+                        sourceChannelId,
+                        targetChannelId,
+                        fullPathWithVersion
+                    ));
+                }
+            }
+            else
+            {
+                ctx.OriginalSourcePath = TryFindSourceFile(node.Name, _repository.GetNodeFullPath(node.Id));
+            }
+
             FillFileInfo(node, out fileInfo);
             return STATUS_SUCCESS;
         }
@@ -596,6 +681,17 @@ namespace TelegramWebDAV.Services
             if (length == 0)
             {
                 bytesTransferred = 0;
+                FillFileInfo(node, out fileInfo);
+                return STATUS_SUCCESS;
+            }
+
+            if (ctx.VirtualSourceNode != null)
+            {
+                // Это виртуальный клон! Данные копируются через Telegram ForwardMessages на сервере.
+                // Проводник пишет считанные байты, мы их подтверждаем без повторной сетевой передачи!
+                bytesTransferred = length;
+                ctx.TotalBytesWritten += length;
+                ctx.IsModified = true;
                 FillFileInfo(node, out fileInfo);
                 return STATUS_SUCCESS;
             }
@@ -1015,6 +1111,70 @@ namespace TelegramWebDAV.Services
                 string nodeName = node.Name;
                 DateTime targetUpdatedAt = node.UpdatedAt;
                 DateTime targetCreatedAt = node.CreatedAt;
+
+                if (ctx.VirtualSourceNode != null)
+                {
+                    if (ctx.ForwardTask != null)
+                    {
+                        try
+                        {
+                            var fwdResult = ctx.ForwardTask.GetAwaiter().GetResult();
+                            if (fwdResult.HasValue)
+                            {
+                                _repository.CreateOrUpdateFile(
+                                    parentId,
+                                    nodeName,
+                                    ctx.VirtualSourceNode.Size,
+                                    fwdResult.Value.MessageId,
+                                    fwdResult.Value.PreviewMessageId,
+                                    inlineData: null,
+                                    lastModified: targetUpdatedAt,
+                                    creationDate: targetCreatedAt
+                                );
+
+                                node.TgMessageId = fwdResult.Value.MessageId;
+                                node.TgPreviewMessageId = fwdResult.Value.PreviewMessageId;
+                                node.Size = ctx.VirtualSourceNode.Size;
+                                node.UpdatedAt = targetUpdatedAt;
+                                node.CreatedAt = targetCreatedAt;
+
+                                AppLogger.Info("WinFsp", $"[VirtualCopy] Файл '{nodeName}' успешно сохранен через Telegram ForwardMessages (новый Msg ID: {fwdResult.Value.MessageId}, размер: {node.Size} байт). 0 байт сетевого трафика!");
+                            }
+                            else
+                            {
+                                AppLogger.Warn("WinFsp", $"[VirtualCopy] Форвардинг для '{nodeName}' вернул null. Возможно, исходное сообщение удалено из Telegram.");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            AppLogger.Error("WinFsp", $"[VirtualCopy] Ошибка завершения ForwardTask для '{nodeName}': {ex.Message}", ex);
+                        }
+                    }
+                    else
+                    {
+                        // Небольшой файл или inline_data
+                        _repository.CreateOrUpdateFile(
+                            parentId,
+                            nodeName,
+                            ctx.VirtualSourceNode.Size,
+                            tgMessageId: null,
+                            tgPreviewMessageId: null,
+                            inlineData: ctx.VirtualSourceNode.InlineData,
+                            lastModified: targetUpdatedAt,
+                            creationDate: targetCreatedAt
+                        );
+
+                        node.Size = ctx.VirtualSourceNode.Size;
+                        node.InlineData = ctx.VirtualSourceNode.InlineData;
+                        node.UpdatedAt = targetUpdatedAt;
+                        node.CreatedAt = targetCreatedAt;
+
+                        AppLogger.Info("WinFsp", $"[VirtualCopy] Файл '{nodeName}' сохранен мгновенно из локальных данных ({node.Size} байт).");
+                    }
+
+                    ctx.Dispose();
+                    return;
+                }
 
                 // Вариант 1: Большой файл, который передавался на лету через StreamingPipeStream
                 if (ctx.PipeStream != null && ctx.UploadTask != null)
@@ -1752,7 +1912,7 @@ namespace TelegramWebDAV.Services
         /// Опрашивает открытые файловые дескрипторы через ядро Windows (NtQuerySystemInformation),
         /// не отправляя оконных сообщений и не обращаясь к OLE/COM, что полностью исключает дедлоки.
         /// </summary>
-        private static List<string> CollectExplorerOpenFileHandles(string? targetFileName)
+        private static List<string> CollectExplorerOpenFileHandles(string? targetFileName, bool includeMountedDrive = false)
         {
             var results = new List<string>();
             try
@@ -1863,12 +2023,30 @@ namespace TelegramWebDAV.Services
                                                     path = path.Substring(4);
                                                 }
 
-                                                if (IsCandidateOnMountedDrive(path))
+                                                bool isOnMounted = IsCandidateOnMountedDrive(path);
+                                                if (!includeMountedDrive && isOnMounted)
                                                 {
                                                     continue;
                                                 }
 
-                                                if (File.Exists(path) || Directory.Exists(path))
+                                                if (includeMountedDrive && isOnMounted)
+                                                {
+                                                    string name = Path.GetFileName(path);
+                                                    if (string.IsNullOrEmpty(targetFileName) ||
+                                                        string.Equals(name, targetFileName, StringComparison.OrdinalIgnoreCase))
+                                                    {
+                                                        if (!results.Exists(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase)))
+                                                        {
+                                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен виртуальный файл на диске в explorer (PID {processId}): '{path}'");
+                                                            results.Add(path);
+                                                            if (!string.IsNullOrEmpty(targetFileName))
+                                                            {
+                                                                return results;
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else if (File.Exists(path) || Directory.Exists(path))
                                                 {
                                                     string name = Path.GetFileName(path);
                                                     if (string.IsNullOrEmpty(targetFileName) ||
@@ -2041,11 +2219,133 @@ namespace TelegramWebDAV.Services
 
         #endregion
 
+        #region Virtual Source Detection (Zero-Traffic Internal Copy & Forwarding)
+
+        private static string? GetVirtualPathFromMountedPath(string fullPath)
+        {
+            if (string.IsNullOrWhiteSpace(fullPath)) return null;
+            string? mountPoint = WinFspServer.ActiveMountPoint;
+            if (string.IsNullOrWhiteSpace(mountPoint)) return null;
+
+            string cleanPath = fullPath.Trim().Replace('/', '\\');
+            if (cleanPath.StartsWith(@"\\?\", StringComparison.OrdinalIgnoreCase))
+            {
+                cleanPath = cleanPath.Substring(4);
+            }
+
+            string cleanMount = mountPoint.Trim().Replace('/', '\\').TrimEnd('\\');
+            if (cleanPath.StartsWith(cleanMount + @"\", StringComparison.OrdinalIgnoreCase))
+            {
+                string sub = cleanPath.Substring(cleanMount.Length).Replace('\\', '/');
+                return NormalizePath(sub);
+            }
+            if (string.Equals(cleanPath, cleanMount, StringComparison.OrdinalIgnoreCase))
+            {
+                return "/";
+            }
+
+            int wIdx = cleanPath.IndexOf(@"\WINFSP", StringComparison.OrdinalIgnoreCase);
+            if (wIdx >= 0)
+            {
+                int nextSlash = cleanPath.IndexOf('\\', wIdx + 7);
+                if (nextSlash >= 0)
+                {
+                    string sub = cleanPath.Substring(nextSlash).Replace('\\', '/');
+                    return NormalizePath(sub);
+                }
+            }
+
+            return null;
+        }
+
+        private static Node? TryFindVirtualSourceNode(string targetFileName, string targetVirtualPath, NodeRepository repository)
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                return null;
+
+            try
+            {
+                // Проверяем системный буфер обмена (Ctrl+C / Ctrl+V, CF_HDROP)
+                var clipCandidates = CollectClipboardCandidates();
+                foreach (var cand in clipCandidates)
+                {
+                    if (IsCandidateOnMountedDrive(cand))
+                    {
+                        var match = MatchVirtualCandidate(cand, targetFileName, targetVirtualPath, repository);
+                        if (match != null) return match;
+                    }
+                }
+
+                // Проверяем открытые файловые дескрипторы explorer.exe (Drag-and-Drop)
+                var handleCandidates = CollectExplorerOpenFileHandles(targetFileName, includeMountedDrive: true);
+                foreach (var cand in handleCandidates)
+                {
+                    if (IsCandidateOnMountedDrive(cand))
+                    {
+                        var match = MatchVirtualCandidate(cand, targetFileName, targetVirtualPath, repository);
+                        if (match != null) return match;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Debug("WinFsp", $"[VirtualSource] Ошибка поиска виртуального источника для '{targetFileName}': {ex.Message}");
+            }
+
+            return null;
+        }
+
+        private static Node? MatchVirtualCandidate(string candidatePath, string targetFileName, string targetVirtualPath, NodeRepository repository)
+        {
+            string? vPath = GetVirtualPathFromMountedPath(candidatePath);
+            if (string.IsNullOrEmpty(vPath)) return null;
+
+            // 1. Прямое совпадение имени файла
+            string candName = GetFileName(vPath);
+            if (string.Equals(candName, targetFileName, StringComparison.OrdinalIgnoreCase))
+            {
+                var node = repository.GetNodeByPath(vPath);
+                if (node != null && !node.IsDir) return node;
+            }
+
+            // 2. Если кандидат - папка (копировалось дерево папок)
+            var dirNode = repository.GetNodeByPath(vPath);
+            if (dirNode != null && dirNode.IsDir)
+            {
+                // Сценарий 2а: прямой дочерний элемент
+                string childPath = (vPath.TrimEnd('/') + "/" + targetFileName);
+                var childNode = repository.GetNodeByPath(childPath);
+                if (childNode != null && !childNode.IsDir) return childNode;
+
+                // Сценарий 2б: по относительному пути поддерева
+                if (!string.IsNullOrEmpty(targetVirtualPath))
+                {
+                    string dirName = dirNode.Name;
+                    int idx = targetVirtualPath.IndexOf("/" + dirName + "/", StringComparison.OrdinalIgnoreCase);
+                    if (idx >= 0)
+                    {
+                        string sub = targetVirtualPath.Substring(idx + dirName.Length + 1);
+                        string fullSub = vPath.TrimEnd('/') + sub;
+                        var subNode = repository.GetNodeByPath(fullSub);
+                        if (subNode != null && !subNode.IsDir) return subNode;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        #endregion
+
         private class FspNodeContext : IDisposable
         {
             public Node Node { get; set; }
             public bool IsModified { get; set; }
             public bool DeleteOnClose { get; set; }
+
+            // Виртуальный источник для серверного клонирования (Zero-Traffic Copy)
+            public Node? VirtualSourceNode { get; set; }
+            public Task<(int MessageId, int? PreviewMessageId)?>? ForwardTask { get; set; }
 
             // Прямая потоковая загрузка без временных файлов на диске (Zero-Temp Direct Streaming)
             public StreamingPipeStream? PipeStream { get; set; }
