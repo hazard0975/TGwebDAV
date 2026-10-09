@@ -509,7 +509,11 @@ namespace TelegramWebDAV.Services
                 fileDesc = new FspNodeContext(dirNode);
                 FillFileInfo(dirNode, out fileInfo);
                 normalizedName = fileName;
-                if (!existed)
+                if (existed)
+                {
+                    AppLogger.Info("WinFsp", $"Открыт каталог: '{cleanPath}' (ID {dirNode.Id})");
+                }
+                else
                 {
                     AppLogger.Info("WinFsp", $"Создан новый каталог: '{cleanPath}' (ID {dirNode.Id})");
                 }
