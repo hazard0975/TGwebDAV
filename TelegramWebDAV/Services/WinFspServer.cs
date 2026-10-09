@@ -284,10 +284,9 @@ namespace TelegramWebDAV.Services
         private readonly ConfigManager _configManager;
         private readonly NodeRepository _repository;
         private readonly TelegramService _telegramService;
-        private readonly object _navLock = new object();
-        private int _activeNavDirId = -1;
-        private int _activeNavItemCount = -1;
-        private long _lastNavLogTimestampTicks = 0;
+        private int _lastListedDirId = -1;
+        private DateTime _lastListedTime = DateTime.MinValue;
+        private readonly object _dirListingLock = new object();
 
         private const int NT_STATUS_SUCCESS = 0;
         private const int NT_STATUS_UNSUCCESSFUL = unchecked((int)0xC0000001);
@@ -455,7 +454,6 @@ namespace TelegramWebDAV.Services
             fileDesc = new FspNodeContext(node);
             FillFileInfo(node, out fileInfo);
             normalizedName = fileName;
-
             return STATUS_SUCCESS;
         }
 
@@ -511,7 +509,11 @@ namespace TelegramWebDAV.Services
                 fileDesc = new FspNodeContext(dirNode);
                 FillFileInfo(dirNode, out fileInfo);
                 normalizedName = fileName;
-                if (!existed)
+                if (existed)
+                {
+                    AppLogger.Info("WinFsp", $"Открыт каталог: '{cleanPath}' (ID {dirNode.Id})");
+                }
+                else
                 {
                     AppLogger.Info("WinFsp", $"Создан новый каталог: '{cleanPath}' (ID {dirNode.Id})");
                 }
@@ -1369,37 +1371,6 @@ namespace TelegramWebDAV.Services
             if (context == null)
             {
                 var children = _repository.GetChildren(dirNode.Id);
-
-                // Фиксация реального отображения папки пользователю в проводнике
-                bool shouldLog = false;
-                long nowTicks = DateTime.UtcNow.Ticks;
-                lock (_navLock)
-                {
-                    if (dirNode.Id != _activeNavDirId || children.Count != _activeNavItemCount || (nowTicks - _lastNavLogTimestampTicks) > TimeSpan.FromSeconds(10).Ticks)
-                    {
-                        _activeNavDirId = dirNode.Id;
-                        _activeNavItemCount = children.Count;
-                        _lastNavLogTimestampTicks = nowTicks;
-                        shouldLog = true;
-                    }
-                }
-
-                if (shouldLog)
-                {
-                    string fullPath = _repository.GetNodeFullPath(dirNode.Id);
-                    string displayPath;
-                    string? mount = WinFspServer.ActiveMountPoint;
-                    if (fullPath == "/")
-                    {
-                        displayPath = string.IsNullOrEmpty(mount) ? "/" : $"{mount}\\";
-                    }
-                    else
-                    {
-                        string winPath = fullPath.Replace('/', '\\');
-                        displayPath = string.IsNullOrEmpty(mount) ? winPath : $"{mount}{winPath}";
-                    }
-                    AppLogger.Info("WinFsp", $"[Навигация] Открыта папка '{displayPath}', элементов: {children.Count}");
-                }
                 var settings = _configManager.Load();
                 if (settings.Server.HideTrashFromRoot && dirNode.Id == 1)
                 {
@@ -1408,6 +1379,24 @@ namespace TelegramWebDAV.Services
 
                 children.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
                 context = new FspDirectoryEnumContext(children);
+
+                bool shouldLog = false;
+                lock (_dirListingLock)
+                {
+                    var now = DateTime.UtcNow;
+                    if (dirNode.Id != _lastListedDirId && ((now - _lastListedTime).TotalMilliseconds >= 500 || _lastListedDirId == -1))
+                    {
+                        _lastListedDirId = dirNode.Id;
+                        _lastListedTime = now;
+                        shouldLog = true;
+                    }
+                }
+
+                if (shouldLog)
+                {
+                    string displayName = dirNode.Id == 1 ? "Root" : dirNode.Name;
+                    AppLogger.Info("WinFsp", $"[ReadDirectoryEntry] Открыта папка '{displayName}' (ID {dirNode.Id}), элементов: {children.Count}");
+                }
             }
 
             var dirEnum = (FspDirectoryEnumContext)context;
