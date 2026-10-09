@@ -1084,21 +1084,13 @@ namespace TelegramWebDAV.Services
         {
             if (_repository == null) return Task.CompletedTask;
 
-            long oldEffectiveChannelId = _repository.GetEffectiveChannelId(folderNodeId) ?? _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
-
             // Назначаем tg_channel_id строго для корневой привязываемой папки.
-            // Дочерние папки наследуют канал динамически через GetEffectiveChannelId (если у них нет собственного кастомного канала).
+            // Дочерние папки наследуют канал динамически через GetEffectiveChannelId и не должны иметь собственный tg_channel_id.
             _repository.SetFolderChannelId(folderNodeId, targetChannelId);
             var subtree = _repository.GetSubtreeNodes(folderNodeId);
-
-            // Очищаем только дубликаты у дочерних папок, если они случайно ссылались на тот же канал.
-            // Ни в коем случае не затираем саму привязываемую папку (n.Id != folderNodeId) и не трогаем другие независимые каналы.
-            foreach (var dir in subtree.Where(n => n.IsDir && n.Id != folderNodeId))
+            foreach (var dir in subtree.Where(n => n.IsDir))
             {
-                if (dir.TgChannelId == targetChannelId)
-                {
-                    _repository.SetFolderChannelId(dir.Id, null);
-                }
+                _repository.SetFolderChannelId(dir.Id, null);
             }
 
             var filesToMigrate = subtree
@@ -1114,8 +1106,8 @@ namespace TelegramWebDAV.Services
             AppLogger.Info("TelegramService", $"[Migration] Добавление {filesToMigrate.Count} файлов папки ID {folderNodeId} в очередь фоновой миграции в канал ID {targetChannelId}...");
 
             var nodeIdsBySource = filesToMigrate
-                .GroupBy(f => (f.TgChannelId.HasValue && f.TgChannelId.Value != 0) ? f.TgChannelId.Value : oldEffectiveChannelId)
-                .Where(g => g.Key != targetChannelId && g.Key != 0);
+                .GroupBy(f => f.TgChannelId ?? _repository.GetEffectiveChannelId(f.ParentId) ?? 0)
+                .Where(g => g.Key != targetChannelId);
 
             foreach (var group in nodeIdsBySource)
             {
