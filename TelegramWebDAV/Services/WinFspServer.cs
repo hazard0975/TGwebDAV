@@ -284,8 +284,7 @@ namespace TelegramWebDAV.Services
         private readonly ConfigManager _configManager;
         private readonly NodeRepository _repository;
         private readonly TelegramService _telegramService;
-        private int _lastListedDirId = -1;
-        private DateTime _lastListedTime = DateTime.MinValue;
+        private readonly Dictionary<int, (string Name, int Count)> _loggedDirState = new();
         private readonly object _dirListingLock = new object();
 
         private const int NT_STATUS_SUCCESS = 0;
@@ -1380,22 +1379,26 @@ namespace TelegramWebDAV.Services
                 children.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase));
                 context = new FspDirectoryEnumContext(children);
 
+                string displayName = dirNode.Id == 1 ? "Root" : dirNode.Name;
                 bool shouldLog = false;
                 lock (_dirListingLock)
                 {
-                    var now = DateTime.UtcNow;
-                    if (dirNode.Id != _lastListedDirId && ((now - _lastListedTime).TotalMilliseconds >= 500 || _lastListedDirId == -1))
+                    if (!_loggedDirState.TryGetValue(dirNode.Id, out var state) ||
+                        state.Count != children.Count ||
+                        state.Name != displayName)
                     {
-                        _lastListedDirId = dirNode.Id;
-                        _lastListedTime = now;
+                        _loggedDirState[dirNode.Id] = (displayName, children.Count);
                         shouldLog = true;
                     }
                 }
 
                 if (shouldLog)
                 {
-                    string displayName = dirNode.Id == 1 ? "Root" : dirNode.Name;
                     AppLogger.Info("WinFsp", $"[ReadDirectoryEntry] Открыта папка '{displayName}' (ID {dirNode.Id}), элементов: {children.Count}");
+                }
+                else
+                {
+                    AppLogger.Debug("WinFsp", $"[ReadDirectoryEntry] Повторный опрос папки '{displayName}' (ID {dirNode.Id}), элементов: {children.Count}");
                 }
             }
 
