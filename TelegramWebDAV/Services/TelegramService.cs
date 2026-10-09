@@ -1084,19 +1084,18 @@ namespace TelegramWebDAV.Services
         {
             if (_repository == null) return Task.CompletedTask;
 
-            // Назначаем tg_channel_id строго для корневой привязываемой папки.
-            // Дочерние папки наследуют канал динамически через GetEffectiveChannelId и не должны иметь собственный tg_channel_id.
-            _repository.SetFolderChannelId(folderNodeId, targetChannelId);
-            var subtree = _repository.GetSubtreeNodes(folderNodeId);
-            foreach (var dir in subtree.Where(n => n.IsDir))
-            {
-                _repository.SetFolderChannelId(dir.Id, null);
-            }
+            // Фиксируем исходный эффективный канал до смены привязки
+            long oldEffectiveChannelId = _repository.GetEffectiveChannelId(folderNodeId) ?? _repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
 
-            var filesToMigrate = subtree
-                .Where(n => !n.IsDir && n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
+            // Назначаем tg_channel_id строго для привязываемой папки.
+            // Дочерние папки динамически наследуют его через GetEffectiveChannelId, а папки с собственным каналом остаются нетронутыми.
+            _repository.SetFolderChannelId(folderNodeId, targetChannelId);
+
+            // Собираем файлы для миграции, пропуская вложенные папки, у которых есть собственный уникальный tg_channel_id
+            var filesToMigrate = _repository.GetFilesForChannelMigration(folderNodeId)
                 .OrderBy(n => n.TgMessageId!.Value)
                 .ToList();
+
             if (filesToMigrate.Count == 0)
             {
                 AppLogger.Info("TelegramService", $"[Migration] В папке ID {folderNodeId} нет файлов для миграции.");
@@ -1106,8 +1105,8 @@ namespace TelegramWebDAV.Services
             AppLogger.Info("TelegramService", $"[Migration] Добавление {filesToMigrate.Count} файлов папки ID {folderNodeId} в очередь фоновой миграции в канал ID {targetChannelId}...");
 
             var nodeIdsBySource = filesToMigrate
-                .GroupBy(f => f.TgChannelId ?? _repository.GetEffectiveChannelId(f.ParentId) ?? 0)
-                .Where(g => g.Key != targetChannelId);
+                .GroupBy(f => (f.TgChannelId.HasValue && f.TgChannelId.Value != 0) ? f.TgChannelId.Value : oldEffectiveChannelId)
+                .Where(g => g.Key != targetChannelId && g.Key != 0);
 
             foreach (var group in nodeIdsBySource)
             {

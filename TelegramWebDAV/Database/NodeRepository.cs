@@ -679,6 +679,39 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Собирает файлы для миграции в новый канал Telegram.
+        /// Если дочерняя подпапка уже имеет собственный уникальный tg_channel_id,
+        /// её ветка полностью пропускается вместе со всеми её файлами.
+        /// </summary>
+        public List<Node> GetFilesForChannelMigration(int rootFolderId)
+        {
+            var result = new List<Node>();
+            CollectMigrationFilesRecursive(rootFolderId, result);
+            return result;
+        }
+
+        private void CollectMigrationFilesRecursive(int currentFolderId, List<Node> result)
+        {
+            var children = GetChildren(currentFolderId);
+            foreach (var child in children)
+            {
+                if (child.IsDir)
+                {
+                    // Если у вложенной папки есть свой собственный привязанный канал — пропускаем её ветку целиком
+                    if (child.TgChannelId.HasValue && child.TgChannelId.Value != 0)
+                    {
+                        continue;
+                    }
+                    CollectMigrationFilesRecursive(child.Id, result);
+                }
+                else if (child.TgMessageId.HasValue && child.TgMessageId.Value > 0)
+                {
+                    result.Add(child);
+                }
+            }
+        }
+
+        /// <summary>
         /// Атомарно помещает ID сообщений Telegram в персистентную очередь pending_deletions
         /// и удаляет сами узлы из таблицы nodes в единой транзакции SQLite.
         /// Гарантирует мгновенное исчезновение файлов из файловой системы и надежное фоновое удаление из Telegram.

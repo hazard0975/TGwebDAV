@@ -1227,6 +1227,33 @@ _telegramService.UpdateSettings(_settings);
 4. **Результат**:
    - Копирование гигабайтных файлов в Проводнике Windows и WebDAV происходит за доли секунды без расхода интернет-трафика на повторную загрузку.
 
+---
+
+## 56. Архитектурная изоляция привязки каналов и целевой сбор файлов для миграции (Root Cause First)
+
+### Проблема:
+При привязке папки к новому каналу Telegram через контекстное меню (например, `Y:\привязанная`) канал создавался успешно, но файлы, помещаемые в эту папку или её подпапки (например, `Y:\привязанная\big\file.mp3`), уходили в основной канал по умолчанию, а в базе SQLite у корневой привязанной папки `tg_channel_id` оставался `NULL`.
+
+### Первопричина (Root Cause Analysis):
+1. В методе `TelegramService.MigrateSubtreeToChannelAsync(int folderNodeId, long targetChannelId)` производилась привязка `_repository.SetFolderChannelId(folderNodeId, targetChannelId)`.
+2. Затем запускался цикл очистки `_repository.GetSubtreeNodes(folderNodeId)` для сброса `tg_channel_id` у дочерних папок.
+3. Поскольку `GetSubtreeNodes(rootNodeId)` по своей структуре возвращает и саму корневую папку (`result.Add(rootNode)`), цикл `foreach (var dir in subtree.Where(n => n.IsDir))` обходил целевую папку и вызывал `_repository.SetFolderChannelId(dir.Id, null)`. Это мгновенно стирало только что привязанный канал у самой папки.
+4. Кроме того, старый сбор файлов через `GetSubtreeNodes` без разбора собирал все файлы поддерева, включая файлы из возможных вложенных привязанных папок.
+
+### Принятое решение:
+1. **Прямое назначение канала без деструктивных циклов**:
+   - Метод `MigrateSubtreeToChannelAsync` назначает `targetChannelId` строго целевой привязываемой папке (`_repository.SetFolderChannelId(folderNodeId, targetChannelId)`).
+   - Любые циклы обнуления дочерних папок полностью удалены. Обычные подпапки наследуют канал динамически через `GetEffectiveChannelId`, а вложенные папки с собственными каналами сохраняют свою изоляцию.
+2. **Целевой рекурсивный сбор файлов с пропуском привязанных подпапок (`GetFilesForChannelMigration`)**:
+   - В `NodeRepository.cs` добавлен метод `GetFilesForChannelMigration(int rootFolderId)`.
+   - При рекурсивном обходе, если дочерняя папка имеет собственный `tg_channel_id` (`child.TgChannelId.HasValue && child.TgChannelId.Value != 0`), её поддерево полностью **пропускается** (`continue;`).
+   - Файлы из вложенных привязанных папок не затрагиваются и гарантированно остаются в своих независимых каналах.
+3. **Фиксация исходного канала до смены привязки**:
+   - `oldEffectiveChannelId` считывается до назначения нового канала, обеспечивая безошибочную группировку файлов в очередь `EnqueueChannelMigrations`.
+4. **Синхронизация логирования в `WinFspServer.cs`**:
+   - В методе `Create` устранено избыточное логирование `Открыт каталог` при каждом обращении Проводника: оставлен чистый `if (!existed) { AppLogger.Info("WinFsp", $"Создан новый каталог..."); }`.
+
+
 
 
 
