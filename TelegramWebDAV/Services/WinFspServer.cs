@@ -521,7 +521,10 @@ namespace TelegramWebDAV.Services
             }
             else
             {
-                var virtualSource = TryFindVirtualSourceNode(itemName, cleanPath, _repository);
+                int callerPid = 0;
+                try { callerPid = FileSystemBase.GetOperationProcessId(); } catch { }
+
+                var (virtualSource, originalSource) = ResolveFileSource(itemName, cleanPath, callerPid, _repository);
                 if (virtualSource != null)
                 {
                     AppLogger.Info("WinFsp", $"[VirtualCopy] Обнаружен исходный виртуальный файл для '{cleanPath}': ID {virtualSource.Id} ('{virtualSource.Name}'), размер: {virtualSource.Size} байт, MsgId: {virtualSource.TgMessageId?.ToString() ?? "null"}.");
@@ -541,7 +544,8 @@ namespace TelegramWebDAV.Services
                     {
                         IsModified = true,
                         KnownTargetSize = virtualSource.Size,
-                        VirtualSourceNode = virtualSource
+                        VirtualSourceNode = virtualSource,
+                        CreatorProcessId = callerPid
                     };
 
                     if (virtualSource.TgMessageId.HasValue && virtualSource.TgMessageId.Value > 0)
@@ -589,7 +593,8 @@ namespace TelegramWebDAV.Services
                 {
                     IsModified = true,
                     KnownTargetSize = allocationSize > 0 ? (long)allocationSize : -1,
-                    OriginalSourcePath = TryFindSourceFile(itemName, cleanPath)
+                    OriginalSourcePath = originalSource,
+                    CreatorProcessId = callerPid
                 };
 
                 fileNode = node;
@@ -622,7 +627,12 @@ namespace TelegramWebDAV.Services
             ctx.UploadTask = null;
             ctx.UploadCts = null;
 
-            var virtualSource = TryFindVirtualSourceNode(node.Name, _repository.GetNodeFullPath(node.Id), _repository);
+            int overwritePid = 0;
+            try { overwritePid = FileSystemBase.GetOperationProcessId(); } catch { }
+            ctx.CreatorProcessId = overwritePid;
+
+            string fullNodePath = _repository.GetNodeFullPath(node.Id);
+            var (virtualSource, originalSource) = ResolveFileSource(node.Name, fullNodePath, overwritePid, _repository);
             if (virtualSource != null)
             {
                 ctx.VirtualSourceNode = virtualSource;
@@ -651,7 +661,7 @@ namespace TelegramWebDAV.Services
             }
             else
             {
-                ctx.OriginalSourcePath = TryFindSourceFile(node.Name, _repository.GetNodeFullPath(node.Id));
+                ctx.OriginalSourcePath = originalSource;
             }
 
             FillFileInfo(node, out fileInfo);
@@ -722,10 +732,10 @@ namespace TelegramWebDAV.Services
                         string nameNoExt = Path.GetFileNameWithoutExtension(nodeName);
                         string fullPathWithVersion = $"{parentPath}/{nameNoExt}_v{nextVersion}{ext}";
 
-                        if (string.IsNullOrEmpty(ctx.OriginalSourcePath))
+                        if (string.IsNullOrEmpty(ctx.OriginalSourcePath) && ctx.VirtualSourceNode == null)
                         {
                             AppLogger.Info("WinFsp", $"[Write] Пробуем определить источник (Drag-and-Drop / Буфер обмена) для '{nodeName}'...");
-                            ctx.OriginalSourcePath = TryFindSourceFile(nodeName, $"{parentPath}/{nodeName}");
+                            ctx.OriginalSourcePath = TryFindSourceFile(nodeName, $"{parentPath}/{nodeName}", ctx.CreatorProcessId, _repository);
                         }
 
                         AudioMetadataResult? audioMeta = null;
@@ -1599,9 +1609,12 @@ namespace TelegramWebDAV.Services
             public List<string> PendingFiles { get; } = new List<string>();
             public List<string> SourceRoots { get; } = new List<string>();
             public int InitialCount { get; set; }
+            public DateTime LastActivityUtc { get; set; } = DateTime.UtcNow;
 
             public string? FindAndConsume(string targetFileName, string? relativeVirtualPath)
             {
+                LastActivityUtc = DateTime.UtcNow;
+
                 for (int i = 0; i < PendingFiles.Count; i++)
                 {
                     string candidate = PendingFiles[i];
@@ -1623,6 +1636,18 @@ namespace TelegramWebDAV.Services
                 }
 
                 return null;
+            }
+
+            public bool IsExpired(TimeSpan timeout)
+            {
+                // Если ещё есть необработанные файлы из заранее известного списка (пачка),
+                // даём увеличенный таймаут (2 минуты)
+                if (PendingFiles.Count > 0)
+                {
+                    return (DateTime.UtcNow - LastActivityUtc) > TimeSpan.FromMinutes(2);
+                }
+                // Если файлы идут по одному (бэкапер), держим запомненный корень активным заданный таймаут
+                return (DateTime.UtcNow - LastActivityUtc) > timeout;
             }
         }
 
@@ -1671,21 +1696,26 @@ namespace TelegramWebDAV.Services
             }
 
             session.InitialCount = session.PendingFiles.Count;
+            session.LastActivityUtc = DateTime.UtcNow;
             return session;
         }
 
         /// <summary>
-        /// Детерминированный метод обнаружения пути к оригинальному файлу-источнику (Zero Timers).
-        /// Использует честную пофайловую модель сессии копирования (CopySession):
-        /// - Перехватывает пути через открытые файловые хэндлы explorer.exe (Drag-and-Drop) и системный буфер CF_HDROP (Ctrl+C/V).
-        /// - Без COM/STA-вызовов (100% защита от дедлока Проводника).
-        /// - Пофайлово вычеркивает каждый обработанный файл из списка сессии (0 мс доступ для всей пачки).
-        /// - Автоматически завершает сессию, как только последний файл пачки взят в обработку.
+        /// Единый детерминированный метод разрешения источника создаваемого файла (Root Cause First):
+        /// За ОДИН-ЕДИНСТВЕННЫЙ опрос дескрипторов ядра классифицирует входящий файл:
+        /// 1. Виртуальная копия внутри диска Y: (VirtualCopy -> мгновенный форвардинг в Telegram без трафика)
+        /// 2. Локальный оригинальный файл на диске D:, C: и др. (OriginalSourcePath -> потоковая загрузка с чтением метаданных)
+        /// Устраняет двойное сканирование 88 000 дескрипторов ядра и гарантирует, что дескриптор бэкапера (SyncBackFree и др.)
+        /// никогда не потеряется между фазами подготовки и записи.
         /// </summary>
-        private static string? TryFindSourceFile(string targetFileName, string? relativeVirtualPath = null, int callerPid = 0)
+        private static (Node? VirtualSource, string? OriginalSource) ResolveFileSource(
+            string targetFileName,
+            string? relativeVirtualPath,
+            int callerPid,
+            NodeRepository? repository)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return null;
+                return (null, null);
 
             if (callerPid <= 0)
             {
@@ -1698,38 +1728,71 @@ namespace TelegramWebDAV.Services
 
             AppLogger.Info("WinFsp", $"[Источник] Поиск оригинального файла для '{targetFileName}' (виртуальный путь: '{relativeVirtualPath}')...");
 
+            // Шаг 1: Проверяем активную сессию (0 мс доступ через SourceRoots и кэш сессии)
             lock (_sessionLock)
             {
-                // Шаг 1: Проверяем активную сессию (0 мс)
                 if (_activeSession != null)
                 {
-                    string? match = _activeSession.FindAndConsume(targetFileName, relativeVirtualPath);
-                    if (match != null)
+                    if (_activeSession.IsExpired(TimeSpan.FromSeconds(20)))
                     {
-                        AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение в активной сессии (осталось файлов: {_activeSession.PendingFiles.Count}/{_activeSession.InitialCount}): '{match}'");
-                        if (_activeSession.PendingFiles.Count == 0)
+                        AppLogger.Info("WinFsp", $"[Источник] Предыдущая сессия копирования завершена по таймауту бездействия (20 сек).");
+                        _activeSession = null;
+                    }
+                    else
+                    {
+                        string? match = _activeSession.FindAndConsume(targetFileName, relativeVirtualPath);
+                        if (match != null)
                         {
-                            AppLogger.Info("WinFsp", $"[Источник] Все файлы текущей сессии ({_activeSession.InitialCount} шт.) обработаны. Сессия завершена.");
-                            _activeSession = null;
+                            long fileSize = 0;
+                            try { fileSize = new System.IO.FileInfo(match).Length; } catch { }
+                            AppLogger.Info("WinFsp", $"[Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл '{match}' существует и доступен для чтения (размер: {fileSize} байт).");
+                            AppLogger.Info("WinFsp", $"[Источник] Найдено совпадение в активной сессии (осталось файлов в очереди: {_activeSession.PendingFiles.Count}/{_activeSession.InitialCount}): '{match}'");
+                            return (null, match);
                         }
-                        return match;
                     }
                 }
+            }
 
-                // Шаг 2: Файл не входит в активную сессию -> значит началось НОВОЕ копирование!
-                // AppLogger.Debug("WinFsp", $"[Источник] Запрос нового дерева копирования для нового источника...");
-                var freshRawCandidates = CollectAllCandidates(targetFileName, callerPid);
-                if (freshRawCandidates.Count > 0)
+            // Шаг 2: Если в активной сессии файла нет, собираем свежих кандидатов РОВНО ОДИН РАЗ
+            // Включаем смонтированный диск, чтобы за один проход найти и виртуальный, и локальный источник
+            var freshRawCandidates = CollectAllCandidates(targetFileName, callerPid, includeMountedDrive: true);
+            if (freshRawCandidates.Count == 0)
+            {
+                return (null, null);
+            }
+
+            // Шаг 3.1: Проверяем, есть ли среди кандидатов виртуальный файл на диске Y: (VirtualCopy)
+            if (repository != null)
+            {
+                foreach (var cand in freshRawCandidates)
                 {
-                    var newSession = CreateCopySession(freshRawCandidates);
+                    if (IsCandidateOnMountedDrive(cand))
+                    {
+                        var vMatch = MatchVirtualCandidate(cand, targetFileName, relativeVirtualPath ?? "", repository);
+                        if (vMatch != null)
+                        {
+                            return (vMatch, null);
+                        }
+                    }
+                }
+            }
+
+            // Шаг 3.2: Обрабатываем физические локальные кандидаты (диски D:, C: и др.)
+            var physicalCandidates = freshRawCandidates.Where(c => !IsCandidateOnMountedDrive(c)).ToList();
+            if (physicalCandidates.Count > 0)
+            {
+                lock (_sessionLock)
+                {
+                    var newSession = CreateCopySession(physicalCandidates);
                     AppLogger.Info("WinFsp", $"[Источник] Инициализирована новая сессия копирования: файлов в очереди {newSession.PendingFiles.Count}, папок-источников {newSession.SourceRoots.Count}");
 
                     string? match = newSession.FindAndConsume(targetFileName, relativeVirtualPath);
                     if (match != null)
                     {
-                        // AppLogger.Debug("WinFsp", $"[Источник] Найдено совпадение в новой сессии: '{match}'");
-                        // Сохраняем сессию и запоминаем найденный корень источника (Multi-Folder Support!)
-                        // Это позволяет следующим файлам из этой же папки мгновенно находиться за 0 мс без опроса дескрипторов!
+                        long fileSize = 0;
+                        try { fileSize = new System.IO.FileInfo(match).Length; } catch { }
+                        AppLogger.Info("WinFsp", $"[Источник] НАЙДЕНО СОВПАДЕНИЕ! Оригинальный файл '{match}' существует и доступен для чтения (размер: {fileSize} байт).");
+
                         if (_activeSession == null)
                         {
                             _activeSession = newSession;
@@ -1743,34 +1806,47 @@ namespace TelegramWebDAV.Services
                                     _activeSession.SourceRoots.Add(r);
                                 }
                             }
+                            foreach (var f in newSession.PendingFiles)
+                            {
+                                if (!_activeSession.PendingFiles.Exists(x => string.Equals(x, f, StringComparison.OrdinalIgnoreCase)))
+                                {
+                                    _activeSession.PendingFiles.Add(f);
+                                }
+                            }
+                            _activeSession.LastActivityUtc = DateTime.UtcNow;
                         }
-                        return match;
+                        return (null, match);
                     }
                 }
-
-                // AppLogger.Debug("WinFsp", $"[Источник] Файл '{targetFileName}' не найден среди доступных источников.");
-                return null;
             }
+
+            return (null, null);
         }
 
-        private static List<string> CollectAllCandidates(string? targetFileName = null, int callerPid = 0)
+        private static string? TryFindSourceFile(string targetFileName, string? relativeVirtualPath = null, int callerPid = 0, NodeRepository? repository = null)
+        {
+            var (_, originalSource) = ResolveFileSource(targetFileName, relativeVirtualPath, callerPid, repository);
+            return originalSource;
+        }
+
+        private static List<string> CollectAllCandidates(string? targetFileName = null, int callerPid = 0, bool includeMountedDrive = false)
         {
             var list = new List<string>();
 
             // 1. Системный буфер обмена Windows (Ctrl+C / Ctrl+V, CF_HDROP)
             // Быстрое чтение структуры памяти без блокирующих вызовов
-            var clipList = CollectClipboardCandidates();
+            var clipList = CollectClipboardCandidates(includeMountedDrive);
             list.AddRange(clipList);
 
             // 2. Инспекция файловых дескрипторов (Handles) вызывающего процесса и explorer.exe для Drag-and-Drop / сторонних копировщиков
             // Работает на уровне ядра через NtQuerySystemInformation, без COM/UI сообщений
-            var handleList = CollectOpenFileHandles(targetFileName, includeMountedDrive: false, callerPid: callerPid);
+            var handleList = CollectOpenFileHandles(targetFileName, includeMountedDrive: includeMountedDrive, callerPid: callerPid);
             list.AddRange(handleList);
 
             return list;
         }
 
-        private static List<string> CollectClipboardCandidates()
+        private static List<string> CollectClipboardCandidates(bool includeMountedDrive = false)
         {
             var results = new List<string>();
             for (int attempt = 1; attempt <= 3; attempt++)
@@ -1791,7 +1867,7 @@ namespace TelegramWebDAV.Services
                                 if (len > 0)
                                 {
                                     string clipPath = sb.ToString();
-                                    if (!IsCandidateOnMountedDrive(clipPath))
+                                    if (includeMountedDrive || !IsCandidateOnMountedDrive(clipPath))
                                     {
                                         results.Add(clipPath);
                                     }
@@ -2306,41 +2382,8 @@ namespace TelegramWebDAV.Services
 
         private static Node? TryFindVirtualSourceNode(string targetFileName, string targetVirtualPath, NodeRepository repository)
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-                return null;
-
-            try
-            {
-                // Проверяем системный буфер обмена (Ctrl+C / Ctrl+V, CF_HDROP)
-                var clipCandidates = CollectClipboardCandidates();
-                foreach (var cand in clipCandidates)
-                {
-                    if (IsCandidateOnMountedDrive(cand))
-                    {
-                        var match = MatchVirtualCandidate(cand, targetFileName, targetVirtualPath, repository);
-                        if (match != null) return match;
-                    }
-                }
-
-                // Проверяем открытые файловые дескрипторы вызывающего процесса и explorer.exe (Drag-and-Drop)
-                int callerPid = 0;
-                try { callerPid = FileSystemBase.GetOperationProcessId(); } catch { }
-                var handleCandidates = CollectOpenFileHandles(targetFileName, includeMountedDrive: true, callerPid: callerPid);
-                foreach (var cand in handleCandidates)
-                {
-                    if (IsCandidateOnMountedDrive(cand))
-                    {
-                        var match = MatchVirtualCandidate(cand, targetFileName, targetVirtualPath, repository);
-                        if (match != null) return match;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Debug("WinFsp", $"[VirtualSource] Ошибка поиска виртуального источника для '{targetFileName}': {ex.Message}");
-            }
-
-            return null;
+            var (virtualSource, _) = ResolveFileSource(targetFileName, targetVirtualPath, 0, repository);
+            return virtualSource;
         }
 
         private static Node? MatchVirtualCandidate(string candidatePath, string targetFileName, string targetVirtualPath, NodeRepository repository)
@@ -2404,6 +2447,7 @@ namespace TelegramWebDAV.Services
             public long TotalBytesWritten { get; set; } = 0;
             public bool IsUploadStarted { get; set; } = false;
             public string? OriginalSourcePath { get; set; }
+            public int CreatorProcessId { get; set; }
 
             public FspNodeContext(Node node) => Node = node;
 
