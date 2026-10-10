@@ -727,6 +727,12 @@
     1. В `NodeRepository.cs` модель `PendingCaptionItem` расширена полем `ChannelId`, а метод `GetNextPendingCaptionUpdate` считывает канал узла через `LEFT JOIN nodes n ON p.node_id = n.id`.
     2. В `TelegramService.ProcessCaptionQueueAsync` вызов `UpdateMessageCaptionAsync` снабжён точным `targetChannelId` с фоллбэком на `GetChannelIdByTgMessageId`, устраняя ошибку `RpcError 400 MESSAGE_ID_INVALID` при обновлении подписей файлов в привязанных папках (удаление в `.Trash`, переименование, версионирование).
     3. Выполнена валидационная сборка C# проекта `dotnet build` (0 ошибок, 0 предупреждений).
+- [x] **8.23. Оптимизация перманентного удаления привязанных папок и каналов Telegram**:
+  - **Реализовано**:
+    1. В `NodeRepository.cs` добавлен метод `GetNodeCountForChannel(channelId)`.
+    2. В `WinFspServer.cs` и `WebDavMiddleware.cs` при перманентном уничтожении привязанной папки сообщения файлов канала больше не ставятся в очередь поштучного удаления `pending_deletions`: весь канал и все файлы внутри него атомарно удаляются в Telegram за 1 вызов `Channels_DeleteChannel`.
+    3. В `TelegramService.DeleteFilesFromTelegramAsync` добавлена отказоустойчивая обработка уже удаленных каналов, предотвращающая зависание очереди удаления.
+    4. Выполнена валидационная сборка C# проекта `dotnet build` (0 ошибок, 0 предупреждений).
 
 
 

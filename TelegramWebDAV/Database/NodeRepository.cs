@@ -1031,6 +1031,20 @@ namespace TelegramWebDAV.Database
         }
 
         /// <summary>
+        /// Возвращает общее количество узлов в базе данных, привязанных к данному каналу.
+        /// </summary>
+        public int GetNodeCountForChannel(long channelId)
+        {
+            using (var connection = _dbManager.GetConnection())
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = "SELECT COUNT(*) FROM nodes WHERE tg_channel_id = @channelId;";
+                command.Parameters.AddWithValue("@channelId", channelId);
+                return Convert.ToInt32(command.ExecuteScalar() ?? 0);
+            }
+        }
+
+        /// <summary>
         /// Удаляет запись о канале из базы данных.
         /// </summary>
         public void DeleteTelegramChannel(long channelId)

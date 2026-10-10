@@ -587,13 +587,42 @@ namespace TelegramWebDAV.Server
                 // По рекурсии получаем все узлы поддерева: сначала файлы (is_dir == 0), затем пустые папки (is_dir == 1)
                 var nodesToDelete = repository.GetSubtreeNodes(node.Id).OrderBy(n => n.IsDir ? 1 : 0).ToList();
 
-                // Собираем все непустые ID сообщений в Telegram для пакетного удаления
+                // 1. Вычисляем кастомные каналы, которые будут полностью уничтожены в Telegram вместе с удаляемой папкой
+                long primaryChannelId = repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
+                var channelsToDestroy = new HashSet<long>();
+
+                var boundFoldersToDelete = nodesToDelete
+                    .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0 && n.TgChannelId.Value != primaryChannelId && n.Id == node.Id)
+                    .Select(n => n.TgChannelId!.Value)
+                    .Distinct()
+                    .ToList();
+
+                foreach (var chId in boundFoldersToDelete)
+                {
+                    int nodesInSubtreeForChannel = nodesToDelete.Count(n => n.TgChannelId == chId);
+                    int totalNodesInDbForChannel = repository.GetNodeCountForChannel(chId);
+                    if (totalNodesInDbForChannel > 0 && totalNodesInDbForChannel == nodesInSubtreeForChannel)
+                    {
+                        channelsToDestroy.Add(chId);
+                    }
+                }
+
+                // 2. Собираем сообщения: файлы каналов, уничтожаемых целиком через Channels_DeleteChannel,
+                // не спамят очередь поштучного удаления сообщений
                 var tgMessageIds = new List<int>();
                 var dbNodeIds = new List<int>();
 
                 foreach (var n in nodesToDelete)
                 {
                     dbNodeIds.Add(n.Id);
+
+                    long fileChannelId = n.TgChannelId ?? repository.GetEffectiveChannelId(n.ParentId) ?? primaryChannelId;
+                    if (channelsToDestroy.Contains(fileChannelId))
+                    {
+                        // Сообщения этого канала мгновенно уничтожаются на сервере Telegram вместе с самим каналом
+                        continue;
+                    }
+
                     if (n.TgMessageId.HasValue && n.TgMessageId.Value > 0)
                     {
                         tgMessageIds.Add(n.TgMessageId.Value);
@@ -618,28 +647,15 @@ namespace TelegramWebDAV.Server
                     telegramService.TriggerDeletionQueueProcessing();
                 }
 
-                // Проверяем, был ли перманентно удален узел самой привязанной папки с назначенным каналом
-                var uniqueChannelIds = nodesToDelete
-                    .Where(n => n.IsDir && n.TgChannelId.HasValue && n.TgChannelId.Value != 0 && n.Id == node.Id)
-                    .Select(n => n.TgChannelId!.Value)
-                    .Distinct()
-                    .ToList();
-
-                if (uniqueChannelIds.Count > 0)
+                // 3. Авто-удаление уничтожаемых каналов из Telegram
+                foreach (var chId in channelsToDestroy)
                 {
-                    long primaryChannelId = repository.GetPrimaryTelegramChannel()?.ChannelId ?? 0;
-                    foreach (var chId in uniqueChannelIds)
+                    AppLogger.Info("WebDAV", $"Канал Telegram ID {chId} больше не содержит активных папок на диске. Авто-удаление канала и всех его сообщений из Telegram...");
+                    _ = Task.Run(async () =>
                     {
-                        if (chId != primaryChannelId && !repository.HasActiveNodesForChannel(chId))
-                        {
-                            AppLogger.Info("WebDAV", $"Канал Telegram ID {chId} больше не содержит активных папок на диске. Авто-удаление канала из Telegram...");
-                            _ = Task.Run(async () =>
-                            {
-                                await telegramService.DeleteChannelAsync(chId);
-                                repository.DeleteTelegramChannel(chId);
-                            });
-                        }
-                    }
+                        await telegramService.DeleteChannelAsync(chId);
+                        repository.DeleteTelegramChannel(chId);
+                    });
                 }
 
                 // Автоматическое фоновое сжатие базы SQLite с дебаунсом (через 3 сек спокойствия)

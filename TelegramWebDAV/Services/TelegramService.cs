@@ -2984,15 +2984,22 @@ namespace TelegramWebDAV.Services
 
                     foreach (var kvp in channelGroups)
                     {
-                        var peer = await GetStoragePeerAsync(kvp.Key != 0L ? kvp.Key : (long?)null);
-                        bool isChannel = peer is TL.InputPeerChannel;
-
-                        for (int i = 0; i < kvp.Value.Count; i += batchSize)
+                        try
                         {
-                            var count = Math.Min(batchSize, kvp.Value.Count - i);
-                            var batch = kvp.Value.GetRange(i, count).ToArray();
+                            var peer = await GetStoragePeerAsync(kvp.Key != 0L ? kvp.Key : (long?)null);
+                            bool isChannel = peer is TL.InputPeerChannel;
 
-                            await DeleteBatchWithBisectAsync(peer, isChannel, batch);
+                            for (int i = 0; i < kvp.Value.Count; i += batchSize)
+                            {
+                                var count = Math.Min(batchSize, kvp.Value.Count - i);
+                                var batch = kvp.Value.GetRange(i, count).ToArray();
+
+                                await DeleteBatchWithBisectAsync(peer, isChannel, batch);
+                            }
+                        }
+                        catch (Exception ex) when (kvp.Key != 0L && (ex.Message.Contains("не найден") || ex.Message.Contains("CHANNEL_INVALID") || ex.Message.Contains("CHANNEL_PRIVATE")))
+                        {
+                            AppLogger.Info("TelegramService", $"[DeletionQueue] Канал Telegram ID {kvp.Key} уже удален или недоступен. {kvp.Value.Count} сообщений считаются очищенными.");
                         }
                     }
                 }
