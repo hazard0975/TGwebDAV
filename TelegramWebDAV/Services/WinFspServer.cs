@@ -1682,10 +1682,19 @@ namespace TelegramWebDAV.Services
         /// - Пофайлово вычеркивает каждый обработанный файл из списка сессии (0 мс доступ для всей пачки).
         /// - Автоматически завершает сессию, как только последний файл пачки взят в обработку.
         /// </summary>
-        private static string? TryFindSourceFile(string targetFileName, string? relativeVirtualPath = null)
+        private static string? TryFindSourceFile(string targetFileName, string? relativeVirtualPath = null, int callerPid = 0)
         {
             if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
                 return null;
+
+            if (callerPid <= 0)
+            {
+                try
+                {
+                    callerPid = FileSystemBase.GetOperationProcessId();
+                }
+                catch { }
+            }
 
             AppLogger.Info("WinFsp", $"[Источник] Поиск оригинального файла для '{targetFileName}' (виртуальный путь: '{relativeVirtualPath}')...");
 
@@ -1709,7 +1718,7 @@ namespace TelegramWebDAV.Services
 
                 // Шаг 2: Файл не входит в активную сессию -> значит началось НОВОЕ копирование!
                 // AppLogger.Debug("WinFsp", $"[Источник] Запрос нового дерева копирования для нового источника...");
-                var freshRawCandidates = CollectAllCandidates(targetFileName);
+                var freshRawCandidates = CollectAllCandidates(targetFileName, callerPid);
                 if (freshRawCandidates.Count > 0)
                 {
                     var newSession = CreateCopySession(freshRawCandidates);
@@ -1744,7 +1753,7 @@ namespace TelegramWebDAV.Services
             }
         }
 
-        private static List<string> CollectAllCandidates(string? targetFileName = null)
+        private static List<string> CollectAllCandidates(string? targetFileName = null, int callerPid = 0)
         {
             var list = new List<string>();
 
@@ -1753,9 +1762,9 @@ namespace TelegramWebDAV.Services
             var clipList = CollectClipboardCandidates();
             list.AddRange(clipList);
 
-            // 2. Инспекция файловых дескрипторов (Handles) процесса explorer.exe для Drag-and-Drop
+            // 2. Инспекция файловых дескрипторов (Handles) вызывающего процесса и explorer.exe для Drag-and-Drop / сторонних копировщиков
             // Работает на уровне ядра через NtQuerySystemInformation, без COM/UI сообщений
-            var handleList = CollectExplorerOpenFileHandles(targetFileName);
+            var handleList = CollectOpenFileHandles(targetFileName, includeMountedDrive: false, callerPid: callerPid);
             list.AddRange(handleList);
 
             return list;
@@ -1924,29 +1933,49 @@ namespace TelegramWebDAV.Services
         }
 
         /// <summary>
-        /// Безопасное извлечение путей к файлам, открытым процессом explorer.exe при перетаскивании (Drag-and-Drop).
+        /// Безопасное извлечение путей к файлам, открытым процессами explorer.exe или вызывающим процессом (бэкапером, Total Commander и др.).
         /// Опрашивает открытые файловые дескрипторы через ядро Windows (NtQuerySystemInformation),
         /// не отправляя оконных сообщений и не обращаясь к OLE/COM, что полностью исключает дедлоки.
         /// </summary>
-        private static List<string> CollectExplorerOpenFileHandles(string? targetFileName, bool includeMountedDrive = false)
+        private static List<string> CollectOpenFileHandles(string? targetFileName, bool includeMountedDrive = false, int callerPid = 0)
         {
             var results = new List<string>();
             try
             {
-                var explorerProcesses = Process.GetProcessesByName("explorer");
-                if (explorerProcesses.Length == 0)
+                var targetPids = new HashSet<int>();
+                int currentPid = Process.GetCurrentProcess().Id;
+
+                // 1. Вызывающий процесс WinFsp (бэкапер, Total Commander, Robocopy, скрипт и т.д.)
+                if (callerPid > 0 && callerPid != currentPid)
                 {
-                    AppLogger.Debug("WinFsp", "[Handles DragDrop] Процессы explorer.exe не найдены.");
+                    targetPids.Add(callerPid);
+                }
+
+                // 2. Все процессы explorer.exe (для перетаскивания и копирования через Проводник Windows)
+                var explorerProcesses = Process.GetProcessesByName("explorer");
+                foreach (var p in explorerProcesses)
+                {
+                    if (p.Id != currentPid)
+                    {
+                        targetPids.Add(p.Id);
+                    }
+                }
+
+                if (targetPids.Count == 0)
+                {
+                    AppLogger.Debug("WinFsp", "[Handles DragDrop] Целевые процессы для инспекции дескрипторов не найдены.");
                     return results;
                 }
 
-                var explorerPids = new HashSet<int>();
-                foreach (var p in explorerProcesses)
+                string callerInfo = "";
+                if (callerPid > 0 && callerPid != currentPid)
                 {
-                    explorerPids.Add(p.Id);
+                    string callerName = "unknown";
+                    try { callerName = Process.GetProcessById(callerPid).ProcessName; } catch { }
+                    callerInfo = $", вызывающий процесс: {callerName} (PID: {callerPid})";
                 }
 
-                AppLogger.Info("WinFsp", $"[Handles DragDrop] Сканирование хэндлов для {explorerPids.Count} процессов explorer (PID: {string.Join(", ", explorerPids)})...");
+                AppLogger.Info("WinFsp", $"[Handles DragDrop] Сканирование хэндлов для {targetPids.Count} процессов (PID: {string.Join(", ", targetPids)}{callerInfo})...");
 
                 // STATUS_INFO_LENGTH_MISMATCH = 0xC0000004
                 const uint STATUS_INFO_LENGTH_MISMATCH = 0xC0000004;
@@ -1987,20 +2016,22 @@ namespace TelegramWebDAV.Services
 
                     int matchedHandles = 0;
                     var scanSw = System.Diagnostics.Stopwatch.StartNew();
+                    const int SCAN_TIME_BUDGET_MS = 350; // Увеличенный бюджет времени (350 мс вместо 100 мс)
                     try
                     {
                         for (long i = 0; i < handleCount; i++)
                         {
-                            if (scanSw.ElapsedMilliseconds > 100)
+                            // Оптимизация: опрашиваем таймер раз в 1024 итерации, устраняя оверхед QPC на 85 000 циклов
+                            if ((i & 0x3FF) == 0 && scanSw.ElapsedMilliseconds > SCAN_TIME_BUDGET_MS)
                             {
-                                AppLogger.Warn("WinFsp", $"[Handles DragDrop] Превышен общий бюджет времени сканирования хэндлов (100 мс). Обработано дескрипторов: {i}/{handleCount}, найдено совпадений: {results.Count}");
+                                AppLogger.Warn("WinFsp", $"[Handles DragDrop] Превышен общий бюджет времени сканирования хэндлов ({SCAN_TIME_BUDGET_MS} мс). Обработано дескрипторов: {i}/{handleCount}, найдено совпадений: {results.Count}");
                                 break;
                             }
 
                             IntPtr entryPtr = IntPtr.Add(currentPtr, (int)(i * entrySize));
                             int processId = (int)Marshal.ReadInt64(IntPtr.Add(entryPtr, 8)); // UniqueProcessId
 
-                            if (explorerPids.Contains(processId))
+                            if (targetPids.Contains(processId))
                             {
                                 // КРИТИЧЕСКИЙ Root Cause Фильтр: проверяем тип объекта в ядре NT перед любыми DuplicateHandle!
                                 // Трогаем ТОЛЬКО файловые дескрипторы (никаких Named Pipe, Socket, ALPC Port, Mutex)
@@ -2019,7 +2050,7 @@ namespace TelegramWebDAV.Services
                                     if (hProcess == IntPtr.Zero)
                                     {
                                         int err = Marshal.GetLastWin32Error();
-                                        AppLogger.Debug("WinFsp", $"[Handles DragDrop] Не удалось открыть процесс explorer PID {processId}: Win32 Error {err}");
+                                        AppLogger.Debug("WinFsp", $"[Handles DragDrop] Не удалось открыть процесс PID {processId}: Win32 Error {err}");
                                     }
                                     processHandles[processId] = hProcess;
                                 }
@@ -2053,7 +2084,7 @@ namespace TelegramWebDAV.Services
                                                     {
                                                         if (!results.Exists(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase)))
                                                         {
-                                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен виртуальный файл на диске в explorer (PID {processId}): '{path}'");
+                                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен виртуальный файл на диске в процессе PID {processId}: '{path}'");
                                                             results.Add(path);
                                                             if (!string.IsNullOrEmpty(targetFileName))
                                                             {
@@ -2070,7 +2101,7 @@ namespace TelegramWebDAV.Services
                                                     {
                                                         if (!results.Exists(x => string.Equals(x, path, StringComparison.OrdinalIgnoreCase)))
                                                         {
-                                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен открытый файл в explorer (PID {processId}): '{path}'");
+                                                            AppLogger.Info("WinFsp", $"[Handles DragDrop] Обнаружен открытый файл в процессе PID {processId}: '{path}'");
                                                             results.Add(path);
 
                                                             // Если мы искали конкретный целевой файл и нашли его,
@@ -2096,6 +2127,7 @@ namespace TelegramWebDAV.Services
                     }
                     finally
                     {
+                        scanSw.Stop();
                         foreach (var kvp in processHandles)
                         {
                             if (kvp.Value != IntPtr.Zero)
@@ -2104,8 +2136,6 @@ namespace TelegramWebDAV.Services
                             }
                         }
                     }
-
-                    // AppLogger.Debug("WinFsp", $"[Handles DragDrop] Проверено дескрипторов Explorer: {matchedHandles}, найдено совпадений файлов: {results.Count}");
                 }
                 finally
                 {
@@ -2292,8 +2322,10 @@ namespace TelegramWebDAV.Services
                     }
                 }
 
-                // Проверяем открытые файловые дескрипторы explorer.exe (Drag-and-Drop)
-                var handleCandidates = CollectExplorerOpenFileHandles(targetFileName, includeMountedDrive: true);
+                // Проверяем открытые файловые дескрипторы вызывающего процесса и explorer.exe (Drag-and-Drop)
+                int callerPid = 0;
+                try { callerPid = FileSystemBase.GetOperationProcessId(); } catch { }
+                var handleCandidates = CollectOpenFileHandles(targetFileName, includeMountedDrive: true, callerPid: callerPid);
                 foreach (var cand in handleCandidates)
                 {
                     if (IsCandidateOnMountedDrive(cand))
