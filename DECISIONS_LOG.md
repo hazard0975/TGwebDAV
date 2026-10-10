@@ -1260,6 +1260,27 @@ _telegramService.UpdateSettings(_settings);
 ### Контекст и решение:
 По решению пользователя вывод информационного сообщения `[WinFsp] Открыт каталог: '{cleanPath}' (ID {dirNode.Id})` в методе `Create` восстановлен для существующих директорий (`if (existed)`), чтобы обеспечить прозрачную диагностику обращений файловой системы WinFsp наряду с созданием новых каталогов (`else { Создан новый каталог }`).
 
+---
+
+## 58. Поддержка кастомных каналов в фоновой очереди обновления подписей сообщений (Root Cause First)
+
+### Проблема:
+При перемещении файлов привязанной папки в корзину (`.Trash`), а также при их переименовании или версионировании, фоновый воркер `ProcessCaptionQueueAsync` падал с ошибкой Telegram:
+`RpcError 400 MESSAGE_ID_INVALID`
+и подписи сообщений не обновлялись (записи исключались из очереди).
+
+### Первопричина (Root Cause Analysis):
+1. Метод `UpdateMessageCaptionAsync(messageId, newCaption, channelId = null)` при `channelId == null` направляет запрос `Messages_EditMessage` в **основной канал** по умолчанию (`primaryChannel`).
+2. В воркере `ProcessCaptionQueueAsync` вызов `UpdateMessageCaptionAsync(currentItem.TgMessageId, currentItem.NewCaption)` выполнялся без указания `channelId`.
+3. Сообщения файлов, расположенных в кастомных привязанных каналах, искались в основном канале, где они физически отсутствуют, вызывая `MESSAGE_ID_INVALID`.
+
+### Принятое решение:
+1. В модель `PendingCaptionItem` добавлено свойство `ChannelId`.
+2. Метод `GetNextPendingCaptionUpdate` в `NodeRepository.cs` модифицирован для извлечения `n.tg_channel_id` через `LEFT JOIN nodes n ON p.node_id = n.id`.
+3. В `ProcessCaptionQueueAsync` в вызов `UpdateMessageCaptionAsync` передаётся точный `targetChannelId` с фоллбэком на `_repository.GetChannelIdByTgMessageId(currentItem.TgMessageId)`.
+4. Теперь обновление подписей (при удалении в корзину, переименовании, версионировании) корректно адресуется именно в тот Telegram-канал, где лежит файл.
+
+
 
 
 

@@ -783,7 +783,8 @@ namespace TelegramWebDAV.Services
                         {
                             await EnsureFloodWaitDelayAsync();
                             await EnsurePacingDelayAsync(token);
-                            await UpdateMessageCaptionAsync(currentItem.TgMessageId, currentItem.NewCaption);
+                            long? targetChannelId = currentItem.ChannelId ?? _repository.GetChannelIdByTgMessageId(currentItem.TgMessageId);
+                            await UpdateMessageCaptionAsync(currentItem.TgMessageId, currentItem.NewCaption, targetChannelId);
                             _repository.RemovePendingCaptionUpdate(currentItem.Id);
                             currentItem = null;
                             continue;

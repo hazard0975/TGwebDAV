@@ -722,6 +722,11 @@
   - **Реализовано**:
     1. В `WinFspServer.Create` возвращено разграничение логирования существующих директорий: `if (existed) { AppLogger.Info("WinFsp", $"Открыт каталог: '{cleanPath}' (ID {dirNode.Id})"); }` и создания новых: `else { AppLogger.Info("WinFsp", $"Создан новый каталог..."); }`.
     2. Выполнена валидационная сборка C# проекта `dotnet build`.
+- [x] **8.22. Поддержка кастомных каналов при фоновом обновлении подписей сообщений**:
+  - **Реализовано**:
+    1. В `NodeRepository.cs` модель `PendingCaptionItem` расширена полем `ChannelId`, а метод `GetNextPendingCaptionUpdate` считывает канал узла через `LEFT JOIN nodes n ON p.node_id = n.id`.
+    2. В `TelegramService.ProcessCaptionQueueAsync` вызов `UpdateMessageCaptionAsync` снабжён точным `targetChannelId` с фоллбэком на `GetChannelIdByTgMessageId`, устраняя ошибку `RpcError 400 MESSAGE_ID_INVALID` при обновлении подписей файлов в привязанных папках (удаление в `.Trash`, переименование, версионирование).
+    3. Выполнена валидационная сборка C# проекта `dotnet build` (0 ошибок, 0 предупреждений).
 
 
 

@@ -1608,7 +1608,11 @@ namespace TelegramWebDAV.Database
             using (var connection = _dbManager.GetConnection())
             using (var command = connection.CreateCommand())
             {
-                command.CommandText = "SELECT id, node_id, tg_message_id, new_caption FROM pending_caption_updates ORDER BY id ASC LIMIT 1;";
+                command.CommandText = @"
+                    SELECT p.id, p.node_id, p.tg_message_id, p.new_caption, n.tg_channel_id
+                    FROM pending_caption_updates p
+                    LEFT JOIN nodes n ON p.node_id = n.id
+                    ORDER BY p.id ASC LIMIT 1;";
                 using (var reader = command.ExecuteReader())
                 {
                     if (reader.Read())
@@ -1618,7 +1622,8 @@ namespace TelegramWebDAV.Database
                             Id = reader.GetInt32(0),
                             NodeId = reader.GetInt32(1),
                             TgMessageId = reader.GetInt32(2),
-                            NewCaption = reader.GetString(3)
+                            NewCaption = reader.GetString(3),
+                            ChannelId = !reader.IsDBNull(4) ? Convert.ToInt64(reader[4]) : (long?)null
                         };
                     }
                 }
@@ -2013,6 +2018,7 @@ namespace TelegramWebDAV.Database
         public int NodeId { get; set; }
         public int TgMessageId { get; set; }
         public string NewCaption { get; set; } = string.Empty;
+        public long? ChannelId { get; set; }
     }
 
     public class ChannelMigrationItem
