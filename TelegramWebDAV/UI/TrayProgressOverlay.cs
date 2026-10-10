@@ -2,6 +2,8 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using TelegramWebDAV.Services;
@@ -23,6 +25,98 @@ namespace TelegramWebDAV.UI
         private const int WS_EX_NOACTIVATE = 0x08000000;
         private const int WS_EX_TOOLWINDOW = 0x00000080;
         private const int WS_EX_TOPMOST = 0x00000008;
+
+        #region Win32 Fullscreen Detection
+
+        [DllImport("shell32.dll")]
+        private static extern int SHQueryUserNotificationState(out QUERY_USER_NOTIFICATION_STATE pquns);
+
+        private enum QUERY_USER_NOTIFICATION_STATE
+        {
+            QUNS_NOT_PRESENT = 1,
+            QUNS_BUSY = 2,
+            QUNS_RUNNING_D3D_FULL_SCREEN = 3,
+            QUNS_PRESENTATION_MODE = 4,
+            QUNS_ACCEPTS_NOTIFICATIONS = 5,
+            QUNS_QUIET_TIME = 6,
+            QUNS_APP = 7
+        }
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hWnd, out RECT lpRect);
+
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        private static extern int GetClassName(IntPtr hWnd, StringBuilder lpClassName, int nMaxCount);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct RECT
+        {
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
+        }
+
+        /// <summary>
+        /// Проверяет, активно ли полноэкранное приложение (просмотр фильма, игра, презентация).
+        /// В полноэкранном режиме оверлей подавляется и не всплывает поверх видео.
+        /// </summary>
+        public static bool IsFullScreenAppRunning()
+        {
+            try
+            {
+                // 1. Проверка через Shell API (игры, медиаплееры в полноэкранном режиме, презентации)
+                if (SHQueryUserNotificationState(out var state) == 0) // S_OK
+                {
+                    if (state == QUERY_USER_NOTIFICATION_STATE.QUNS_RUNNING_D3D_FULL_SCREEN ||
+                        state == QUERY_USER_NOTIFICATION_STATE.QUNS_PRESENTATION_MODE ||
+                        state == QUERY_USER_NOTIFICATION_STATE.QUNS_BUSY)
+                    {
+                        return true;
+                    }
+                }
+
+                // 2. Геометрическая проверка переднего активного окна (браузеры в режиме F11, плееры VLC, MPC-HC, PotPlayer)
+                var foreground = GetForegroundWindow();
+                if (foreground != IntPtr.Zero)
+                {
+                    var sb = new StringBuilder(256);
+                    GetClassName(foreground, sb, 256);
+                    string className = sb.ToString();
+
+                    // Исключаем рабочий стол и панель задач Windows
+                    if (className is not "Progman" and not "WorkerW" and not "Shell_TrayWnd")
+                    {
+                        if (GetWindowRect(foreground, out var rect))
+                        {
+                            var screen = Screen.FromHandle(foreground);
+                            if (screen != null)
+                            {
+                                // Окно развернуто на весь экран без границ (покрывает монитор целиком)
+                                if (rect.Left <= screen.Bounds.Left &&
+                                    rect.Top <= screen.Bounds.Top &&
+                                    rect.Right >= screen.Bounds.Right &&
+                                    rect.Bottom >= screen.Bounds.Bottom)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // При ошибках системных вызовов не прерываем работу UI
+            }
+
+            return false;
+        }
+
+        #endregion
 
         private readonly System.Windows.Forms.Timer _updateTimer;
         private readonly System.Windows.Forms.Timer _hideCheckTimer;
@@ -58,7 +152,7 @@ namespace TelegramWebDAV.UI
 
             FormBorderStyle = FormBorderStyle.None;
             ShowInTaskbar = false;
-            TopMost = false;
+            TopMost = true;
             StartPosition = FormStartPosition.Manual;
             Size = new Size(325, 96);
             BackColor = Color.FromArgb(30, 41, 59); // Slate 800
@@ -101,12 +195,34 @@ namespace TelegramWebDAV.UI
             get
             {
                 var cp = base.CreateParams;
-                cp.ExStyle |= WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW;
+                cp.ExStyle |= WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_TOPMOST;
                 return cp;
             }
         }
 
         protected override bool ShowWithoutActivation => true;
+
+        /// <summary>
+        /// Попытка показать оверлей с проверкой отсутствия активного полноэкранного режима (фильм, игра)
+        /// </summary>
+        private bool TryShowOverlay()
+        {
+            if (IsFullScreenAppRunning())
+            {
+                // Полноэкранный режим: подавляем появление оверлея
+                return false;
+            }
+
+            if (!Visible)
+            {
+                PositionNearTray();
+                Show();
+                _updateTimer.Start();
+                _hideCheckTimer.Start();
+            }
+
+            return true;
+        }
 
         public void UpdateProgress(string fileName, long current, long total, TransferDirection direction = TransferDirection.Upload, int queueCount = 0)
         {
@@ -178,14 +294,14 @@ namespace TelegramWebDAV.UI
                 }
             }
 
-            // Если окно скрыто — позиционируем и показываем
+            // Если окно скрыто — позиционируем и показываем (если нет полноэкранного режима)
             if (!Visible)
             {
+                if (!TryShowOverlay())
+                {
+                    return;
+                }
                 AppLogger.Info("TrayProgressOverlay", $"Показ окна прогресса [{_direction}] для {fileName} ({current}/{total})");
-                PositionNearTray();
-                Show();
-                _updateTimer.Start();
-                _hideCheckTimer.Start();
             }
 
             Invalidate();
@@ -259,10 +375,10 @@ namespace TelegramWebDAV.UI
 
             if (!Visible)
             {
-                PositionNearTray();
-                Show();
-                _updateTimer.Start();
-                _hideCheckTimer.Start();
+                if (!TryShowOverlay())
+                {
+                    return;
+                }
             }
 
             Invalidate();
@@ -292,12 +408,16 @@ namespace TelegramWebDAV.UI
                 _currentBytes = _totalBytes;
             }
             _bytesPerSecond = 0;
-            Invalidate();
-            Update();
 
-            // Запускаем гарантированный таймер скрытия
-            _completionTimer.Stop();
-            _completionTimer.Start();
+            if (Visible)
+            {
+                Invalidate();
+                Update();
+
+                // Запускаем гарантированный таймер скрытия только если оверлей был показан
+                _completionTimer.Stop();
+                _completionTimer.Start();
+            }
         }
 
         // Для обратной совместимости
@@ -316,6 +436,13 @@ namespace TelegramWebDAV.UI
         private void HideCheckTimer_Tick(object? sender, EventArgs e)
         {
             if (!Visible) return;
+
+            // Если прямо во время передачи пользователь включил полноэкранный режим (фильм) - скрываем оверлей
+            if (IsFullScreenAppRunning())
+            {
+                Hide();
+                return;
+            }
 
             // Защита от зависания окна при обрыве потока: при передаче данных таймаут 4 сек, при финализации в Telegram - до 12 сек
             var secondsSinceProgress = (DateTime.UtcNow - _lastProgressUpdateTime).TotalSeconds;
